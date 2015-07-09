@@ -2,12 +2,28 @@
 
 set -e
 
-BASE_PATH="$(pwd)"
-TMP_PATH="$BASE_PATH/tmp"
+[ -z "$FILETREE_CI_HOME" ] && FILETREE_CI_HOME="$(pwd)"
+
+if [ -z "$PROJECT_HOME" ]; then
+    echo "\$PROJECT_HOME needs to be set"
+    exit 1
+fi
+
+if [ -z "$BASELINE" ]; then
+    echo "\$BASELINE needs to be set"
+    exit 1
+fi 
+
+BASE_PATH="$FILETREE_CI_HOME"
+CACHE_PATH="$BASE_PATH/cache"
 BUILD_PATH="$BASE_PATH/build"
+GIT_PATH="$BUILD_PATH/git_cache"
 SCRIPTS_PATH="$BASE_PATH/scripts"
 VM_PATH="$BASE_PATH/vm"
-DOWNLOAD_PATH="http://www.mirandabanda.org/files/Cog/VM/VM.r3397"
+VM_TAR="vm.tar.gz"
+VM_DOWNLOAD="http://www.mirandabanda.org/files/Cog/VM/VM.r3397"
+IMAGE_DOWNLOAD="https://inbox.fniephaus.com/image.tar.gz"
+IMAGE_TAR="image.tar.gz"
 
 case "$(uname -s)" in
     "Linux")
@@ -27,20 +43,28 @@ case "$(uname -s)" in
 esac
 
 echo "Preparing folders..."
-mkdir "$TMP_PATH" "$VM_PATH"
+mkdir "$BUILD_PATH" "$VM_PATH"
+if [ ! -d "$CACHE_PATH" ]; then
+    mkdir "$CACHE_PATH"
+fi
+ln -s $PROJECT_HOME $GIT_PATH
 
-echo "Downloading virtual machine..."
-curl -s "$DOWNLOAD_PATH/$COG_VM_FILE" > "$TMP_PATH/vm.tar.gz"
-tar -xzf "$TMP_PATH/vm.tar.gz" -C "$VM_PATH"
+if [ ! -f "$CACHE_PATH/$VM_TAR" ]; then
+    echo "Downloading virtual machine..."
+    curl -s "$VM_DOWNLOAD/$COG_VM_FILE" > "$CACHE_PATH/$VM_TAR"
+fi
+echo "Extracting virtual machine..."
+tar xzf "$CACHE_PATH/$VM_TAR" -C "$VM_PATH"
 
+if [ ! -f "$CACHE_PATH/$IMAGE_TAR" ]; then
+    echo "Downloading testing image..."
+    curl -s "$IMAGE_DOWNLOAD" > "$CACHE_PATH/$IMAGE_TAR"
+fi
 echo "Extracting image..."
-tar xzf ./build.tar.gz
+tar xzf "$CACHE_PATH/$IMAGE_TAR" -C "$BUILD_PATH"
 
 echo "Starting tests..."
-{ time "$COG_VM_PATH" "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" ; } 2> "$BUILD_PATH/time.txt"
-
-echo "Cleaning up..."
-rm -rf "$TMP_PATH"
+{ time "$COG_VM_PATH" "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$BASELINE" ; } 2> "$BUILD_PATH/time.txt"
 
 echo "Results:"
 cd "$BUILD_PATH"
@@ -50,5 +74,8 @@ do
    cat -n "$f"
    echo "[End $f ]"
 done
+
+echo "Cleaning up..."
+rm -rf "$BUILD_PATH" "$VM_PATH"
 
 echo "Done!"
