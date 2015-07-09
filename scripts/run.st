@@ -14,10 +14,8 @@ Metacello new
   load: 'TravisCI'.
 
 "Run the tests"
-TravisCIHarness
-  value: { 'BaselineOf', baselineName. }
-  value: 'TravisCISuccess.txt' 
-  value: 'TravisCIFailure.txt'.
+timeToRun := [ TravisCIHarness
+  value: { 'BaselineOf', baselineName. } ] timeToRun.
 
 "Quit"
 Smalltalk at: #WorldState ifPresent: [:global |

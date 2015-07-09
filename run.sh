@@ -25,6 +25,7 @@ VM_DOWNLOAD="http://www.mirandabanda.org/files/Cog/VM/VM.r3397"
 IMAGE_DOWNLOAD="https://inbox.fniephaus.com/image.tar.gz"
 IMAGE_TAR="image.tar.gz"
 
+COG_VM_PARAM=""
 case "$(uname -s)" in
     "Linux")
         echo "Linux detected..."
@@ -39,7 +40,6 @@ case "$(uname -s)" in
         echo "OS X detected..."
         COG_VM_FILE="Cog.app-15.27.3397.tgz"
         COG_VM_PATH="$VM_PATH/Cog.app/Contents/MacOS/Squeak"
-        COG_VM_PARAM="-headless"
         ;;
     *)
         echo "$(basename $0): unknown platform $(uname -s)"
@@ -69,18 +69,16 @@ echo "Extracting image..."
 tar xzf "$CACHE_PATH/$IMAGE_TAR" -C "$BUILD_PATH"
 
 echo "Starting tests..."
-"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$BASELINE"
+EXIT_STATUS=0
+"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$BASELINE" || EXIT_STATUS=$?
 
 echo "Results:"
-cd "$BUILD_PATH"
-for f in ./*txt
-do
-   echo "[Start $f ]"
-   cat -n "$f"
-   echo "[End $f ]"
-done
+cat "$BUILD_PATH/output.log"
+echo ""
 
 echo "Cleaning up..."
 rm -rf "$BUILD_PATH" "$VM_PATH"
 
 echo "Done!"
+
+exit $EXIT_STATUS
