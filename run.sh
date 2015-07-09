@@ -30,11 +30,13 @@ case "$(uname -s)" in
         echo "Linux detected..."
         COG_VM_FILE="coglinux-15.27.3397.tgz"
         COG_VM_PATH="$VM_PATH/bin/squeak"
+        COG_VM_PARAM="-headless -nosound -encoding latin1"
         ;;
     "Darwin")
         echo "OS X detected..."
         COG_VM_FILE="Cog.app-15.27.3397.tgz"
         COG_VM_PATH="$VM_PATH/Cog.app/Contents/MacOS/Squeak"
+        COG_VM_PARAM="-headless"
         ;;
     *)
         echo "$(basename $0): unknown platform $(uname -s)"
@@ -64,7 +66,7 @@ echo "Extracting image..."
 tar xzf "$CACHE_PATH/$IMAGE_TAR" -C "$BUILD_PATH"
 
 echo "Starting tests..."
-{ time "$COG_VM_PATH" "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$BASELINE" ; } 2> "$BUILD_PATH/time.txt"
+{ time "$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$BASELINE" ; } 2> "$BUILD_PATH/time.txt"
 
 echo "Results:"
 cd "$BUILD_PATH"
