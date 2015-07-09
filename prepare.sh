@@ -8,6 +8,7 @@ BUILD_PATH="$BASE_PATH/build"
 IMAGE_PATH="$BASE_PATH/image"
 SCRIPTS_PATH="$BASE_PATH/scripts"
 VM_PATH="$BASE_PATH/vm"
+IMAGE_TAR="image.tar.gz"
 
 echo "Preparing folders..."
 mkdir "$TMP_PATH" "$BUILD_PATH"
@@ -21,7 +22,8 @@ echo "Preparing image for CI..."
 
 echo "Exporting image..."
 mv "$TMP_PATH/"{TravisCI.image,TravisCI.changes,*.sources} "$BUILD_PATH"
-tar czf build.tar.gz ./build
+cd "$BUILD_PATH"
+tar czf "$BASE_PATH/$IMAGE_TAR" .
 
 echo "Cleaning up..."
 rm -rf "$TMP_PATH"
