@@ -29,7 +29,7 @@ case "$(uname -s)" in
     "Linux")
         echo "Linux detected..."
         COG_VM_FILE="coglinux-15.27.3397.tgz"
-        COG_VM_PATH="$VM_PATH/bin/squeak"
+        COG_VM_PATH="$VM_PATH/coglinux/bin/squeak"
         COG_VM_PARAM="-headless -nosound -encoding latin1"
         ;;
     "Darwin")
