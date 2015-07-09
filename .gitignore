@@ -1,8 +1,7 @@
 *.app/
-package-cache
-github-cache
-git_cache
 *.image
 *.changes
 *.sources
 *.txt
+build
+tmp
