@@ -66,7 +66,7 @@ echo "Extracting image..."
 tar xzf "$CACHE_PATH/$IMAGE_TAR" -C "$BUILD_PATH"
 
 echo "Starting tests..."
-{ time "$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$BASELINE" ; } 2> "$BUILD_PATH/time.txt"
+"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$BASELINE"
 
 echo "Results:"
 cd "$BUILD_PATH"
