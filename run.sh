@@ -3,6 +3,7 @@
 set -e
 
 [ -z "$FILETREE_CI_HOME" ] && FILETREE_CI_HOME="$(pwd)"
+[ -z "$PACKAGES" ] && PACKAGES="/packages"
 
 if [ -z "$PROJECT_HOME" ]; then
     echo "\$PROJECT_HOME needs to be set"
@@ -67,7 +68,7 @@ tar xzf "$CACHE_PATH/$IMAGE_TAR" -C "$BUILD_PATH"
 
 echo "Starting image..."
 EXIT_STATUS=0
-"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$BASELINE" || EXIT_STATUS=$?
+"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$BASELINE" "$PACKAGES" || EXIT_STATUS=$?
 
 echo "Cleaning up..."
 rm -rf "$BUILD_PATH" "$VM_PATH"

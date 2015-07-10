@@ -1,18 +1,19 @@
-| baselineName gitPath timeToRun |
+| baselineName packagesDir gitPath timeToRun |
 
 baselineName := Smalltalk argumentAt: 1.
+packagesDir := Smalltalk argumentAt: 2.
 gitPath := (FileDirectory default directoryNamed: 'git_cache') fullName.
 
 timeToRun := [ Metacello new
   baseline: baselineName;
-  repository: 'filetree://', gitPath, '/packages';
+  repository: 'filetree://', gitPath, packagesDir;
   get ] timeToRun.
 
 Transcript cr; show: 'Time to get baseline: ', timeToRun, 'ms'.
 
 timeToRun := [ Metacello new
   baseline: baselineName;
-  repository: 'filetree://', gitPath, '/packages';
+  repository: 'filetree://', gitPath, packagesDir;
   load: 'TravisCI' ] timeToRun.
 
 Transcript cr; show: 'Time to load baseline: ', timeToRun, 'ms'.
