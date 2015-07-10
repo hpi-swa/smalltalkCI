@@ -25,7 +25,7 @@ debugError: anError
 	(problemPlace stackOfSize: 20) do: [:ctx | s cr. ctx printOn: s].
 	s flush.
 
-	SmalltalkImage current snapshot: false andQuit: true! !
+	SmalltalkImage current snapshot: false andQuitWithExitCode: 1! !
 
 !CommandLineToolSet class methodsFor: 'as yet unclassified' stamp: 'fbs 5/08/2013 09:04'!
 debugSyntaxError: anError

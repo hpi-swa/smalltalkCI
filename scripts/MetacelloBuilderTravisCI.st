@@ -3,7 +3,7 @@ Object subclass: #MetacelloBuilderTravisCI
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'XXX'!
+	category: 'TravisCI'!
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -59,7 +59,7 @@ retry: aBlock retryCount: retryCount
 
 
 !MetacelloBuilderTravisCI class methodsFor: 'test harness' stamp: 'dkh 9/4/2012 18:31'!
-runHarnessFor: configurationClassNameList successFilename: successFilename failFilename: failFilename
+runHarnessFor: configurationClassNameList
     | suite |
     suite := TestCase suiteClass named: configurationClassNameList printString , ' Test Suite'.
     configurationClassNameList
@@ -71,64 +71,37 @@ runHarnessFor: configurationClassNameList successFilename: successFilename failF
                 do: [ :cl | 
                     cl isAbstract
                         ifFalse: [ suite addTest: cl buildSuiteFromSelectors ] ] ].
-    self runTestSuite: suite successFilename: successFilename failFilename: failFilename! !
+    self runTestSuite: suite! !
 
 !MetacelloBuilderTravisCI class methodsFor: 'test harness' stamp: 'dkh 11/20/2014 15:56'!
-runTestSuite: suite successFilename: successFilename failFilename: failFilename
+runTestSuite: suite
     [ 
-    | result resultsFileName |
+    | result |
     result := suite run.
-    resultsFileName := result defects isEmpty
-        ifTrue: [ successFilename ]
-        ifFalse: [ failFilename ].
-    (Smalltalk at: #'TravisResultFileBlock')
-        value: resultsFileName
-        value: [ :fileStream |
-            fileStream
-                lf;
-                nextPutAll: '**************************************************************************************';
-                lf.
-            fileStream
-                tab;
-                nextPutAll: 'Results for ' , suite name;
-                lf;
-                nextPutAll: result printString;
-                lf.
-            fileStream
-                nextPutAll: '**************************************************************************************';
-                lf.
-            result failures notEmpty
-                ifTrue: [ 
-                    fileStream
-                        nextPutAll: '*** FAILURES ***';
-                        nextPutAll: '****************';
-                        lf ].
-            result failures
-                do: [ :each | 
-                    fileStream tab
-                        nextPutAll: each class name asString , ' debug: ' , each selector printString , '.';
-                        lf ].
-            result errors notEmpty
-                ifTrue: [ 
-                    fileStream
-                        nextPutAll: '*** ERRORS ***';
-                        nextPutAll: '****************';
-                        lf ].
-            result errors
-                do: [ :each | 
-                    fileStream tab
-                        nextPutAll: each class name asString , ' debug: ' , each selector printString , '.';
-                        lf ].
-            fileStream
-                nextPutAll: '**************************************************************************************';
-                lf ] ]
-        ensure: [
-            (Transcript respondsTo: #close)
-              ifTrue: [
-                | stream |
-                stream := Transcript.
-                (Smalltalk globals associationAt: #'Transcript') value: (Smalltalk at: #'OLDTranscript').
-                stream close ]]! !
+    Transcript
+        show: '**************************************************************************************';
+        show: 'Results for ' , suite name;
+        show: result printString;
+        show: '**************************************************************************************'.
+
+    result failures notEmpty
+        ifTrue: [ 
+            Transcript
+                show: '*** FAILURES ***';
+                show: '****************' ].
+    result failures
+        do: [ :each | 
+            Transcript show: each class name asString , ' debug: ' , each selector printString , '.' ].
+    result errors notEmpty
+        ifTrue: [ 
+            Transcript
+                show: '*** ERRORS ***';
+                show: '****************' ].
+    result errors
+        do: [ :each | 
+            Transcript show: each class name asString , ' debug: ' , each selector printString , '.' ].
+    Transcript show: '**************************************************************************************']
+    ensure: [ FileStream flushAndVoidStdioFiles ]! !
 
 
 !MetacelloBuilderTravisCI class methodsFor: 'filein' stamp: 'dkh 9/4/2012 18:33'!
@@ -138,25 +111,8 @@ fileIn: fileName
         ifNotNil: [ :fileDirectoryClass | fileDirectoryClass default fileNamed: fileName do: [ :fileStream | fileStream fileIn ] ]! !
 
 
-!MetacelloBuilderTravisCI class methodsFor: 'test harness' stamp: 'dkh 06/11/2014 7:44'!
-successOnNoFailures: successFilename 
-
-(Smalltalk at: #'TravisResultFileBlock')
-  value: successFilename
-  value: [ :fileStream |
-    fileStream
-      lf;
-      nextPutAll: '**************************************************************************************';
-      lf;
-      tab;
-      nextPutAll: 'No failures..';
-      lf;
-      nextPutAll: '**************************************************************************************';
-      lf].
- (Transcript respondsTo: #close)
-   ifTrue: [
-     | stream |
-     stream := Transcript.
-     (Smalltalk globals associationAt: #'Transcript') value: (Smalltalk at: #'OLDTranscript').
-     stream close ].! !
+!TranscriptStream methodsFor: '*TravisCI' stamp: 'FabN 7/10/2015 07:38'!
+show: anObject
+    "Print to stdout for TravisCI"
+    FileStream stdout cr; nextPutAll: anObject asString.
 

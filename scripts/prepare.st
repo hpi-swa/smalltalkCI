@@ -25,28 +25,17 @@ Installer gemsource
   repository: 'github://dalehenrich/metacello-work:master/repository';
   load.
 !
-| exportName scriptsDirectory fileDirectoryClass fileInBlock resultFileBlock |
+| exportName scriptsDirectory fileDirectoryClass fileInBlock |
 exportName := 'TravisCI.image'.
 scriptsDirectory := 'scripts/'.
 fileDirectoryClass := Smalltalk at: #'FileDirectory'.
-fileInBlock := [ :fileName | 
+fileInBlock := [ :fileName |
     fileDirectoryClass default
       readOnlyFileNamed: scriptsDirectory, fileName
       do: [ :fileStream | fileStream fileIn ] ].
 
 fileInBlock value: 'MetacelloBuilderTravisCI.st'.
 fileInBlock value: 'CommandLineToolSet.st'.
-fileInBlock value: 'travisCIHarness.st'.
-
-resultFileBlock := [ :resultsFileName :streamBlock |
-      fileDirectoryClass default forceNewFileNamed: resultsFileName do: streamBlock ].
-Smalltalk at: #'TravisResultFileBlock' put: resultFileBlock.
-
-Smalltalk at: #'OLDTranscript' put: Transcript.
-
-"If e.g. your tests change code in the image dynamically, the image will require you to set 
-author initials which might fail these tests. So we set some dummy initials here to avoid this."
-(Smalltalk at: #MetacelloPlatform) current authorName: 'travisCI'.
 
 "Export and quit image"
 Smalltalk at: #WorldState ifPresent: [:global |
