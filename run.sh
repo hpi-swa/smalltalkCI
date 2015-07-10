@@ -22,7 +22,7 @@ GIT_PATH="$BUILD_PATH/git_cache"
 SCRIPTS_PATH="$BASE_PATH/scripts"
 VM_PATH="$BASE_PATH/vm"
 VM_TAR="vm.tar.gz"
-VM_DOWNLOAD="http://www.mirandabanda.org/files/Cog/VM/VM.r3397"
+VM_DOWNLOAD="https://inbox.fniephaus.com"
 IMAGE_DOWNLOAD="https://inbox.fniephaus.com/image.tar.gz"
 IMAGE_TAR="image.tar.gz"
 
@@ -30,13 +30,13 @@ COG_VM_PARAM=""
 case "$(uname -s)" in
     "Linux")
         echo "Linux detected..."
-        COG_VM_FILE="coglinux-15.27.3397.tgz"
+        COG_VM_FILE="cog_linux.tar.gz"
         COG_VM_PATH="$VM_PATH/coglinux/bin/squeak"
         COG_VM_PARAM="-headless"
         ;;
     "Darwin")
         echo "OS X detected..."
-        COG_VM_FILE="Cog.app-15.27.3397.tgz"
+        COG_VM_FILE="cog_osx.tar.gz"
         COG_VM_PATH="$VM_PATH/Cog.app/Contents/MacOS/Squeak"
         ;;
     *)
