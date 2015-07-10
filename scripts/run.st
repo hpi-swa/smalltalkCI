@@ -4,6 +4,10 @@ baselineName := Smalltalk argumentAt: 1.
 packagesDir := Smalltalk argumentAt: 2.
 gitPath := (FileDirectory default directoryNamed: 'git_cache') fullName.
 
+"If e.g. your tests change code in the image dynamically, the image will require you to set 
+author initials which might fail these tests. So we set some dummy initials here to avoid this."
+(Smalltalk at: #MetacelloPlatform) current authorName: 'travisCI'.
+
 timeToRun := [ Metacello new
   baseline: baselineName;
   repository: 'filetree://', gitPath, packagesDir;
