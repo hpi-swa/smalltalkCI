@@ -76,6 +76,7 @@ echo "Starting image..."
 EXIT_STATUS=0
 "$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$PACKAGES" "$BASELINE" "$BASELINE_GROUP" || EXIT_STATUS=$?
 
+echo ""
 echo "Cleaning up..."
 rm -rf "$BUILD_PATH" "$VM_PATH"
 
