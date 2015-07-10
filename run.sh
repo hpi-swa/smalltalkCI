@@ -65,13 +65,9 @@ fi
 echo "Extracting image..."
 tar xzf "$CACHE_PATH/$IMAGE_TAR" -C "$BUILD_PATH"
 
-echo "Starting tests..."
+echo "Starting image..."
 EXIT_STATUS=0
 "$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$BASELINE" || EXIT_STATUS=$?
-
-echo "Results:"
-cat "$BUILD_PATH/output.log"
-echo ""
 
 echo "Cleaning up..."
 rm -rf "$BUILD_PATH" "$VM_PATH"
