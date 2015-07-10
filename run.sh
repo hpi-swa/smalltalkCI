@@ -4,6 +4,7 @@ set -e
 
 [ -z "$FILETREE_CI_HOME" ] && FILETREE_CI_HOME="$(pwd)"
 [ -z "$PACKAGES" ] && PACKAGES="/packages"
+[ -z "$BASELINE_GROUP" ] && BASELINE_GROUP="TravisCI"
 
 if [ -z "$SMALLTALK" ]; then
     echo "\$SMALLTALK needs to be set"
@@ -73,7 +74,7 @@ tar xzf "$CACHE_PATH/$IMAGE_TAR" -C "$BUILD_PATH"
 
 echo "Starting image..."
 EXIT_STATUS=0
-"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$BASELINE" "$PACKAGES" || EXIT_STATUS=$?
+"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/TravisCI.image" "$SCRIPTS_PATH/run.st" "$PACKAGES" "$BASELINE" "$BASELINE_GROUP" || EXIT_STATUS=$?
 
 echo "Cleaning up..."
 rm -rf "$BUILD_PATH" "$VM_PATH"
