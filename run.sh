@@ -5,6 +5,11 @@ set -e
 [ -z "$FILETREE_CI_HOME" ] && FILETREE_CI_HOME="$(pwd)"
 [ -z "$PACKAGES" ] && PACKAGES="/packages"
 
+if [ -z "$SMALLTALK" ]; then
+    echo "\$SMALLTALK needs to be set"
+    exit 1
+fi
+
 if [ -z "$PROJECT_HOME" ]; then
     echo "\$PROJECT_HOME needs to be set"
     exit 1
@@ -23,8 +28,8 @@ SCRIPTS_PATH="$BASE_PATH/scripts"
 VM_PATH="$BASE_PATH/vm"
 VM_TAR="vm.tar.gz"
 VM_DOWNLOAD="https://inbox.fniephaus.com"
-IMAGE_DOWNLOAD="https://inbox.fniephaus.com/image.tar.gz"
-IMAGE_TAR="image.tar.gz"
+IMAGE_TAR="$SMALLTALK.tar.gz"
+IMAGE_DOWNLOAD="https://inbox.fniephaus.com/$IMAGE_TAR"
 
 COG_VM_PARAM=""
 case "$(uname -s)" in
