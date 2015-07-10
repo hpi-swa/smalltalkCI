@@ -65,7 +65,7 @@ echo "Extracting virtual machine..."
 tar xzf "$CACHE_PATH/$VM_TAR" -C "$VM_PATH"
 
 if [ ! -f "$CACHE_PATH/$IMAGE_TAR" ]; then
-    echo "Downloading testing image..."
+    echo "Downloading $SMALLTALK testing image..."
     curl -s "$IMAGE_DOWNLOAD" > "$CACHE_PATH/$IMAGE_TAR"
 fi
 echo "Extracting image..."
