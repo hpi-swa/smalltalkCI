@@ -14,20 +14,20 @@ timeToRun := [ Metacello new
   repository: 'filetree://', gitPath, packagesDir;
   get ] timeToRun.
 
-Transcript cr; show: 'Time to get baseline: ', timeToRun, 'ms'.
+Transcript cr; cr; show: '[ Time to get baseline: ', timeToRun, 'ms ] '; cr.
 
 timeToRun := [ Metacello new
   baseline: baselineName;
   repository: 'filetree://', gitPath, packagesDir;
   load: baselineGroup ] timeToRun.
 
-Transcript cr; show: 'Time to load baseline: ', timeToRun, 'ms'.
+Transcript cr; cr; show: '[ Time to load baseline: ', timeToRun, 'ms ]'; cr.
 
 "Run the tests"
 timeToRun := [ MetacelloBuilderTravisCI
   runHarnessFor: { 'BaselineOf', baselineName. } ] timeToRun.
 
-Transcript cr; show: 'Time to run tests: ', timeToRun, 'ms'.
+Transcript cr; cr; show: '[ Time to run tests: ', timeToRun, 'ms ]'; cr.
 
 "Quit"
 Smalltalk at: #WorldState ifPresent: [:global |
