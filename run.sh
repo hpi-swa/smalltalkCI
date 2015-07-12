@@ -38,7 +38,13 @@ if [ -z "$FILETREE_CI_HOME" ]; then
 fi
 
 BASE_PATH="$FILETREE_CI_HOME"
-CACHE_PATH="$BASE_PATH/cache"
+
+if [ -z "$TRAVIS" ]; then
+    CACHE_PATH="$BASE_PATH/cache"
+else
+    CACHE_PATH="$HOME/.filetreeCI"
+fi
+
 BUILD_BASE="$BASE_PATH/builds"
 BUILD_ID="$(date "+%Y_%m_%d_%H_%M_%S")"
 BUILD_PATH="$BUILD_BASE/$BUILD_ID"
