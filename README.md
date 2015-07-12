@@ -11,6 +11,7 @@ env:
     - BASELINE=myProject
     # - BASELINE_GROUP="TravisCI" # Name of the group to load from baseline
     # - PACKAGES="/packages" # Directory where filetree looks for packages
+    # - RUN_SCRIPT="CustomRunScript.st"
   matrix:
     - SMALLTALK="SqueakTrunk"
     # - SMALLTALK="Squeak4.5"

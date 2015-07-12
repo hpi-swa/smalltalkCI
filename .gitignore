@@ -1,7 +1,2 @@
-*.app/
-*.image
-*.changes
-*.sources
-*.txt
-build
-*.tar.gz
+builds
+cache
