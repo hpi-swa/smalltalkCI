@@ -34,6 +34,6 @@ Smalltalk at: #WorldState ifPresent: [:global |
   global addDeferredUIMessage: [
     Smalltalk at: #SmalltalkImage ifPresent: [:image |
       image current
-        snapshot: save
+        snapshot: false
         andQuitWithExitCode: (Smalltalk at: #travisCIExitCode ifAbsent: [ 1 ]) ]]].
 !
