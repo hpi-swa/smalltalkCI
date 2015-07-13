@@ -128,11 +128,4 @@ else
 fi
 printf "\n"
 
-printf "\n\n"
-
-printf "\e[1;32mTest1\e[0m\n"
-printf "\e[32mTest2\e[0m\n"
-printf "\e[30mTest3\e[0m\n"
-printf "\e[1;32m\n\nTest4\e[0m\n"
-
 exit $EXIT_STATUS
