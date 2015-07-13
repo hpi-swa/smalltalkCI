@@ -44,10 +44,10 @@ BUILD_ID="$(date "+%Y_%m_%d_%H_%M_%S")"
 BUILD_PATH="$BUILD_BASE/$BUILD_ID"
 GIT_PATH="$BUILD_PATH/git_cache"
 VM_PATH="$CACHE_PATH/vms"
-VM_DOWNLOAD="https://inbox.fniephaus.com"
+VM_DOWNLOAD="https://squeak.fniephaus.com"
 VM_IMAGE_NAME="$BUILD_PATH/TravisCI.image"
 IMAGE_TAR="$SMALLTALK.tar.gz"
-IMAGE_DOWNLOAD="https://inbox.fniephaus.com/$IMAGE_TAR"
+IMAGE_DOWNLOAD="https://squeak.fniephaus.com/$IMAGE_TAR"
 
 # Optional environment variables
 [ -z "$PACKAGES" ] && PACKAGES="/packages"
