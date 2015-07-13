@@ -86,6 +86,7 @@ runTestSuite: suite
 
     result failures notEmpty
         ifTrue: [ 
+            Smalltalk at: #travisCIExitCode put: 1.
             Transcript
                 show: '*** FAILURES ***';
                 show: '****************' ].
@@ -94,6 +95,7 @@ runTestSuite: suite
             Transcript show: each class name asString , ' debug: ' , each selector printString , '.' ].
     result errors notEmpty
         ifTrue: [ 
+            Smalltalk at: #travisCIExitCode put: 1.
             Transcript
                 show: '*** ERRORS ***';
                 show: '****************' ].

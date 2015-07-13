@@ -37,6 +37,9 @@ fileInBlock := [ :fileName |
 fileInBlock value: 'MetacelloBuilderTravisCI.st'.
 fileInBlock value: 'CommandLineToolSet.st'.
 
+"Initialize exit code"
+Smalltalk at: #travisCIExitCode put: 0.
+
 "Export and quit image"
 Smalltalk at: #WorldState ifPresent: [:global |
   global addDeferredUIMessage: [
