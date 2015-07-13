@@ -120,10 +120,19 @@ EXIT_STATUS=0
 "$COG_VM_PATH" $COG_VM_PARAM $VM_IMAGE_NAME $VM_ARGS || EXIT_STATUS=$?
 # ==============================================================================
 
+printf "\n\n"
 if [ $EXIT_STATUS -eq 0 ]; then
-    print_success "\n\nBuild successful :)\n"
+    print_success "Build successful :)"
 else
-    print_error "\n\nBuild failed :(\n"
+    print_error "Build failed :("
 fi
+printf "\n"
+
+printf "\n\n"
+
+printf "\e[1;32mTest1\e[0m\n"
+printf "\e[32mTest2\e[0m\n"
+printf "\e[30mTest3\e[0m\n"
+printf "\e[1;32m\n\nTest4\e[0m\n"
 
 exit $EXIT_STATUS
