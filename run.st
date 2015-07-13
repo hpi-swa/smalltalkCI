@@ -33,5 +33,7 @@ Transcript cr; cr; show: '[ Time to run tests: ', timeToRun, 'ms ]'; cr.
 Smalltalk at: #WorldState ifPresent: [:global |
   global addDeferredUIMessage: [
     Smalltalk at: #SmalltalkImage ifPresent: [:image |
-      image current snapshot: false andQuit: true ]]].
+      image current
+        snapshot: save
+        andQuitWithExitCode: (Smalltalk at: #travisCIExitCode ifAbsent: [ 1 ]) ]]].
 !
