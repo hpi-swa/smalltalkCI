@@ -67,7 +67,7 @@ case "$(uname -s)" in
         print_info "Linux detected..."
         COG_VM_FILE="cog_linux.tar.gz"
         COG_VM_PATH="$VM_PATH/coglinux/bin/squeak"
-        COG_VM_PARAM="-headless"
+        COG_VM_PARAM="-nosound -nodisplay"
         ;;
     "Darwin")
         print_info "OS X detected..."
