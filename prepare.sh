@@ -21,7 +21,7 @@ cp -r "$IMAGE_PATH/" "$TMP_PATH/"
 cp -r "$SCRIPTS_PATH" "$TMP_PATH/scripts"
 
 echo "Preparing image for CI..."
-"$VM_PATH/Cog.app/Contents/MacOS/Squeak" "$TMP_PATH/$IMAGE" "$TMP_PATH/scripts/prepare.st"
+"$VM_PATH/Cog.app/Contents/MacOS/Squeak" "$TMP_PATH/$IMAGE.image" "$TMP_PATH/scripts/prepare.st"
 
 echo ""
 echo "Exporting image..."
