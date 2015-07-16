@@ -5,6 +5,12 @@ baselineName := Smalltalk argumentAt: 2.
 baselineGroup := Smalltalk argumentAt: 3.
 gitPath := (FileDirectory default directoryNamed: 'git_cache') fullName.
 
+"Update Squeak image"
+Smalltalk at: #MCMcmUpdater ifPresent: [ :updater |
+  timeToRun := [[ updater updateFromDefaultRepository ]
+    on: Warning do: [ :ex | ex resume: true ]] timeToRun.
+  Transcript cr; cr; show: '[ Time to update image: ', timeToRun, 'ms ] '; cr ].
+
 "If e.g. your tests change code in the image dynamically, the image will require you to set 
 author initials which might fail these tests. So we set some dummy initials here to avoid this."
 (Smalltalk at: #MetacelloPlatform) current authorName: 'travisCI'.
