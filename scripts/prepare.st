@@ -1,3 +1,8 @@
+"Update Squeak image"
+Smalltalk at: #MCMcmUpdater ifPresent: [ :updater |
+  [ updater updateFromDefaultRepository ]
+    on: Warning do: [ :ex | ex resume: true ]].
+
 "Get the Metacello configuration (for Squeak users)"
 Installer gemsource
     project: 'metacello';
