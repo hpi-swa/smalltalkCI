@@ -31,6 +31,7 @@ env:
     - BASELINE=myProject
     # - BASELINE_GROUP="TravisCI" # Name of the group to load from baseline
     # - PACKAGES="/packages" # Directory where filetree looks for packages
+    # - FORCE_UPDATE="false" # Forces image update if set to "true" 
     # - RUN_SCRIPT="CustomRunScript.st" # .st file relative to your project's root
   matrix:
     - SMALLTALK="SqueakTrunk"
