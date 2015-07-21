@@ -35,6 +35,7 @@ env:
     # - RUN_SCRIPT="CustomRunScript.st" # .st file relative to your project's root
   matrix:
     - SMALLTALK="SqueakTrunk"
+    # - SMALLTALK="Squeak4.6"
     # - SMALLTALK="Squeak4.5"
 
 addons:
