@@ -1,4 +1,4 @@
-| packagesDir baselineName baselineGroup gitPath timeToRun |
+| packagesDir baselineName baselineGroup forceUpdate gitPath timeToRun |
 
 packagesDir := Smalltalk argumentAt: 1.
 baselineName := Smalltalk argumentAt: 2.
