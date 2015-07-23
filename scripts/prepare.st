@@ -40,7 +40,11 @@ fileInBlock := [ :fileName |
       do: [ :fileStream | fileStream fileIn ] ].
 
 fileInBlock value: 'MetacelloBuilderTravisCI.st'.
+fileInBlock value: 'TravisCITranscriptStream.st'.
 fileInBlock value: 'CommandLineToolSet.st'.
+
+"Install TravisCITranscriptStream"
+Smalltalk at: #Transcript put: TravisCITranscriptStream new.
 
 "Initialize exit code"
 Smalltalk at: #travisCIExitCode put: 0.

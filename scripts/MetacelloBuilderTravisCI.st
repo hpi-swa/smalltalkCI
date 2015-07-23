@@ -111,10 +111,3 @@ fileIn: fileName
     (Smalltalk at: #'FileDirectory' ifAbsent: [  ])
         ifNil: [ ((Smalltalk at: #'FileSystem') perform: #workingDirectory) / fileName readStreamDo: [ :fileStream | fileStream fileIn ] ]
         ifNotNil: [ :fileDirectoryClass | fileDirectoryClass default fileNamed: fileName do: [ :fileStream | fileStream fileIn ] ]! !
-
-
-!TranscriptStream methodsFor: '*TravisCI' stamp: 'FabN 7/10/2015 07:38'!
-show: anObject
-    "Print to stdout for TravisCI"
-    FileStream stdout cr; nextPutAll: anObject asString.
-
