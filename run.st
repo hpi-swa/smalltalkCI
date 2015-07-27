@@ -1,10 +1,17 @@
-| packagesDir baselineName baselineGroup forceUpdate keepOpen gitPath timeToRun |
+| packagesDir baselineName baselineGroup categoryListString classListString forceUpdate keepOpen gitPath timeToRun |
 
 packagesDir := Smalltalk argumentAt: 1.
 baselineName := Smalltalk argumentAt: 2.
 baselineGroup := Smalltalk argumentAt: 3.
-forceUpdate := Smalltalk argumentAt: 4.
-keepOpen := Smalltalk argumentAt: 5.
+categoryListString := Smalltalk argumentAt: 4.
+classListString := Smalltalk argumentAt: 5.
+forceUpdate := Smalltalk argumentAt: 6.
+keepOpen := Smalltalk argumentAt: 7.
+
+"Prepare exclusion strings"
+categoryListString = 'nil' ifTrue: [ categoryListString := ''].
+classListString = 'nil' ifTrue: [ classListString := ''].
+
 gitPath := (FileDirectory default directoryNamed: 'git_cache') fullName.
 
 keepOpen = 'true' ifTrue: [
@@ -37,8 +44,11 @@ timeToRun := [ Metacello new
 Transcript cr; cr; show: '[ Time to load baseline: ', timeToRun, 'ms ]'; cr.
 
 "Run the tests"
-timeToRun := [ MetacelloBuilderTravisCI
-  runHarnessFor: { 'BaselineOf', baselineName. } ] timeToRun.
+timeToRun := [
+  MetacelloBuilderTravisCI
+    runHarnessFor: { 'BaselineOf', baselineName. }
+    exclude: categoryListString
+    exclude: classListString ] timeToRun.
 
 Transcript cr; cr; show: '[ Time to run tests: ', timeToRun, 'ms ]'; cr.
 

@@ -52,6 +52,8 @@ IMAGE_DOWNLOAD="https://squeak.fniephaus.com/$IMAGE_TAR"
 # Optional environment variables
 [ -z "$PACKAGES" ] && PACKAGES="/packages"
 [ -z "$BASELINE_GROUP" ] && BASELINE_GROUP="TravisCI"
+[ -z "$EXCLUDE_CATEGORIES" ] && EXCLUDE_CATEGORIES="nil"
+[ -z "$EXCLUDE_CLASSES" ] && EXCLUDE_CLASSES="nil"
 [ -z "$FORCE_UPDATE" ] && FORCE_UPDATE="false"
 [ -z "$KEEP_OPEN" ] && KEEP_OPEN="false"
 if [ -z "$RUN_SCRIPT" ]; then
@@ -117,7 +119,7 @@ print_info "Extracting image..."
 tar xzf "$CACHE_PATH/$IMAGE_TAR" -C "$BUILD_PATH"
 
 print_info "Load project into image and run tests..."
-VM_ARGS="$RUN_SCRIPT $PACKAGES $BASELINE $BASELINE_GROUP $FORCE_UPDATE $KEEP_OPEN"
+VM_ARGS="$RUN_SCRIPT $PACKAGES $BASELINE $BASELINE_GROUP $EXCLUDE_CATEGORIES $EXCLUDE_CLASSES $FORCE_UPDATE $KEEP_OPEN"
 EXIT_STATUS=0
 "$COG_VM_PATH" $COG_VM_PARAM $VM_IMAGE_NAME $VM_ARGS || EXIT_STATUS=$?
 # ==============================================================================
