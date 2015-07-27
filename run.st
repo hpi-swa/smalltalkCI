@@ -1,10 +1,15 @@
-| packagesDir baselineName baselineGroup forceUpdate gitPath timeToRun |
+| packagesDir baselineName baselineGroup forceUpdate keepOpen gitPath timeToRun |
 
 packagesDir := Smalltalk argumentAt: 1.
 baselineName := Smalltalk argumentAt: 2.
 baselineGroup := Smalltalk argumentAt: 3.
 forceUpdate := Smalltalk argumentAt: 4.
+keepOpen := Smalltalk argumentAt: 5.
 gitPath := (FileDirectory default directoryNamed: 'git_cache') fullName.
+
+keepOpen = 'true' ifTrue: [
+  CommandLineToolSet unload.
+  Transcript cr; cr; show: '[ Image WILL NOT CLOSE on errors ]'; cr ].
 
 forceUpdate = 'true' ifTrue: [
   "Update Squeak image"
@@ -37,11 +42,12 @@ timeToRun := [ MetacelloBuilderTravisCI
 
 Transcript cr; cr; show: '[ Time to run tests: ', timeToRun, 'ms ]'; cr.
 
-"Quit"
-Smalltalk at: #WorldState ifPresent: [:global |
-  global addDeferredUIMessage: [
-    Smalltalk at: #SmalltalkImage ifPresent: [:image |
-      image current
-        snapshot: false
-        andQuitWithExitCode: (Smalltalk at: #travisCIExitCode ifAbsent: [ 1 ]) ]]].
+keepOpen = 'true' ifFalse: [
+  "Quit"
+  Smalltalk at: #WorldState ifPresent: [:global |
+    global addDeferredUIMessage: [
+      Smalltalk at: #SmalltalkImage ifPresent: [:image |
+        image current
+          snapshot: false
+          andQuitWithExitCode: (Smalltalk at: #travisCIExitCode ifAbsent: [ 1 ]) ]]]].
 !
