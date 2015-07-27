@@ -1,4 +1,4 @@
-!
+''!
 TranscriptStream subclass: #TravisCITranscriptStream
 	instanceVariableNames: ''
 	classVariableNames: ''

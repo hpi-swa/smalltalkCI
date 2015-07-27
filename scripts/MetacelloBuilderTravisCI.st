@@ -1,4 +1,4 @@
-'From Pharo1.4 of 18 April 2012 [Latest update: #14457] on 4 September 2012 at 6:40:36 pm'!
+''!
 Object subclass: #MetacelloBuilderTravisCI
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -59,15 +59,19 @@ retry: aBlock retryCount: retryCount
 
 
 !MetacelloBuilderTravisCI class methodsFor: 'test harness' stamp: 'dkh 9/4/2012 18:31'!
-runHarnessFor: configurationClassNameList
-    | suite |
+runHarnessFor: configurationClassNameList exclude: categoryListString exclude: classListString
+    | suite categoryList classList |
     suite := TestCase suiteClass named: configurationClassNameList printString , ' Test Suite'.
+    categoryList := categoryListString subStrings: ','.
+    classList := classListString subStrings: ','.
     configurationClassNameList
         do: [ :className | 
             (((Smalltalk at: #'MetacelloProjectRegistration')
                 registrationForClassNamed: className
                 ifAbsent: [ self error: className printString , ' not registered (loaded)' ])
-                currentlyLoadedClassesInProject select: [ :cl | cl inheritsFrom: TestCase ])
+                currentlyLoadedClassesInProject select: [ :cl | (cl inheritsFrom: TestCase) and: [
+                    ((categoryList anySatisfy: [ :ex | cl category asString startsWith: ex ]) or: [
+                        classList anySatisfy: [ :ex | ex = cl name ] ]) not] ])
                 do: [ :cl | 
                     cl isAbstract
                         ifFalse: [ suite addTest: cl buildSuiteFromSelectors ] ] ].
