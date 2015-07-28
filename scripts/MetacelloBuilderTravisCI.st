@@ -82,30 +82,46 @@ runTestSuite: suite
     [ 
     | result |
     result := suite run.
-    Transcript
-        show: '**************************************************************************************';
-        show: 'Results for ' , suite name;
-        show: result printString;
-        show: '**************************************************************************************'.
+    Transcript cr;
+        show: '**************************************************************************************'; cr;
+        show: 'Results for ', suite name; cr;
+        show: result printString; cr;
+        show: '**************************************************************************************'; cr.
 
     result failures notEmpty
         ifTrue: [ 
             Smalltalk at: #travisCIExitCode put: 1.
             Transcript
-                show: '*** FAILURES ***';
-                show: '****************' ].
+                show: '*** FAILURES *************************************************************************'; cr;
+                show: '**************************************************************************************'; cr ].
     result failures
         do: [ :each | 
-            Transcript show: each class name asString , ' debug: ' , each selector printString , '.' ].
+            | errMsg |
+            "Re-run test case and collect debug info"
+            [ each performTest ] on: Exception do: [ :signal |
+                errMsg := signal asString.
+                signal return: false ].
+            Transcript show: each class name asString , '>>' , each selector printString , ' (', errMsg, ')'; cr ].
     result errors notEmpty
         ifTrue: [ 
             Smalltalk at: #travisCIExitCode put: 1.
             Transcript
-                show: '*** ERRORS ***';
-                show: '****************' ].
+                show: '**** ERRORS **************************************************************************'; cr;
+                show: '**************************************************************************************'; cr ].
     result errors
-        do: [ :each | 
-            Transcript show: each class name asString , ' debug: ' , each selector printString , '.' ].
+        do: [ :each |
+            | errMsg errStack |
+            "Re-run test case and collect debug info"
+            [ each performTest ] on: Exception do: [ :signal |
+                errMsg := signal asString.
+                errStack := signal signalerContext shortStack.
+                signal return: false ].
+            Transcript
+                show: '/*-------------------------------------------------------'; cr;
+                show: each class name asString , '>>' , each selector printString , ' (', errMsg, ')';
+                cr; cr;
+                show: errStack;
+                show: '-------------------------------------------------------*/'; cr; cr ].
     Transcript show: '**************************************************************************************']
     ensure: [ FileStream flushAndVoidStdioFiles ]! !
 
