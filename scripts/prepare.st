@@ -1,5 +1,11 @@
-| disableUpdate |
-disableUpdate := Smalltalk argumentAt: 1.
+| scriptsPath disableUpdate exportName fileDirectoryClass fileInBlock |
+
+scriptsPath := FileDirectory on: (Smalltalk argumentAt: 1).
+scriptsPath exists ifFalse: [
+  Transcript show: 'Scripts path does not exist.'.
+  ^ false ].
+
+disableUpdate := Smalltalk argumentAt: 2.
 disableUpdate = 'true' ifFalse: [
   "Update Squeak image"
   Smalltalk at: #MCMcmUpdater ifPresent: [ :updater |
@@ -32,14 +38,11 @@ Installer gemsource
   baseline: 'Metacello';
   repository: 'github://dalehenrich/metacello-work:master/repository';
   load.
-!
-| exportName scriptsDirectory fileDirectoryClass fileInBlock |
+
 exportName := 'TravisCI.image'.
-scriptsDirectory := 'scripts/'.
 fileDirectoryClass := Smalltalk at: #'FileDirectory'.
 fileInBlock := [ :fileName |
-    fileDirectoryClass default
-      readOnlyFileNamed: scriptsDirectory, fileName
+    scriptsPath readOnlyFileNamed: fileName
       do: [ :fileStream | fileStream fileIn ] ].
 
 fileInBlock value: 'MetacelloBuilderTravisCI.st'.

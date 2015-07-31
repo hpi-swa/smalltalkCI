@@ -1,10 +1,2 @@
-*.app/
-*.image
-*.changes
-*.sources
-*.txt
-build
-tmp
-*.tar.gz
-vm
-image
+builds
+cache

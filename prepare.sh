@@ -2,44 +2,141 @@
 
 set -e
 
-IMAGE=$1
-CHANGES=$2
-[ -z "$IMAGE" ] && IMAGE=TrunkImage
-[ -z "$CHANGES" ] && CHANGES=SqueakV41.sources
+# Helper functions
+# ==============================================================================
+function print_info {
+    printf "\e[0;34m$1\e[0m\n"
+}
+
+function print_success {
+    printf "\e[1;32m$1\e[0m\n"
+}
+
+function print_error {
+    printf "\e[1;31m$1\e[0m\n"
+}
+# ==============================================================================
+
+# Check required arguments
+# ==============================================================================
+if [ -z "$1" ]; then
+    print_error "No Squeak platform specified!"
+    exit 1
+fi
+SMALLTALK=$1
+# ==============================================================================
+
 [ -z "$DISABLE_UPDATE" ] && DISABLE_UPDATE="false"
 
-# Disable updates in TrunkImage
-if [ "$IMAGE" == 'TrunkImage' ]; then
-    DISABLE_UPDATE="true"
-fi
-
 BASE_PATH="$(pwd)"
-TMP_PATH="$BASE_PATH/tmp"
-BUILD_PATH="$BASE_PATH/build"
+CACHE_PATH="$BASE_PATH/cache"
+BUILD_BASE="$BASE_PATH/builds"
+BUILD_ID="$(date "+%Y_%m_%d_%H_%M_%S")"
+BUILD_PATH="$BUILD_BASE/$BUILD_ID"
+VM_PATH="$CACHE_PATH/vms"
+VM_DOWNLOAD="https://squeak.fniephaus.com"
 IMAGE_PATH="$BASE_PATH/image"
 SCRIPTS_PATH="$BASE_PATH/scripts"
-VM_PATH="$BASE_PATH/vm"
-IMAGE_TAR="$IMAGE.tar.gz"
+
+# Select platform
+# ==============================================================================
+case "$SMALLTALK" in
+    "SqueakTrunk")
+        IMAGE_URL="http://build.squeak.org/job/SqueakTrunk/lastSuccessfulBuild/artifact/target/"
+        IMAGE_ARCHIVE="TrunkImage.zip"
+        IMAGE_FILE="TrunkImage.image"
+        SOURCES_URL="http://ftp.squeak.org/sources_files/"
+        SOURCES_ARCHIVE="SqueakV41.sources.gz"
+        SOURCES_FILE="SqueakV41.sources"
+        print_info "Updates disabled during this build..."
+        DISABLE_UPDATE="true"
+        ;;
+    "Squeak4.6")
+        IMAGE_URL="http://ftp.squeak.org/4.6/"
+        IMAGE_ARCHIVE="Squeak4.6-15102.zip"
+        IMAGE_FILE="Squeak4.6-15102.image"
+        SOURCES_URL="http://ftp.squeak.org/sources_files/"
+        SOURCES_ARCHIVE="SqueakV46.sources.gz"
+        SOURCES_FILE="SqueakV46.sources"
+        ;;
+    "Squeak4.5")
+        IMAGE_URL="http://ftp.squeak.org/4.5/"
+        IMAGE_ARCHIVE="Squeak4.5-13680.zip"
+        IMAGE_FILE="Squeak4.5-13680.image"
+        SOURCES_URL="http://ftp.squeak.org/sources_files/"
+        SOURCES_ARCHIVE="SqueakV41.sources.gz"
+        SOURCES_FILE="SqueakV41.sources"
+        ;;
+    *)
+        print_error "$SMALLTALK is no supported! :("
+        exit 1
+        ;;
+esac
+# ==============================================================================
+
+# Identify OS and select virtual machine
+# ==============================================================================
+COG_VM_PARAM=""
+case "$(uname -s)" in
+    "Linux")
+        print_info "Linux detected..."
+        COG_VM_FILE="cog_linux.tar.gz"
+        COG_VM_PATH="$VM_PATH/coglinux/bin/squeak"
+        COG_VM_PARAM="-nosound -nodisplay"
+        ;;
+    "Darwin")
+        print_info "OS X detected..."
+        COG_VM_FILE="cog_osx.tar.gz"
+        COG_VM_PATH="$VM_PATH/Cog.app/Contents/MacOS/Squeak"
+        ;;
+    *)
+        print_error "$(basename $0): unknown platform $(uname -s)"
+        exit 1
+        ;;
+esac
+# ==============================================================================
 
 
-echo "Preparing folders..."
-mkdir "$TMP_PATH" "$BUILD_PATH"
+print_info "Preparing folders..."
+[[ -d "$CACHE_PATH" ]] || mkdir "$CACHE_PATH"
+[[ -d "$BUILD_BASE" ]] || mkdir "$BUILD_BASE"
+[[ -d "$VM_PATH" ]] || mkdir "$VM_PATH"
+# Create folder for this build (should not exist)
+mkdir "$BUILD_PATH"
 
-echo "Copying files to temporary folder..."
-cp -r "$IMAGE_PATH/" "$TMP_PATH/"
-cp -r "$SCRIPTS_PATH" "$TMP_PATH/scripts"
+# Perform optional steps
+# ==============================================================================
+if [ ! -f "$CACHE_PATH/$COG_VM_FILE" ]; then
+    print_info "Downloading virtual machine..."
+    curl -s "$VM_DOWNLOAD/$COG_VM_FILE" > "$CACHE_PATH/$COG_VM_FILE"
+fi
+if [ ! -f "$COG_VM_PATH" ]; then
+    print_info "Extracting virtual machine..."
+    tar xzf "$CACHE_PATH/$COG_VM_FILE" -C "$VM_PATH"
+fi
+if [ ! -f "$CACHE_PATH/$IMAGE_ARCHIVE" ]; then
+    print_info "Downloading $IMAGE_ARCHIVE from $IMAGE_URL..."
+    curl -s "$IMAGE_URL$IMAGE_ARCHIVE" > "$CACHE_PATH/$IMAGE_ARCHIVE"
+fi
+if [ ! -f "$CACHE_PATH/$SOURCES_ARCHIVE" ]; then
+    print_info "Downloading $SOURCES_ARCHIVE from $SOURCES_URL..."
+    curl -s "$SOURCES_URL$SOURCES_ARCHIVE" > "$CACHE_PATH/$SOURCES_ARCHIVE"
+fi
+# ==============================================================================
 
-echo "Preparing image for CI..."
-"$VM_PATH/Cog.app/Contents/MacOS/Squeak" "$TMP_PATH/$IMAGE.image" "$TMP_PATH/scripts/prepare.st" "$DISABLE_UPDATE"
+# Extract image and run on virtual machine
+# ==============================================================================
+print_info "Extracting image..."
+tar xf "$CACHE_PATH/$IMAGE_ARCHIVE" -C "$BUILD_PATH"
+print_info "Extracting sources file..."
+gunzip -c "$CACHE_PATH/$SOURCES_ARCHIVE" > "$BUILD_PATH/$SOURCES_FILE"
 
-echo ""
-echo "Exporting image..."
-mv "$TMP_PATH/"{TravisCI.image,TravisCI.changes,"$CHANGES"} "$BUILD_PATH"
+print_info "Preparing image for CI..."
+"$COG_VM_PATH" "$BUILD_PATH/$IMAGE_FILE" "$SCRIPTS_PATH/prepare.st" "$SCRIPTS_PATH" "$DISABLE_UPDATE"
+
+printf "\n"
+print_info "Exporting image..."
 cd "$BUILD_PATH"
-tar czf "$BASE_PATH/$IMAGE_TAR" .
+tar czf "$BUILD_BASE/$SMALLTALK.tar.gz" TravisCI.image TravisCI.changes "$SOURCES_FILE"
 
-echo "Cleaning up..."
-cd "$BASE_PATH"
-rm -rf "$TMP_PATH" "$BUILD_PATH"
-
-echo "Done!"
+print_info "Done!"
