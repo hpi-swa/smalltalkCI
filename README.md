@@ -7,11 +7,13 @@ Currently, only `SqueakTrunk` and `Squeak4.5` images are supported. More to foll
 
 
 ## Features
-- Configuration via `.travis.yml` only
+- Configuration via `.travis.yml` only ([see below](#full-travisyml-template))
 - Runs on Travis' [container-based infrastructure][cbi]
 - Uses prepared Squeak images to minimize overhead during builds
 - Displays `Transcript` directly in Travis log
+- Prints error messages and shows stack traces for debugging purposes
 - Can be run locally on Linux and OS X
+- Supports custom run scripts (`RUN_SCRIPT`)
 
 
 ## How To Use
@@ -33,6 +35,8 @@ env:
     # - PACKAGES="/packages" # Directory where filetree looks for packages
     # - FORCE_UPDATE="false" # Forces image update if set to "true" 
     # - RUN_SCRIPT="CustomRunScript.st" # .st file relative to your project's root
+    # - EXCLUDE_CATEGORIES="" # comma-separated list of category prefixes to exclude from testing
+    # - EXCLUDE_CLASSES="" # comma-separated list of class names to exclude from testing
   matrix:
     - SMALLTALK="SqueakTrunk"
     # - SMALLTALK="Squeak4.6"
