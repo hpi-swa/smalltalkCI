@@ -8,6 +8,10 @@ function print_info {
     printf "\e[0;34m$1\e[0m\n"
 }
 
+function print_notice {
+    printf "\e[1;33m$1\e[0m\n"
+}
+
 function print_success {
     printf "\e[1;32m$1\e[0m\n"
 }
@@ -132,6 +136,13 @@ if [ $EXIT_STATUS -eq 0 ]; then
     print_success "Build successful :)"
 else
     print_error "Build failed :("
+    if [ "$TRAVIS" = "true" ]; then
+        printf "\n\n"
+        print_info "To reproduce the failed build locally, download filetreeCI and try running something like:"
+        printf "\n"
+        print_notice "SMALLTALK=$SMALLTALK BASELINE=$BASELINE BASELINE_GROUP=$BASELINE_GROUP PROJECT_HOME=/local/path/to/project PACKAGES=$PACKAGES FORCE_UPDATE=$FORCE_UPDATE KEEP_OPEN=true ./run.sh"
+        printf "\n"
+    fi
 fi
 printf "\n"
 
