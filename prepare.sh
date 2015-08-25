@@ -40,16 +40,27 @@ SCRIPTS_PATH="$BASE_PATH/scripts"
 
 # Select platform
 # ==============================================================================
+SPUR_IMAGE=false
 case "$SMALLTALK" in
     "SqueakTrunk")
-        IMAGE_URL="http://build.squeak.org/job/SqueakTrunk/lastSuccessfulBuild/artifact/target/"
+        IMAGE_URL="http://build.squeak.org/job/Trunk/default/lastSuccessfulBuild/artifact/target/"
         IMAGE_ARCHIVE="TrunkImage.zip"
-        IMAGE_FILE="TrunkImage.image"
+        IMAGE_FILE="SpurTrunkImage.image"
         SOURCES_URL="http://ftp.squeak.org/sources_files/"
-        SOURCES_ARCHIVE="SqueakV41.sources.gz"
-        SOURCES_FILE="SqueakV41.sources"
+        SOURCES_ARCHIVE="SqueakV50.sources.gz"
+        SOURCES_FILE="SqueakV50.sources"
+        SPUR_IMAGE=true
         print_info "Updates disabled during this build..."
         DISABLE_UPDATE="true"
+        ;;
+    "Squeak5.0")
+        IMAGE_URL="http://ftp.squeak.org/5.0/"
+        IMAGE_ARCHIVE="Squeak5.0-15113.zip"
+        IMAGE_FILE="Squeak5.0-15113.image"
+        SOURCES_URL="http://ftp.squeak.org/sources_files/"
+        SOURCES_ARCHIVE="SqueakV50.sources.gz"
+        SOURCES_FILE="SqueakV50.sources"
+        SPUR_IMAGE=true
         ;;
     "Squeak4.6")
         IMAGE_URL="http://ftp.squeak.org/4.6/"
@@ -80,14 +91,26 @@ COG_VM_PARAM=""
 case "$(uname -s)" in
     "Linux")
         print_info "Linux detected..."
-        COG_VM_FILE="cog_linux.tar.gz"
-        COG_VM_PATH="$VM_PATH/coglinux/bin/squeak"
+        if [ "$SPUR_IMAGE" = true ]; then
+            COG_VM_FILE_BASE="cog_linux_spur"
+            COG_VM_PATH="$VM_PATH/cogspurlinux/bin/squeak"
+        else
+            COG_VM_FILE_BASE="cog_linux"
+            COG_VM_PATH="$VM_PATH/coglinux/bin/squeak"
+        fi
+        COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
         COG_VM_PARAM="-nosound -nodisplay"
         ;;
     "Darwin")
         print_info "OS X detected..."
-        COG_VM_FILE="cog_osx.tar.gz"
-        COG_VM_PATH="$VM_PATH/Cog.app/Contents/MacOS/Squeak"
+        if [ "$SPUR_IMAGE" = true ]; then
+            COG_VM_FILE_BASE="cog_osx_spur"
+            COG_VM_PATH="$VM_PATH/CogSpur.app/Contents/MacOS/Squeak"
+        else
+            COG_VM_FILE_BASE="cog_osx"
+            COG_VM_PATH="$VM_PATH/Cog.app/Contents/MacOS/Squeak"
+        fi
+        COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
         ;;
     *)
         print_error "$(basename $0): unknown platform $(uname -s)"
