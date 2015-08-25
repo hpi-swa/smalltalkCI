@@ -3,7 +3,7 @@ This is a simple tool to test Squeak/Smalltalk projects on [Travis CI][TravisCI]
 
 It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] and aims to make testing Squeak projects easy and fast.
 
-Currently, only `SqueakTrunk` and `Squeak4.5` images are supported. More to follow...
+Currently, only `SqueakTrunk`, `Squeak5.0`, `Squeak4.6` and `Squeak4.5` images are supported. More to follow...
 
 
 ## Features
@@ -39,6 +39,7 @@ env:
     # - EXCLUDE_CLASSES="" # comma-separated list of class names to exclude from testing
   matrix:
     - SMALLTALK="SqueakTrunk"
+    - SMALLTALK="Squeak5.0"
     # - SMALLTALK="Squeak4.6"
     # - SMALLTALK="Squeak4.5"
 

@@ -6,6 +6,7 @@ env:
     - BASELINE=SWTDemo
   matrix:
     - SMALLTALK="SqueakTrunk"
+    - SMALLTALK="Squeak5.0"
     - SMALLTALK="Squeak4.6"
     - SMALLTALK="Squeak4.5"
 
