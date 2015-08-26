@@ -1,0 +1,25 @@
+language: erlang
+sudo: false
+
+env:
+  global:
+    - DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images/"
+  matrix:
+    - SMALLTALK="SqueakTrunk"
+    - SMALLTALK="Squeak5.0"
+    - SMALLTALK="Squeak4.6"
+    - SMALLTALK="Squeak4.5"
+
+addons:
+  apt:
+    packages:
+    # 32-bit VM
+    - libc6:i386
+    # UUIDPlugin
+    - libuuid1:i386
+
+script:
+  - prepare.sh $SMALLTALK
+
+after_success:
+  - curl -s -u "$DEPLOY_CREDENTIALS" -T "builds/$SMALLTALK.tar.gz" "$DEPLOY_TARGET"

@@ -99,7 +99,10 @@ case "$(uname -s)" in
             COG_VM_PATH="$VM_PATH/coglinux/bin/squeak"
         fi
         COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
-        COG_VM_PARAM="-nosound -nodisplay"
+        if [ "$TRAVIS" = "true" ]; then
+            COG_VM_FILE="$COG_VM_FILE_BASE.min.tar.gz"
+            COG_VM_PARAM="-nosound -nodisplay"
+        fi
         ;;
     "Darwin")
         print_info "OS X detected..."
