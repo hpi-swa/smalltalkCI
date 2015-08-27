@@ -146,8 +146,9 @@ if [ ! -f "$CACHE_PATH/$IMAGE_ARCHIVE" ]; then
 fi
 if [ ! -f "$CACHE_PATH/$SOURCES_ARCHIVE" ]; then
     print_info "Downloading $SOURCES_ARCHIVE from $SOURCES_URL..."
-    curl -s "$SOURCES_URL/$SOURCES_ARCHIVE" > "$CACHE_PATH/$SOURCES_ARCHIVE"
-    print_error "$SOURCES_URL/$SOURCES_ARCHIVE -> $CACHE_PATH/$SOURCES_ARCHIVE"
+    curl "$SOURCES_URL/$SOURCES_ARCHIVE" > "$CACHE_PATH/$SOURCES_ARCHIVE"
+    FILESIZE=$(stat -c%s "$CACHE_PATH/$SOURCES_ARCHIVE")
+    echo "Size of $FILENAME = $FILESIZE bytes."
 fi
 # ==============================================================================
 
