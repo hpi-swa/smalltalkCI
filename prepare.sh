@@ -155,10 +155,9 @@ fi
 print_info "Extracting image..."
 tar xf "$CACHE_PATH/$IMAGE_ARCHIVE" -C "$BUILD_PATH"
 print_info "Extracting sources file..."
-cd "$CACHE_PATH"
-gunzip $SOURCES_ARCHIVE
-mv "$SOURCES_FILE" "$BUILD_PATH/$SOURCES_FILE"
-cd "$BASE_PATH"
+wget http://ftp.squeak.org/sources_files/SqueakV50.sources.gz
+gunzip SqueakV50.sources.gz
+mv *.sources $BUILD_PATH
 
 print_info "Preparing image for CI..."
 "$COG_VM_PATH" "$BUILD_PATH/$IMAGE_FILE" "$SCRIPTS_PATH/prepare.st" "$SCRIPTS_PATH" "$DISABLE_UPDATE"
