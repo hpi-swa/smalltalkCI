@@ -166,7 +166,8 @@ if [ $pid ] ; then
     while kill -0 $pid 2> /dev/null ; do
         sleep 1
         COUNTER=$[$COUNTER +1]
-        if [ "$(($COUNTER % 60))" -eq 0 ] ; then
+        COUNTER_MOD=$(($COUNTER % 60))
+        if [ "$COUNTER_MOD" -eq 0 ] ; then
             printf "."
         fi
     done
