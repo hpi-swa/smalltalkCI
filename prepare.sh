@@ -158,7 +158,28 @@ print_info "Extracting sources file..."
 gunzip -c "$CACHE_PATH/$SOURCES_ARCHIVE" > "$BUILD_PATH/$SOURCES_FILE"
 
 print_info "Preparing image for CI..."
-"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/$IMAGE_FILE" "$SCRIPTS_PATH/prepare.st" "$SCRIPTS_PATH" "$DISABLE_UPDATE"
+exec "$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/$IMAGE_FILE" "$SCRIPTS_PATH/prepare.st" "$SCRIPTS_PATH" "$DISABLE_UPDATE"
+pid="$!"
+
+if [ $pid ] ; then
+    COUNTER=1
+    while kill -0 $pid 2> /dev/null ; do
+        sleep 1
+        COUNTER=$[$COUNTER +1]
+        if [ "$(($COUNTER % 60))" -eq 0 ] ; then
+            printf "."
+        fi
+    done
+    wait $pid
+    exitStatus=$?
+    if [[ "$exitStatus" != "0" ]] ; then
+      print_error "Error during VM execution"
+      exit $exitStatus
+    fi
+else
+    print_error "Unable to start VM"
+    exit 1
+fi
 
 printf "\n"
 print_info "Exporting image..."
