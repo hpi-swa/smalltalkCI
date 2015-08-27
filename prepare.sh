@@ -43,7 +43,7 @@ SCRIPTS_PATH="$BASE_PATH/scripts"
 SPUR_IMAGE=false
 case "$SMALLTALK" in
     "SqueakTrunk")
-        IMAGE_URL="http://build.squeak.org/job/Trunk/default/lastSuccessfulBuild/artifact/target"
+        IMAGE_URL="http://build.squeak.org/job/Trunk/default/lastSuccessfulBuild/artifact/target/"
         IMAGE_ARCHIVE="TrunkImage.zip"
         IMAGE_FILE="SpurTrunkImage.image"
         SOURCES_URL="http://ftp.squeak.org/sources_files/"
@@ -54,7 +54,7 @@ case "$SMALLTALK" in
         DISABLE_UPDATE="true"
         ;;
     "Squeak5.0")
-        IMAGE_URL="http://ftp.squeak.org/5.0"
+        IMAGE_URL="http://ftp.squeak.org/5.0/"
         IMAGE_ARCHIVE="Squeak5.0-15113.zip"
         IMAGE_FILE="Squeak5.0-15113.image"
         SOURCES_URL="http://ftp.squeak.org/sources_files/"
@@ -63,7 +63,7 @@ case "$SMALLTALK" in
         SPUR_IMAGE=true
         ;;
     "Squeak4.6")
-        IMAGE_URL="http://ftp.squeak.org/4.6"
+        IMAGE_URL="http://ftp.squeak.org/4.6/"
         IMAGE_ARCHIVE="Squeak4.6-15102.zip"
         IMAGE_FILE="Squeak4.6-15102.image"
         SOURCES_URL="http://ftp.squeak.org/sources_files/"
@@ -71,7 +71,7 @@ case "$SMALLTALK" in
         SOURCES_FILE="SqueakV46.sources"
         ;;
     "Squeak4.5")
-        IMAGE_URL="http://ftp.squeak.org/4.5"
+        IMAGE_URL="http://ftp.squeak.org/4.5/"
         IMAGE_ARCHIVE="Squeak4.5-13680.zip"
         IMAGE_FILE="Squeak4.5-13680.image"
         SOURCES_URL="http://ftp.squeak.org/sources_files/"
@@ -142,11 +142,11 @@ if [ ! -f "$COG_VM_PATH" ]; then
 fi
 if [ ! -f "$CACHE_PATH/$IMAGE_ARCHIVE" ]; then
     print_info "Downloading $IMAGE_ARCHIVE from $IMAGE_URL..."
-    curl -s "$IMAGE_URL/$IMAGE_ARCHIVE" > "$CACHE_PATH/$IMAGE_ARCHIVE"
+    curl -s "$IMAGE_URL$IMAGE_ARCHIVE" > "$CACHE_PATH/$IMAGE_ARCHIVE"
 fi
 if [ ! -f "$CACHE_PATH/$SOURCES_ARCHIVE" ]; then
     print_info "Downloading $SOURCES_ARCHIVE from $SOURCES_URL..."
-    wget "$SOURCES_URL/$SOURCES_ARCHIVE" -O "$CACHE_PATH/$SOURCES_ARCHIVE"
+    curl -s "$SOURCES_URL$SOURCES_ARCHIVE" > "$CACHE_PATH/$SOURCES_ARCHIVE"
 fi
 # ==============================================================================
 
@@ -155,7 +155,10 @@ fi
 print_info "Extracting image..."
 tar xf "$CACHE_PATH/$IMAGE_ARCHIVE" -C "$BUILD_PATH"
 print_info "Extracting sources file..."
-gunzip -c "$CACHE_PATH/$SOURCES_ARCHIVE" > "$BUILD_PATH/$SOURCES_FILE"
+cd "$CACHE_PATH"
+gunzip $SOURCES_ARCHIVE
+mv "$SOURCES_FILE" "$BUILD_PATH/$SOURCES_FILE"
+cd "$BASE_PATH"
 
 print_info "Preparing image for CI..."
 "$COG_VM_PATH" "$BUILD_PATH/$IMAGE_FILE" "$SCRIPTS_PATH/prepare.st" "$SCRIPTS_PATH" "$DISABLE_UPDATE"
