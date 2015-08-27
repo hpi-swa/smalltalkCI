@@ -142,22 +142,20 @@ if [ ! -f "$COG_VM_PATH" ]; then
 fi
 if [ ! -f "$CACHE_PATH/$IMAGE_ARCHIVE" ]; then
     print_info "Downloading $IMAGE_ARCHIVE from $IMAGE_URL..."
-    curl -s "$IMAGE_URL$IMAGE_ARCHIVE" > "$CACHE_PATH/$IMAGE_ARCHIVE"
+    curl -s "$IMAGE_URL/$IMAGE_ARCHIVE" > "$CACHE_PATH/$IMAGE_ARCHIVE"
 fi
 if [ ! -f "$CACHE_PATH/$SOURCES_ARCHIVE" ]; then
     print_info "Downloading $SOURCES_ARCHIVE from $SOURCES_URL..."
-    curl -s "$SOURCES_URL$SOURCES_ARCHIVE" > "$CACHE_PATH/$SOURCES_ARCHIVE"
+    curl -s "$SOURCES_URL/$SOURCES_ARCHIVE" > "$CACHE_PATH/$SOURCES_ARCHIVE"
 fi
 # ==============================================================================
 
 # Extract image and run on virtual machine
 # ==============================================================================
 print_info "Extracting image..."
-tar xf "$CACHE_PATH/$IMAGE_ARCHIVE" -C "$BUILD_PATH"
+unzip "$CACHE_PATH/$IMAGE_ARCHIVE" -d "$BUILD_PATH"
 print_info "Extracting sources file..."
-wget http://ftp.squeak.org/sources_files/SqueakV50.sources.gz
-gunzip SqueakV50.sources.gz
-mv *.sources $BUILD_PATH
+gunzip -c "$CACHE_PATH/$SOURCES_ARCHIVE" > "$BUILD_PATH/$SOURCES_FILE"
 
 print_info "Preparing image for CI..."
 "$COG_VM_PATH" "$BUILD_PATH/$IMAGE_FILE" "$SCRIPTS_PATH/prepare.st" "$SCRIPTS_PATH" "$DISABLE_UPDATE"
