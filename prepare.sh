@@ -135,7 +135,6 @@ mkdir "$BUILD_PATH"
 if [ ! -f "$CACHE_PATH/$COG_VM_FILE" ]; then
     print_info "Downloading virtual machine..."
     curl -s "$VM_DOWNLOAD/$COG_VM_FILE" > "$CACHE_PATH/$COG_VM_FILE"
-    print_info "$VM_DOWNLOAD/$COG_VM_FILE"
 fi
 if [ ! -f "$COG_VM_PATH" ]; then
     print_info "Extracting virtual machine..."
@@ -148,6 +147,7 @@ fi
 if [ ! -f "$CACHE_PATH/$SOURCES_ARCHIVE" ]; then
     print_info "Downloading $SOURCES_ARCHIVE from $SOURCES_URL..."
     curl -s "$SOURCES_URL/$SOURCES_ARCHIVE" > "$CACHE_PATH/$SOURCES_ARCHIVE"
+    print_error "$SOURCES_URL/$SOURCES_ARCHIVE -> $CACHE_PATH/$SOURCES_ARCHIVE"
 fi
 # ==============================================================================
 
@@ -156,7 +156,6 @@ fi
 print_info "Extracting image..."
 tar xf "$CACHE_PATH/$IMAGE_ARCHIVE" -C "$BUILD_PATH"
 print_info "Extracting sources file..."
-print_info "$CACHE_PATH/$SOURCES_ARCHIVE"
 tar xf "$CACHE_PATH/$SOURCES_ARCHIVE" -C "$BUILD_PATH"
 
 print_info "Preparing image for CI..."
