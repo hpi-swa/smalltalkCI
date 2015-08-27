@@ -142,11 +142,11 @@ if [ ! -f "$COG_VM_PATH" ]; then
 fi
 if [ ! -f "$CACHE_PATH/$IMAGE_ARCHIVE" ]; then
     print_info "Downloading $IMAGE_ARCHIVE from $IMAGE_URL..."
-    curl -s "$IMAGE_URL/$IMAGE_ARCHIVE" > "$CACHE_PATH/$IMAGE_ARCHIVE"
+    curl -s "$IMAGE_URL$IMAGE_ARCHIVE" > "$CACHE_PATH/$IMAGE_ARCHIVE"
 fi
 if [ ! -f "$CACHE_PATH/$SOURCES_ARCHIVE" ]; then
     print_info "Downloading $SOURCES_ARCHIVE from $SOURCES_URL..."
-    curl -s "$SOURCES_URL/$SOURCES_ARCHIVE" > "$CACHE_PATH/$SOURCES_ARCHIVE"
+    curl -s "$SOURCES_URL$SOURCES_ARCHIVE" > "$CACHE_PATH/$SOURCES_ARCHIVE"
 fi
 # ==============================================================================
 
@@ -158,7 +158,7 @@ print_info "Extracting sources file..."
 gunzip -c "$CACHE_PATH/$SOURCES_ARCHIVE" > "$BUILD_PATH/$SOURCES_FILE"
 
 print_info "Preparing image for CI..."
-"$COG_VM_PATH" "$BUILD_PATH/$IMAGE_FILE" "$SCRIPTS_PATH/prepare.st" "$SCRIPTS_PATH" "$DISABLE_UPDATE"
+"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/$IMAGE_FILE" "$SCRIPTS_PATH/prepare.st" "$SCRIPTS_PATH" "$DISABLE_UPDATE"
 
 printf "\n"
 print_info "Exporting image..."
