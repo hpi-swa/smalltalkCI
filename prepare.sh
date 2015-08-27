@@ -146,7 +146,7 @@ if [ ! -f "$CACHE_PATH/$IMAGE_ARCHIVE" ]; then
 fi
 if [ ! -f "$CACHE_PATH/$SOURCES_ARCHIVE" ]; then
     print_info "Downloading $SOURCES_ARCHIVE from $SOURCES_URL..."
-    curl -s -o "$CACHE_PATH/$SOURCES_ARCHIVE" "$SOURCES_URL/$SOURCES_ARCHIVE"
+    wget "$SOURCES_URL/$SOURCES_ARCHIVE" -O "$CACHE_PATH/$SOURCES_ARCHIVE"
 fi
 # ==============================================================================
 
