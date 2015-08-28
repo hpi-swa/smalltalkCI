@@ -61,6 +61,7 @@ case "$SMALLTALK" in
         SOURCES_ARCHIVE="SqueakV50.sources.gz"
         SOURCES_FILE="SqueakV50.sources"
         SPUR_IMAGE=true
+        DISABLE_UPDATE="true"
         ;;
     "Squeak4.6")
         IMAGE_URL="http://ftp.squeak.org/4.6/"
@@ -153,34 +154,12 @@ fi
 # Extract image and run on virtual machine
 # ==============================================================================
 print_info "Extracting image..."
-unzip "$CACHE_PATH/$IMAGE_ARCHIVE" -d "$BUILD_PATH"
+unzip -qq "$CACHE_PATH/$IMAGE_ARCHIVE" -d "$BUILD_PATH"
 print_info "Extracting sources file..."
 gunzip -c "$CACHE_PATH/$SOURCES_ARCHIVE" > "$BUILD_PATH/$SOURCES_FILE"
 
 print_info "Preparing image for CI..."
-exec "$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/$IMAGE_FILE" "$SCRIPTS_PATH/prepare.st" "$SCRIPTS_PATH" "$DISABLE_UPDATE"
-pid="$!"
-
-if [ $pid ] ; then
-    COUNTER=1
-    while kill -0 $pid 2> /dev/null ; do
-        sleep 1
-        COUNTER=$[$COUNTER +1]
-        COUNTER_MOD=$(($COUNTER % 60))
-        if [ "$COUNTER_MOD" -eq 0 ] ; then
-            printf "."
-        fi
-    done
-    wait $pid
-    exitStatus=$?
-    if [[ "$exitStatus" != "0" ]] ; then
-      print_error "Error during VM execution"
-      exit $exitStatus
-    fi
-else
-    print_error "Unable to start VM"
-    exit 1
-fi
+"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/$IMAGE_FILE" "$SCRIPTS_PATH/prepare.st" "$SCRIPTS_PATH" "$DISABLE_UPDATE"
 
 printf "\n"
 print_info "Exporting image..."

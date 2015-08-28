@@ -5,6 +5,20 @@ scriptsPath exists ifFalse: [
   Transcript show: 'Scripts path does not exist.'.
   ^ false ].
 
+fileInBlock := [ :fileName |
+    scriptsPath readOnlyFileNamed: fileName
+      do: [ :fileStream | fileStream fileIn ] ].
+
+fileInBlock value: 'MetacelloBuilderTravisCI.st'.
+fileInBlock value: 'TravisCITranscriptStream.st'.
+fileInBlock value: 'CommandLineToolSet.st'.
+
+"Install TravisCITranscriptStream"
+Smalltalk at: #Transcript put: TravisCITranscriptStream new.
+
+"Initialize exit code"
+Smalltalk at: #travisCIExitCode put: 0.
+
 disableUpdate := Smalltalk argumentAt: 2.
 disableUpdate = 'true' ifFalse: [
   "Update Squeak image"
@@ -40,20 +54,6 @@ Installer gemsource
   load.
 
 exportName := 'TravisCI.image'.
-fileDirectoryClass := Smalltalk at: #'FileDirectory'.
-fileInBlock := [ :fileName |
-    scriptsPath readOnlyFileNamed: fileName
-      do: [ :fileStream | fileStream fileIn ] ].
-
-fileInBlock value: 'MetacelloBuilderTravisCI.st'.
-fileInBlock value: 'TravisCITranscriptStream.st'.
-fileInBlock value: 'CommandLineToolSet.st'.
-
-"Install TravisCITranscriptStream"
-Smalltalk at: #Transcript put: TravisCITranscriptStream new.
-
-"Initialize exit code"
-Smalltalk at: #travisCIExitCode put: 0.
 
 "Export and quit image"
 Smalltalk at: #WorldState ifPresent: [:global |
