@@ -53,9 +53,11 @@ Installer gemsource
   repository: 'github://dalehenrich/metacello-work:master/repository';
   load.
 
-exportName := 'TravisCI.image'.
+"Only keep the latest changes"
+Smalltalk condenseChanges.
 
 "Export and quit image"
+exportName := 'TravisCI.image'.
 Smalltalk at: #WorldState ifPresent: [:global |
   global addDeferredUIMessage: [
     Smalltalk at: #SmalltalkImage ifPresent: [:image |
