@@ -1,4 +1,4 @@
-# filetreeCI [![Build Status](https://travis-ci.org/fniephaus/filetreeCI.svg)](https://travis-ci.org/fniephaus/filetreeCI)
+# filetreeCI [![Build Status](https://travis-ci.org/fniephaus/filetreeCI.svg?branch=master)](https://travis-ci.org/fniephaus/filetreeCI)
 This is a simple tool to test Squeak/Smalltalk projects on [Travis CI][TravisCI].
 
 It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] and aims to make testing Squeak projects easy and fast.
