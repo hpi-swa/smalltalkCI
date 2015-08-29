@@ -48,10 +48,10 @@ BUILD_ID="$(date "+%Y_%m_%d_%H_%M_%S")"
 BUILD_PATH="$BUILD_BASE/$BUILD_ID"
 GIT_PATH="$BUILD_PATH/git_cache"
 VM_PATH="$CACHE_PATH/vms"
-VM_DOWNLOAD="https://squeak.fniephaus.com"
+VM_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/vms"
 VM_IMAGE_NAME="$BUILD_PATH/TravisCI.image"
 IMAGE_TAR="$SMALLTALK.tar.gz"
-IMAGE_DOWNLOAD="https://squeak.fniephaus.com/$IMAGE_TAR"
+IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images"
 
 SPUR_IMAGE=false
 case "$SMALLTALK" in
@@ -135,7 +135,7 @@ if [ ! -f "$COG_VM_PATH" ]; then
 fi
 if [ ! -f "$CACHE_PATH/$IMAGE_TAR" ]; then
     print_info "Downloading $SMALLTALK testing image..."
-    curl -s "$IMAGE_DOWNLOAD" > "$CACHE_PATH/$IMAGE_TAR"
+    curl -s "$IMAGE_DOWNLOAD/$IMAGE_TAR" > "$CACHE_PATH/$IMAGE_TAR"
 fi
 # ==============================================================================
 
