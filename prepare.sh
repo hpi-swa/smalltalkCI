@@ -51,7 +51,7 @@ case "$SMALLTALK" in
         SOURCES_FILE="SqueakV50.sources"
         SPUR_IMAGE=true
         print_info "Updates disabled during this build..."
-        DISABLE_UPDATE="true"
+        #DISABLE_UPDATE="true"
         ;;
     "Squeak5.0")
         IMAGE_URL="http://ftp.squeak.org/5.0/"
@@ -61,7 +61,7 @@ case "$SMALLTALK" in
         SOURCES_ARCHIVE="SqueakV50.sources.gz"
         SOURCES_FILE="SqueakV50.sources"
         SPUR_IMAGE=true
-        DISABLE_UPDATE="true"
+        #DISABLE_UPDATE="true"
         ;;
     "Squeak4.6")
         IMAGE_URL="http://ftp.squeak.org/4.6/"
