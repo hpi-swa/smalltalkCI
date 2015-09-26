@@ -1,4 +1,4 @@
-# filetreeCI [![Build Status](https://travis-ci.org/fniephaus/filetreeCI.svg?branch=master)](https://travis-ci.org/fniephaus/filetreeCI)
+# filetreeCI [![Build Status](https://travis-ci.org/hpi-swa/filetreeCI.svg?branch=master)](https://travis-ci.org/hpi-swa/filetreeCI)
 This is a simple tool to test Squeak/Smalltalk projects on [Travis CI][TravisCI].
 
 It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] and aims to make testing Squeak projects easy and fast.
@@ -54,7 +54,7 @@ addons:
 install:
    - export PROJECT_HOME="$(pwd)"
    - cd $HOME
-   - wget -q -O filetreeCI.zip https://github.com/fniephaus/filetreeCI/archive/master.zip
+   - wget -q -O filetreeCI.zip https://github.com/hpi-swa/filetreeCI/archive/master.zip
    - unzip -q filetreeCI.zip
    - cd filetreeCI-*
    - export FILETREE_CI_HOME="$(pwd)"
