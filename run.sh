@@ -49,7 +49,7 @@ BUILD_PATH="$BUILD_BASE/$BUILD_ID"
 GIT_PATH="$BUILD_PATH/git_cache"
 VM_PATH="$CACHE_PATH/vms"
 VM_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/vms"
-VM_IMAGE_NAME="$BUILD_PATH/TravisCI.image"
+VM_IMAGE="$BUILD_PATH/TravisCI.image"
 IMAGE_TAR="$SMALLTALK.tar.gz"
 IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images"
 
@@ -82,10 +82,10 @@ case "$(uname -s)" in
         print_info "Linux detected..."
         if [ "$SPUR_IMAGE" = true ]; then
             COG_VM_FILE_BASE="cog_linux_spur"
-            COG_VM_PATH="$VM_PATH/cogspurlinux/bin/squeak"
+            COG_VM="$VM_PATH/cogspurlinux/bin/squeak"
         else
             COG_VM_FILE_BASE="cog_linux"
-            COG_VM_PATH="$VM_PATH/coglinux/bin/squeak"
+            COG_VM="$VM_PATH/coglinux/bin/squeak"
         fi
         COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
         if [ "$TRAVIS" = "true" ]; then
@@ -97,10 +97,10 @@ case "$(uname -s)" in
         print_info "OS X detected..."
         if [ "$SPUR_IMAGE" = true ]; then
             COG_VM_FILE_BASE="cog_osx_spur"
-            COG_VM_PATH="$VM_PATH/CogSpur.app/Contents/MacOS/Squeak"
+            COG_VM="$VM_PATH/CogSpur.app/Contents/MacOS/Squeak"
         else
             COG_VM_FILE_BASE="cog_osx"
-            COG_VM_PATH="$VM_PATH/Cog.app/Contents/MacOS/Squeak"
+            COG_VM="$VM_PATH/Cog.app/Contents/MacOS/Squeak"
         fi
         COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
         ;;
@@ -129,7 +129,7 @@ if [ ! -f "$CACHE_PATH/$COG_VM_FILE" ]; then
     print_info "Downloading virtual machine..."
     curl -s "$VM_DOWNLOAD/$COG_VM_FILE" > "$CACHE_PATH/$COG_VM_FILE"
 fi
-if [ ! -f "$COG_VM_PATH" ]; then
+if [ ! -f "$COG_VM" ]; then
     print_info "Extracting virtual machine..."
     tar xzf "$CACHE_PATH/$COG_VM_FILE" -C "$VM_PATH"
 fi
@@ -137,6 +137,11 @@ if [ ! -f "$CACHE_PATH/$IMAGE_TAR" ]; then
     print_info "Downloading $SMALLTALK testing image..."
     curl -s "$IMAGE_DOWNLOAD/$IMAGE_TAR" > "$CACHE_PATH/$IMAGE_TAR"
 fi
+# ==============================================================================
+
+# Export environment variables
+# ==============================================================================
+export COG_VM VM_IMAGE
 # ==============================================================================
 
 # Extract image and run on virtual machine
@@ -147,7 +152,7 @@ tar xzf "$CACHE_PATH/$IMAGE_TAR" -C "$BUILD_PATH"
 print_info "Load project into image and run tests..."
 VM_ARGS="$RUN_SCRIPT $PACKAGES $BASELINE $BASELINE_GROUP $EXCLUDE_CATEGORIES $EXCLUDE_CLASSES $FORCE_UPDATE $KEEP_OPEN"
 EXIT_STATUS=0
-"$COG_VM_PATH" $COG_VM_PARAM $VM_IMAGE_NAME $VM_ARGS || EXIT_STATUS=$?
+"$COG_VM" $COG_VM_PARAM $VM_IMAGE $VM_ARGS || EXIT_STATUS=$?
 # ==============================================================================
 
 printf "\n\n"
