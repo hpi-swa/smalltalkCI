@@ -5,6 +5,7 @@ env:
   global:
     - BASELINE=SWTDemo
   matrix:
+    - SMALLTALK="" # Use default Smalltalk version
     - SMALLTALK="SqueakTrunk"
     - SMALLTALK="Squeak5.0"
     - SMALLTALK="Squeak4.6"
