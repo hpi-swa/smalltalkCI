@@ -23,7 +23,10 @@ disableUpdate := Smalltalk argumentAt: 2.
 disableUpdate = 'true' ifFalse: [
   "Update Squeak image"
   Smalltalk at: #MCMcmUpdater ifPresent: [ :updater |
-    [ updater updateFromDefaultRepository ]
+    [ (updater respondsTo: #doUpdate)
+      ifTrue: [ updater doUpdate ]
+      ifFalse: [ (updater respondsTo: #updateFromDefaultRepository)
+                  ifTrue: [ updater updateFromDefaultRepository ]] ]
       on: Warning do: [ :ex | ex resume: true ]] ].
 
 "Get the Metacello configuration (for Squeak users)"
