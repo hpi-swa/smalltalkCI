@@ -38,7 +38,8 @@ if [ -z "$FILETREE_CI_HOME" ]; then
     FILETREE_CI_HOME="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
 fi
 
-[ -z "$SMALLTALK" ] && SMALLTALK="Squeak5.0" # Set default Smalltalk version
+# Set default Smalltalk version
+[ -z "$SMALLTALK" ] && SMALLTALK="Squeak5.0"
 
 BASE_PATH="$FILETREE_CI_HOME"
 CACHE_PATH="$BASE_PATH/cache"
