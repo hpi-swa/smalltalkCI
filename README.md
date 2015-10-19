@@ -42,6 +42,7 @@ env:
     - SMALLTALK="Squeak5.0"
     # - SMALLTALK="Squeak4.6"
     # - SMALLTALK="Squeak4.5"
+    # filetreeCI will use default image if SMALLTALK is not set
 
 addons:
   apt:
