@@ -38,6 +38,8 @@ if [ -z "$FILETREE_CI_HOME" ]; then
     FILETREE_CI_HOME="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
 fi
 
+[ -z "$SMALLTALK" ] && SMALLTALK="Squeak5.0" # Set default Smalltalk version
+
 BASE_PATH="$FILETREE_CI_HOME"
 CACHE_PATH="$BASE_PATH/cache"
 BUILD_BASE="$BASE_PATH/builds"
@@ -51,7 +53,6 @@ IMAGE_TAR="$SMALLTALK.tar.gz"
 IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images"
 
 # Optional environment variables
-[ -z "$SMALLTALK" ] && SMALLTALK="Squeak5.0" # Set default Smalltalk version
 [ -z "$PACKAGES" ] && PACKAGES="/packages"
 [ -z "$BASELINE_GROUP" ] && BASELINE_GROUP="TravisCI"
 [ -z "$EXCLUDE_CATEGORIES" ] && EXCLUDE_CATEGORIES="nil"
