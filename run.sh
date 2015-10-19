@@ -23,10 +23,7 @@ function print_error {
 
 # Check required arguments
 # ==============================================================================
-if [ -z "$SMALLTALK" ]; then
-    print_error "\$SMALLTALK is not defined!"
-    exit 1
-elif [ -z "$PROJECT_HOME" ]; then
+if [ -z "$PROJECT_HOME" ]; then
     print_error "\$PROJECT_HOME is not defined!"
     exit 1
 elif [ -z "$BASELINE" ]; then
@@ -53,14 +50,8 @@ VM_IMAGE="$BUILD_PATH/TravisCI.image"
 IMAGE_TAR="$SMALLTALK.tar.gz"
 IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images"
 
-SPUR_IMAGE=false
-case "$SMALLTALK" in
-    "Squeak5.0" | "SqueakTrunk")
-        SPUR_IMAGE=true
-        ;;
-esac
-
 # Optional environment variables
+[ -z "$SMALLTALK" ] && SMALLTALK="Squeak5.0" # Set default Smalltalk version
 [ -z "$PACKAGES" ] && PACKAGES="/packages"
 [ -z "$BASELINE_GROUP" ] && BASELINE_GROUP="TravisCI"
 [ -z "$EXCLUDE_CATEGORIES" ] && EXCLUDE_CATEGORIES="nil"
@@ -72,6 +63,13 @@ if [ -z "$RUN_SCRIPT" ]; then
 else
     RUN_SCRIPT="$PROJECT_HOME/$RUN_SCRIPT"
 fi
+
+SPUR_IMAGE=false
+case "$SMALLTALK" in
+    "Squeak5.0" | "SqueakTrunk")
+        SPUR_IMAGE=true
+        ;;
+esac
 # ==============================================================================
 
 # Identify OS and select virtual machine
@@ -141,7 +139,7 @@ fi
 
 # Export environment variables
 # ==============================================================================
-export COG_VM VM_IMAGE
+export SMALLTALK COG_VM VM_IMAGE
 # ==============================================================================
 
 # Extract image and run on virtual machine
