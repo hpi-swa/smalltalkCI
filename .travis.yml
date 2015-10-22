@@ -12,4 +12,5 @@ os:
   - osx
 
 env:
-  - BASELINE=SWTDemo
+  global:
+    - BASELINE=SWTDemo
