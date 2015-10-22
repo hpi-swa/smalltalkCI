@@ -27,22 +27,19 @@ Currently, only `SqueakTrunk`, `Squeak5.0`, `Squeak4.6` and `Squeak4.5` images a
 ```yml
 language: smalltalk
 sudo: false
-
+smalltalk:
+  - SqueakTrunk
+  - Squeak5.0
+  - Squeak4.6
+  - Squeak4.5
 env:
-  global:
-    - BASELINE=myProject
-    # - BASELINE_GROUP="TravisCI" # Name of the group to load from baseline
-    # - PACKAGES="/packages" # Directory where filetree looks for packages
-    # - FORCE_UPDATE="false" # Forces image update if set to "true" 
-    # - RUN_SCRIPT="CustomRunScript.st" # .st file relative to your project's root
-    # - EXCLUDE_CATEGORIES="" # comma-separated list of category prefixes to exclude from testing
-    # - EXCLUDE_CLASSES="" # comma-separated list of class names to exclude from testing
-  matrix:
-    - SMALLTALK="SqueakTrunk"
-    - SMALLTALK="Squeak5.0"
-    # - SMALLTALK="Squeak4.6"
-    # - SMALLTALK="Squeak4.5"
-    # filetreeCI will use default image if SMALLTALK is not set
+  - BASELINE=myProject
+  # - BASELINE_GROUP="TravisCI" # Name of the group to load from baseline
+  # - PACKAGES="/packages" # Directory where filetree looks for packages
+  # - FORCE_UPDATE="false" # Forces image update if set to "true" 
+  # - RUN_SCRIPT="CustomRunScript.st" # .st file relative to your project's root
+  # - EXCLUDE_CATEGORIES="" # comma-separated list of category prefixes to exclude from testing
+  # - EXCLUDE_CLASSES="" # comma-separated list of class names to exclude from testing
 ```
 
 [TravisCI]: http://travis-ci.org/
