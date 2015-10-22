@@ -25,7 +25,7 @@ Currently, only `SqueakTrunk`, `Squeak5.0`, `Squeak4.6` and `Squeak4.5` images a
 
 ## Full `.travis.yml` Template
 ```yml
-language: erlang
+language: smalltalk
 sudo: false
 
 env:
@@ -43,24 +43,6 @@ env:
     # - SMALLTALK="Squeak4.6"
     # - SMALLTALK="Squeak4.5"
     # filetreeCI will use default image if SMALLTALK is not set
-
-addons:
-  apt:
-    packages:
-    # 32-bit VM
-    - libc6:i386
-    # UUIDPlugin
-    - libuuid1:i386
-
-install:
-   - export PROJECT_HOME="$(pwd)"
-   - cd $HOME
-   - wget -q -O filetreeCI.zip https://github.com/hpi-swa/filetreeCI/archive/master.zip
-   - unzip -q filetreeCI.zip
-   - cd filetreeCI-*
-   - export FILETREE_CI_HOME="$(pwd)"
-
-script: $FILETREE_CI_HOME/run.sh
 ```
 
 [TravisCI]: http://travis-ci.org/
