@@ -1,32 +1,15 @@
-language: erlang
+language: smalltalk
 sudo: false
 
+smalltalk:
+  - SqueakTrunk
+  - Squeak5.0
+  - Squeak4.6
+  - Squeak4.5
+
+os:
+  - linux
+  - osx
+
 env:
-  global:
-    - BASELINE=SWTDemo
-  matrix:
-    - SMALLTALK="" # Use default Smalltalk version
-    - SMALLTALK="SqueakTrunk"
-    - SMALLTALK="Squeak5.0"
-    - SMALLTALK="Squeak4.6"
-    - SMALLTALK="Squeak4.5"
-
-addons:
-  apt:
-    packages:
-    # 32-bit VM
-    - libc6:i386
-    # UUIDPlugin
-    - libuuid1:i386
-
-install:
-   - wget -q -O fixtures.zip https://github.com/hpi-swa/filetreeCI/archive/fixtures.zip
-   - unzip -q fixtures.zip
-   - export PROJECT_HOME="$(pwd)/filetreeCI-fixtures"
-   - cd $HOME
-   - wget -q -O filetreeCI.zip https://github.com/hpi-swa/filetreeCI/archive/master.zip
-   - unzip -q filetreeCI.zip
-   - cd filetreeCI-*
-   - export FILETREE_CI_HOME="$(pwd)"
-
-script: $FILETREE_CI_HOME/run.sh
+  - BASELINE=SWTDemo
