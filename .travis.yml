@@ -3,18 +3,22 @@ sudo: false
 
 smalltalk:
   - SqueakTrunk
-  - Squeak5.0
-  - Squeak4.6
-  - Squeak4.5
+  # - Squeak5.0
+  # - Squeak4.6
+  # - Squeak4.5
 
 os:
   - linux
-  - osx
+  # - osx
 
 env:
   - BASELINE=SWTDemo
 
 install:
+  - source env_vars
   - wget -q -O fixtures.zip https://github.com/hpi-swa/filetreeCI/archive/fixtures.zip
   - unzip -q fixtures.zip
   - export PROJECT_HOME="$(pwd)/filetreeCI-fixtures"
+
+after_success:
+  - env
