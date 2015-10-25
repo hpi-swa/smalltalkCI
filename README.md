@@ -33,13 +33,14 @@ smalltalk:
   - Squeak4.6
   - Squeak4.5
 env:
-  - BASELINE=myProject
-  # - BASELINE_GROUP="TravisCI" # Name of the group to load from baseline
-  # - PACKAGES="/packages" # Directory where filetree looks for packages
-  # - FORCE_UPDATE="false" # Forces image update if set to "true" 
-  # - RUN_SCRIPT="CustomRunScript.st" # .st file relative to your project's root
-  # - EXCLUDE_CATEGORIES="" # comma-separated list of category prefixes to exclude from testing
-  # - EXCLUDE_CLASSES="" # comma-separated list of class names to exclude from testing
+  global:
+    - BASELINE=myProject
+    # - BASELINE_GROUP="TravisCI" # Name of the group to load from baseline
+    # - PACKAGES="/packages" # Directory where filetree looks for packages
+    # - FORCE_UPDATE="false" # Forces image update if set to "true" 
+    # - RUN_SCRIPT="CustomRunScript.st" # .st file relative to your project's root
+    # - EXCLUDE_CATEGORIES="" # comma-separated list of category prefixes to exclude from testing
+    # - EXCLUDE_CLASSES="" # comma-separated list of class names to exclude from testing
 ```
 
 [TravisCI]: http://travis-ci.org/
