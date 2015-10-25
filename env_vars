@@ -1,0 +1,12 @@
+# Set default Smalltalk version
+[ -z "$SMALLTALK" ] && export SMALLTALK="Squeak5.0"
+
+[ -z "$FILETREE_CI_HOME" ] && export FILETREE_CI_HOME="$(pwd)"
+
+export FILETREE_CI_CACHE="$FILETREE_CI_HOME/cache"
+export FILETREE_CI_BUILD_BASE="$FILETREE_CI_HOME/builds"
+export FILETREE_CI_BUILD_ID="$(date "+%Y_%m_%d_%H_%M_%S")"
+export FILETREE_CI_BUILD_PATH="$FILETREE_CI_BUILD_BASE/$FILETREE_CI_BUILD_ID"
+export FILETREE_CI_GIT="$FILETREE_CI_BUILD_PATH/git_cache"
+export FILETREE_CI_VMS="$FILETREE_CI_CACHE/vms"
+export FILETREE_CI_IMAGE="$FILETREE_CI_BUILD_PATH/TravisCI.image"

@@ -34,23 +34,24 @@ fi
 
 # Set paths and files
 # ==============================================================================
-if [ -z "$FILETREE_CI_HOME" ]; then
-    FILETREE_CI_HOME="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
-fi
 
 # Set default Smalltalk version
 [ -z "$SMALLTALK" ] && SMALLTALK="Squeak5.0"
 
-BASE_PATH="$FILETREE_CI_HOME"
-CACHE_PATH="$BASE_PATH/cache"
-BUILD_BASE="$BASE_PATH/builds"
-BUILD_ID="$(date "+%Y_%m_%d_%H_%M_%S")"
-BUILD_PATH="$BUILD_BASE/$BUILD_ID"
-GIT_PATH="$BUILD_PATH/git_cache"
-VM_PATH="$CACHE_PATH/vms"
-VM_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/vms"
-VM_IMAGE="$BUILD_PATH/TravisCI.image"
+if [ -z "$FILETREE_CI_HOME" ]; then
+    FILETREE_CI_HOME="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
+fi
+
+[ -z "$FILETREE_CI_CACHE" ] && FILETREE_CI_CACHE="$FILETREE_CI_HOME/cache"
+[ -z "$FILETREE_CI_BUILD_BASE" ] && FILETREE_CI_BUILD_BASE="$FILETREE_CI_HOME/builds"
+[ -z "$FILETREE_CI_BUILD_ID" ] && FILETREE_CI_BUILD_ID="$(date "+%Y_%m_%d_%H_%M_%S")"
+[ -z "$FILETREE_CI_BUILD" ] && FILETREE_CI_BUILD="$FILETREE_CI_BUILD_BASE/$FILETREE_CI_BUILD_ID"
+[ -z "$FILETREE_CI_GIT" ] && FILETREE_CI_GIT="$FILETREE_CI_BUILD/git_cache"
+[ -z "$FILETREE_CI_VMS" ] && FILETREE_CI_VMS="$FILETREE_CI_CACHE/vms"
+[ -z "$FILETREE_CI_IMAGE" ] && FILETREE_CI_IMAGE="$FILETREE_CI_BUILD/TravisCI.image"
+
 IMAGE_TAR="$SMALLTALK.tar.gz"
+VM_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/vms"
 IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images"
 
 # Optional environment variables
@@ -61,7 +62,7 @@ IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/i
 [ -z "$FORCE_UPDATE" ] && FORCE_UPDATE="false"
 [ -z "$KEEP_OPEN" ] && KEEP_OPEN="false"
 if [ -z "$RUN_SCRIPT" ]; then
-    RUN_SCRIPT="$BASE_PATH/run.st"
+    RUN_SCRIPT="$FILETREE_CI_HOME/run.st"
 else
     RUN_SCRIPT="$PROJECT_HOME/$RUN_SCRIPT"
 fi
@@ -82,10 +83,10 @@ case "$(uname -s)" in
         print_info "Linux detected..."
         if [ "$SPUR_IMAGE" = true ]; then
             COG_VM_FILE_BASE="cog_linux_spur"
-            COG_VM="$VM_PATH/cogspurlinux/bin/squeak"
+            COG_VM="$FILETREE_CI_VMS/cogspurlinux/bin/squeak"
         else
             COG_VM_FILE_BASE="cog_linux"
-            COG_VM="$VM_PATH/coglinux/bin/squeak"
+            COG_VM="$FILETREE_CI_VMS/coglinux/bin/squeak"
         fi
         COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
         if [ "$TRAVIS" = "true" ]; then
@@ -97,10 +98,10 @@ case "$(uname -s)" in
         print_info "OS X detected..."
         if [ "$SPUR_IMAGE" = true ]; then
             COG_VM_FILE_BASE="cog_osx_spur"
-            COG_VM="$VM_PATH/CogSpur.app/Contents/MacOS/Squeak"
+            COG_VM="$FILETREE_CI_VMS/CogSpur.app/Contents/MacOS/Squeak"
         else
             COG_VM_FILE_BASE="cog_osx"
-            COG_VM="$VM_PATH/Cog.app/Contents/MacOS/Squeak"
+            COG_VM="$FILETREE_CI_VMS/Cog.app/Contents/MacOS/Squeak"
         fi
         COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
         ;;
@@ -114,45 +115,40 @@ esac
 # Prepare folders
 # ==============================================================================
 print_info "Preparing folders..."
-[[ -d "$CACHE_PATH" ]] || mkdir "$CACHE_PATH"
-[[ -d "$BUILD_BASE" ]] || mkdir "$BUILD_BASE"
-[[ -d "$VM_PATH" ]] || mkdir "$VM_PATH"
+[[ -d "$FILETREE_CI_CACHE" ]] || mkdir "$FILETREE_CI_CACHE"
+[[ -d "$FILETREE_CI_BUILD_BASE" ]] || mkdir "$FILETREE_CI_BUILD_BASE"
+[[ -d "$FILETREE_CI_VMS" ]] || mkdir "$FILETREE_CI_VMS"
 # Create folder for this build (should not exist)
-mkdir "$BUILD_PATH"
+mkdir "$FILETREE_CI_BUILD"
 # Link project folder to git_cache
-ln -s "$PROJECT_HOME" "$GIT_PATH"
+ln -s "$PROJECT_HOME" "$FILETREE_CI_GIT"
 # ==============================================================================
 
 # Perform optional steps
 # ==============================================================================
-if [ ! -f "$CACHE_PATH/$COG_VM_FILE" ]; then
+if [ ! -f "$FILETREE_CI_CACHE/$COG_VM_FILE" ]; then
     print_info "Downloading virtual machine..."
-    curl -s "$VM_DOWNLOAD/$COG_VM_FILE" > "$CACHE_PATH/$COG_VM_FILE"
+    curl -s "$VM_DOWNLOAD/$COG_VM_FILE" > "$FILETREE_CI_CACHE/$COG_VM_FILE"
 fi
 if [ ! -f "$COG_VM" ]; then
     print_info "Extracting virtual machine..."
-    tar xzf "$CACHE_PATH/$COG_VM_FILE" -C "$VM_PATH"
+    tar xzf "$FILETREE_CI_CACHE/$COG_VM_FILE" -C "$FILETREE_CI_VMS"
 fi
-if [ ! -f "$CACHE_PATH/$IMAGE_TAR" ]; then
+if [ ! -f "$FILETREE_CI_CACHE/$IMAGE_TAR" ]; then
     print_info "Downloading $SMALLTALK testing image..."
-    curl -s "$IMAGE_DOWNLOAD/$IMAGE_TAR" > "$CACHE_PATH/$IMAGE_TAR"
+    curl -s "$IMAGE_DOWNLOAD/$IMAGE_TAR" > "$FILETREE_CI_CACHE/$IMAGE_TAR"
 fi
-# ==============================================================================
-
-# Export environment variables
-# ==============================================================================
-export SMALLTALK COG_VM VM_IMAGE
 # ==============================================================================
 
 # Extract image and run on virtual machine
 # ==============================================================================
 print_info "Extracting image..."
-tar xzf "$CACHE_PATH/$IMAGE_TAR" -C "$BUILD_PATH"
+tar xzf "$FILETREE_CI_CACHE/$IMAGE_TAR" -C "$FILETREE_CI_BUILD"
 
 print_info "Load project into image and run tests..."
 VM_ARGS="$RUN_SCRIPT $PACKAGES $BASELINE $BASELINE_GROUP $EXCLUDE_CATEGORIES $EXCLUDE_CLASSES $FORCE_UPDATE $KEEP_OPEN"
 EXIT_STATUS=0
-"$COG_VM" $COG_VM_PARAM $VM_IMAGE $VM_ARGS || EXIT_STATUS=$?
+"$COG_VM" $COG_VM_PARAM $FILETREE_CI_IMAGE $VM_ARGS || EXIT_STATUS=$?
 # ==============================================================================
 
 printf "\n\n"
