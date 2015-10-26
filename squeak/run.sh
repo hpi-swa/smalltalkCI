@@ -50,7 +50,7 @@ IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/i
 [ -z "$FORCE_UPDATE" ] && FORCE_UPDATE="false"
 [ -z "$KEEP_OPEN" ] && KEEP_OPEN="false"
 if [ -z "$RUN_SCRIPT" ]; then
-    RUN_SCRIPT="$FILETREE_CI_HOME/run.st"
+    RUN_SCRIPT="$FILETREE_CI_HOME/squeak/run.st"
 else
     RUN_SCRIPT="$PROJECT_HOME/$RUN_SCRIPT"
 fi
