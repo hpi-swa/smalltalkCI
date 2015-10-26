@@ -24,6 +24,7 @@ function print_error {
 # Set paths and files
 # ==============================================================================
 [ -z "$FILETREE_CI_BUILD_BASE" ] && FILETREE_CI_BUILD_BASE="$FILETREE_CI_HOME/_builds"
+[ -z "$PACKAGES" ] && PACKAGES="/packages"
 # ==============================================================================
 
 # Determine Pharo download url
@@ -46,7 +47,7 @@ esac
 # ==============================================================================
 print_info "Preparing folders..."
 [[ -d "$FILETREE_CI_BUILD_BASE" ]] || mkdir "$FILETREE_CI_BUILD_BASE"
-pushd FILETREE_CI_BUILD_BASE
+pushd $FILETREE_CI_BUILD_BASE > /dev/null
 # ==============================================================================
 
 # Prepare image and virtual machine
@@ -61,14 +62,14 @@ print_info "Loading project..."
 ./pharo Pharo.image eval --save "
 Metacello new 
     baseline: '${BASELINE}';
-    repository: 'filetree://${PROJECT_HOME}';
+    repository: 'filetree://${PROJECT_HOME}/${PACKAGES}';
     load.
 "
 
 print_info "Run tests..."
 EXIT_STATUS=0
-./pharo --vm-display-null Pharo.image test --fail-on-failure "${BASELINE}.*" 2>&1 || EXIT_STATUS=$?
+./pharo Pharo.image test --fail-on-failure "${BASELINE}.*" 2>&1 || EXIT_STATUS=$?
 # ==============================================================================
-popd
+popd > /dev/null
 
 exit $EXIT_STATUS
