@@ -40,9 +40,9 @@ case "$SMALLTALK" in
     "Pharo-3.0")
         PHARO_GET_URL="get.pharo.org/30+vm"
         ;;
-    "Pharo-2.0")
-        PHARO_GET_URL="get.pharo.org/20+vm"
-        ;;
+    # "Pharo-2.0")
+    #     PHARO_GET_URL="get.pharo.org/20+vm"
+    #     ;;
     *)
         print_error "Unsupported Pharo version ${SMALLTALK}"
         exit 1
