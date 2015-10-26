@@ -6,6 +6,8 @@ smalltalk:
   - Squeak5.0
   - Squeak4.6
   - Squeak4.5
+  - Pharo4.0
+  - Pharo5.0
 
 os:
   - linux

@@ -7,8 +7,8 @@ function print_info {
 }
 
 BASE_PATH="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
-CACHE_PATH="$BASE_PATH/cache"
-BUILD_BASE="$BASE_PATH/builds"
+CACHE_PATH="$BASE_PATH/_cache"
+BUILD_BASE="$BASE_PATH/_builds"
 
 print_info "Cleaning up..."
 rm -rf "$CACHE_PATH" "$BUILD_BASE"
