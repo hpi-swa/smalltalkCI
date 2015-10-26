@@ -31,11 +31,17 @@ function print_error {
 # Determine Pharo download url
 # ==============================================================================
 case "$SMALLTALK" in
+    "Pharo-5.0")
+        PHARO_GET_URL="get.pharo.org/50+vm"
+        ;;
     "Pharo-4.0")
         PHARO_GET_URL="get.pharo.org/40+vm"
         ;;
-    "Pharo-5.0")
-        PHARO_GET_URL="get.pharo.org/50+vm"
+    "Pharo-3.0")
+        PHARO_GET_URL="get.pharo.org/30+vm"
+        ;;
+    "Pharo-2.0")
+        PHARO_GET_URL="get.pharo.org/20+vm"
         ;;
     *)
         print_error "Unsupported Pharo version ${SMALLTALK}"
