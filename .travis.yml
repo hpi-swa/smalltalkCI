@@ -5,10 +5,10 @@ env:
   global:
     - DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images/"
   matrix:
-    - SMALLTALK="SqueakTrunk"
-    - SMALLTALK="Squeak5.0"
-    - SMALLTALK="Squeak4.6"
-    - SMALLTALK="Squeak4.5"
+    - SMALLTALK="Squeak-Trunk"
+    - SMALLTALK="Squeak-5.0"
+    - SMALLTALK="Squeak-4.6"
+    - SMALLTALK="Squeak-4.5"
 
 addons:
   apt:

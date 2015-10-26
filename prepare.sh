@@ -42,7 +42,7 @@ SCRIPTS_PATH="$BASE_PATH/scripts"
 # ==============================================================================
 SPUR_IMAGE=false
 case "$SMALLTALK" in
-    "SqueakTrunk")
+    "Squeak-Trunk")
         IMAGE_URL="http://build.squeak.org/job/Trunk/default/lastSuccessfulBuild/artifact/target/"
         IMAGE_ARCHIVE="TrunkImage.zip"
         IMAGE_FILE="SpurTrunkImage.image"
@@ -53,7 +53,7 @@ case "$SMALLTALK" in
         print_info "Updates disabled during this build..."
         # DISABLE_UPDATE="true"
         ;;
-    "Squeak5.0")
+    "Squeak-5.0")
         IMAGE_URL="http://ftp.squeak.org/5.0/"
         IMAGE_ARCHIVE="Squeak5.0-15113.zip"
         IMAGE_FILE="Squeak5.0-15113.image"
@@ -62,7 +62,7 @@ case "$SMALLTALK" in
         SOURCES_FILE="SqueakV50.sources"
         SPUR_IMAGE=true
         ;;
-    "Squeak4.6")
+    "Squeak-4.6")
         IMAGE_URL="http://ftp.squeak.org/4.6/"
         IMAGE_ARCHIVE="Squeak4.6-15102.zip"
         IMAGE_FILE="Squeak4.6-15102.image"
@@ -70,7 +70,7 @@ case "$SMALLTALK" in
         SOURCES_ARCHIVE="SqueakV46.sources.gz"
         SOURCES_FILE="SqueakV46.sources"
         ;;
-    "Squeak4.5")
+    "Squeak-4.5")
         IMAGE_URL="http://ftp.squeak.org/4.5/"
         IMAGE_ARCHIVE="Squeak4.5-13680.zip"
         IMAGE_FILE="Squeak4.5-13680.image"
