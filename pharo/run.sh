@@ -25,6 +25,7 @@ function print_error {
 # ==============================================================================
 [ -z "$FILETREE_CI_BUILD_BASE" ] && FILETREE_CI_BUILD_BASE="$FILETREE_CI_HOME/_builds"
 [ -z "$PACKAGES" ] && PACKAGES="/packages"
+[ -z "$BASELINE_GROUP" ] && BASELINE_GROUP="TravisCI"
 # ==============================================================================
 
 # Determine Pharo download url
@@ -63,7 +64,7 @@ print_info "Loading project..."
 Metacello new 
     baseline: '${BASELINE}';
     repository: 'filetree://${PROJECT_HOME}/${PACKAGES}';
-    load.
+    load: '${BASELINE_GROUP}'.
 "
 
 print_info "Run tests..."
