@@ -22,4 +22,8 @@ install:
   - wget -q -O fixtures.zip https://github.com/hpi-swa/filetreeCI/archive/fixtures.zip
   - unzip -q fixtures.zip
   - export PROJECT_HOME="$(pwd)/filetreeCI-fixtures"
-  
+
+matrix:
+  allow_failures:
+    - smalltalk: Pharo-5.0
+    - smalltalk: Pharo-4.0
