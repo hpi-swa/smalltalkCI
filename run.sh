@@ -34,7 +34,14 @@ fi
 
 # Set default Smalltalk version
 # ==============================================================================
-[ -z "$SMALLTALK" ] && SMALLTALK="Squeak5.0"
+[ -z "$SMALLTALK" ] && SMALLTALK="Squeak-5.0"
+# ==============================================================================
+
+# Make sure filetreeCI home directory is set
+# ==============================================================================
+if [ -z "$FILETREE_CI_HOME" ]; then
+    FILETREE_CI_HOME="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
+fi
 # ==============================================================================
 
 # Start build accordingly
@@ -43,11 +50,11 @@ EXIT_STATUS=0
 case "$SMALLTALK" in
     Squeak*)
         print_info "Starting Squeak build..."
-        squeak/run.sh || EXIT_STATUS=$?
+        $FILETREE_CI_HOME/squeak/run.sh || EXIT_STATUS=$?
         ;;
     Pharo*)
         print_info "Starting Pharo build..."
-        pharo/run.sh || EXIT_STATUS=$?
+        $FILETREE_CI_HOME/pharo/run.sh || EXIT_STATUS=$?
         ;;
     *)
         print_error "Unknown Smalltalk version ${SMALLTALK}"

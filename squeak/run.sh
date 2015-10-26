@@ -25,11 +25,7 @@ function print_error {
 # ==============================================================================
 
 # Set default Smalltalk version
-[ -z "$SMALLTALK" ] && SMALLTALK="Squeak5.0"
-
-if [ -z "$FILETREE_CI_HOME" ]; then
-    FILETREE_CI_HOME="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
-fi
+[ -z "$SMALLTALK" ] && SMALLTALK="Squeak-5.0"
 
 [ -z "$FILETREE_CI_CACHE" ] && FILETREE_CI_CACHE="$FILETREE_CI_HOME/_cache"
 [ -z "$FILETREE_CI_BUILD_BASE" ] && FILETREE_CI_BUILD_BASE="$FILETREE_CI_HOME/_builds"

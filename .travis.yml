@@ -17,7 +17,8 @@ os:
   - osx
 
 env:
-  - BASELINE=SWTDemo
+  global:
+    - BASELINE=SWTDemo
 
 install:
   - source env_vars
