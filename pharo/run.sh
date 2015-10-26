@@ -8,6 +8,14 @@ function print_info {
     printf "\e[0;34m$1\e[0m\n"
 }
 
+function print_notice {
+    printf "\e[1;33m$1\e[0m\n"
+}
+
+function print_success {
+    printf "\e[1;32m$1\e[0m\n"
+}
+
 function print_error {
     printf "\e[1;31m$1\e[0m\n"
 }
