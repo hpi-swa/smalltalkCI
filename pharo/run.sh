@@ -21,10 +21,10 @@ function print_error {
 # Determine Pharo download url
 # ==============================================================================
 case "$SMALLTALK" in
-    "Pharo4.0")
+    "Pharo-4.0")
         PHARO_GET_URL="get.pharo.org/40+vm"
         ;;
-    "Pharo5.0")
+    "Pharo-5.0")
         PHARO_GET_URL="get.pharo.org/50+vm"
         ;;
     *)

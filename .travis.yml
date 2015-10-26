@@ -2,12 +2,13 @@ language: smalltalk
 sudo: false
 
 smalltalk:
-  - SqueakTrunk
-  - Squeak5.0
-  - Squeak4.6
-  - Squeak4.5
-  - Pharo4.0
-  - Pharo5.0
+  - Squeak-Trunk
+  - Squeak-5.0
+  - Squeak-4.6
+  - Squeak-4.5
+
+  - Pharo-5.0
+  - Pharo-4.0
 
 os:
   - linux

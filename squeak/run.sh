@@ -39,7 +39,6 @@ fi
 [ -z "$FILETREE_CI_VMS" ] && FILETREE_CI_VMS="$FILETREE_CI_CACHE/vms"
 [ -z "$FILETREE_CI_IMAGE" ] && FILETREE_CI_IMAGE="$FILETREE_CI_BUILD/TravisCI.image"
 
-IMAGE_TAR="$SMALLTALK.tar.gz"
 VM_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/vms"
 IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images"
 
@@ -55,11 +54,29 @@ if [ -z "$RUN_SCRIPT" ]; then
 else
     RUN_SCRIPT="$PROJECT_HOME/$RUN_SCRIPT"
 fi
+# ==============================================================================
 
-SPUR_IMAGE=false
+# Check and specify Squeak image
+# ==============================================================================
+SPUR_IMAGE=true
 case "$SMALLTALK" in
-    "Squeak5.0" | "SqueakTrunk")
-        SPUR_IMAGE=true
+    "Squeak-Trunk"|"SqueakTrunk")
+        IMAGE_TAR="SqueakTrunk.tar.gz"
+        ;;
+    "Squeak-5.0"|"Squeak5.0")
+        IMAGE_TAR="Squeak5.0.tar.gz"
+        ;;
+    "Squeak-4.6"|"Squeak4.6")
+        IMAGE_TAR="Squeak4.6.tar.gz"
+        SPUR_IMAGE=false
+        ;;
+    "Squeak-4.5"|"Squeak4.5")
+        IMAGE_TAR="Squeak4.5.tar.gz"
+        SPUR_IMAGE=false
+        ;;
+    *)
+        print_error "Unsupported Squeak version ${SMALLTALK}"
+        exit 1
         ;;
 esac
 # ==============================================================================
