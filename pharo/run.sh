@@ -61,6 +61,9 @@ pushd $FILETREE_CI_BUILD_BASE > /dev/null
 # ==============================================================================
 print_info "Downloading Pharo image and vm..."
 wget --quiet -O - ${PHARO_GET_URL} | bash
+
+# Remove libFT2Plugin if present
+rm -f "$FILETREE_CI_BUILD_BASE/pharo-vm/libFT2Plugin.so"
 # ==============================================================================
 
 # Load project and run tests
