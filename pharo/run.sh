@@ -7,6 +7,10 @@ set -e
 function print_info {
     printf "\e[0;34m$1\e[0m\n"
 }
+
+function print_error {
+    printf "\e[1;31m$1\e[0m\n"
+}
 # ==============================================================================
 
 # Set paths and files
@@ -24,7 +28,7 @@ case "$SMALLTALK" in
         PHARO_GET_URL="get.pharo.org/50+vm"
         ;;
     *)
-        print_error "Unknown Pharo version ${SMALLTALK}"
+        print_error "Unsupported Pharo version ${SMALLTALK}"
         exit 1
         ;;
 esac
