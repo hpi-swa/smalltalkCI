@@ -57,17 +57,17 @@ fi
 SPUR_IMAGE=true
 case "$SMALLTALK" in
     "Squeak-Trunk"|"SqueakTrunk")
-        IMAGE_TAR="SqueakTrunk.tar.gz"
+        IMAGE_TAR="Squeak-Trunk.tar.gz"
         ;;
     "Squeak-5.0"|"Squeak5.0")
-        IMAGE_TAR="Squeak5.0.tar.gz"
+        IMAGE_TAR="Squeak-5.0.tar.gz"
         ;;
     "Squeak-4.6"|"Squeak4.6")
-        IMAGE_TAR="Squeak4.6.tar.gz"
+        IMAGE_TAR="Squeak-4.6.tar.gz"
         SPUR_IMAGE=false
         ;;
     "Squeak-4.5"|"Squeak4.5")
-        IMAGE_TAR="Squeak4.5.tar.gz"
+        IMAGE_TAR="Squeak-4.5.tar.gz"
         SPUR_IMAGE=false
         ;;
     *)
