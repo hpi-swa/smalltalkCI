@@ -24,3 +24,7 @@ install:
   - wget -q -O fixtures.zip https://github.com/hpi-swa/filetreeCI/archive/fixtures.zip
   - unzip -q fixtures.zip
   - export PROJECT_HOME="$(pwd)/filetreeCI-fixtures"
+
+branches:
+  except:
+    - dev
