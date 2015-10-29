@@ -5,7 +5,7 @@ It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] 
 
 
 ## Features
-- Configuration via `.travis.yml` only (see below for templates)
+- Configuration via `.travis.yml` only ([see below for templates](#travisyml-template))
 - Runs on Travis' [container-based infrastructure][cbi] - [*"Builds-start-in-seconds"*](bsis)
 - Supports Linux and OS X and can be run locally
 
@@ -23,10 +23,12 @@ It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] 
 1. [Create a Baseline for your project][baseline].
 2. Export your Smalltalk project with [FileTree/Metacello][metacello].
 3. [Enable Travis CI for your repository][TravisHowTo] and create a `.travis.yml` from one of the templates below.
-4. Enjoy!
+4. Enjoy your fast Smalltalk builds!
 
 
-## Squeak `.travis.yml` Template
+## `.travis.yml` Templates
+
+### Squeak-specific
 ```yml
 language: smalltalk
 sudo: false
@@ -46,7 +48,7 @@ env:
     # - EXCLUDE_CLASSES="" # comma-separated list of class names to exclude from testing
 ```
 
-## Pharo `.travis.yml` Template
+### Pharo-specific
 ```yml
 language: smalltalk
 sudo: false
