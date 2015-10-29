@@ -21,7 +21,7 @@ function print_error {
 }
 # ==============================================================================
 
-# Check required arguments
+# Check required environment variables
 # ==============================================================================
 if [ -z "$PROJECT_HOME" ]; then
     print_error "\$PROJECT_HOME is not defined!"
@@ -32,15 +32,22 @@ elif [ -z "$BASELINE" ]; then
 fi
 # ==============================================================================
 
+# Check optional environment variables
+# ==============================================================================
+[ -z "$PACKAGES" ] && export PACKAGES="/packages"
+[ -z "$BASELINE_GROUP" ] && export BASELINE_GROUP="TravisCI"
+# ==============================================================================
+
 # Set default Smalltalk version
 # ==============================================================================
-[ -z "$SMALLTALK" ] && SMALLTALK="Squeak-5.0"
+[ -z "$SMALLTALK" ] && export SMALLTALK="Squeak-5.0"
 # ==============================================================================
 
 # Make sure filetreeCI home directory is set
 # ==============================================================================
-if [ -z "$FILETREE_CI_HOME" ]; then
-    FILETREE_CI_HOME="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
+if [ -z "$FILETREE_CI_HOME" ] && [ "$TRAVIS" != "true" ]; then
+    export FILETREE_CI_HOME="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
+    source "$FILETREE_CI_HOME/env_vars"
 fi
 # ==============================================================================
 

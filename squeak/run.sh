@@ -23,24 +23,10 @@ function print_error {
 
 # Set paths and files
 # ==============================================================================
-
-# Set default Smalltalk version
-[ -z "$SMALLTALK" ] && SMALLTALK="Squeak-5.0"
-
-[ -z "$FILETREE_CI_CACHE" ] && FILETREE_CI_CACHE="$FILETREE_CI_HOME/_cache"
-[ -z "$FILETREE_CI_BUILD_BASE" ] && FILETREE_CI_BUILD_BASE="$FILETREE_CI_HOME/_builds"
-[ -z "$FILETREE_CI_BUILD_ID" ] && FILETREE_CI_BUILD_ID="$(date "+%Y_%m_%d_%H_%M_%S")"
-[ -z "$FILETREE_CI_BUILD" ] && FILETREE_CI_BUILD="$FILETREE_CI_BUILD_BASE/$FILETREE_CI_BUILD_ID"
-[ -z "$FILETREE_CI_GIT" ] && FILETREE_CI_GIT="$FILETREE_CI_BUILD/git_cache"
-[ -z "$FILETREE_CI_VMS" ] && FILETREE_CI_VMS="$FILETREE_CI_CACHE/vms"
-[ -z "$FILETREE_CI_IMAGE" ] && FILETREE_CI_IMAGE="$FILETREE_CI_BUILD/TravisCI.image"
-
 VM_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/vms"
 IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images"
 
 # Optional environment variables
-[ -z "$PACKAGES" ] && PACKAGES="/packages"
-[ -z "$BASELINE_GROUP" ] && BASELINE_GROUP="TravisCI"
 [ -z "$EXCLUDE_CATEGORIES" ] && EXCLUDE_CATEGORIES="nil"
 [ -z "$EXCLUDE_CLASSES" ] && EXCLUDE_CLASSES="nil"
 [ -z "$FORCE_UPDATE" ] && FORCE_UPDATE="false"
@@ -150,6 +136,7 @@ tar xzf "$FILETREE_CI_CACHE/$IMAGE_TAR" -C "$FILETREE_CI_BUILD"
 print_info "Load project into image and run tests..."
 VM_ARGS="$RUN_SCRIPT $PACKAGES $BASELINE $BASELINE_GROUP $EXCLUDE_CATEGORIES $EXCLUDE_CLASSES $FORCE_UPDATE $KEEP_OPEN"
 EXIT_STATUS=0
+echo "$COG_VM $COG_VM_PARAM $FILETREE_CI_IMAGE $VM_ARGS"
 "$COG_VM" $COG_VM_PARAM $FILETREE_CI_IMAGE $VM_ARGS || EXIT_STATUS=$?
 # ==============================================================================
 

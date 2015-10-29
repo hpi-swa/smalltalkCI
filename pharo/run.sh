@@ -21,13 +21,6 @@ function print_error {
 }
 # ==============================================================================
 
-# Set paths and files
-# ==============================================================================
-[ -z "$FILETREE_CI_BUILD_BASE" ] && FILETREE_CI_BUILD_BASE="$FILETREE_CI_HOME/_builds"
-[ -z "$PACKAGES" ] && PACKAGES="/packages"
-[ -z "$BASELINE_GROUP" ] && BASELINE_GROUP="TravisCI"
-# ==============================================================================
-
 # Determine Pharo download url
 # ==============================================================================
 case "$SMALLTALK" in
