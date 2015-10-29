@@ -51,6 +51,18 @@ if [ -z "$FILETREE_CI_HOME" ] && [ "$TRAVIS" != "true" ]; then
 fi
 # ==============================================================================
 
+# Prepare folders
+# ==============================================================================
+print_info "Preparing folders..."
+[[ -d "$FILETREE_CI_CACHE" ]] || mkdir "$FILETREE_CI_CACHE"
+[[ -d "$FILETREE_CI_BUILD_BASE" ]] || mkdir "$FILETREE_CI_BUILD_BASE"
+[[ -d "$FILETREE_CI_VMS" ]] || mkdir "$FILETREE_CI_VMS"
+# Create folder for this build (should not exist)
+mkdir "$FILETREE_CI_BUILD"
+# Link project folder to git_cache
+ln -s "$PROJECT_HOME" "$FILETREE_CI_GIT"
+# ==============================================================================
+
 # Start build accordingly
 # ==============================================================================
 EXIT_STATUS=0

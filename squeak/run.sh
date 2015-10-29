@@ -100,19 +100,7 @@ case "$(uname -s)" in
 esac
 # ==============================================================================
 
-# Prepare folders
-# ==============================================================================
-print_info "Preparing folders..."
-[[ -d "$FILETREE_CI_CACHE" ]] || mkdir "$FILETREE_CI_CACHE"
-[[ -d "$FILETREE_CI_BUILD_BASE" ]] || mkdir "$FILETREE_CI_BUILD_BASE"
-[[ -d "$FILETREE_CI_VMS" ]] || mkdir "$FILETREE_CI_VMS"
-# Create folder for this build (should not exist)
-mkdir "$FILETREE_CI_BUILD"
-# Link project folder to git_cache
-ln -s "$PROJECT_HOME" "$FILETREE_CI_GIT"
-# ==============================================================================
-
-# Perform optional steps
+# Download files accordingly if not available
 # ==============================================================================
 if [ ! -f "$FILETREE_CI_CACHE/$COG_VM_FILE" ]; then
     print_info "Downloading virtual machine..."

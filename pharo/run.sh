@@ -25,16 +25,16 @@ function print_error {
 # ==============================================================================
 case "$SMALLTALK" in
     "Pharo-5.0")
-        PHARO_GET_URL="get.pharo.org/50+vm"
+        PHARO_GET_VERSION="50"
         ;;
     "Pharo-4.0")
-        PHARO_GET_URL="get.pharo.org/40+vm"
+        PHARO_GET_VERSION="40"
         ;;
     "Pharo-3.0")
-        PHARO_GET_URL="get.pharo.org/30+vm"
+        PHARO_GET_VERSION="30"
         ;;
     # "Pharo-2.0")
-    #     PHARO_GET_URL="get.pharo.org/20+vm"
+    #     PHARO_GET_VERSION="20"
     #     ;;
     *)
         print_error "Unsupported Pharo version ${SMALLTALK}"
@@ -43,26 +43,50 @@ case "$SMALLTALK" in
 esac
 # ==============================================================================
 
-# Prepare folders
+# Set paths and files
 # ==============================================================================
-print_info "Preparing folders..."
-[[ -d "$FILETREE_CI_BUILD_BASE" ]] || mkdir "$FILETREE_CI_BUILD_BASE"
-pushd $FILETREE_CI_BUILD_BASE > /dev/null
+PHARO_IMAGE="$SMALLTALK.image"
+PHARO_CHANGES="$SMALLTALK.changes"
+PHARO_VM="$FILETREE_CI_VMS/$SMALLTALK/pharo"
+# ==============================================================================
+
+# Download files accordingly if not available
+# ==============================================================================
+if [ ! -f "$FILETREE_CI_CACHE/$PHARO_IMAGE" ]; then
+    print_info "Downloading $SMALLTALK image..."
+    pushd $FILETREE_CI_CACHE > /dev/null
+    wget --quiet -O - get.pharo.org/${PHARO_GET_VERSION} | bash
+    mv Pharo.image "$SMALLTALK.image"
+    mv Pharo.changes "$SMALLTALK.changes"
+    popd > /dev/null
+fi
+
+if [ ! -d "$FILETREE_CI_VMS/$SMALLTALK" ]; then
+    print_info "Downloading $SMALLTALK vm..."
+    mkdir "$FILETREE_CI_VMS/$SMALLTALK"
+    pushd $FILETREE_CI_VMS/$SMALLTALK > /dev/null
+    wget --quiet -O - get.pharo.org/vm${PHARO_GET_VERSION} | bash
+    # Remove libFT2Plugin if present
+    rm -f "$FILETREE_CI_VMS/$SMALLTALK/pharo-vm/libFT2Plugin.so"
+    popd > /dev/null
+    # Make sure vm is now available
+    [ -f "$PHARO_VM" ] || exit 1
+fi
+
 # ==============================================================================
 
 # Prepare image and virtual machine
 # ==============================================================================
-print_info "Downloading Pharo image and vm..."
-wget --quiet -O - ${PHARO_GET_URL} | bash
+print_info "Preparing image..."
+cp "$FILETREE_CI_CACHE/$PHARO_IMAGE" "$FILETREE_CI_BUILD"
+cp "$FILETREE_CI_CACHE/$PHARO_CHANGES" "$FILETREE_CI_BUILD"
 
-# Remove libFT2Plugin if present
-rm -f "$FILETREE_CI_BUILD_BASE/pharo-vm/libFT2Plugin.so"
 # ==============================================================================
 
 # Load project and run tests
 # ==============================================================================
 print_info "Loading project..."
-./pharo Pharo.image eval --save "
+$PHARO_VM "$FILETREE_CI_BUILD/$PHARO_IMAGE" eval --save "
 Metacello new 
     baseline: '${BASELINE}';
     repository: 'filetree://${PROJECT_HOME}/${PACKAGES}';
@@ -71,8 +95,7 @@ Metacello new
 
 print_info "Run tests..."
 EXIT_STATUS=0
-./pharo Pharo.image test --fail-on-failure "${BASELINE}.*" 2>&1 || EXIT_STATUS=$?
+$PHARO_VM "$FILETREE_CI_BUILD/$PHARO_IMAGE" test --fail-on-failure "${BASELINE}.*" 2>&1 || EXIT_STATUS=$?
 # ==============================================================================
-popd > /dev/null
 
 exit $EXIT_STATUS
