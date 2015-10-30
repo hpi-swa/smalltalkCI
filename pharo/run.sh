@@ -51,10 +51,16 @@ popd > /dev/null
 # Load project and run tests
 # ==============================================================================
 print_info "Loading project..."
+if [ "${BASELINE_GROUP}" = "" ]; then
+    BASELINE_GROUP="default"
+fi
+if [ "${PACKAGES}" = "" ]; then
+    PACKAGES="."
+fi
 ./pharo Pharo.image eval --save "
 Metacello new 
     baseline: '${BASELINE}';
-    repository: 'filetree://${PROJECT_HOME}/${PACKAGES}';
+    repository: 'filetree://${PACKAGES}';
     load: '${BASELINE_GROUP}'.
 "
 
