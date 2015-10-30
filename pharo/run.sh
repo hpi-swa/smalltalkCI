@@ -36,35 +36,22 @@ case "$SMALLTALK" in
     "Pharo-4.0")
         PHARO_GET_VERSION="40"
         ;;
-    #"Pharo-3.0")
-    #    PHARO_GET_VERSION="30"
-    #    ;;
-    # "Pharo-2.0")
-    #     PHARO_GET_VERSION="20"
-    #     ;;
     *)
         print_error "Unsupported Pharo version ${SMALLTALK}"
         exit 1
         ;;
 esac
 
-# ==============================================================================
-# Download files accordingly if not available
-# ==============================================================================
-if [ ! -f "$FILETREE_CI_CACHE/$PHARO_IMAGE" ]; then
-    print_info "Downloading $SMALLTALK image..."
-    pushd $FILETREE_CI_CACHE > /dev/null
-    wget --quiet -O - get.pharo.org/${PHARO_GET_VERSION}+vm | bash
-    mv Pharo.image "$SMALLTALK.image"
-    mv Pharo.changes "$SMALLTALK.changes"
-    popd > /dev/null
-fi
+print_info "Downloading $SMALLTALK image..."
+pushd $FILETREE_CI_CACHE > /dev/null
+wget --quiet -O - get.pharo.org/${PHARO_GET_VERSION}+vm | bash
+popd > /dev/null
 
 # ==============================================================================
 # Load project and run tests
 # ==============================================================================
 print_info "Loading project..."
-$PHARO_VM Pharo.image eval --save "
+./pharo Pharo.image eval --save "
 Metacello new 
     baseline: '${BASELINE}';
     repository: 'filetree://${PROJECT_HOME}/${PACKAGES}';
@@ -76,7 +63,7 @@ if [ "${TESTS}" = "" ]; then
     TESTS="${BASELINE}.*"
 fi
 EXIT_STATUS=0
-$PHARO_VM Pharo.image test --fail-on-failure "${TESTS}" 2>&1 || EXIT_STATUS=$?
+./pharo Pharo.image test --fail-on-failure "${TESTS}" 2>&1 || EXIT_STATUS=$?
 # ==============================================================================
 
 exit $EXIT_STATUS
