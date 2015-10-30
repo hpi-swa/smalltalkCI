@@ -47,15 +47,8 @@ case "$SMALLTALK" in
         exit 1
         ;;
 esac
-# ==============================================================================
 
-# Set paths and files
 # ==============================================================================
-PHARO_IMAGE="$SMALLTALK.image"
-PHARO_CHANGES="$SMALLTALK.changes"
-PHARO_VM="$FILETREE_CI_VMS/$SMALLTALK/pharo"
-# ==============================================================================
-
 # Download files accordingly if not available
 # ==============================================================================
 if [ ! -f "$FILETREE_CI_CACHE/$PHARO_IMAGE" ]; then
