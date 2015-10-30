@@ -7,10 +7,11 @@ smalltalk:
   - Squeak-4.6
   - Squeak-4.5
 
+  - Pharo-alpha
+  - Pharo-stable
   - Pharo-5.0
   - Pharo-4.0
   - Pharo-3.0
-  # - Pharo-2.0
 
 os:
   - linux
@@ -18,7 +19,8 @@ os:
 
 env:
   global:
-    - BASELINE=SWTDemo
+    - BASELINE="SWTDemo"
+    - PACKAGES="/packages"
 
 install:
   - wget -q -O fixtures.zip https://github.com/hpi-swa/filetreeCI/archive/fixtures.zip

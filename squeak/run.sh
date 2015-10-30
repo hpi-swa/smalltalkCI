@@ -57,7 +57,7 @@ case "$SMALLTALK" in
         SPUR_IMAGE=false
         ;;
     *)
-        print_error "Unsupported Squeak version ${SMALLTALK}"
+        print_error "Unsupported Squeak version '${SMALLTALK}'"
         exit 1
         ;;
 esac

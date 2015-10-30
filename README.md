@@ -39,13 +39,13 @@ smalltalk:
   - Squeak4.5
 env:
   global:
-    - BASELINE=myProject
-    # - BASELINE_GROUP="TravisCI" # Name of the group to load from baseline
-    # - PACKAGES="/packages" # Directory where Filetree looks for packages
-    # - FORCE_UPDATE="false" # Forces image update if set to "true" 
+    - BASELINE="myProject"
+    # - BASELINE_GROUP="TravisCI"       # Name of the group to load from baseline
+    # - PACKAGES="/packages"            # Directory where Filetree looks for packages
+    # - FORCE_UPDATE="false"            # Forces image update if set to "true" 
     # - RUN_SCRIPT="CustomRunScript.st" # .st file relative to your project's root
-    # - EXCLUDE_CATEGORIES="" # comma-separated list of category prefixes to exclude from testing
-    # - EXCLUDE_CLASSES="" # comma-separated list of class names to exclude from testing
+    # - EXCLUDE_CATEGORIES=""           # comma-separated list of category prefixes to exclude from testing
+    # - EXCLUDE_CLASSES=""              # comma-separated list of class names to exclude from testing
 ```
 
 ### Pharo-specific
@@ -53,16 +53,16 @@ env:
 language: smalltalk
 sudo: false
 smalltalk:
-  - Pharo-latest
-  - Pharo-stable
+  - Pharo-Latest
+  - Pharo-Stable
   - Pharo-5.0
   - Pharo-4.0
 env:
   global:
-    - BASELINE=myProject
-    # - TESTS=PackagesToTest      # RegEx, i.e.: [A-Z].*, default is defined as BASELINE.*
+    - BASELINE="myProject"
+    # - TESTS="PackagesToTest"    # RegEx, i.e.: [A-Z].*, default is defined as BASELINE.*
     # - BASELINE_GROUP="default"  # Name of the group to load from baseline
-    # - PACKAGES="/packages"      # Directory where Filetree looks for package
+    # - PACKAGES="."              # Directory where Filetree looks for package
 ```
 
 [TravisCI]: http://travis-ci.org/
