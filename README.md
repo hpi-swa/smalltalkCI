@@ -53,14 +53,16 @@ env:
 language: smalltalk
 sudo: false
 smalltalk:
+  - Pharo-latest
+  - Pharo-stable
   - Pharo-5.0
   - Pharo-4.0
-  - Pharo-3.0
 env:
   global:
     - BASELINE=myProject
-    # - BASELINE_GROUP="TravisCI" # Name of the group to load from baseline
-    # - PACKAGES="/packages" # Directory where Filetree looks for packages
+    # - TESTS=PackagesToTest      # RegEx, i.e.: [A-Z].*, default is defined as BASELINE.*
+    # - BASELINE_GROUP="default"  # Name of the group to load from baseline
+    # - PACKAGES="/packages"      # Directory where Filetree looks for package
 ```
 
 [TravisCI]: http://travis-ci.org/
