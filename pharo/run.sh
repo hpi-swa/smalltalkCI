@@ -100,8 +100,11 @@ Metacello new
 "
 
 print_info "Run tests..."
+if [ "${TESTS}" = "" ]; then
+    TESTS="${BASELINE}.*"
+fi
 EXIT_STATUS=0
-$PHARO_VM "$FILETREE_CI_BUILD/$PHARO_IMAGE" test --fail-on-failure "${BASELINE}.*" 2>&1 || EXIT_STATUS=$?
+$PHARO_VM "$FILETREE_CI_BUILD/$PHARO_IMAGE" test --fail-on-failure "${TESTS}" 2>&1 || EXIT_STATUS=$?
 # ==============================================================================
 
 exit $EXIT_STATUS
