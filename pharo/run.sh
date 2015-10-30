@@ -24,15 +24,21 @@ function print_error {
 # Determine Pharo download url
 # ==============================================================================
 case "$SMALLTALK" in
+    "Pharo-latest")
+        PHARO_GET_VERSION="alpha"
+        ;;
+    "Pharo-stable")
+        PHARO_GET_VERSION="stable"
+        ;;
     "Pharo-5.0")
         PHARO_GET_VERSION="50"
         ;;
     "Pharo-4.0")
         PHARO_GET_VERSION="40"
         ;;
-    "Pharo-3.0")
-        PHARO_GET_VERSION="30"
-        ;;
+    #"Pharo-3.0")
+    #    PHARO_GET_VERSION="30"
+    #    ;;
     # "Pharo-2.0")
     #     PHARO_GET_VERSION="20"
     #     ;;
@@ -55,7 +61,7 @@ PHARO_VM="$FILETREE_CI_VMS/$SMALLTALK/pharo"
 if [ ! -f "$FILETREE_CI_CACHE/$PHARO_IMAGE" ]; then
     print_info "Downloading $SMALLTALK image..."
     pushd $FILETREE_CI_CACHE > /dev/null
-    wget --quiet -O - get.pharo.org/${PHARO_GET_VERSION} | bash
+    wget --quiet -O - get.pharo.org/${PHARO_GET_VERSION}+vm | bash
     mv Pharo.image "$SMALLTALK.image"
     mv Pharo.changes "$SMALLTALK.changes"
     popd > /dev/null
