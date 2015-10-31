@@ -23,7 +23,7 @@ fi
 # ==============================================================================
 SPUR_IMAGE=true
 case "$SMALLTALK" in
-    "Squeak-Trunk"|"SqueakTrunk")
+    "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk")
         IMAGE_TAR="Squeak-Trunk.tar.gz"
         ;;
     "Squeak-5.0"|"Squeak5.0")

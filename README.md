@@ -33,10 +33,10 @@ It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] 
 language: smalltalk
 sudo: false
 smalltalk:
-  - SqueakTrunk
-  - Squeak5.0
-  - Squeak4.6
-  - Squeak4.5
+  - Squeak-trunk
+  - Squeak-5.0
+  - Squeak-4.6
+  - Squeak-4.5
 env:
   global:
     - BASELINE="myProject"
