@@ -23,10 +23,10 @@ function print_error {
 
 # Check required environment variables
 # ==============================================================================
-if [ -z "$PROJECT_HOME" ]; then
+if [[ -z "$PROJECT_HOME" ]]; then
     print_error "\$PROJECT_HOME is not defined!"
     exit 1
-elif [ -z "$BASELINE" ]; then
+elif [[ -z "$BASELINE" ]]; then
     print_error "\$BASELINE is not defined!"
     exit 1
 fi
@@ -34,18 +34,18 @@ fi
 
 # Check optional environment variables
 # ==============================================================================
-[ -z "$PACKAGES" ] && export PACKAGES="/packages"
-[ -z "$BASELINE_GROUP" ] && export BASELINE_GROUP="TravisCI"
+[[ -z "$PACKAGES" ]] && export PACKAGES="/packages"
+[[ -z "$BASELINE_GROUP" ]] && export BASELINE_GROUP="TravisCI"
 # ==============================================================================
 
 # Set default Smalltalk version
 # ==============================================================================
-[ -z "$SMALLTALK" ] && export SMALLTALK="Squeak-5.0"
+[[ -z "$SMALLTALK" ]] && export SMALLTALK="Squeak-5.0"
 # ==============================================================================
 
 # Make sure filetreeCI home directory is set
 # ==============================================================================
-if [ -z "$FILETREE_CI_HOME" ] && [ "$TRAVIS" != "true" ]; then
+if [[ -z "$FILETREE_CI_HOME" ]] && [[ "$TRAVIS" != "true" ]]; then
     export FILETREE_CI_HOME="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
     source "$FILETREE_CI_HOME/env_vars"
 fi
@@ -85,11 +85,11 @@ esac
 # Check exit status
 # ==============================================================================
 printf "\n\n"
-if [ $EXIT_STATUS -eq 0 ]; then
+if [[ $EXIT_STATUS -eq 0 ]]; then
     print_success "Build successful :)"
 else
     print_error "Build failed :("
-    if [ "$TRAVIS" = "true" ]; then
+    if [[ "$TRAVIS" = "true" ]]; then
         printf "\n\n"
         print_info "To reproduce the failed build locally, download filetreeCI and try running something like:"
         printf "\n"

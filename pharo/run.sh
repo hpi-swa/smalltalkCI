@@ -36,21 +36,21 @@ esac
 # ==============================================================================
 PHARO_IMAGE="$SMALLTALK.image"
 PHARO_CHANGES="$SMALLTALK.changes"
-if [ "$TRAVIS" = "true" ]; then
+if [[ "$TRAVIS" = "true" ]]; then
     PHARO_VM="$FILETREE_CI_VMS/$SMALLTALK/pharo"
 else
     PHARO_VM="$FILETREE_CI_VMS/$SMALLTALK/pharo-ui"
 fi
 
 # Optional environment variables
-[ -z "$BASELINE_GROUP" ] && BASELINE_GROUP="default"
-[ -z "$PACKAGES" ] && PACKAGES=""
-[ -z "$TESTS" ] && TESTS="${BASELINE}.*"
+[[ -z "$BASELINE_GROUP" ]] && BASELINE_GROUP="default"
+[[ -z "$PACKAGES" ]] && PACKAGES=""
+[[ -z "$TESTS" ]] && TESTS="${BASELINE}.*"
 # ==============================================================================
 
 # Download files accordingly if not available
 # ==============================================================================
-if [ ! -f "$FILETREE_CI_CACHE/$PHARO_IMAGE" ]; then
+if [[ ! -f "$FILETREE_CI_CACHE/$PHARO_IMAGE" ]]; then
     print_info "Downloading $SMALLTALK image..."
     pushd $FILETREE_CI_CACHE > /dev/null
     wget --quiet -O - get.pharo.org/${PHARO_GET_IMAGE} | bash
@@ -59,7 +59,7 @@ if [ ! -f "$FILETREE_CI_CACHE/$PHARO_IMAGE" ]; then
     popd > /dev/null
 fi
 
-if [ ! -d "$FILETREE_CI_VMS/$SMALLTALK" ]; then
+if [[ ! -d "$FILETREE_CI_VMS/$SMALLTALK" ]]; then
     print_info "Downloading $SMALLTALK vm..."
     mkdir "$FILETREE_CI_VMS/$SMALLTALK"
     pushd $FILETREE_CI_VMS/$SMALLTALK > /dev/null
@@ -68,7 +68,7 @@ if [ ! -d "$FILETREE_CI_VMS/$SMALLTALK" ]; then
     rm -f "$FILETREE_CI_VMS/$SMALLTALK/pharo-vm/libFT2Plugin.so"
     popd > /dev/null
     # Make sure vm is now available
-    [ -f "$PHARO_VM" ] || exit 1
+    [[ -f "$PHARO_VM" ]] || exit 1
 fi
 # ==============================================================================
 
