@@ -17,7 +17,7 @@ function print_success {
 }
 
 function print_error {
-    printf "\e[1;31m$1\e[0m\n"
+    printf "\e[1;31m$1\e[0m\n" 1>&2
 }
 # ==============================================================================
 
@@ -69,14 +69,14 @@ EXIT_STATUS=0
 case "$SMALLTALK" in
     Squeak*)
         print_info "Starting Squeak build..."
-        $FILETREE_CI_HOME/squeak/run.sh || EXIT_STATUS=$?
+        source $FILETREE_CI_HOME/squeak/run.sh || EXIT_STATUS=$?
         ;;
     Pharo*)
         print_info "Starting Pharo build..."
-        $FILETREE_CI_HOME/pharo/run.sh || EXIT_STATUS=$?
+        source $FILETREE_CI_HOME/pharo/run.sh || EXIT_STATUS=$?
         ;;
     *)
-        print_error "Unknown Smalltalk version ${SMALLTALK}"
+        print_error "Unknown Smalltalk version '${SMALLTALK}'"
         exit 1
         ;;
 esac
