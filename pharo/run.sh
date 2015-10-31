@@ -52,7 +52,7 @@ fi
 # ==============================================================================
 if [[ ! -f "$FILETREE_CI_CACHE/$PHARO_IMAGE" ]]; then
     print_info "Downloading $SMALLTALK image..."
-    pushd $FILETREE_CI_CACHE > /dev/null
+    pushd "$FILETREE_CI_CACHE" > /dev/null
     wget --quiet -O - get.pharo.org/${PHARO_GET_IMAGE} | bash
     mv Pharo.image "$SMALLTALK.image"
     mv Pharo.changes "$SMALLTALK.changes"
@@ -62,7 +62,7 @@ fi
 if [[ ! -d "$FILETREE_CI_VMS/$SMALLTALK" ]]; then
     print_info "Downloading $SMALLTALK vm..."
     mkdir "$FILETREE_CI_VMS/$SMALLTALK"
-    pushd $FILETREE_CI_VMS/$SMALLTALK > /dev/null
+    pushd "$FILETREE_CI_VMS/$SMALLTALK" > /dev/null
     wget --quiet -O - get.pharo.org/${PHARO_GET_VM} | bash
     # Remove libFT2Plugin if present
     rm -f "$FILETREE_CI_VMS/$SMALLTALK/pharo-vm/libFT2Plugin.so"

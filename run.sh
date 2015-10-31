@@ -5,29 +5,45 @@ set -e
 # Helper functions
 # ==============================================================================
 function print_info {
-    printf "\e[0;34m$1\e[0m\n"
+    printf "\e[0;34m%s\e[0m\n" "$1"
 }
 
 function print_notice {
-    printf "\e[1;33m$1\e[0m\n"
+    printf "\e[1;33m%s\e[0m\n" "$1"
 }
 
 function print_success {
-    printf "\e[1;32m$1\e[0m\n"
+    printf "\e[1;32m%s\e[0m\n" "$1"
 }
 
 function print_error {
-    printf "\e[1;31m$1\e[0m\n" 1>&2
+    printf "\e[1;31m%s\e[0m\n" "$1" 1>&2
 }
+# ==============================================================================
+
+# Check required software
+# ==============================================================================
+case "$(uname -s)" in
+    "Linux"|"Darwin")
+        ;;
+    *)
+        print_error "Unsupported platform '$(uname -s)'"
+        exit 1
+        ;;
+esac
+if [[ ! $(which curl 2> /dev/null) ]]; then
+    print_error "Please install curl."
+    exit 1
+fi
 # ==============================================================================
 
 # Check required environment variables
 # ==============================================================================
 if [[ -z "$PROJECT_HOME" ]]; then
-    print_error "\$PROJECT_HOME is not defined!"
+    print_error "\$PROJECT_HOME is not defined."
     exit 1
 elif [[ -z "$BASELINE" ]]; then
-    print_error "\$BASELINE is not defined!"
+    print_error "\$BASELINE is not defined."
     exit 1
 fi
 # ==============================================================================
@@ -46,7 +62,7 @@ fi
 # Make sure filetreeCI home directory is set
 # ==============================================================================
 if [[ -z "$FILETREE_CI_HOME" ]] && [[ "$TRAVIS" != "true" ]]; then
-    export FILETREE_CI_HOME="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
+    export FILETREE_CI_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     source "$FILETREE_CI_HOME/env_vars"
 fi
 # ==============================================================================
@@ -69,11 +85,11 @@ EXIT_STATUS=0
 case "$SMALLTALK" in
     Squeak*)
         print_info "Starting Squeak build..."
-        source $FILETREE_CI_HOME/squeak/run.sh || EXIT_STATUS=$?
+        source "$FILETREE_CI_HOME/squeak/run.sh" || EXIT_STATUS=$?
         ;;
     Pharo*)
         print_info "Starting Pharo build..."
-        source $FILETREE_CI_HOME/pharo/run.sh || EXIT_STATUS=$?
+        source "$FILETREE_CI_HOME/pharo/run.sh" || EXIT_STATUS=$?
         ;;
     *)
         print_error "Unknown Smalltalk version '${SMALLTALK}'"

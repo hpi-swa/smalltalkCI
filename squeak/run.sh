@@ -75,7 +75,7 @@ case "$(uname -s)" in
         COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
         ;;
     *)
-        print_error "$(basename $0): unknown platform $(uname -s)"
+        print_error "Unsupported platform '$(uname -s)'"
         exit 1
         ;;
 esac
@@ -105,7 +105,7 @@ tar xzf "$FILETREE_CI_CACHE/$IMAGE_TAR" -C "$FILETREE_CI_BUILD"
 print_info "Load project into image and run tests..."
 VM_ARGS="$RUN_SCRIPT $PACKAGES $BASELINE $BASELINE_GROUP $EXCLUDE_CATEGORIES $EXCLUDE_CLASSES $FORCE_UPDATE $KEEP_OPEN"
 EXIT_STATUS=0
-"$COG_VM" $COG_VM_PARAM $FILETREE_CI_IMAGE $VM_ARGS || EXIT_STATUS=$?
+"$COG_VM" $COG_VM_PARAM "$FILETREE_CI_IMAGE" $VM_ARGS || EXIT_STATUS=$?
 # ==============================================================================
 
 exit $EXIT_STATUS
