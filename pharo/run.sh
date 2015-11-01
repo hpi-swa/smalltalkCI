@@ -64,8 +64,6 @@ if [[ ! -d "$SMALLTALK_CI_VMS/$SMALLTALK" ]]; then
     mkdir "$SMALLTALK_CI_VMS/$SMALLTALK"
     pushd "$SMALLTALK_CI_VMS/$SMALLTALK" > /dev/null
     wget --quiet -O - get.pharo.org/${PHARO_GET_VM} | bash
-    # Remove libFT2Plugin if present
-    rm -f "$SMALLTALK_CI_VMS/$SMALLTALK/pharo-vm/libFT2Plugin.so"
     popd > /dev/null
     # Make sure vm is now available
     [[ -f "$PHARO_VM" ]] || exit 1
