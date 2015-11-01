@@ -37,9 +37,9 @@ esac
 PHARO_IMAGE="$SMALLTALK.image"
 PHARO_CHANGES="$SMALLTALK.changes"
 if [[ "$TRAVIS" = "true" ]]; then
-    PHARO_VM="$FILETREE_CI_VMS/$SMALLTALK/pharo"
+    PHARO_VM="$SMALLTALK_CI_VMS/$SMALLTALK/pharo"
 else
-    PHARO_VM="$FILETREE_CI_VMS/$SMALLTALK/pharo-ui"
+    PHARO_VM="$SMALLTALK_CI_VMS/$SMALLTALK/pharo-ui"
 fi
 
 # Optional environment variables
@@ -50,22 +50,22 @@ fi
 
 # Download files accordingly if not available
 # ==============================================================================
-if [[ ! -f "$FILETREE_CI_CACHE/$PHARO_IMAGE" ]]; then
+if [[ ! -f "$SMALLTALK_CI_CACHE/$PHARO_IMAGE" ]]; then
     print_info "Downloading $SMALLTALK image..."
-    pushd "$FILETREE_CI_CACHE" > /dev/null
+    pushd "$SMALLTALK_CI_CACHE" > /dev/null
     wget --quiet -O - get.pharo.org/${PHARO_GET_IMAGE} | bash
     mv Pharo.image "$SMALLTALK.image"
     mv Pharo.changes "$SMALLTALK.changes"
     popd > /dev/null
 fi
 
-if [[ ! -d "$FILETREE_CI_VMS/$SMALLTALK" ]]; then
+if [[ ! -d "$SMALLTALK_CI_VMS/$SMALLTALK" ]]; then
     print_info "Downloading $SMALLTALK vm..."
-    mkdir "$FILETREE_CI_VMS/$SMALLTALK"
-    pushd "$FILETREE_CI_VMS/$SMALLTALK" > /dev/null
+    mkdir "$SMALLTALK_CI_VMS/$SMALLTALK"
+    pushd "$SMALLTALK_CI_VMS/$SMALLTALK" > /dev/null
     wget --quiet -O - get.pharo.org/${PHARO_GET_VM} | bash
     # Remove libFT2Plugin if present
-    rm -f "$FILETREE_CI_VMS/$SMALLTALK/pharo-vm/libFT2Plugin.so"
+    rm -f "$SMALLTALK_CI_VMS/$SMALLTALK/pharo-vm/libFT2Plugin.so"
     popd > /dev/null
     # Make sure vm is now available
     [[ -f "$PHARO_VM" ]] || exit 1
@@ -75,15 +75,15 @@ fi
 # Prepare image and virtual machine
 # ==============================================================================
 print_info "Preparing image..."
-cp "$FILETREE_CI_CACHE/$PHARO_IMAGE" "$FILETREE_CI_BUILD"
-cp "$FILETREE_CI_CACHE/$PHARO_CHANGES" "$FILETREE_CI_BUILD"
+cp "$SMALLTALK_CI_CACHE/$PHARO_IMAGE" "$SMALLTALK_CI_BUILD"
+cp "$SMALLTALK_CI_CACHE/$PHARO_CHANGES" "$SMALLTALK_CI_BUILD"
 # ==============================================================================
 
 # ==============================================================================
 # Load project and run tests
 # ==============================================================================
 print_info "Loading project..."
-$PHARO_VM "$FILETREE_CI_BUILD/$PHARO_IMAGE" eval --save "
+$PHARO_VM "$SMALLTALK_CI_BUILD/$PHARO_IMAGE" eval --save "
 Metacello new 
     baseline: '${BASELINE}';
     repository: 'filetree://${PROJECT_HOME}${PACKAGES}';
@@ -92,7 +92,7 @@ Metacello new
 
 print_info "Run tests..."
 EXIT_STATUS=0
-$PHARO_VM "$FILETREE_CI_BUILD/$PHARO_IMAGE" test --fail-on-failure "$TESTS" 2>&1 || EXIT_STATUS=$?
+$PHARO_VM "$SMALLTALK_CI_BUILD/$PHARO_IMAGE" test --fail-on-failure "$TESTS" 2>&1 || EXIT_STATUS=$?
 # ==============================================================================
 
 exit $EXIT_STATUS

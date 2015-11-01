@@ -23,9 +23,9 @@ env:
     - PACKAGES="/packages"
 
 install:
-  - wget -q -O fixtures.zip https://github.com/hpi-swa/filetreeCI/archive/fixtures.zip
+  - wget -q -O fixtures.zip https://github.com/hpi-swa/smalltalkCI/archive/fixtures.zip
   - unzip -q fixtures.zip
-  - export PROJECT_HOME="$(pwd)/filetreeCI-fixtures"
+  - export PROJECT_HOME="$(pwd)/smalltalkCI-fixtures"
 
 branches:
   except:

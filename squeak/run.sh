@@ -13,7 +13,7 @@ IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/i
 [[ -z "$FORCE_UPDATE" ]] && FORCE_UPDATE="false"
 [[ -z "$KEEP_OPEN" ]] && KEEP_OPEN="false"
 if [[ -z "$RUN_SCRIPT" ]]; then
-    RUN_SCRIPT="$FILETREE_CI_HOME/squeak/run.st"
+    RUN_SCRIPT="$SMALLTALK_CI_HOME/squeak/run.st"
 else
     RUN_SCRIPT="$PROJECT_HOME/$RUN_SCRIPT"
 fi
@@ -52,10 +52,10 @@ case "$(uname -s)" in
         print_info "Linux detected..."
         if [[ "$SPUR_IMAGE" = true ]]; then
             COG_VM_FILE_BASE="cog_linux_spur"
-            COG_VM="$FILETREE_CI_VMS/cogspurlinux/bin/squeak"
+            COG_VM="$SMALLTALK_CI_VMS/cogspurlinux/bin/squeak"
         else
             COG_VM_FILE_BASE="cog_linux"
-            COG_VM="$FILETREE_CI_VMS/coglinux/bin/squeak"
+            COG_VM="$SMALLTALK_CI_VMS/coglinux/bin/squeak"
         fi
         COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
         if [[ "$TRAVIS" = "true" ]]; then
@@ -67,10 +67,10 @@ case "$(uname -s)" in
         print_info "OS X detected..."
         if [[ "$SPUR_IMAGE" = true ]]; then
             COG_VM_FILE_BASE="cog_osx_spur"
-            COG_VM="$FILETREE_CI_VMS/CogSpur.app/Contents/MacOS/Squeak"
+            COG_VM="$SMALLTALK_CI_VMS/CogSpur.app/Contents/MacOS/Squeak"
         else
             COG_VM_FILE_BASE="cog_osx"
-            COG_VM="$FILETREE_CI_VMS/Cog.app/Contents/MacOS/Squeak"
+            COG_VM="$SMALLTALK_CI_VMS/Cog.app/Contents/MacOS/Squeak"
         fi
         COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
         ;;
@@ -83,29 +83,29 @@ esac
 
 # Download files accordingly if not available
 # ==============================================================================
-if [[ ! -f "$FILETREE_CI_CACHE/$COG_VM_FILE" ]]; then
+if [[ ! -f "$SMALLTALK_CI_CACHE/$COG_VM_FILE" ]]; then
     print_info "Downloading virtual machine..."
-    curl -s "$VM_DOWNLOAD/$COG_VM_FILE" > "$FILETREE_CI_CACHE/$COG_VM_FILE"
+    curl -s "$VM_DOWNLOAD/$COG_VM_FILE" > "$SMALLTALK_CI_CACHE/$COG_VM_FILE"
 fi
 if [[ ! -f "$COG_VM" ]]; then
     print_info "Extracting virtual machine..."
-    tar xzf "$FILETREE_CI_CACHE/$COG_VM_FILE" -C "$FILETREE_CI_VMS"
+    tar xzf "$SMALLTALK_CI_CACHE/$COG_VM_FILE" -C "$SMALLTALK_CI_VMS"
 fi
-if [[ ! -f "$FILETREE_CI_CACHE/$IMAGE_TAR" ]]; then
+if [[ ! -f "$SMALLTALK_CI_CACHE/$IMAGE_TAR" ]]; then
     print_info "Downloading $SMALLTALK testing image..."
-    curl -s "$IMAGE_DOWNLOAD/$IMAGE_TAR" > "$FILETREE_CI_CACHE/$IMAGE_TAR"
+    curl -s "$IMAGE_DOWNLOAD/$IMAGE_TAR" > "$SMALLTALK_CI_CACHE/$IMAGE_TAR"
 fi
 # ==============================================================================
 
 # Extract image and run on virtual machine
 # ==============================================================================
 print_info "Extracting image..."
-tar xzf "$FILETREE_CI_CACHE/$IMAGE_TAR" -C "$FILETREE_CI_BUILD"
+tar xzf "$SMALLTALK_CI_CACHE/$IMAGE_TAR" -C "$SMALLTALK_CI_BUILD"
 
 print_info "Load project into image and run tests..."
 VM_ARGS="$RUN_SCRIPT $PACKAGES $BASELINE $BASELINE_GROUP $EXCLUDE_CATEGORIES $EXCLUDE_CLASSES $FORCE_UPDATE $KEEP_OPEN"
 EXIT_STATUS=0
-"$COG_VM" $COG_VM_PARAM "$FILETREE_CI_IMAGE" $VM_ARGS || EXIT_STATUS=$?
+"$COG_VM" $COG_VM_PARAM "$SMALLTALK_CI_IMAGE" $VM_ARGS || EXIT_STATUS=$?
 # ==============================================================================
 
 exit $EXIT_STATUS

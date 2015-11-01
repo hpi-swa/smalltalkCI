@@ -59,24 +59,24 @@ fi
 [[ -z "$SMALLTALK" ]] && export SMALLTALK="Squeak-5.0"
 # ==============================================================================
 
-# Make sure filetreeCI home directory is set
+# Make sure smalltalkCI home directory is set
 # ==============================================================================
-if [[ -z "$FILETREE_CI_HOME" ]] && [[ "$TRAVIS" != "true" ]]; then
-    export FILETREE_CI_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    source "$FILETREE_CI_HOME/env_vars"
+if [[ -z "$SMALLTALK_CI_HOME" ]] && [[ "$TRAVIS" != "true" ]]; then
+    export SMALLTALK_CI_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    source "$SMALLTALK_CI_HOME/env_vars"
 fi
 # ==============================================================================
 
 # Prepare folders
 # ==============================================================================
 print_info "Preparing folders..."
-[[ -d "$FILETREE_CI_CACHE" ]] || mkdir "$FILETREE_CI_CACHE"
-[[ -d "$FILETREE_CI_BUILD_BASE" ]] || mkdir "$FILETREE_CI_BUILD_BASE"
-[[ -d "$FILETREE_CI_VMS" ]] || mkdir "$FILETREE_CI_VMS"
+[[ -d "$SMALLTALK_CI_CACHE" ]] || mkdir "$SMALLTALK_CI_CACHE"
+[[ -d "$SMALLTALK_CI_BUILD_BASE" ]] || mkdir "$SMALLTALK_CI_BUILD_BASE"
+[[ -d "$SMALLTALK_CI_VMS" ]] || mkdir "$SMALLTALK_CI_VMS"
 # Create folder for this build (should not exist)
-mkdir "$FILETREE_CI_BUILD"
+mkdir "$SMALLTALK_CI_BUILD"
 # Link project folder to git_cache
-ln -s "$PROJECT_HOME" "$FILETREE_CI_GIT"
+ln -s "$PROJECT_HOME" "$SMALLTALK_CI_GIT"
 # ==============================================================================
 
 # Start build accordingly
@@ -85,11 +85,11 @@ EXIT_STATUS=0
 case "$SMALLTALK" in
     Squeak*)
         print_info "Starting Squeak build..."
-        source "$FILETREE_CI_HOME/squeak/run.sh" || EXIT_STATUS=$?
+        source "$SMALLTALK_CI_HOME/squeak/run.sh" || EXIT_STATUS=$?
         ;;
     Pharo*)
         print_info "Starting Pharo build..."
-        source "$FILETREE_CI_HOME/pharo/run.sh" || EXIT_STATUS=$?
+        source "$SMALLTALK_CI_HOME/pharo/run.sh" || EXIT_STATUS=$?
         ;;
     *)
         print_error "Unknown Smalltalk version '${SMALLTALK}'"
@@ -107,7 +107,7 @@ else
     print_error "Build failed :("
     if [[ "$TRAVIS" = "true" ]]; then
         printf "\n\n"
-        print_info "To reproduce the failed build locally, download filetreeCI and try running something like:"
+        print_info "To reproduce the failed build locally, download smalltalkCI and try running something like:"
         printf "\n"
         print_notice "SMALLTALK=$SMALLTALK BASELINE=$BASELINE BASELINE_GROUP=$BASELINE_GROUP PROJECT_HOME=/local/path/to/project PACKAGES=$PACKAGES FORCE_UPDATE=$FORCE_UPDATE KEEP_OPEN=true ./run.sh"
         printf "\n"
