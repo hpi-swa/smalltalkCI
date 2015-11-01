@@ -1,4 +1,4 @@
-# filetreeCI [![Build Status](https://travis-ci.org/hpi-swa/filetreeCI.svg?branch=master)](https://travis-ci.org/hpi-swa/filetreeCI)
+# smalltalkCI [![Build Status](https://travis-ci.org/hpi-swa/filetreeCI.svg?branch=master)](https://travis-ci.org/hpi-swa/filetreeCI)
 This is a simple tool to test Squeak/Smalltalk and Pharo projects on [Travis CI][TravisCI].
 
 It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] and aims to make testing Smalltalk projects easy and fast.
