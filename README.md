@@ -19,6 +19,16 @@ It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] 
 - Uses Pharo's built-in command-line testing framework
 
 
+## List Of Images Supported
+| Squeak        | Pharo         |
+| ------------- | ------------- |
+| Squeak-trunk  | Pharo-alpha   |
+| Squeak-5.0    | Pharo-stable  |
+| Squeak-4.6    | Pharo-5.0     |
+| Squeak-4.5    | Pharo-4.0     |
+|               | Pharo-3.0     |
+
+
 ## How To Use
 1. [Create a Baseline for your project][baseline].
 2. Export your Smalltalk project with [FileTree/Metacello][metacello].
@@ -57,6 +67,7 @@ smalltalk:
   - Pharo-stable
   - Pharo-5.0
   - Pharo-4.0
+  - Pharo-3.0
 env:
   global:
     - BASELINE="myProject"
