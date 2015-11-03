@@ -19,7 +19,7 @@ It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] 
 - Uses Pharo's built-in command-line testing framework
 
 
-## List Of Images Supported
+## List Of Images Supported <a name="images"/>
 | Squeak        | Pharo         |
 | ------------- | ------------- |
 | Squeak-trunk  | Pharo-alpha   |
@@ -36,7 +36,7 @@ It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] 
 4. Enjoy your fast Smalltalk builds!
 
 
-## `.travis.yml` Templates
+## `.travis.yml` Templates <a name="templates"/>
 
 ### Squeak-specific
 ```yml
