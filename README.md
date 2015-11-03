@@ -53,8 +53,8 @@ env:
 language: smalltalk
 sudo: false
 smalltalk:
-  - Pharo-Latest
-  - Pharo-Stable
+  - Pharo-alpha
+  - Pharo-stable
   - Pharo-5.0
   - Pharo-4.0
 env:
