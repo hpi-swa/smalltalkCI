@@ -104,8 +104,5 @@ tar xzf "$SMALLTALK_CI_CACHE/$IMAGE_TAR" -C "$SMALLTALK_CI_BUILD"
 
 print_info "Load project into image and run tests..."
 VM_ARGS="$RUN_SCRIPT $PACKAGES $BASELINE $BASELINE_GROUP $EXCLUDE_CATEGORIES $EXCLUDE_CLASSES $FORCE_UPDATE $KEEP_OPEN"
-EXIT_STATUS=0
 "$COG_VM" $COG_VM_PARAM "$SMALLTALK_CI_IMAGE" $VM_ARGS || EXIT_STATUS=$?
 # ==============================================================================
-
-exit $EXIT_STATUS

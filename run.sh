@@ -85,11 +85,11 @@ EXIT_STATUS=0
 case "$SMALLTALK" in
     Squeak*)
         print_info "Starting Squeak build..."
-        source "$SMALLTALK_CI_HOME/squeak/run.sh" || EXIT_STATUS=$?
+        source "$SMALLTALK_CI_HOME/squeak/run.sh"
         ;;
     Pharo*)
         print_info "Starting Pharo build..."
-        source "$SMALLTALK_CI_HOME/pharo/run.sh" || EXIT_STATUS=$?
+        source "$SMALLTALK_CI_HOME/pharo/run.sh"
         ;;
     *)
         print_error "Unknown Smalltalk version '${SMALLTALK}'"
