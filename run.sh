@@ -91,6 +91,20 @@ case "$SMALLTALK" in
         print_info "Starting Pharo build..."
         source "$SMALLTALK_CI_HOME/pharo/run.sh"
         ;;
+    GemStone*)
+        print_info "Starting GemStone build (falling back to builderCI)..."
+        export ST="$SMALLTALK"
+        cd $HOME
+        wget -q -O builderCI.zip https://github.com/dalehenrich/builderCI/archive/master.zip
+        unzip -q builderCI.zip
+        cd builderCI-*
+        source build_env_vars
+        ln -s $PROJECT_HOME $GIT_PATH
+        print_info "builderCI: Build image..."
+        ./build_image.sh
+        print_info "builderCI: Run tests..."
+        $BUILDER_CI_HOME/testTravisCI.sh -verbose 
+        ;;
     *)
         print_error "Unknown Smalltalk version '${SMALLTALK}'"
         exit 1
