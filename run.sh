@@ -37,9 +37,9 @@ if [[ ! $(which curl 2> /dev/null) ]]; then
 fi
 # ==============================================================================
 
-# Fall back to builderCI if requested or for GemStone builds
+# Fall back to builderCI if requested or for GemStone/PharoCore builds
 # ==============================================================================
-if [[ -n "$BUILDERCI" ]] || [[ "$SMALLTALK" == "GemStone"* ]]; then
+if [[ -n "$BUILDERCI" ]] || [[ "$SMALLTALK" == ("GemStone"*|"PharoCore"*) ]]; then
     if [[ "$TRAVIS" ]]; then
         # Make sure the scripts runs on standard infrastructure
         sudo -n true
