@@ -62,7 +62,6 @@ if [[ -n "$BUILDERCI" ]] || [[ "$SMALLTALK" == "GemStone"* ]]; then
     EXIT_STATUS=0
     $BUILDER_CI_HOME/testTravisCI.sh -verbose || EXIT_STATUS=$?
     exit $EXIT_STATUS
-    ;;
 fi
 # ==============================================================================
 
