@@ -41,10 +41,15 @@ fi
 # ==============================================================================
 if [[ -n "$BUILDERCI" ]] || [[ "$SMALLTALK" == "GemStone"* ]]; then
     if [[ "$TRAVIS" ]]; then
-        # Make sure the scripts runs on standard infrastructure
+        # Make sure the script runs on standard infrastructure
         sudo -n true
         if [[ "$?" != 0 ]]; then
             print_error "sudo is not available."
+            exit 1
+        fi
+        # Make sure the script runs on Linux
+        if [[ "$TRAVIS_OS_NAME" != "linux" ]]; then
+            print_error "builderCI only supports Linux builds."
             exit 1
         fi
     fi
