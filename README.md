@@ -22,17 +22,17 @@ It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] 
 
 <a name="images"/>
 ## List Of Images Supported
-| Squeak        | Pharo          | GemStone          |
-| ------------- | -------------- | ----------------- |
-| Squeak-trunk  | Pharo-alpha    | GemStone-3.2.7*   |
-| Squeak-5.0    | Pharo-stable   | GemStone-3.2.0*   |
-| Squeak-4.6    | Pharo-5.0      | GemStone-3.1.0.6* |
-| Squeak-4.5    | Pharo-4.0      | GemStone-3.1.0.2* |
-| Squeak-4.4*   | Pharo-3.0      | GemStone-3.0.1*   |
-| Squeak-4.3*   | Pharo-2.0*     | GemStone-2.4.6*   |
-|               | Pharo-1.4*     | GemStone-2.4.5*   |
-|               | PharoCore-1.2* | GemStone-2.4.4.1* |
-|               | PharoCore-1.1* |                   |
+| Squeak          | Pharo            | GemStone            |
+| --------------- | ---------------- | ------------------- |
+| `Squeak-trunk`  | `Pharo-alpha`    | `GemStone-3.2.7`*   |
+| `Squeak-5.0`    | `Pharo-stable`   | `GemStone-3.2.0`*   |
+| `Squeak-4.6`    | `Pharo-5.0`      | `GemStone-3.1.0.6`* |
+| `Squeak-4.5`    | `Pharo-4.0`      | `GemStone-3.1.0.2`* |
+| `Squeak-4.4`*   | `Pharo-3.0`      | `GemStone-3.0.1`*   |
+| `Squeak-4.3`*   | `Pharo-2.0`*     | `GemStone-2.4.6`*   |
+|                 | `Pharo-1.4`*     | `GemStone-2.4.5`*   |
+|                 | `PharoCore-1.2`* | `GemStone-2.4.4.1`* |
+|                 | `PharoCore-1.1`* |                     |
 
 *requires builderCI fallback
 
@@ -56,8 +56,8 @@ smalltalk:
   - Squeak-5.0
   - Squeak-4.6
   - Squeak-4.5
-  # - Squeak-4.4                          # requires `sudo: true` and `BUILDERCI=true`
-  # - Squeak-4.3                          # requires `sudo: true` and `BUILDERCI=true`
+  # - Squeak-4.4                        # requires `sudo: true` and `BUILDERCI=true`
+  # - Squeak-4.3                        # requires `sudo: true` and `BUILDERCI=true`
 env:
   global:
     - BASELINE="myProject"
@@ -80,10 +80,10 @@ smalltalk:
   - Pharo-5.0
   - Pharo-4.0
   - Pharo-3.0
-  # - Pharo-2.0                     # requires `sudo: true` and `BUILDERCI=true`
-  # - Pharo-1.4                     # requires `sudo: true` and `BUILDERCI=true`
-  # - PharoCore-1.2                 # requires `sudo: true` and `BUILDERCI=true`
-  # - PharoCore-1.1                 # requires `sudo: true` and `BUILDERCI=true`
+  # - Pharo-2.0                   # requires `sudo: true` and `BUILDERCI=true`
+  # - Pharo-1.4                   # requires `sudo: true` and `BUILDERCI=true`
+  # - PharoCore-1.2               # requires `sudo: true` and `BUILDERCI=true`
+  # - PharoCore-1.1               # requires `sudo: true` and `BUILDERCI=true`
 env:
   global:
     - BASELINE="myProject"
