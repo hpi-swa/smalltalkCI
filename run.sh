@@ -37,6 +37,35 @@ if [[ ! $(which curl 2> /dev/null) ]]; then
 fi
 # ==============================================================================
 
+# Fall back to builderCI if requested or for GemStone builds
+# ==============================================================================
+if [[ -n "$BUILDERCI" ]] || [[ "$SMALLTALK" == "GemStone"* ]]; then
+    if [[ "$TRAVIS" ]]; then
+        # Make sure the scripts runs on standard infrastructure
+        sudo -n true
+        if [[ "$?" != 0 ]]; then
+            print_error "sudo is not available."
+            exit 1
+        fi
+    fi
+    print_info "Starting legacy build using builderCI..."
+    export ST="$SMALLTALK"
+    cd $HOME
+    wget -q -O builderCI.zip https://github.com/dalehenrich/builderCI/archive/master.zip
+    unzip -q builderCI.zip
+    cd builderCI-*
+    source build_env_vars
+    ln -s $PROJECT_HOME $GIT_PATH
+    print_info "builderCI: Build image..."
+    ./build_image.sh
+    print_info "builderCI: Run tests..."
+    EXIT_STATUS=0
+    $BUILDER_CI_HOME/testTravisCI.sh -verbose || EXIT_STATUS=$?
+    exit $EXIT_STATUS
+    ;;
+fi
+# ==============================================================================
+
 # Check required environment variables
 # ==============================================================================
 if [[ -z "$PROJECT_HOME" ]]; then
@@ -91,20 +120,6 @@ case "$SMALLTALK" in
         print_info "Starting Pharo build..."
         source "$SMALLTALK_CI_HOME/pharo/run.sh"
         ;;
-    GemStone*)
-        print_info "Starting GemStone build (falling back to builderCI)..."
-        export ST="$SMALLTALK"
-        cd $HOME
-        wget -q -O builderCI.zip https://github.com/dalehenrich/builderCI/archive/master.zip
-        unzip -q builderCI.zip
-        cd builderCI-*
-        source build_env_vars
-        ln -s $PROJECT_HOME $GIT_PATH
-        print_info "builderCI: Build image..."
-        ./build_image.sh
-        print_info "builderCI: Run tests..."
-        $BUILDER_CI_HOME/testTravisCI.sh -verbose 
-        ;;
     *)
         print_error "Unknown Smalltalk version '${SMALLTALK}'"
         exit 1
@@ -119,7 +134,7 @@ if [[ $EXIT_STATUS -eq 0 ]]; then
     print_success "Build successful :)"
 else
     print_error "Build failed :("
-    if [[ "$TRAVIS" = "true" ]]; then
+    if [[ "$TRAVIS" ]]; then
         printf "\n\n"
         print_info "To reproduce the failed build locally, download smalltalkCI and try running something like:"
         printf "\n"
