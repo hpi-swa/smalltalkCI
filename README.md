@@ -91,6 +91,10 @@ env:
     # - BASELINE_GROUP="default"  # Name of the group to load from baseline
     # - PACKAGES="."              # Directory where Filetree looks for package
     # - BUILDERCI=false           # Set to `true` for builderCI fallback
+addons:
+  apt:
+    packages:
+      - libssl1.0.0:i386          # Support older SqueakSSL plugins
 ```
 
 ### GemStone-specific
