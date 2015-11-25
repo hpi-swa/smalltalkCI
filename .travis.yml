@@ -20,6 +20,7 @@ os:
 env:
   global:
     - BASELINE="SWTDemo"
+    - BASELINE_GROUP="TravisCI"
     - PACKAGES="/packages"
 
 install:
