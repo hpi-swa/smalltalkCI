@@ -84,7 +84,6 @@ fi
 # Check optional environment variables
 # ==============================================================================
 [[ -z "$PACKAGES" ]] && export PACKAGES="/packages"
-[[ -z "$BASELINE_GROUP" ]] && export BASELINE_GROUP="TravisCI"
 # ==============================================================================
 
 # Set default Smalltalk version

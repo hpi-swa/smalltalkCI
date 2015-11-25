@@ -8,6 +8,7 @@ VM_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/vms"
 IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images"
 
 # Optional environment variables
+[[ -z "$BASELINE_GROUP" ]] && export BASELINE_GROUP="TravisCI"
 [[ -z "$EXCLUDE_CATEGORIES" ]] && EXCLUDE_CATEGORIES="nil"
 [[ -z "$EXCLUDE_CLASSES" ]] && EXCLUDE_CLASSES="nil"
 [[ -z "$FORCE_UPDATE" ]] && FORCE_UPDATE="false"
