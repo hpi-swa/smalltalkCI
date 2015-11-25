@@ -94,7 +94,7 @@ env:
 addons:
   apt:
     packages:
-      - libssl1.0.0:i386          # Support older SqueakSSL plugins
+      - libssl1.0.0:i386          # Support for older SqueakSSL plugins
 ```
 
 ### GemStone-specific
