@@ -84,7 +84,7 @@ print_info "Loading project..."
 $PHARO_VM "$SMALLTALK_CI_BUILD/$PHARO_IMAGE" eval --save "
 Metacello new 
     baseline: '${BASELINE}';
-    repository: 'filetree://${PROJECT_HOME}${PACKAGES}';
+    repository: 'filetree://${PROJECT_HOME}/${PACKAGES}';
     load: '${BASELINE_GROUP}'.
 "
 
