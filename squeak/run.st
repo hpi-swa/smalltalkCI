@@ -31,14 +31,14 @@ author initials which might fail these tests. So we set some dummy initials here
 
 timeToRun := [ Metacello new
   baseline: baselineName;
-  repository: 'filetree://', gitPath, packagesDir;
+  repository: 'filetree://', gitPath, '/', packagesDir;
   get ] timeToRun.
 
 Transcript cr; cr; show: '[ Time to get baseline: ', timeToRun, 'ms ] '; cr.
 
 timeToRun := [ Metacello new
   baseline: baselineName;
-  repository: 'filetree://', gitPath, packagesDir;
+  repository: 'filetree://', gitPath, '/', packagesDir;
   load: baselineGroup ] timeToRun.
 
 Transcript cr; cr; show: '[ Time to load baseline: ', timeToRun, 'ms ]'; cr.

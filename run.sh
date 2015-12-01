@@ -83,7 +83,11 @@ fi
 
 # Check optional environment variables
 # ==============================================================================
-[[ -z "$PACKAGES" ]] && export PACKAGES="/packages"
+[[ -z "$PACKAGES" ]] && export PACKAGES="packages"
+if [[ ${PACKAGES:0:1} == "/" ]]; then
+    export PACKAGES=${PACKAGES:1}
+    print_notice "Please remove the leading slash from $PACKAGES."
+fi
 # ==============================================================================
 
 # Set default Smalltalk version

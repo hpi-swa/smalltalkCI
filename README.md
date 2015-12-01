@@ -62,7 +62,7 @@ env:
   global:
     - BASELINE="myProject"
     # - BASELINE_GROUP="TravisCI"       # Name of the group to load from baseline
-    # - PACKAGES="/packages"            # Directory where Filetree looks for packages
+    # - PACKAGES="packages"             # Directory where Filetree looks for packages
     # - FORCE_UPDATE="false"            # Forces image update if set to `true` 
     # - RUN_SCRIPT="CustomRunScript.st" # .st file relative to your project's root
     # - EXCLUDE_CATEGORIES=""           # comma-separated list of category prefixes to exclude from testing
