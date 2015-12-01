@@ -86,7 +86,7 @@ fi
 [[ -z "$PACKAGES" ]] && export PACKAGES="packages"
 if [[ ${PACKAGES:0:1} == "/" ]]; then
     export PACKAGES=${PACKAGES:1}
-    print_notice "Please remove the leading slash from $PACKAGES."
+    print_notice "Please remove the leading slash from \$PACKAGES."
 fi
 # ==============================================================================
 
