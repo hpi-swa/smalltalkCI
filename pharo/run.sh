@@ -89,5 +89,5 @@ Metacello new
 "
 
 print_info "Run tests..."
-$PHARO_VM "$SMALLTALK_CI_BUILD/$PHARO_IMAGE" test --fail-on-failure "$TESTS" 2>&1 || EXIT_STATUS=$?
+$PHARO_VM "$SMALLTALK_CI_BUILD/$PHARO_IMAGE" test --junit-xml-output --fail-on-failure "$TESTS" 2>&1 || EXIT_STATUS=$?
 # ==============================================================================
