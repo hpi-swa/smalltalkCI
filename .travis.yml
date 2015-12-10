@@ -1,5 +1,8 @@
+# Define default build system
 language: smalltalk
 sudo: false
+dist: precise
+group: stable
 
 smalltalk:
   - Squeak-trunk
@@ -34,22 +37,28 @@ matrix:
     - smalltalk: Squeak-4.4
       os: linux
       sudo: required
+      env: BUILDERCI=true
     - smalltalk: Squeak-4.3
       os: linux
       sudo: required
+      env: BUILDERCI=true
 
     - smalltalk: Pharo-2.0
       os: linux
       sudo: required
+      env: BUILDERCI=true
     - smalltalk: Pharo-1.4
       os: linux
       sudo: required
+      env: BUILDERCI=true
     - smalltalk: Pharo-1.2
       os: linux
       sudo: required
+      env: BUILDERCI=true
     - smalltalk: Pharo-1.1
       os: linux
       sudo: required
+      env: BUILDERCI=true
   
     - smalltalk: GemStone-3.2.7
       os: linux
