@@ -13,6 +13,25 @@ smalltalk:
   - Pharo-4.0
   - Pharo-3.0
 
+  # Legacy builds using builderCI fallback
+  
+  - Squeak-4.4
+  - Squeak-4.3
+  
+  - Pharo-2.0
+  - Pharo-1.4
+  - Pharo-1.2
+  - Pharo-1.1
+
+  - GemStone-3.2.7
+  - GemStone-3.2.0
+  - GemStone-3.1.0.6
+  - GemStone-3.1.0.2
+  - GemStone-3.0.1
+  - GemStone-2.4.6
+  - GemStone-2.4.5
+  - GemStone-2.4.4.1
+
 os:
   - linux
   - osx
@@ -27,3 +46,37 @@ install:
   - wget -q -O fixtures.zip https://github.com/hpi-swa/smalltalkCI/archive/fixtures.zip
   - unzip -q fixtures.zip
   - export PROJECT_HOME="$(pwd)/smalltalkCI-fixtures"
+
+# Exclude OS X builds for builderCI fallback
+matrix:
+  exclude:
+    - smalltalk: Squeak-4.4
+      os: osx
+    - smalltalk: Squeak-4.3
+      os: osx
+    
+    - smalltalk: Pharo-2.0
+      os: osx
+    - smalltalk: Pharo-1.4
+      os: osx
+    - smalltalk: Pharo-1.2
+      os: osx
+    - smalltalk: Pharo-1.1
+      os: osx
+  
+    - smalltalk: GemStone-3.2.7
+      os: osx
+    - smalltalk: GemStone-3.2.0
+      os: osx
+    - smalltalk: GemStone-3.1.0.6
+      os: osx
+    - smalltalk: GemStone-3.1.0.2
+      os: osx
+    - smalltalk: GemStone-3.0.1
+      os: osx
+    - smalltalk: GemStone-2.4.6
+      os: osx
+    - smalltalk: GemStone-2.4.5
+      os: osx
+    - smalltalk: GemStone-2.4.4.1
+      os: osx
