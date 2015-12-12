@@ -99,8 +99,7 @@ runTestSuite: suite
             | errMsg |
             "Re-run test case and collect debug info"
             [ each performTest ] on: Exception do: [ :signal |
-                errMsg := signal asString.
-                signal return: false ].
+                errMsg := signal asString ].
             Transcript show: each class name asString , '>>' , each selector printString , ' (', errMsg, ')'; cr ].
     result errors notEmpty
         ifTrue: [ 
@@ -114,8 +113,7 @@ runTestSuite: suite
             "Re-run test case and collect debug info"
             [ each performTest ] on: Exception do: [ :signal |
                 errMsg := signal asString.
-                errStack := signal signalerContext shortStack.
-                signal return: false ].
+                errStack := signal signalerContext shortStack ].
             Transcript
                 show: '/*-------------------------------------------------------'; cr;
                 show: each class name asString , '>>' , each selector printString , ' (', errMsg, ')';
