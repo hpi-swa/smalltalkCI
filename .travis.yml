@@ -35,52 +35,64 @@ matrix:
     - smalltalk: Squeak-4.4
       os: linux
       sudo: required
-      dist: precise
       group: legacy
       env: BUILDERCI=true
     - smalltalk: Squeak-4.3
       os: linux
       sudo: required
+      group: legacy
       env: BUILDERCI=true
 
     - smalltalk: Pharo-2.0
       os: linux
       sudo: required
+      group: legacy
       env: BUILDERCI=true
     - smalltalk: Pharo-1.4
       os: linux
       sudo: required
+      group: legacy
       env: BUILDERCI=true
     - smalltalk: Pharo-1.2
       os: linux
       sudo: required
+      group: legacy
       env: BUILDERCI=true
     - smalltalk: Pharo-1.1
       os: linux
       sudo: required
+      group: legacy
       env: BUILDERCI=true
   
     - smalltalk: GemStone-3.2.7
       os: linux
       sudo: required
+      group: legacy
     - smalltalk: GemStone-3.2.0
       os: linux
       sudo: required
+      group: legacy
     - smalltalk: GemStone-3.1.0.6
       os: linux
       sudo: required
+      group: legacy
     - smalltalk: GemStone-3.1.0.2
       os: linux
       sudo: required
+      group: legacy
     - smalltalk: GemStone-3.0.1
       os: linux
       sudo: required
+      group: legacy
     - smalltalk: GemStone-2.4.6
       os: linux
       sudo: required
+      group: legacy
     - smalltalk: GemStone-2.4.5
       os: linux
       sudo: required
+      group: legacy
     - smalltalk: GemStone-2.4.4.1
       os: linux
       sudo: required
+      group: legacy
