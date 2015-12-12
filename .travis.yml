@@ -35,6 +35,8 @@ matrix:
     - smalltalk: Squeak-4.4
       os: linux
       sudo: required
+      dist: precise
+      group: edge
       env: BUILDERCI=true
     - smalltalk: Squeak-4.3
       os: linux
