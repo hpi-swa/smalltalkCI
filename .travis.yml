@@ -32,23 +32,53 @@ install:
 # Include builds for builderCI fallback
 matrix:
   include:
-    - os: linux
+    - smalltalk: Squeak-4.4
+      os: linux
       sudo: required
-      dist: precise
-      group: stable
       env: BUILDERCI=true
-      smalltalk:
-        - Squeak-4.4
-        - Squeak-4.3
-        - Pharo-2.0
-        - Pharo-1.4
-        - Pharo-1.2
-        - Pharo-1.1
-        - GemStone-3.2.7
-        - GemStone-3.2.0
-        - GemStone-3.1.0.6
-        - GemStone-3.1.0.2
-        - GemStone-3.0.1
-        - GemStone-2.4.6
-        - GemStone-2.4.5
-        - GemStone-2.4.4.1
+    - smalltalk: Squeak-4.3
+      os: linux
+      sudo: required
+      env: BUILDERCI=true
+
+    - smalltalk: Pharo-2.0
+      os: linux
+      sudo: required
+      env: BUILDERCI=true
+    - smalltalk: Pharo-1.4
+      os: linux
+      sudo: required
+      env: BUILDERCI=true
+    - smalltalk: Pharo-1.2
+      os: linux
+      sudo: required
+      env: BUILDERCI=true
+    - smalltalk: Pharo-1.1
+      os: linux
+      sudo: required
+      env: BUILDERCI=true
+  
+    - smalltalk: GemStone-3.2.7
+      os: linux
+      sudo: required
+    - smalltalk: GemStone-3.2.0
+      os: linux
+      sudo: required
+    - smalltalk: GemStone-3.1.0.6
+      os: linux
+      sudo: required
+    - smalltalk: GemStone-3.1.0.2
+      os: linux
+      sudo: required
+    - smalltalk: GemStone-3.0.1
+      os: linux
+      sudo: required
+    - smalltalk: GemStone-2.4.6
+      os: linux
+      sudo: required
+    - smalltalk: GemStone-2.4.5
+      os: linux
+      sudo: required
+    - smalltalk: GemStone-2.4.4.1
+      os: linux
+      sudo: required
