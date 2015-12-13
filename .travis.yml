@@ -1,3 +1,4 @@
+# Define default build system
 language: smalltalk
 sudo: false
 
@@ -27,3 +28,89 @@ install:
   - wget -q -O fixtures.zip https://github.com/hpi-swa/smalltalkCI/archive/fixtures.zip
   - unzip -q fixtures.zip
   - export PROJECT_HOME="$(pwd)/smalltalkCI-fixtures"
+
+# Include builds for builderCI fallback
+matrix:
+  include:
+    - smalltalk: Squeak-4.4
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true
+    - smalltalk: Squeak-4.3
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true
+
+    - smalltalk: Pharo-2.0
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true
+    - smalltalk: Pharo-1.4
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true
+    - smalltalk: PharoCore-1.2
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true
+    - smalltalk: PharoCore-1.1
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true
+  
+    - smalltalk: GemStone-3.2.7
+      os: linux
+      sudo: required
+      group: legacy
+    - smalltalk: GemStone-3.2.0
+      os: linux
+      sudo: required
+      group: legacy
+    - smalltalk: GemStone-3.1.0.6
+      os: linux
+      sudo: required
+      group: legacy
+    - smalltalk: GemStone-3.1.0.2
+      os: linux
+      sudo: required
+      group: legacy
+    - smalltalk: GemStone-3.0.1
+      os: linux
+      sudo: required
+      group: legacy
+    - smalltalk: GemStone-2.4.6
+      os: linux
+      sudo: required
+      group: legacy
+    - smalltalk: GemStone-2.4.5
+      os: linux
+      sudo: required
+      group: legacy
+    - smalltalk: GemStone-2.4.4.1
+      os: linux
+      sudo: required
+      group: legacy
+  allow_failures:
+    - smalltalk: Squeak-4.4
+    - smalltalk: Squeak-4.3
+
+    - smalltalk: Pharo-2.0
+    - smalltalk: Pharo-1.4
+    - smalltalk: PharoCore-1.2
+    - smalltalk: PharoCore-1.1
+
+    - smalltalk: GemStone-3.2.7
+    - smalltalk: GemStone-3.2.0
+    - smalltalk: GemStone-3.1.0.6
+    - smalltalk: GemStone-3.1.0.2
+    - smalltalk: GemStone-3.0.1
+    - smalltalk: GemStone-2.4.6
+    - smalltalk: GemStone-2.4.5
+    - smalltalk: GemStone-2.4.4.1
+  fast_finish: true
