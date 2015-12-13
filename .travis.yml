@@ -53,12 +53,12 @@ matrix:
       sudo: required
       group: legacy
       env: BUILDERCI=true
-    - smalltalk: Pharo-1.2
+    - smalltalk: PharoCore-1.2
       os: linux
       sudo: required
       group: legacy
       env: BUILDERCI=true
-    - smalltalk: Pharo-1.1
+    - smalltalk: PharoCore-1.1
       os: linux
       sudo: required
       group: legacy
@@ -102,8 +102,8 @@ matrix:
 
     - smalltalk: Pharo-2.0
     - smalltalk: Pharo-1.4
-    - smalltalk: Pharo-1.2
-    - smalltalk: Pharo-1.1
+    - smalltalk: PharoCore-1.2
+    - smalltalk: PharoCore-1.1
 
     - smalltalk: GemStone-3.2.7
     - smalltalk: GemStone-3.2.0
