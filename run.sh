@@ -76,7 +76,8 @@ if [[ -z "$PROJECT_HOME" ]]; then
     print_error "\$PROJECT_HOME is not defined."
     exit 1
 elif [[ -z "$BASELINE" ]]; then
-    print_error "\$BASELINE is not defined."
+    print_error "Baseline is not defined."
+    print_notice "Please make sure you have set \`baseline: YourProject\` in your \`.travis.yml\`."
     exit 1
 fi
 # ==============================================================================
