@@ -11,7 +11,7 @@ case "$SMALLTALK" in
         ;;
     "Pharo-stable")
         PHARO_GET_IMAGE="stable"
-        PHARO_GET_VM="vm50"
+        PHARO_GET_VM="vm40"
         ;;
     "Pharo-5.0")
         PHARO_GET_IMAGE="50"
