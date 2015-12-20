@@ -76,9 +76,16 @@ if [[ -z "$PROJECT_HOME" ]]; then
     print_error "\$PROJECT_HOME is not defined."
     exit 1
 elif [[ -z "$BASELINE" ]]; then
-    print_error "Baseline is not defined."
-    print_notice "Please make sure you have set \`baseline: YourProject\` in your \`.travis.yml\`."
-    exit 1
+    print_notice "Baseline is not correctly defined. Checking your .travis.yml..."
+    EXTRACT_BASELINE=$(cat $PROJECT_HOME/.travis.yml | grep -i "BASELINE=" | head -n 1)
+    if [[ -n $EXTRACT_BASELINE ]]; then
+        BASELINE=$(echo ${EXTRACT_BASELINE##*=} | tr -d '"')
+        print_notice "Baseline found in .travis.yml: \`$BASELINE\`"
+        print_notice "Please make sure you have set \`baseline: YourProject\` in your \`.travis.yml\`."
+    else
+        print_error "Baseline could not be found."
+        exit 1
+    fi
 fi
 # ==============================================================================
 
