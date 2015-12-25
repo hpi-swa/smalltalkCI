@@ -4,26 +4,26 @@ set -e
 
 # Determine Pharo download url
 # ==============================================================================
-case "$SMALLTALK" in
+case "${SMALLTALK}" in
     "Pharo-alpha")
-        PHARO_GET_IMAGE="alpha"
-        PHARO_GET_VM="vm50"
+        readonly PHARO_GET_IMAGE="alpha"
+        readonly PHARO_GET_VM="vm50"
         ;;
     "Pharo-stable")
-        PHARO_GET_IMAGE="stable"
-        PHARO_GET_VM="vm40"
+        readonly PHARO_GET_IMAGE="stable"
+        readonly PHARO_GET_VM="vm40"
         ;;
     "Pharo-5.0")
-        PHARO_GET_IMAGE="50"
-        PHARO_GET_VM="vm50"
+        readonly PHARO_GET_IMAGE="50"
+        readonly PHARO_GET_VM="vm50"
         ;;
     "Pharo-4.0")
-        PHARO_GET_IMAGE="40"
-        PHARO_GET_VM="vm40"
+        readonly PHARO_GET_IMAGE="40"
+        readonly PHARO_GET_VM="vm40"
         ;;
     "Pharo-3.0")
-        PHARO_GET_IMAGE="30"
-        PHARO_GET_VM="vm30"
+        readonly PHARO_GET_IMAGE="30"
+        readonly PHARO_GET_VM="vm30"
         ;;
     *)
         print_error "Unsupported Pharo version '${SMALLTALK}'"
@@ -34,60 +34,62 @@ esac
  
 # Set paths and files
 # ==============================================================================
-PHARO_IMAGE="$SMALLTALK.image"
-PHARO_CHANGES="$SMALLTALK.changes"
-if [[ "$TRAVIS" = "true" ]]; then
-    PHARO_VM="$SMALLTALK_CI_VMS/$SMALLTALK/pharo"
+readonly PHARO_IMAGE="${SMALLTALK}.image"
+readonly PHARO_CHANGES="${SMALLTALK}.changes"
+if [[ "${keep_open}" = "true" ]]; then
+    readonly PHARO_VM="${SMALLTALK_CI_VMS}/${SMALLTALK}/pharo-ui"
 else
-    PHARO_VM="$SMALLTALK_CI_VMS/$SMALLTALK/pharo-ui"
+    readonly PHARO_VM="${SMALLTALK_CI_VMS}/${SMALLTALK}/pharo"
 fi
 
-# Optional environment variables
-[[ -z "$BASELINE_GROUP" ]] && BASELINE_GROUP="default"
-[[ -z "$PACKAGES" ]] && PACKAGES=""
-[[ -z "$TESTS" ]] && TESTS="${BASELINE}.*"
+# Make sure options are set
+[[ -z "${baseline_group}" ]] && baseline_group="default"
+[[ -z "${packages}" ]] && packages=""
+[[ -z "${tests}" ]] && tests="${baseline}.*"
 # ==============================================================================
 
 # Download files accordingly if not available
 # ==============================================================================
-if [[ ! -f "$SMALLTALK_CI_CACHE/$PHARO_IMAGE" ]]; then
-    print_info "Downloading $SMALLTALK image..."
-    pushd "$SMALLTALK_CI_CACHE" > /dev/null
-    wget --quiet -O - get.pharo.org/${PHARO_GET_IMAGE} | bash
-    mv Pharo.image "$SMALLTALK.image"
-    mv Pharo.changes "$SMALLTALK.changes"
+if [[ ! -f "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE}" ]]; then
+    print_timed "Downloading ${SMALLTALK} image..."
+    pushd "${SMALLTALK_CI_CACHE}" > /dev/null
+    download_file "get.pharo.org/${PHARO_GET_IMAGE}" | bash
+    mv Pharo.image "${SMALLTALK}.image"
+    mv Pharo.changes "${SMALLTALK}.changes"
     popd > /dev/null
+    print_timed_result
 fi
 
-if [[ ! -d "$SMALLTALK_CI_VMS/$SMALLTALK" ]]; then
-    print_info "Downloading $SMALLTALK vm..."
-    mkdir "$SMALLTALK_CI_VMS/$SMALLTALK"
-    pushd "$SMALLTALK_CI_VMS/$SMALLTALK" > /dev/null
-    wget --quiet -O - get.pharo.org/${PHARO_GET_VM} | bash
+if [[ ! -d "${SMALLTALK_CI_VMS}/${SMALLTALK}" ]]; then
+    print_timed "Downloading ${SMALLTALK} vm..."
+    mkdir "${SMALLTALK_CI_VMS}/${SMALLTALK}"
+    pushd "${SMALLTALK_CI_VMS}/${SMALLTALK}" > /dev/null
+    download_file "get.pharo.org/${PHARO_GET_VM}" | bash
     popd > /dev/null
     # Make sure vm is now available
-    [[ -f "$PHARO_VM" ]] || exit 1
+    [[ -f "${PHARO_VM}" ]] || exit 1
+    print_timed_result
 fi
 # ==============================================================================
 
 # Prepare image and virtual machine
 # ==============================================================================
 print_info "Preparing image..."
-cp "$SMALLTALK_CI_CACHE/$PHARO_IMAGE" "$SMALLTALK_CI_BUILD"
-cp "$SMALLTALK_CI_CACHE/$PHARO_CHANGES" "$SMALLTALK_CI_BUILD"
+cp "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE}" "${SMALLTALK_CI_BUILD}"
+cp "${SMALLTALK_CI_CACHE}/${PHARO_CHANGES}" "${SMALLTALK_CI_BUILD}"
 # ==============================================================================
 
 # ==============================================================================
 # Load project and run tests
 # ==============================================================================
 print_info "Loading project..."
-$PHARO_VM "$SMALLTALK_CI_BUILD/$PHARO_IMAGE" eval --save "
+$PHARO_VM "${SMALLTALK_CI_BUILD}/${PHARO_IMAGE}" eval --save "
 Metacello new 
-    baseline: '${BASELINE}';
-    repository: 'filetree://${PROJECT_HOME}/${PACKAGES}';
-    load: '${BASELINE_GROUP}'.
+    baseline: '${baseline}';
+    repository: 'filetree://${project_home}/${packages}';
+    load: '${baseline_group}'.
 "
 
 print_info "Run tests..."
-$PHARO_VM "$SMALLTALK_CI_BUILD/$PHARO_IMAGE" test --junit-xml-output --fail-on-failure "$TESTS" 2>&1 || EXIT_STATUS=$?
+$PHARO_VM "${SMALLTALK_CI_BUILD}/${PHARO_IMAGE}" test --junit-xml-output --fail-on-failure "${tests}" 2>&1 || exit_status=$?
 # ==============================================================================

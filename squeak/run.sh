@@ -2,24 +2,26 @@
 
 set -e
 
+# ==============================================================================
 # Set paths and files
 # ==============================================================================
-VM_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/vms"
-IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images"
+readonly VM_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/vms"
+readonly IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images"
 
 # Optional environment variables
-[[ -z "$BASELINE_GROUP" ]] && export BASELINE_GROUP="TravisCI"
-[[ -z "$EXCLUDE_CATEGORIES" ]] && EXCLUDE_CATEGORIES="nil"
-[[ -z "$EXCLUDE_CLASSES" ]] && EXCLUDE_CLASSES="nil"
-[[ -z "$FORCE_UPDATE" ]] && FORCE_UPDATE="false"
-[[ -z "$KEEP_OPEN" ]] && KEEP_OPEN="false"
-if [[ -z "$RUN_SCRIPT" ]]; then
-    RUN_SCRIPT="$SMALLTALK_CI_HOME/squeak/run.st"
+[[ -z "${baseline_group}" ]] && export baseline_group="TravisCI"
+[[ -z "${exclude_categories}" ]] && exclude_categories="nil"
+[[ -z "${exclude_classes}" ]] && exclude_classes="nil"
+[[ -z "${force_update}" ]] && force_update="false"
+[[ -z "${keep_open}" ]] && keep_open="false"
+if [[ -z "${run_script}" ]]; then
+    run_script="${SMALLTALK_CI_HOME}/squeak/run.st"
 else
-    RUN_SCRIPT="$PROJECT_HOME/$RUN_SCRIPT"
+    run_script="${project_home}/${run_script}"
 fi
 # ==============================================================================
 
+# ==============================================================================
 # Check and specify Squeak image
 # ==============================================================================
 SPUR_IMAGE=true
@@ -45,35 +47,35 @@ case "$SMALLTALK" in
 esac
 # ==============================================================================
 
+# ==============================================================================
 # Identify OS and select virtual machine
 # ==============================================================================
-COG_VM_PARAM=""
 case "$(uname -s)" in
     "Linux")
         print_info "Linux detected..."
-        if [[ "$SPUR_IMAGE" = true ]]; then
-            COG_VM_FILE_BASE="cog_linux_spur"
-            COG_VM="$SMALLTALK_CI_VMS/cogspurlinux/bin/squeak"
+        if [[ "${SPUR_IMAGE}" = true ]]; then
+            readonly COG_VM_FILE_BASE="cog_linux_spur"
+            readonly COG_VM="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
         else
-            COG_VM_FILE_BASE="cog_linux"
-            COG_VM="$SMALLTALK_CI_VMS/coglinux/bin/squeak"
+            readonly COG_VM_FILE_BASE="cog_linux"
+            readonly COG_VM="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
         fi
-        COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
-        if [[ "$TRAVIS" = "true" ]]; then
-            COG_VM_FILE="$COG_VM_FILE_BASE.min.tar.gz"
-            COG_VM_PARAM="-nosound -nodisplay"
+        readonly COG_VM_FILE="${COG_VM_FILE_BASE}.tar.gz"
+        if [[ "${TRAVIS}" = "true" ]]; then
+            readonly COG_VM_FILE="${COG_VM_FILE_BASE}.min.tar.gz"
+            readonly COG_VM_PARAM="-nosound -nodisplay"
         fi
         ;;
     "Darwin")
         print_info "OS X detected..."
-        if [[ "$SPUR_IMAGE" = true ]]; then
-            COG_VM_FILE_BASE="cog_osx_spur"
-            COG_VM="$SMALLTALK_CI_VMS/CogSpur.app/Contents/MacOS/Squeak"
+        if [[ "${SPUR_IMAGE}" = true ]]; then
+            readonly COG_VM_FILE_BASE="cog_osx_spur"
+            readonly COG_VM="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
         else
-            COG_VM_FILE_BASE="cog_osx"
-            COG_VM="$SMALLTALK_CI_VMS/Cog.app/Contents/MacOS/Squeak"
+            readonly COG_VM_FILE_BASE="cog_osx"
+            readonly COG_VM="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
         fi
-        COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
+        readonly COG_VM_FILE="${COG_VM_FILE_BASE}.tar.gz"
         ;;
     *)
         print_error "Unsupported platform '$(uname -s)'"
@@ -82,28 +84,32 @@ case "$(uname -s)" in
 esac
 # ==============================================================================
 
+# ==============================================================================
 # Download files accordingly if not available
 # ==============================================================================
-if [[ ! -f "$SMALLTALK_CI_CACHE/$COG_VM_FILE" ]]; then
-    print_info "Downloading virtual machine..."
-    curl -s "$VM_DOWNLOAD/$COG_VM_FILE" > "$SMALLTALK_CI_CACHE/$COG_VM_FILE"
+if [[ ! -f "${SMALLTALK_CI_CACHE}/${COG_VM_FILE}" ]]; then
+    print_timed "Downloading virtual machine..."
+    download_file "${VM_DOWNLOAD}/${COG_VM_FILE}" > "${SMALLTALK_CI_CACHE}/${COG_VM_FILE}"
+    print_timed_result
 fi
 if [[ ! -f "$COG_VM" ]]; then
     print_info "Extracting virtual machine..."
-    tar xzf "$SMALLTALK_CI_CACHE/$COG_VM_FILE" -C "$SMALLTALK_CI_VMS"
+    tar xzf "${SMALLTALK_CI_CACHE}/${COG_VM_FILE}" -C "${SMALLTALK_CI_VMS}"
 fi
-if [[ ! -f "$SMALLTALK_CI_CACHE/$IMAGE_TAR" ]]; then
-    print_info "Downloading $SMALLTALK testing image..."
-    curl -s "$IMAGE_DOWNLOAD/$IMAGE_TAR" > "$SMALLTALK_CI_CACHE/$IMAGE_TAR"
+if [[ ! -f "${SMALLTALK_CI_CACHE}/${IMAGE_TAR}" ]]; then
+    print_timed "Downloading ${SMALLTALK} testing image..."
+    download_file "${IMAGE_DOWNLOAD}/${IMAGE_TAR}" > "${SMALLTALK_CI_CACHE}/${IMAGE_TAR}"
+    print_timed_result
 fi
 # ==============================================================================
 
+# ==============================================================================
 # Extract image and run on virtual machine
 # ==============================================================================
 print_info "Extracting image..."
-tar xzf "$SMALLTALK_CI_CACHE/$IMAGE_TAR" -C "$SMALLTALK_CI_BUILD"
+tar xzf "${SMALLTALK_CI_CACHE}/${IMAGE_TAR}" -C "${SMALLTALK_CI_BUILD}"
 
 print_info "Load project into image and run tests..."
-VM_ARGS="$RUN_SCRIPT $PACKAGES $BASELINE $BASELINE_GROUP $EXCLUDE_CATEGORIES $EXCLUDE_CLASSES $FORCE_UPDATE $KEEP_OPEN"
-"$COG_VM" $COG_VM_PARAM "$SMALLTALK_CI_IMAGE" $VM_ARGS || EXIT_STATUS=$?
+readonly VM_ARGS="${run_script} ${packages} ${baseline} ${baseline_group} ${exclude_categories} ${exclude_classes} ${force_update} ${keep_open}"
+"${COG_VM}" $COG_VM_PARAM "${SMALLTALK_CI_IMAGE}" $VM_ARGS || exit_status=$?
 # ==============================================================================
