@@ -27,7 +27,7 @@ esac
 # smalltalkCI path variables are loaded in the following order:
 # default, environment variables
 # ==============================================================================
-if [[ $# -eq 0 ]]; then
+if [[ "${TRAVIS}" != "true" ]] && [[ $# -eq 0 ]]; then
   print_help
   exit 0
 fi
@@ -227,7 +227,7 @@ if [[ $exit_status -eq 0 ]]; then
     print_success "Build successful :)"
 else
     print_error "Build failed :("
-    if [[ "$TRAVIS" ]]; then
+    if [[ "${TRAVIS}" = "true" ]]; then
         print_info "\n\nTo reproduce the failed build locally, download smalltalkCI and try running something like:"
         print_notice "\n./run.sh --keep-open /path/to/your/project"
     fi
