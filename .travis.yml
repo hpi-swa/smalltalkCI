@@ -9,7 +9,7 @@ env:
     - PACKAGES="packages"
 
 install:
-  - source env_vars # make sure to use smalltalkCI from this branch
+  - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
   - wget -q -O fixtures.zip https://github.com/hpi-swa/smalltalkCI/archive/fixtures.zip
   - unzip -q fixtures.zip
   - export PROJECT_HOME="$(pwd)/smalltalkCI-fixtures"
