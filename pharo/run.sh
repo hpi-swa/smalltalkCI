@@ -57,7 +57,7 @@ if [[ ! -f "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE}" ]]; then
     mv Pharo.image "${SMALLTALK}.image"
     mv Pharo.changes "${SMALLTALK}.changes"
     popd > /dev/null
-    print_timed_result
+    print_timed_result "Time to download ${SMALLTALK} image"
 fi
 
 if [[ ! -d "${SMALLTALK_CI_VMS}/${SMALLTALK}" ]]; then
@@ -68,7 +68,7 @@ if [[ ! -d "${SMALLTALK_CI_VMS}/${SMALLTALK}" ]]; then
     popd > /dev/null
     # Make sure vm is now available
     [[ -f "${PHARO_VM}" ]] || exit 1
-    print_timed_result
+    print_timed_result "Time to download ${SMALLTALK} vm"
 fi
 # ==============================================================================
 

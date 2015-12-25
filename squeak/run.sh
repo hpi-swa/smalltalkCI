@@ -91,7 +91,7 @@ esac
 if [[ ! -f "${SMALLTALK_CI_CACHE}/${cog_vm_file}" ]]; then
     print_timed "Downloading virtual machine..."
     download_file "${VM_DOWNLOAD}/${cog_vm_file}" > "${SMALLTALK_CI_CACHE}/${cog_vm_file}"
-    print_timed_result
+    print_timed_result "Time to download virtual machine"
 fi
 if [[ ! -f "$cog_vm" ]]; then
     print_info "Extracting virtual machine..."
@@ -100,7 +100,7 @@ fi
 if [[ ! -f "${SMALLTALK_CI_CACHE}/${IMAGE_TAR}" ]]; then
     print_timed "Downloading ${SMALLTALK} testing image..."
     download_file "${IMAGE_DOWNLOAD}/${IMAGE_TAR}" > "${SMALLTALK_CI_CACHE}/${IMAGE_TAR}"
-    print_timed_result
+    print_timed_result "Time to download ${SMALLTALK} testing image"
 fi
 # ==============================================================================
 

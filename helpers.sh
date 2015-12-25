@@ -40,13 +40,13 @@ EOF
 
 print_timed() {
   LAST_PRINT=$(date +%s)
-  printf "\e[0;34m%s\e[0m" "$1"
+  print_info "$1"
 }
 
 print_timed_result() {
   if [[ -n "${LAST_PRINT}" ]]; then
     diff=$(($(date +%s) - ${LAST_PRINT}))
-    print_info "[${diff}s]"
+    print_info "[$1: ${diff}s]"
   fi
 }
 
