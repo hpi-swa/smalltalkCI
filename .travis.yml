@@ -1,24 +1,7 @@
-# Define default build system
 language: smalltalk
 sudo: false
 
-smalltalk:
-  - Squeak-trunk
-  - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
-
-  - Pharo-alpha
-  - Pharo-stable
-  - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
-  
 baseline: SWTDemo
-
-os:
-  - linux
-  - osx
 
 env:
   global:
@@ -26,77 +9,100 @@ env:
     - PACKAGES="packages"
 
 install:
+  - source env_vars # make sure to use smalltalkCI from this branch
   - wget -q -O fixtures.zip https://github.com/hpi-swa/smalltalkCI/archive/fixtures.zip
   - unzip -q fixtures.zip
   - export PROJECT_HOME="$(pwd)/smalltalkCI-fixtures"
 
-# Include builds for builderCI fallback
 matrix:
   include:
+    - smalltalk: Squeak-trunk
+      os: linux
+    - smalltalk: Squeak-trunk
+      os: osx
+    - smalltalk: Squeak-5.0
+      os: linux
+    - smalltalk: Squeak-5.0
+      os: osx
+    - smalltalk: Squeak-4.6
+      os: linux
+    - smalltalk: Squeak-4.6
+      os: osx
+    - smalltalk: Squeak-4.5
+      os: linux
+    - smalltalk: Squeak-4.5
+      os: osx
+    - smalltalk: Pharo-alpha
+      os: linux
+    - smalltalk: Pharo-alpha
+      os: osx
+    - smalltalk: Pharo-stable
+      os: linux
+    - smalltalk: Pharo-stable
+      os: osx
+    - smalltalk: Pharo-5.0
+      os: linux
+    - smalltalk: Pharo-5.0
+      os: osx
+    - smalltalk: Pharo-4.0
+      os: linux
+    - smalltalk: Pharo-4.0
+      os: osx
+    - smalltalk: Pharo-3.0
+      os: linux
+    - smalltalk: Pharo-3.0
+      os: osx
+
     - smalltalk: Squeak-4.4
       os: linux
       sudo: required
-      group: legacy
       env: BUILDERCI=true
     - smalltalk: Squeak-4.3
       os: linux
       sudo: required
-      group: legacy
       env: BUILDERCI=true
 
     - smalltalk: Pharo-2.0
       os: linux
       sudo: required
-      group: legacy
       env: BUILDERCI=true
     - smalltalk: Pharo-1.4
       os: linux
       sudo: required
-      group: legacy
       env: BUILDERCI=true
     - smalltalk: PharoCore-1.2
       os: linux
       sudo: required
-      group: legacy
       env: BUILDERCI=true
     - smalltalk: PharoCore-1.1
       os: linux
       sudo: required
-      group: legacy
       env: BUILDERCI=true
-  
+
     - smalltalk: GemStone-3.2.7
       os: linux
       sudo: required
-      group: legacy
     - smalltalk: GemStone-3.2.0
       os: linux
       sudo: required
-      group: legacy
     - smalltalk: GemStone-3.1.0.6
       os: linux
       sudo: required
-      group: legacy
     - smalltalk: GemStone-3.1.0.2
       os: linux
       sudo: required
-      group: legacy
     - smalltalk: GemStone-3.0.1
       os: linux
       sudo: required
-      group: legacy
     - smalltalk: GemStone-2.4.6
       os: linux
       sudo: required
-      group: legacy
     - smalltalk: GemStone-2.4.5
       os: linux
       sudo: required
-      group: legacy
     - smalltalk: GemStone-2.4.4.1
       os: linux
       sudo: required
-      group: legacy
   allow_failures:
     - smalltalk: Squeak-4.4
     - smalltalk: Squeak-4.3
