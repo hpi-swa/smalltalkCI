@@ -16,6 +16,18 @@ print_error() {
   printf "\e[1;31m%s\e[0m\n" "$1" 1>&2
 }
 
+print_timed() {
+  LAST_PRINT=$(date +%s)
+  print_info "$1"
+}
+
+print_timed_result() {
+  if [[ -n "${LAST_PRINT}" ]]; then
+    diff=$(($(date +%s) - ${LAST_PRINT}))
+    print_info "[$1: ${diff}s]"
+  fi
+}
+
 print_help() {
   cat <<EOF
 
@@ -36,18 +48,6 @@ Usage: run.sh [options] /path/to/project
 Example: run.sh -s "Squeak-trunk" --directory "subdir" /path/to/project
 
 EOF
-}
-
-print_timed() {
-  LAST_PRINT=$(date +%s)
-  print_info "$1"
-}
-
-print_timed_result() {
-  if [[ -n "${LAST_PRINT}" ]]; then
-    diff=$(($(date +%s) - ${LAST_PRINT}))
-    print_info "[$1: ${diff}s]"
-  fi
 }
 
 download_file() {

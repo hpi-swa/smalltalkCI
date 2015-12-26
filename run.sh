@@ -171,18 +171,18 @@ if [[ "${builder_ci_fallback}" == "true" ]] || [[ "${SMALLTALK}" == "GemStone"* 
     print_info "Starting legacy build using builderCI..."
     export ST="${SMALLTALK}"
     export PROJECT_HOME="${project_home}"
-    cd $HOME
+    cd ${HOME}
     wget -q -O builderCI.zip https://github.com/dalehenrich/builderCI/archive/master.zip
     unzip -q builderCI.zip
     cd builderCI-*
     source build_env_vars
-    ln -s $PROJECT_HOME $GIT_PATH
+    ln -s ${PROJECT_HOME} ${GIT_PATH}
     print_info "builderCI: Build image..."
     ./build_image.sh
     print_info "builderCI: Run tests..."
     exit_status=0
     $BUILDER_CI_HOME/testTravisCI.sh -verbose || exit_status=$?
-    exit $exit_status
+    exit ${exit_status}
 fi
 # ==============================================================================
 
@@ -223,7 +223,7 @@ esac
 # Check exit status
 # ==============================================================================
 printf "\n\n"
-if [[ $exit_status -eq 0 ]]; then
+if [[ ${exit_status} -eq 0 ]]; then
     print_success "Build successful :)"
 else
     print_error "Build failed :("
@@ -235,4 +235,4 @@ fi
 printf "\n"
 # ==============================================================================
 
-exit $exit_status
+exit ${exit_status}

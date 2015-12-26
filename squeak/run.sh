@@ -9,7 +9,7 @@ readonly VM_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetr
 readonly IMAGE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images"
 
 # Optional environment variables
-[[ -z "${baseline_group}" ]] && export baseline_group="TravisCI"
+[[ -z "${baseline_group}" ]] && baseline_group="TravisCI"
 [[ -z "${exclude_categories}" ]] && exclude_categories="nil"
 [[ -z "${exclude_classes}" ]] && exclude_classes="nil"
 [[ -z "${force_update}" ]] && force_update="false"
@@ -24,22 +24,22 @@ fi
 # ==============================================================================
 # Check and specify Squeak image
 # ==============================================================================
-case "$SMALLTALK" in
+case "${SMALLTALK}" in
     "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk")
-        readonly IMAGE_TAR="Squeak-Trunk.tar.gz"
-        readonly SPUR_IMAGE=true
+        readonly image_tar="Squeak-Trunk.tar.gz"
+        readonly spur_image=true
         ;;
     "Squeak-5.0"|"Squeak5.0")
-        readonly IMAGE_TAR="Squeak-5.0.tar.gz"
-        readonly SPUR_IMAGE=true
+        readonly image_tar="Squeak-5.0.tar.gz"
+        readonly spur_image=true
         ;;
     "Squeak-4.6"|"Squeak4.6")
-        readonly IMAGE_TAR="Squeak-4.6.tar.gz"
-        readonly SPUR_IMAGE=false
+        readonly image_tar="Squeak-4.6.tar.gz"
+        readonly spur_image=false
         ;;
     "Squeak-4.5"|"Squeak4.5")
-        readonly IMAGE_TAR="Squeak-4.5.tar.gz"
-        readonly SPUR_IMAGE=false
+        readonly image_tar="Squeak-4.5.tar.gz"
+        readonly spur_image=false
         ;;
     *)
         print_error "Unsupported Squeak version '${SMALLTALK}'"
@@ -54,30 +54,30 @@ esac
 case "$(uname -s)" in
     "Linux")
         print_info "Linux detected..."
-        if [[ "${SPUR_IMAGE}" = true ]]; then
-            readonly COG_VM_FILE_BASE="cog_linux_spur"
-            readonly COG_VM="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
+        if [[ "${spur_image}" = true ]]; then
+            readonly cog_vm_file_base="cog_linux_spur"
+            readonly cog_vm="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
         else
-            readonly COG_VM_FILE_BASE="cog_linux"
-            readonly COG_VM="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
+            readonly cog_vm_file_base="cog_linux"
+            readonly cog_vm="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
         fi
-        COG_VM_FILE="${COG_VM_FILE_BASE}.tar.gz"
+        cog_vm_file="${cog_vm_file_base}.tar.gz"
         if [[ "${TRAVIS}" = "true" ]]; then
-            COG_VM_FILE="${COG_VM_FILE_BASE}.min.tar.gz"
-            readonly COG_VM_PARAM="-nosound -nodisplay"
+            cog_vm_file="${cog_vm_file_base}.min.tar.gz"
+            readonly cog_vm_param="-nosound -nodisplay"
         fi
-        readonly COG_VM_FILE
+        readonly cog_vm_file
         ;;
     "Darwin")
         print_info "OS X detected..."
-        if [[ "${SPUR_IMAGE}" = true ]]; then
-            readonly COG_VM_FILE_BASE="cog_osx_spur"
-            readonly COG_VM="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
+        if [[ "${spur_image}" = true ]]; then
+            readonly cog_vm_file_base="cog_osx_spur"
+            readonly cog_vm="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
         else
-            readonly COG_VM_FILE_BASE="cog_osx"
-            readonly COG_VM="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
+            readonly cog_vm_file_base="cog_osx"
+            readonly cog_vm="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
         fi
-        readonly COG_VM_FILE="${COG_VM_FILE_BASE}.tar.gz"
+        readonly cog_vm_file="${cog_vm_file_base}.tar.gz"
         ;;
     *)
         print_error "Unsupported platform '$(uname -s)'"
@@ -89,18 +89,18 @@ esac
 # ==============================================================================
 # Download files accordingly if not available
 # ==============================================================================
-if [[ ! -f "${SMALLTALK_CI_CACHE}/${COG_VM_FILE}" ]]; then
+if [[ ! -f "${SMALLTALK_CI_CACHE}/${cog_vm_file}" ]]; then
     print_timed "Downloading virtual machine..."
-    download_file "${VM_DOWNLOAD}/${COG_VM_FILE}" > "${SMALLTALK_CI_CACHE}/${COG_VM_FILE}"
+    download_file "${VM_DOWNLOAD}/${cog_vm_file}" > "${SMALLTALK_CI_CACHE}/${cog_vm_file}"
     print_timed_result "Time to download virtual machine"
 fi
-if [[ ! -f "$COG_VM" ]]; then
+if [[ ! -f "$cog_vm" ]]; then
     print_info "Extracting virtual machine..."
-    tar xzf "${SMALLTALK_CI_CACHE}/${COG_VM_FILE}" -C "${SMALLTALK_CI_VMS}"
+    tar xzf "${SMALLTALK_CI_CACHE}/${cog_vm_file}" -C "${SMALLTALK_CI_VMS}"
 fi
-if [[ ! -f "${SMALLTALK_CI_CACHE}/${IMAGE_TAR}" ]]; then
+if [[ ! -f "${SMALLTALK_CI_CACHE}/${image_tar}" ]]; then
     print_timed "Downloading ${SMALLTALK} testing image..."
-    download_file "${IMAGE_DOWNLOAD}/${IMAGE_TAR}" > "${SMALLTALK_CI_CACHE}/${IMAGE_TAR}"
+    download_file "${IMAGE_DOWNLOAD}/${image_tar}" > "${SMALLTALK_CI_CACHE}/${image_tar}"
     print_timed_result "Time to download ${SMALLTALK} testing image"
 fi
 # ==============================================================================
@@ -109,9 +109,9 @@ fi
 # Extract image and run on virtual machine
 # ==============================================================================
 print_info "Extracting image..."
-tar xzf "${SMALLTALK_CI_CACHE}/${IMAGE_TAR}" -C "${SMALLTALK_CI_BUILD}"
+tar xzf "${SMALLTALK_CI_CACHE}/${image_tar}" -C "${SMALLTALK_CI_BUILD}"
 
 print_info "Load project into image and run tests..."
-readonly VM_ARGS="${packages} ${baseline} ${baseline_group} ${exclude_categories} ${exclude_classes} ${force_update} ${keep_open}"
-"${COG_VM}" $COG_VM_PARAM "${SMALLTALK_CI_IMAGE}" "${run_script}" $VM_ARGS || exit_status=$?
+readonly vm_args="${packages} ${baseline} ${baseline_group} ${exclude_categories} ${exclude_classes} ${force_update} ${keep_open}"
+"${cog_vm}" ${cog_vm_param} "${SMALLTALK_CI_IMAGE}" "${run_script}" ${vm_args} || exit_status=$?
 # ==============================================================================
