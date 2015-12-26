@@ -77,7 +77,7 @@ user_travis_conf="${project_home}/.travis.yml"
 if [[ -f "$user_travis_conf" ]]; then
     eval $(ruby yaml_parser.rb $user_travis_conf)
 else
-    print_notice "Could not find \"${user_travis_conf}\"."
+    print_notice "Could not find '${user_travis_conf}'."
 fi
 
 # Handle all other arguments and flags
@@ -134,7 +134,7 @@ if [[ -z "${baseline}" ]]; then
 fi
 if [[ ${packages:0:1} == "/" ]]; then
   packages=${packages:1}
-  print_notice "Please remove the leading slash from \"smalltalk_packages\"."
+  print_notice "Please remove the leading slash from 'smalltalk_packages'."
 fi
 
 # Make sure smalltalkCI path variables are set
@@ -213,7 +213,7 @@ case "${SMALLTALK}" in
         source "${SMALLTALK_CI_HOME}/pharo/run.sh"
         ;;
     *)
-        print_error "Unknown Smalltalk version \"${SMALLTALK}\"."
+        print_error "Unknown Smalltalk version '${SMALLTALK}'."
         exit 1
         ;;
 esac

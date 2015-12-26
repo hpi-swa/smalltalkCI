@@ -83,7 +83,7 @@ cp "${SMALLTALK_CI_CACHE}/${PHARO_CHANGES}" "${SMALLTALK_CI_BUILD}"
 # Load project and run tests
 # ==============================================================================
 print_info "Loading project..."
-$PHARO_VM "${SMALLTALK_CI_BUILD}/${PHARO_IMAGE}" eval --save "
+"${PHARO_VM}" "${SMALLTALK_CI_BUILD}/${PHARO_IMAGE}" eval --save "
 Metacello new 
     baseline: '${baseline}';
     repository: 'filetree://${project_home}/${packages}';
@@ -91,5 +91,5 @@ Metacello new
 "
 
 print_info "Run tests..."
-$PHARO_VM "${SMALLTALK_CI_BUILD}/${PHARO_IMAGE}" test --junit-xml-output --fail-on-failure "${tests}" 2>&1 || exit_status=$?
+"${PHARO_VM}" "${SMALLTALK_CI_BUILD}/${PHARO_IMAGE}" test --junit-xml-output --fail-on-failure "${tests}" 2>&1 || exit_status=$?
 # ==============================================================================

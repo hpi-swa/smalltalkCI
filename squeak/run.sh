@@ -55,28 +55,29 @@ case "$(uname -s)" in
     "Linux")
         print_info "Linux detected..."
         if [[ "${SPUR_IMAGE}" = true ]]; then
-            cog_vm_file_base="cog_linux_spur"
-            cog_vm="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
+            readonly COG_VM_FILE_BASE="cog_linux_spur"
+            readonly COG_VM="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
         else
-            cog_vm_file_base="cog_linux"
-            cog_vm="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
+            readonly COG_VM_FILE_BASE="cog_linux"
+            readonly COG_VM="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
         fi
-        cog_vm_file="${cog_vm_file_base}.tar.gz"
+        COG_VM_FILE="${COG_VM_FILE_BASE}.tar.gz"
         if [[ "${TRAVIS}" = "true" ]]; then
-            cog_vm_file="${cog_vm_file_base}.min.tar.gz"
-            cog_vm_param="-nosound -nodisplay"
+            COG_VM_FILE="${COG_VM_FILE_BASE}.min.tar.gz"
+            readonly COG_VM_PARAM="-nosound -nodisplay"
         fi
+        readonly COG_VM_FILE
         ;;
     "Darwin")
         print_info "OS X detected..."
         if [[ "${SPUR_IMAGE}" = true ]]; then
-            cog_vm_file_base="cog_osx_spur"
-            cog_vm="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
+            readonly COG_VM_FILE_BASE="cog_osx_spur"
+            readonly COG_VM="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
         else
-            cog_vm_file_base="cog_osx"
-            cog_vm="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
+            readonly COG_VM_FILE_BASE="cog_osx"
+            readonly COG_VM="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
         fi
-        cog_vm_file="${cog_vm_file_base}.tar.gz"
+        readonly COG_VM_FILE="${COG_VM_FILE_BASE}.tar.gz"
         ;;
     *)
         print_error "Unsupported platform '$(uname -s)'"
@@ -88,14 +89,14 @@ esac
 # ==============================================================================
 # Download files accordingly if not available
 # ==============================================================================
-if [[ ! -f "${SMALLTALK_CI_CACHE}/${cog_vm_file}" ]]; then
+if [[ ! -f "${SMALLTALK_CI_CACHE}/${COG_VM_FILE}" ]]; then
     print_timed "Downloading virtual machine..."
-    download_file "${VM_DOWNLOAD}/${cog_vm_file}" > "${SMALLTALK_CI_CACHE}/${cog_vm_file}"
+    download_file "${VM_DOWNLOAD}/${COG_VM_FILE}" > "${SMALLTALK_CI_CACHE}/${COG_VM_FILE}"
     print_timed_result "Time to download virtual machine"
 fi
-if [[ ! -f "$cog_vm" ]]; then
+if [[ ! -f "$COG_VM" ]]; then
     print_info "Extracting virtual machine..."
-    tar xzf "${SMALLTALK_CI_CACHE}/${cog_vm_file}" -C "${SMALLTALK_CI_VMS}"
+    tar xzf "${SMALLTALK_CI_CACHE}/${COG_VM_FILE}" -C "${SMALLTALK_CI_VMS}"
 fi
 if [[ ! -f "${SMALLTALK_CI_CACHE}/${IMAGE_TAR}" ]]; then
     print_timed "Downloading ${SMALLTALK} testing image..."
@@ -111,6 +112,6 @@ print_info "Extracting image..."
 tar xzf "${SMALLTALK_CI_CACHE}/${IMAGE_TAR}" -C "${SMALLTALK_CI_BUILD}"
 
 print_info "Load project into image and run tests..."
-readonly VM_ARGS="${run_script} ${packages} ${baseline} ${baseline_group} ${exclude_categories} ${exclude_classes} ${force_update} ${keep_open}"
-"${cog_vm}" $cog_vm_param "${SMALLTALK_CI_IMAGE}" $VM_ARGS || exit_status=$?
+readonly VM_ARGS="${packages} ${baseline} ${baseline_group} ${exclude_categories} ${exclude_classes} ${force_update} ${keep_open}"
+"${COG_VM}" $COG_VM_PARAM "${SMALLTALK_CI_IMAGE}" "${run_script}" $VM_ARGS || exit_status=$?
 # ==============================================================================
