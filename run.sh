@@ -9,12 +9,12 @@ source helpers.sh
 # Check required software
 # ==============================================================================
 case "$(uname -s)" in
-    "Linux"|"Darwin")
-        ;;
-    *)
-        print_error "Unsupported platform '$(uname -s)'"
-        exit 1
-        ;;
+  "Linux"|"Darwin")
+    ;;
+  *)
+    print_error "Unsupported platform '$(uname -s)'"
+    exit 1
+    ;;
 esac
 # ==============================================================================
 
@@ -48,7 +48,7 @@ if [[ ! -d "${project_home}" ]]; then
 fi
 
 if [[ ${project_home:0:1} != "/" ]]; then
-    project_home=$(cd "${project_home}" && pwd)
+  project_home=$(cd "${project_home}" && pwd)
 fi
 
 # Set smalltalkCI options to default
@@ -75,9 +75,9 @@ keep_open="false"
 # Load config from project"s `.travis.yml`
 user_travis_conf="${project_home}/.travis.yml"
 if [[ -f "$user_travis_conf" ]]; then
-    eval $(ruby yaml_parser.rb $user_travis_conf)
+  eval $(ruby yaml_parser.rb $user_travis_conf)
 else
-    print_notice "Could not find '${user_travis_conf}'."
+  print_notice "Could not find '${user_travis_conf}'."
 fi
 
 # Handle all other arguments and flags
@@ -154,35 +154,35 @@ fi
 # Fall back to builderCI if requested or for GemStone builds
 # ==============================================================================
 if [[ "${builder_ci_fallback}" == "true" ]] || [[ "${SMALLTALK}" == "GemStone"* ]]; then
-    # Make sure the script runs on Linux
-    if [[ "$(uname -s)" != "Linux" ]]; then
-        print_error "builderCI only supports Linux builds."
-        exit 1
+  # Make sure the script runs on Linux
+  if [[ "$(uname -s)" != "Linux" ]]; then
+    print_error "builderCI only supports Linux builds."
+    exit 1
+  fi
+  if [[ "${TRAVIS}" ]]; then
+    # Make sure the script runs on standard infrastructure
+    sudo -n true
+    if [[ "$?" != 0 ]]; then
+      print_error "sudo is not available."
+      exit 1
     fi
-    if [[ "${TRAVIS}" ]]; then
-        # Make sure the script runs on standard infrastructure
-        sudo -n true
-        if [[ "$?" != 0 ]]; then
-            print_error "sudo is not available."
-            exit 1
-        fi
-    fi
+  fi
 
-    print_info "Starting legacy build using builderCI..."
-    export ST="${SMALLTALK}"
-    export PROJECT_HOME="${project_home}"
-    cd ${HOME}
-    wget -q -O builderCI.zip https://github.com/dalehenrich/builderCI/archive/master.zip
-    unzip -q builderCI.zip
-    cd builderCI-*
-    source build_env_vars
-    ln -s ${PROJECT_HOME} ${GIT_PATH}
-    print_info "builderCI: Build image..."
-    ./build_image.sh
-    print_info "builderCI: Run tests..."
-    exit_status=0
-    $BUILDER_CI_HOME/testTravisCI.sh -verbose || exit_status=$?
-    exit ${exit_status}
+  print_info "Starting legacy build using builderCI..."
+  export ST="${SMALLTALK}"
+  export PROJECT_HOME="${project_home}"
+  cd ${HOME}
+  wget -q -O builderCI.zip https://github.com/dalehenrich/builderCI/archive/master.zip
+  unzip -q builderCI.zip
+  cd builderCI-*
+  source build_env_vars
+  ln -s ${PROJECT_HOME} ${GIT_PATH}
+  print_info "builderCI: Build image..."
+  ./build_image.sh
+  print_info "builderCI: Run tests..."
+  exit_status=0
+  $BUILDER_CI_HOME/testTravisCI.sh -verbose || exit_status=$?
+  exit ${exit_status}
 fi
 # ==============================================================================
 
@@ -204,18 +204,18 @@ ln -s "${project_home}" "${SMALLTALK_CI_GIT}"
 # ==============================================================================
 exit_status=0
 case "${SMALLTALK}" in
-    Squeak*)
-        print_info "Starting Squeak build..."
-        source "${SMALLTALK_CI_HOME}/squeak/run.sh"
-        ;;
-    Pharo*)
-        print_info "Starting Pharo build..."
-        source "${SMALLTALK_CI_HOME}/pharo/run.sh"
-        ;;
-    *)
-        print_error "Unknown Smalltalk version '${SMALLTALK}'."
-        exit 1
-        ;;
+  Squeak*)
+    print_info "Starting Squeak build..."
+    source "${SMALLTALK_CI_HOME}/squeak/run.sh"
+    ;;
+  Pharo*)
+    print_info "Starting Pharo build..."
+    source "${SMALLTALK_CI_HOME}/pharo/run.sh"
+    ;;
+  *)
+    print_error "Unknown Smalltalk version '${SMALLTALK}'."
+    exit 1
+    ;;
 esac
 # ==============================================================================
 
@@ -224,13 +224,13 @@ esac
 # ==============================================================================
 printf "\n\n"
 if [[ ${exit_status} -eq 0 ]]; then
-    print_success "Build successful :)"
+  print_success "Build successful :)"
 else
-    print_error "Build failed :("
-    if [[ "${TRAVIS}" = "true" ]]; then
-        print_info "\n\nTo reproduce the failed build locally, download smalltalkCI and try running something like:"
-        print_notice "\n./run.sh --keep-open /path/to/your/project"
-    fi
+  print_error "Build failed :("
+  if [[ "${TRAVIS}" = "true" ]]; then
+    print_info "\n\nTo reproduce the failed build locally, download smalltalkCI and try running something like:"
+    print_notice "\n./run.sh --keep-open /path/to/your/project"
+  fi
 fi
 printf "\n"
 # ==============================================================================
