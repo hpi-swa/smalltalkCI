@@ -37,7 +37,7 @@ options="hd:b:g:our:s:x:y:z"
 
 project_home=""
 if [[ -n "${PROJECT_HOME}" ]]; then
-  project_home=$PROJECT_HOME
+  project_home=${PROJECT_HOME}
 else
   project_home=${!#} # Last parameter
 fi
@@ -74,8 +74,8 @@ keep_open="false"
 
 # Load config from project"s `.travis.yml`
 user_travis_conf="${project_home}/.travis.yml"
-if [[ -f "$user_travis_conf" ]]; then
-  eval $(ruby yaml_parser.rb $user_travis_conf)
+if [[ -f "${user_travis_conf}" ]]; then
+  eval "$(ruby yaml_parser.rb "${user_travis_conf}")"
 else
   print_notice "Could not find '${user_travis_conf}'."
 fi
@@ -171,17 +171,17 @@ if [[ "${builder_ci_fallback}" == "true" ]] || [[ "${SMALLTALK}" == "GemStone"* 
   print_info "Starting legacy build using builderCI..."
   export ST="${SMALLTALK}"
   export PROJECT_HOME="${project_home}"
-  cd ${HOME}
+  cd "${HOME}"
   wget -q -O builderCI.zip https://github.com/dalehenrich/builderCI/archive/master.zip
   unzip -q builderCI.zip
   cd builderCI-*
   source build_env_vars
-  ln -s ${PROJECT_HOME} ${GIT_PATH}
+  ln -s "${PROJECT_HOME}" "${GIT_PATH}"
   print_info "builderCI: Build image..."
   ./build_image.sh
   print_info "builderCI: Run tests..."
   exit_status=0
-  $BUILDER_CI_HOME/testTravisCI.sh -verbose || exit_status=$?
+  "$BUILDER_CI_HOME/testTravisCI.sh" -verbose || exit_status=$?
   exit ${exit_status}
 fi
 # ==============================================================================

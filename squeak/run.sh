@@ -64,7 +64,7 @@ case "$(uname -s)" in
     cog_vm_file="${cog_vm_file_base}.tar.gz"
     if [[ "${TRAVIS}" = "true" ]]; then
       cog_vm_file="${cog_vm_file_base}.min.tar.gz"
-      readonly cog_vm_param="-nosound -nodisplay"
+      readonly cog_vm_params=(-nosound -nodisplay)
     fi
     readonly cog_vm_file
     ;;
@@ -112,6 +112,6 @@ print_info "Extracting image..."
 tar xzf "${SMALLTALK_CI_CACHE}/${image_tar}" -C "${SMALLTALK_CI_BUILD}"
 
 print_info "Load project into image and run tests..."
-readonly vm_args="${packages} ${baseline} ${baseline_group} ${exclude_categories} ${exclude_classes} ${force_update} ${keep_open}"
-"${cog_vm}" ${cog_vm_param} "${SMALLTALK_CI_IMAGE}" "${run_script}" ${vm_args} || exit_status=$?
+readonly vm_args=(${packages} ${baseline} ${baseline_group} ${exclude_categories} ${exclude_classes} ${force_update} ${keep_open})
+"${cog_vm}" "${cog_vm_params[@]}" "${SMALLTALK_CI_IMAGE}" "${run_script}" "${vm_args[@]}" || exit_status=$?
 # ==============================================================================
