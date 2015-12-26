@@ -66,7 +66,7 @@ download_vm() {
     download_file "get.pharo.org/${pharo_get_vm}" | bash
     popd > /dev/null
     # Make sure vm is now available
-    [[ is_file "${PHARO_VM}" ]] || exit 1
+    is_file "${PHARO_VM}" || exit 1
     print_timed_result "Time to download ${SMALLTALK} vm"
   fi
 }

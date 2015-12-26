@@ -78,6 +78,7 @@ is_dir() {
 
 program_exists() {
   local program=$1
+
   [[ $(which ${program} 2> /dev/null) ]]
 }
 
