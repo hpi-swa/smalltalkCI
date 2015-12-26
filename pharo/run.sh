@@ -4,10 +4,11 @@ set -e
 
 readonly PHARO_IMAGE="${SMALLTALK}.image"
 readonly PHARO_CHANGES="${SMALLTALK}.changes"
+readonly PHARO_VM_FOLDER="${SMALLTALK_CI_VMS}/${SMALLTALK}"
 if [[ "${keep_open}" = "true" ]]; then
-  readonly PHARO_VM="${SMALLTALK_CI_VMS}/${SMALLTALK}/pharo-ui"
+  readonly PHARO_VM="${PHARO_VM_FOLDER}/pharo-ui"
 else
-  readonly PHARO_VM="${SMALLTALK_CI_VMS}/${SMALLTALK}/pharo"
+  readonly PHARO_VM="${PHARO_VM_FOLDER}/pharo"
 fi
 
 set_download_urls() {
@@ -51,18 +52,18 @@ download_image() {
     print_timed "Downloading ${SMALLTALK} image..."
     pushd "${SMALLTALK_CI_CACHE}" > /dev/null
     download_file "get.pharo.org/${pharo_get_image}" | bash
-    mv Pharo.image "${SMALLTALK}.image"
-    mv Pharo.changes "${SMALLTALK}.changes"
+    mv "Pharo.image" "${PHARO_IMAGE}"
+    mv "Pharo.changes" "${PHARO_CHANGES}"
     popd > /dev/null
     print_timed_result "Time to download ${SMALLTALK} image"
   fi
 }
 
 download_vm() {
-  if ! is_dir "${SMALLTALK_CI_VMS}/${SMALLTALK}"; then
+  if ! is_dir "${PHARO_VM_FOLDER}"; then
     print_timed "Downloading ${SMALLTALK} vm..."
-    mkdir "${SMALLTALK_CI_VMS}/${SMALLTALK}"
-    pushd "${SMALLTALK_CI_VMS}/${SMALLTALK}" > /dev/null
+    mkdir "${PHARO_VM_FOLDER}"
+    pushd "${PHARO_VM_FOLDER}" > /dev/null
     download_file "get.pharo.org/${pharo_get_vm}" | bash
     popd > /dev/null
     # Make sure vm is now available
@@ -94,6 +95,9 @@ run_tests() {
 }
 
 run_build() {
+  local pharo_get_image
+  local pharo_get_vm
+
   set_download_urls
   check_options
   download_image

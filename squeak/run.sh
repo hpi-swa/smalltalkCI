@@ -39,7 +39,7 @@ specify_image() {
       readonly spur_image=false
       ;;
     *)
-      print_error "Unsupported Squeak version '${smalltalk}'"
+      print_error "Unsupported Squeak version '${smalltalk}'."
       exit 1
       ;;
   esac
@@ -91,6 +91,7 @@ prepare_vm() {
     download_file "${download_url}" > "${target}"
     print_timed_result "Time to download virtual machine"
   fi
+
   if ! is_file "${cog_vm}"; then
     print_info "Extracting virtual machine..."
     tar xzf "${target}" -C "${SMALLTALK_CI_VMS}"
@@ -106,12 +107,14 @@ prepare_image() {
     download_file "${download_url}" > "${target}"
     print_timed_result "Time to download ${smalltalk} testing image"
   fi
+
   print_info "Extracting image..."
   tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
 }
 
 load_project_and_run_tests() {
   local vm_args
+
   print_info "Load project into image and run tests..."
   vm_args=(${packages} ${baseline} ${baseline_group} ${exclude_categories} \
       ${exclude_classes} ${force_update} ${keep_open})
@@ -123,6 +126,7 @@ run_build() {
   local image_tar
   local spur_image
   local cog_vm_file
+  local cog_vm_params
   local cog_vm
 
   check_options
