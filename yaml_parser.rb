@@ -51,8 +51,8 @@ end
 
 # Use first smalltalk value if $SMALLTALK is not set
 if config.has_key?("smalltalk")
-  puts "[[ -z \"${SMALLTALK}\" ]] && "\
-       "export SMALLTALK=(\"#{config["smalltalk"].first}\")"
+  puts "[[ -z \"${smalltalk}\" ]] && "\
+       "smalltalk=(\"#{config["smalltalk"].first}\")"
 end
 
 # Print output

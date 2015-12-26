@@ -30,40 +30,75 @@ print_timed_result() {
 
 print_help() {
   cat <<EOF
+  USAGE: run.sh [options] /path/to/project
 
-Usage: run.sh [options] /path/to/project
+  This program prepares Smalltalk images/vms, loads projects and runs tests.
 
---baseline              Overwrite baseline.
---baseline-group        Overwrite baseline group.
---builder-ci            Use builderCI (default 'false').
---directory             Overwrite directory.
---excluded-categories   Overwrite categories to be excluded (Squeak only).
---excluded-classes      Overwrite classes to be excluded (Squeak only).
---force-update          Force an update in Squeak image (default 'false').
--h | --help             Show this help text.
--o | --keep-open        Keep image open and do not close on error.
---script                Overwrite custom script to run (Squeak only).
--s | --smalltalk        Overwrite Smalltalk image selection.
+  OPTIONS:
+    --baseline              Overwrite baseline.
+    --baseline-group        Overwrite baseline group.
+    --builder-ci            Use builderCI (default 'false').
+    --directory             Overwrite directory.
+    --excluded-categories   Overwrite categories to be excluded (Squeak only).
+    --excluded-classes      Overwrite classes to be excluded (Squeak only).
+    --force-update          Force an update in Squeak image (default 'false').
+    -h | --help             Show this help text.
+    -o | --keep-open        Keep image open and do not close on error.
+    --script                Overwrite custom script to run (Squeak only).
+    -s | --smalltalk        Overwrite Smalltalk image selection.
 
-Example: run.sh -s "Squeak-trunk" --directory "subdir" /path/to/project
+  EXAMPLE: run.sh -s "Squeak-trunk" --directory "subdir" /path/to/project
 
 EOF
+}
+
+is_empty() {
+  local var=$1
+
+  [[ -z $var ]]
+}
+
+is_not_empty() {
+  local var=$1
+
+  [[ -n $var ]]
+}
+
+is_file() {
+  local file=$1
+
+  [[ -f $file ]]
+}
+
+is_dir() {
+  local dir=$1
+
+  [[ -d $dir ]]
+}
+
+program_exists() {
+  local program=$1
+  [[ $(which ${program} 2> /dev/null) ]]
+}
+
+is_travis_build() {
+  [[ "${TRAVIS}" = "true" ]]
 }
 
 download_file() {
   local url=$1
 
-  if [[ -z "${url}" ]]; then
+  if is_empty "${url}"; then
     print_error "download_file() expects an URL."
     exit 1
   fi
 
-  if [[ $(which curl 2> /dev/null) ]]; then
-    curl -s "${url}";
-  elif [[ $(which wget 2> /dev/null) ]]; then
-    wget -q -O - "${url}";
+  if program_exists "curl"; then
+    curl -s "${url}"
+  elif program_exists "wget"; then
+    wget -q -O - "${url}"
   else
-    print_error "Please install curl or wget.";
+    print_error "Please install curl or wget."
     exit 1
   fi
 }

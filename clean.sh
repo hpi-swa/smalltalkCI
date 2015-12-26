@@ -2,7 +2,6 @@
 
 set -e
 
-# Include helper functions
 source helpers.sh
 
 readonly BASE_PATH="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
