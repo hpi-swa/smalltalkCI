@@ -16,8 +16,9 @@ install:
 
 matrix:
   include:
-    - language: bash
+    - language: generic
       script: bash tests.sh
+
     - smalltalk: Squeak-trunk
       os: linux
     - smalltalk: Squeak-trunk

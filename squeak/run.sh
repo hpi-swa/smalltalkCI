@@ -126,7 +126,7 @@ run_build() {
   local image_tar
   local spur_image
   local cog_vm_file
-  local cog_vm_params
+  local cog_vm_params=()
   local cog_vm
 
   check_options
