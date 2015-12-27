@@ -2,17 +2,40 @@
 
 set -e
 
-readonly PHARO_IMAGE="${SMALLTALK}.image"
-readonly PHARO_CHANGES="${SMALLTALK}.changes"
-readonly PHARO_VM_FOLDER="${SMALLTALK_CI_VMS}/${SMALLTALK}"
+readonly PHARO_IMAGE="${smalltalk}.image"
+readonly PHARO_CHANGES="${smalltalk}.changes"
+readonly PHARO_VM_FOLDER="${SMALLTALK_CI_VMS}/${smalltalk}"
 if [[ "${keep_open}" = "true" ]]; then
   readonly PHARO_VM="${PHARO_VM_FOLDER}/pharo-ui"
 else
   readonly PHARO_VM="${PHARO_VM_FOLDER}/pharo"
 fi
 
-set_download_urls() {
-  case "${SMALLTALK}" in
+################################################################################
+# Check options and set defaults if unavailable.
+# Locals:
+#   baseline_group
+#   directory
+#   tests
+# Returns:
+#   0
+################################################################################
+pharo::check_options() {
+  is_empty "${baseline_group}" && baseline_group="default"
+  is_empty "${directory}" && directory=""
+  is_empty "${tests}" && tests="${baseline}.*"
+  return 0
+}
+
+################################################################################
+# Select Pharo download urls for image & vm. Exit if image_name is unsupported.
+# Arguments:
+#   Smalltalk image name
+################################################################################
+pharo::set_download_urls() {
+  local image_name=$1
+
+  case "${image_name}" in
     "Pharo-alpha")
       readonly pharo_get_image="alpha"
       readonly pharo_get_vm="vm50"
@@ -34,75 +57,111 @@ set_download_urls() {
       readonly pharo_get_vm="vm30"
       ;;
     *)
-      print_error "Unsupported Pharo version '${SMALLTALK}'"
+      print_error "Unsupported Pharo version '${smalltalk}'"
       exit 1
       ;;
   esac
 }
 
-check_options() {
-  is_empty "${baseline_group}" && baseline_group="default"
-  is_empty "${packages}" && packages=""
-  is_empty "${tests}" && tests="${baseline}.*"
-  return 0
-}
-
-download_image() {
-  if ! is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE}"; then
-    print_timed "Downloading ${SMALLTALK} image..."
-    pushd "${SMALLTALK_CI_CACHE}" > /dev/null
-    download_file "get.pharo.org/${pharo_get_image}" | bash
-    mv "Pharo.image" "${PHARO_IMAGE}"
-    mv "Pharo.changes" "${PHARO_CHANGES}"
-    popd > /dev/null
-    print_timed_result "Time to download ${SMALLTALK} image"
-  fi
-}
-
-download_vm() {
+################################################################################
+# Download and move vm if necessary.
+# Globals:
+#   PHARO_VM_FOLDER
+#   PHARO_VM
+# Arguments:
+#   None
+################################################################################
+pharo::prepare_vm() {
   if ! is_dir "${PHARO_VM_FOLDER}"; then
-    print_timed "Downloading ${SMALLTALK} vm..."
+    print_timed "Downloading ${smalltalk} vm..."
     mkdir "${PHARO_VM_FOLDER}"
     pushd "${PHARO_VM_FOLDER}" > /dev/null
     download_file "get.pharo.org/${pharo_get_vm}" | bash
     popd > /dev/null
     # Make sure vm is now available
     is_file "${PHARO_VM}" || exit 1
-    print_timed_result "Time to download ${SMALLTALK} vm"
+    print_timed_result "Time to download ${smalltalk} vm"
   fi
 }
 
-prepare_image() {
+################################################################################
+# Download image if necessary and copy it to build folder.
+# Globals:
+#   SMALLTALK_CI_BUILD
+#   SMALLTALK_CI_CACHE
+################################################################################
+pharo::prepare_image() {
+  if ! is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE}"; then
+    print_timed "Downloading ${smalltalk} image..."
+    pushd "${SMALLTALK_CI_CACHE}" > /dev/null
+    download_file "get.pharo.org/${pharo_get_image}" | bash
+    mv "Pharo.image" "${PHARO_IMAGE}"
+    mv "Pharo.changes" "${PHARO_CHANGES}"
+    popd > /dev/null
+    print_timed_result "Time to download ${smalltalk} image"
+  fi
+
   print_info "Preparing image..."
   cp "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE}" "${SMALLTALK_CI_BUILD}"
   cp "${SMALLTALK_CI_CACHE}/${PHARO_CHANGES}" "${SMALLTALK_CI_BUILD}"
 }
 
-load_project() {
+################################################################################
+# Load project into Pharo image.
+# Locals:
+#   baseline
+#   project_home
+#   baseline_group
+# Globals:
+#   SMALLTALK_CI_BUILD
+#   PHARO_IMAGE
+#   PHARO_VM
+################################################################################
+pharo::load_project() {
   print_info "Loading project..."
   "${PHARO_VM}" "${SMALLTALK_CI_BUILD}/${PHARO_IMAGE}" eval --save "
   Metacello new 
     baseline: '${baseline}';
-    repository: 'filetree://${project_home}/${packages}';
+    repository: 'filetree://${project_home}/${directory}';
     load: '${baseline_group}'.
   "
 }
 
-run_tests() {
+################################################################################
+# Run tests in Pharo image.
+# Globals:
+#   SMALLTALK_CI_BUILD
+#   PHARO_IMAGE
+#   PHARO_VM
+# Arguments:
+#   String matching a package name to test
+# Returns:
+#   Status code of build
+################################################################################
+pharo::run_tests() {
+  local tests=$1
+
   print_info "Run tests..."
   "${PHARO_VM}" "${SMALLTALK_CI_BUILD}/${PHARO_IMAGE}" test --junit-xml-output \
-      --fail-on-failure "${tests}" 2>&1 || exit_status=$?
+      --fail-on-failure "${tests}" 2>&1
+  return $?
 }
 
+################################################################################
+# Main entry point for Pharo builds.
+# Returns:
+#   Status code of build
+################################################################################
 run_build() {
   local pharo_get_image
   local pharo_get_vm
 
-  set_download_urls
-  check_options
-  download_image
-  download_vm
-  prepare_image
-  load_project
-  run_tests
+  pharo::check_options
+  pharo::set_download_urls "${smalltalk}"
+  pharo::prepare_vm
+  pharo::prepare_image
+  pharo::load_project
+
+  pharo::run_tests "$tests"
+  return $?
 }
