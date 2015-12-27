@@ -6,7 +6,6 @@ readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts"
 readonly VM_DOWNLOAD="${BASE_DOWNLOAD}/filetreeci/vms"
 readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}/filetreeci/images"
 
-
 ################################################################################
 # Check options and set defaults if unavailable.
 # Locals:
@@ -39,6 +38,10 @@ squeak::check_options() {
 ################################################################################
 # Select vm according to build environment. Exit with '1' if environtment is not
 # supported.
+# Locals:
+#   cog_vm
+#   cog_vm_file
+#   cog_vm_params
 # Globals:
 #   SMALLTALK_CI_VMS
 # Arguments:

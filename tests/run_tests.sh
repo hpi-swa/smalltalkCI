@@ -28,7 +28,7 @@ test_determine_project_home() {
 
 test_check_env_vars_options() {
   local baseline_group=""
-  local packages
+  local directory
   local force_update
   local builder_ci_fallback
   local run_script
@@ -48,7 +48,7 @@ test_check_env_vars_options() {
   check_env_vars_options
 
   assertEquals "foo1" "${baseline_group}"
-  assertEquals "foo2" "${packages}"
+  assertEquals "foo2" "${directory}"
   assertEquals "false" "${force_update}"
   assertEquals "true" "${builder_ci_fallback}"
   assertEquals "foo.st" "${run_script}"
