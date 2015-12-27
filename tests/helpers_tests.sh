@@ -1,6 +1,7 @@
 #! /bin/sh
 
-source helpers.sh
+readonly BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${BASE}/../helpers.sh"
 
 test_is_empty() {
   if ! is_empty ""; then
@@ -70,4 +71,4 @@ test_is_travis_build() {
   fi
 }
 
-source lib/shunit2
+source "${BASE}/../lib/shunit2"

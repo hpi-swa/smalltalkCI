@@ -20,9 +20,9 @@ check_os() {
 
 determine_project_home() {
   if is_not_empty "${PROJECT_HOME}"; then
-    project_home=${PROJECT_HOME}
+    project_home="${PROJECT_HOME}"
   else
-    project_home=${!#} # Last parameter
+    project_home="${!#}" # Last parameter
   fi
 
   if ! is_dir "${project_home}"; then
@@ -30,8 +30,8 @@ determine_project_home() {
     exit 1
   fi
 
-  if [[ ${project_home:0:1} != "/" ]]; then
-    project_home=$(cd "${project_home}" && pwd)
+  if [[ "${project_home:0:1}" != "/" ]]; then
+    project_home="$(cd "${project_home}" && pwd)"
   fi
 }
 
@@ -95,8 +95,8 @@ parse_args() {
   fi  
 
   determine_project_home "$@"
-  check_env_vars_options
   load_options_from_yml
+  check_env_vars_options
 
 
   # Handle all arguments and flags
@@ -250,14 +250,15 @@ main() {
 
   if fallback_enabled; then
     builder_ci_fallback
-    check_exit_status
-    exit ${exit_status}
+  else
+    prepare_folders
+    run
   fi
-
-  prepare_folders
-  run
+  
   check_exit_status
   exit ${exit_status}
 }
 
-main "$@"
+if [[ "$(basename -- "$0")" == "run.sh" ]]; then
+  main "$@"
+fi
