@@ -6,22 +6,22 @@ source "${BASE}/run.sh"
 test_determine_project_home() {
   local project_home
 
-  PROJECT_HOME_ORIGINAL="${PROJECT_HOME}"
+  if [[ -z "${PROJECT_HOME}" ]]; then
+    determine_project_home "/tmp"
+    assertEquals "/tmp" "${project_home}"
 
-  [[ -z "${PROJECT_HOME}" ]] && PROJECT_HOME="/tmp"
-  determine_project_home "/foo"
-  assertEquals "${PROJECT_HOME}" "${project_home}"
+    determine_project_home "../"
+    assertNotNull "${project_home}"
+    assertEquals "/" "${project_home:0:1}"
 
-  unset PROJECT_HOME
-  determine_project_home "/tmp"
-  assertEquals "/tmp" "${project_home}"
-
-  determine_project_home "../"
-  assertNotNull "${project_home}"
-  assertEquals "/" "${project_home:0:1}"
-
-  [[ -n "${PROJECT_HOME_ORIGINAL}" ]] \
-      && export PROJECT_HOME="${PROJECT_HOME_ORIGINAL}"
+    PROJECT_HOME="/tmp"
+    determine_project_home "/foo"
+    assertEquals "${PROJECT_HOME}" "${project_home}"
+    unset PROJECT_HOME
+  else
+    determine_project_home "/tmp"
+    assertEquals "${PROJECT_HOME}" "${project_home}"
+  fi
 
   return 0
 }
