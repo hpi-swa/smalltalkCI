@@ -3,8 +3,8 @@
 set -e
 
 readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts"
-readonly VM_DOWNLOAD="${BASE_DOWNLOAD}/filetreeci/vms"
 readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}/filetreeci/images"
+readonly VM_DOWNLOAD="http://mirandabanda.org/files/Cog/VM/VM.r3427"
 
 ################################################################################
 # Check options and set defaults if unavailable.
@@ -55,28 +55,25 @@ squeak::select_vm() {
     "Linux")
       print_info "Linux detected..."
       if [[ "${requires_spur_vm}" = "true" ]]; then
-        cog_vm_file_base="cog_linux_spur"
-        cog_vm="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
+        readonly cog_vm_file="cogspurlinux-15.33.3427.tgz"
+        readonly cog_vm="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
       else
-        cog_vm_file_base="cog_linux"
-        cog_vm="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
+        readonly cog_vm_file="coglinux-15.33.3427.tgz"
+        readonly cog_vm="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
       fi
-      cog_vm_file="${cog_vm_file_base}.tar.gz"
       if is_travis_build; then
-        cog_vm_file="${cog_vm_file_base}.min.tar.gz"
         cog_vm_params=(-nosound -nodisplay)
       fi
       ;;
     "Darwin")
       print_info "OS X detected..."
       if [[ "${requires_spur_vm}" = "true" ]]; then
-        cog_vm_file_base="cog_osx_spur"
-        cog_vm="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
+        readonly cog_vm_file="CogSpur.app-15.33.3427.tgz"
+        readonly cog_vm="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
       else
-        cog_vm_file_base="cog_osx"
-        cog_vm="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
+        readonly cog_vm_file="Cog.app-15.33.3427.tgz"
+        readonly cog_vm="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
       fi
-      cog_vm_file="${cog_vm_file_base}.tar.gz"
       ;;
     *)
       print_error "Unsupported platform '$(uname -s)'."
@@ -141,6 +138,9 @@ squeak::prepare_vm() {
     print_info "Extracting virtual machine..."
     tar xzf "${target}" -C "${SMALLTALK_CI_VMS}"
   fi
+
+  print_info "Cog VM Information:"
+  "${cog_vm}" -version
 }
 
 ################################################################################
