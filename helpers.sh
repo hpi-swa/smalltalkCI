@@ -88,15 +88,19 @@ is_travis_build() {
 
 is_spur_image() {
   local image_path=$1
-  local magic_word
+  local image_format_number
+  # "[...] bit 5 of the format number identifies an image that requires Spur
+  # support from the VM [...]"
+  # http://forum.world.st/VM-Maker-ImageFormat-dtl-17-mcz-td4713569.html
+  local spur_bit=5
 
   if is_empty "${image_path}"; then
     print_error "Image not found at '${image_path}'."
     return 0
   fi
 
-  magic_word="$(hexdump -n 4 -e '2/4 "%04d " "\n"' "${image_path}")"
-  [[ magic_word -ge 6521 ]]
+  image_format_number="$(hexdump -n 4 -e '2/4 "%04d " "\n"' "${image_path}")"
+  [[ $((${image_format_number}>>(${spur_bit}-1) & 1)) -eq 1 ]]
 }
 
 download_file() {
