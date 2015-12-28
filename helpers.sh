@@ -86,6 +86,19 @@ is_travis_build() {
   [[ "${TRAVIS}" = "true" ]]
 }
 
+is_spur_image() {
+  local image_path=$1
+  local magic_word
+
+  if is_empty "${image_path}"; then
+    print_error "Image not found at '${image_path}'."
+    return 0
+  fi
+
+  magic_word="$(hexdump -n 4 -e '2/4 "%04d " "\n"' "${image_path}")"
+  [[ magic_word -ge 6521 ]]
+}
+
 download_file() {
   local url=$1
 

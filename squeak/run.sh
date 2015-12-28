@@ -44,17 +44,12 @@ squeak::check_options() {
 #   cog_vm_params
 # Globals:
 #   SMALLTALK_CI_VMS
-# Arguments:
-#   'true' for Spur vm, 'false' for non-Spur vm
 ################################################################################
 squeak::select_vm() {
-  local squeak_requires_spur_vm=$1
-  local cog_vm_file_base
-
   case "$(uname -s)" in
     "Linux")
       print_info "Linux detected..."
-      if [[ "${squeak_requires_spur_vm}" = "true" ]]; then
+      if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
         readonly cog_vm_file="cogspurlinux-15.33.3427.tgz"
         readonly cog_vm="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
       else
@@ -67,7 +62,7 @@ squeak::select_vm() {
       ;;
     "Darwin")
       print_info "OS X detected..."
-      if [[ "${squeak_requires_spur_vm}" = "true" ]]; then
+      if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
         readonly cog_vm_file="CogSpur.app-15.33.3427.tgz"
         readonly cog_vm="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
       else
@@ -93,19 +88,15 @@ squeak::select_image() {
   case "${smalltalk_name}" in
     "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk")
       readonly squeak_image_name="Squeak-Trunk.tar.gz"
-      readonly squeak_requires_spur_vm=true
       ;;
     "Squeak-5.0"|"Squeak5.0")
       readonly squeak_image_name="Squeak-5.0.tar.gz"
-      readonly squeak_requires_spur_vm=true
       ;;
     "Squeak-4.6"|"Squeak4.6")
       readonly squeak_image_name="Squeak-4.6.tar.gz"
-      readonly squeak_requires_spur_vm=false
       ;;
     "Squeak-4.5"|"Squeak4.5")
       readonly squeak_image_name="Squeak-4.5.tar.gz"
-      readonly squeak_requires_spur_vm=false
       ;;
     *)
       print_error "Unsupported Squeak version '${squeak_image_name}'."
@@ -204,16 +195,15 @@ squeak::load_project_and_run_tests() {
 ################################################################################
 run_build() {
   local squeak_image_name
-  local squeak_requires_spur_vm
   local cog_vm_file
   local cog_vm_params=()
   local cog_vm
 
   squeak::check_options
   squeak::select_image "${smalltalk}"
-  squeak::select_vm "${squeak_requires_spur_vm}"
-  squeak::prepare_vm "${cog_vm_file}"
   squeak::prepare_image "${squeak_image_name}"
+  squeak::select_vm
+  squeak::prepare_vm "${cog_vm_file}"
 
   squeak::load_project_and_run_tests
   return $?
