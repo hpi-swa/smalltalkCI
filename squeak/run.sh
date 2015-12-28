@@ -48,13 +48,13 @@ squeak::check_options() {
 #   'true' for Spur vm, 'false' for non-Spur vm
 ################################################################################
 squeak::select_vm() {
-  local requires_spur_vm=$1
+  local squeak_requires_spur_vm=$1
   local cog_vm_file_base
 
   case "$(uname -s)" in
     "Linux")
       print_info "Linux detected..."
-      if [[ "${requires_spur_vm}" = "true" ]]; then
+      if [[ "${squeak_requires_spur_vm}" = "true" ]]; then
         readonly cog_vm_file="cogspurlinux-15.33.3427.tgz"
         readonly cog_vm="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
       else
@@ -67,7 +67,7 @@ squeak::select_vm() {
       ;;
     "Darwin")
       print_info "OS X detected..."
-      if [[ "${requires_spur_vm}" = "true" ]]; then
+      if [[ "${squeak_requires_spur_vm}" = "true" ]]; then
         readonly cog_vm_file="CogSpur.app-15.33.3427.tgz"
         readonly cog_vm="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
       else
@@ -83,32 +83,32 @@ squeak::select_vm() {
 }
 
 ################################################################################
-# Select Squeak image. Exit with '1' if image_name is unsupported.
+# Select Squeak image. Exit with '1' if smalltalk_name is unsupported.
 # Arguments:
 #   Smalltalk image name
 ################################################################################
 squeak::select_image() {
-  local image_name=$1
+  local smalltalk_name=$1
 
-  case "${image_name}" in
+  case "${smalltalk_name}" in
     "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk")
-      readonly image_tar="Squeak-Trunk.tar.gz"
-      readonly requires_spur_vm=true
+      readonly squeak_image_name="Squeak-Trunk.tar.gz"
+      readonly squeak_requires_spur_vm=true
       ;;
     "Squeak-5.0"|"Squeak5.0")
-      readonly image_tar="Squeak-5.0.tar.gz"
-      readonly requires_spur_vm=true
+      readonly squeak_image_name="Squeak-5.0.tar.gz"
+      readonly squeak_requires_spur_vm=true
       ;;
     "Squeak-4.6"|"Squeak4.6")
-      readonly image_tar="Squeak-4.6.tar.gz"
-      readonly requires_spur_vm=false
+      readonly squeak_image_name="Squeak-4.6.tar.gz"
+      readonly squeak_requires_spur_vm=false
       ;;
     "Squeak-4.5"|"Squeak4.5")
-      readonly image_tar="Squeak-4.5.tar.gz"
-      readonly requires_spur_vm=false
+      readonly squeak_image_name="Squeak-4.5.tar.gz"
+      readonly squeak_requires_spur_vm=false
       ;;
     *)
-      print_error "Unsupported Squeak version '${image_name}'."
+      print_error "Unsupported Squeak version '${squeak_image_name}'."
       exit 1
       ;;
   esac
@@ -203,17 +203,17 @@ squeak::load_project_and_run_tests() {
 #   Status code of build
 ################################################################################
 run_build() {
-  local image_tar
-  local requires_spur_vm
+  local squeak_image_name
+  local squeak_requires_spur_vm
   local cog_vm_file
   local cog_vm_params=()
   local cog_vm
 
   squeak::check_options
   squeak::select_image "${smalltalk}"
-  squeak::select_vm "${requires_spur_vm}"
+  squeak::select_vm "${squeak_requires_spur_vm}"
   squeak::prepare_vm "${cog_vm_file}"
-  squeak::prepare_image "${image_tar}"
+  squeak::prepare_image "${squeak_image_name}"
 
   squeak::load_project_and_run_tests
   return $?
