@@ -46,7 +46,9 @@ squeak::check_options() {
 #   SMALLTALK_CI_VMS
 ################################################################################
 squeak::select_vm() {
-  case "$(uname -s)" in
+  local os_name="$(uname -s)"
+
+  case "${os_name}" in
     "Linux")
       print_info "Linux detected..."
       if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
@@ -71,35 +73,7 @@ squeak::select_vm() {
       fi
       ;;
     *)
-      print_error "Unsupported platform '$(uname -s)'."
-      exit 1
-      ;;
-  esac
-}
-
-################################################################################
-# Select Squeak image. Exit with '1' if smalltalk_name is unsupported.
-# Arguments:
-#   Smalltalk image name
-################################################################################
-squeak::select_image() {
-  local smalltalk_name=$1
-
-  case "${smalltalk_name}" in
-    "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk")
-      readonly squeak_image_name="Squeak-Trunk.tar.gz"
-      ;;
-    "Squeak-5.0"|"Squeak5.0")
-      readonly squeak_image_name="Squeak-5.0.tar.gz"
-      ;;
-    "Squeak-4.6"|"Squeak4.6")
-      readonly squeak_image_name="Squeak-4.6.tar.gz"
-      ;;
-    "Squeak-4.5"|"Squeak4.5")
-      readonly squeak_image_name="Squeak-4.5.tar.gz"
-      ;;
-    *)
-      print_error "Unsupported Squeak version '${squeak_image_name}'."
+      print_error "Unsupported platform '${os_name}'."
       exit 1
       ;;
   esac
@@ -135,23 +109,54 @@ squeak::prepare_vm() {
 }
 
 ################################################################################
+# Select Squeak image. Exit with '1' if smalltalk_name is unsupported.
+# Arguments:
+#   Smalltalk image name
+# Returns:
+#   Image filename string
+################################################################################
+squeak::select_image() {
+  local smalltalk_name=$1
+
+  case "${smalltalk_name}" in
+    "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk")
+      echo "Squeak-Trunk.tar.gz"
+      ;;
+    "Squeak-5.0"|"Squeak5.0")
+      echo "Squeak-5.0.tar.gz"
+      ;;
+    "Squeak-4.6"|"Squeak4.6")
+      echo "Squeak-4.6.tar.gz"
+      ;;
+    "Squeak-4.5"|"Squeak4.5")
+      echo "Squeak-4.5.tar.gz"
+      ;;
+    *)
+      print_error "Unsupported Squeak version '${smalltalk_name}'."
+      exit 1
+      ;;
+  esac
+}
+
+################################################################################
 # Download image if necessary and extract it.
 # Globals:
 #   IMAGE_DOWNLOAD
 #   SMALLTALK_CI_CACHE
 #   SMALLTALK_CI_BUILD
 # Arguments:
-#   image_file
+#   smalltalk_name
 ################################################################################
 squeak::prepare_image() {
-  local image_file=$1
+  local smalltalk_name=$1
+  local image_file=$(squeak::select_image "${smalltalk_name}")
   local download_url="${IMAGE_DOWNLOAD}/${image_file}"
   local target="${SMALLTALK_CI_CACHE}/${image_file}"
 
   if ! is_file "${target}"; then
-    print_timed "Downloading ${smalltalk} testing image..."
+    print_timed "Downloading ${smalltalk_name} testing image..."
     download_file "${download_url}" > "${target}"
-    print_timed_result "Time to download ${smalltalk} testing image"
+    print_timed_result "Time to download ${smalltalk_name} testing image"
   fi
 
   print_info "Extracting image..."
@@ -194,14 +199,12 @@ squeak::load_project_and_run_tests() {
 #   Status code of build
 ################################################################################
 run_build() {
-  local squeak_image_name
+  local cog_vm
   local cog_vm_file
   local cog_vm_params=()
-  local cog_vm
 
   squeak::check_options
-  squeak::select_image "${smalltalk}"
-  squeak::prepare_image "${squeak_image_name}"
+  squeak::prepare_image "${smalltalk}"
   squeak::select_vm
   squeak::prepare_vm "${cog_vm_file}"
 
