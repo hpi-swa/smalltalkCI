@@ -23,7 +23,7 @@ print_timed() {
 
 print_timed_result() {
   if [[ -n "${LAST_PRINT}" ]]; then
-    diff=$(($(date +%s) - ${LAST_PRINT}))
+    diff=$(($(date +%s) - LAST_PRINT))
     print_info "[$1: ${diff}s]"
   fi
 }
@@ -79,7 +79,7 @@ is_dir() {
 program_exists() {
   local program=$1
 
-  [[ $(which ${program} 2> /dev/null) ]]
+  [[ $(which "${program}" 2> /dev/null) ]]
 }
 
 is_travis_build() {
@@ -100,7 +100,7 @@ is_spur_image() {
   fi
 
   image_format_number="$(hexdump -n 4 -e '2/4 "%04d " "\n"' "${image_path}")"
-  [[ $((${image_format_number}>>(${spur_bit}-1) & 1)) -eq 1 ]]
+  [[ $((image_format_number>>(spur_bit-1) & 1)) -eq 1 ]]
 }
 
 download_file() {
