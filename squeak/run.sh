@@ -41,7 +41,6 @@ squeak::check_options() {
 # Locals:
 #   cog_vm
 #   cog_vm_file
-#   cog_vm_params
 # Globals:
 #   SMALLTALK_CI_VMS
 ################################################################################
@@ -50,31 +49,25 @@ squeak::select_vm() {
 
   case "${os_name}" in
     "Linux")
-      print_info "Linux detected..."
       if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
-        readonly cog_vm_file="cogspurlinux-15.33.3427.tgz"
-        readonly cog_vm="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
+        echo "cogspurlinux-15.33.3427.tgz"
+        export SMALLTALK_CI_VM="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
       else
-        readonly cog_vm_file="coglinux-15.33.3427.tgz"
-        readonly cog_vm="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
-      fi
-      if is_travis_build; then
-        cog_vm_params=(-nosound -nodisplay)
+        echo "coglinux-15.33.3427.tgz"
+        export SMALLTALK_CI_VM="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
       fi
       ;;
     "Darwin")
-      print_info "OS X detected..."
       if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
-        readonly cog_vm_file="CogSpur.app-15.33.3427.tgz"
-        readonly cog_vm="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
+        echo "CogSpur.app-15.33.3427.tgz"
+        export SMALLTALK_CI_VM="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
       else
-        readonly cog_vm_file="Cog.app-15.33.3427.tgz"
-        readonly cog_vm="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
+        echo "Cog.app-15.33.3427.tgz"
+        export SMALLTALK_CI_VM="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
       fi
       ;;
     *)
       print_error "Unsupported platform '${os_name}'."
-      exit 1
       ;;
   esac
 }
@@ -85,11 +78,10 @@ squeak::select_vm() {
 #   VM_DOWNLOAD
 #   SMALLTALK_CI_CACHE
 #   SMALLTALK_CI_VMS
-# Arguments:
-#   cog_vm_file
 ################################################################################
 squeak::prepare_vm() {
-  local cog_vm_file=$1
+  local cog_vm_file="$(squeak::select_vm)"
+  is_empty "${cog_vm_file}" && exit 1
   local download_url="${VM_DOWNLOAD}/${cog_vm_file}"
   local target="${SMALLTALK_CI_CACHE}/${cog_vm_file}"
 
@@ -99,13 +91,17 @@ squeak::prepare_vm() {
     print_timed_result "Time to download virtual machine"
   fi
 
-  if ! is_file "${cog_vm}"; then
+  if ! is_file "${SMALLTALK_CI_VM}"; then
     print_info "Extracting virtual machine..."
     tar xzf "${target}" -C "${SMALLTALK_CI_VMS}"
+    if ! is_file "${SMALLTALK_CI_VM}"; then
+      print_error "Unable to set up virtual machine at '${SMALLTALK_CI_VM}'."
+      exit 1
+    fi
   fi
 
   print_info "Cog VM Information:"
-  "${cog_vm}" -version
+  "${SMALLTALK_CI_VM}" -version
 }
 
 ################################################################################
@@ -133,7 +129,6 @@ squeak::select_image() {
       ;;
     *)
       print_error "Unsupported Squeak version '${smalltalk_name}'."
-      exit 1
       ;;
   esac
 }
@@ -144,6 +139,7 @@ squeak::select_image() {
 #   IMAGE_DOWNLOAD
 #   SMALLTALK_CI_CACHE
 #   SMALLTALK_CI_BUILD
+#   SMALLTALK_CI_IMAGE
 # Arguments:
 #   smalltalk_name
 ################################################################################
@@ -153,6 +149,8 @@ squeak::prepare_image() {
   local download_url="${IMAGE_DOWNLOAD}/${image_file}"
   local target="${SMALLTALK_CI_CACHE}/${image_file}"
 
+  is_empty "${image_file}" && exit 1
+
   if ! is_file "${target}"; then
     print_timed "Downloading ${smalltalk_name} testing image..."
     download_file "${download_url}" > "${target}"
@@ -161,6 +159,11 @@ squeak::prepare_image() {
 
   print_info "Extracting image..."
   tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
+
+  if ! is_file "${SMALLTALK_CI_IMAGE}"; then
+    print_error "Unable to prepare image at '${SMALLTALK_CI_IMAGE}'."
+    exit 1
+  fi
 }
 
 ################################################################################
@@ -173,23 +176,29 @@ squeak::prepare_image() {
 #   exclude_classes
 #   force_update
 #   keep_open
-#   cog_vm
-#   cog_vm_params
 #   run_script
 #   vm_args
 # Globals:
 #   SMALLTALK_CI_IMAGE
+#   SMALLTALK_CI_VM
 # Returns:
 #   Status code of build
 ################################################################################
 squeak::load_project_and_run_tests() {
   local vm_args
+  local cog_vm_flags=()
 
   print_info "Load project into image and run tests..."
+
   vm_args=(${directory} ${baseline} ${baseline_group} ${exclude_categories} \
       ${exclude_classes} ${force_update} ${keep_open})
-  "${cog_vm}" "${cog_vm_params[@]}" "${SMALLTALK_CI_IMAGE}" "${run_script}" \
-      "${vm_args[@]}"
+
+  if is_travis_build; then
+    cog_vm_flags=(-nosound -nodisplay)
+  fi
+
+  "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
+      "${run_script}" "${vm_args[@]}"
   return $?
 }
 
@@ -199,14 +208,9 @@ squeak::load_project_and_run_tests() {
 #   Status code of build
 ################################################################################
 run_build() {
-  local cog_vm
-  local cog_vm_file
-  local cog_vm_params=()
-
   squeak::check_options
   squeak::prepare_image "${smalltalk}"
-  squeak::select_vm
-  squeak::prepare_vm "${cog_vm_file}"
+  squeak::prepare_vm
 
   squeak::load_project_and_run_tests
   return $?
