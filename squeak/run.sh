@@ -140,7 +140,7 @@ squeak::get_vm_details() {
       ;;
   esac
 
-  return_vars ${vm_filename} ${vm_path}
+  return_vars "${vm_filename}" "${vm_path}"
 }
 
 

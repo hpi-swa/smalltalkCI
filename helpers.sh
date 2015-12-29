@@ -126,8 +126,8 @@ return_vars() {
 }
 
 set_vars() {
-  local variables=${@:1:(($# - 1))}
+  local variables=(${@:1:(($# - 1))})
   local values="${!#}"
 
-  IFS='|' read ${variables[@]} <<< "${values}"
+  IFS='|' read -r "${variables[@]}" <<< "${values}"
 }
