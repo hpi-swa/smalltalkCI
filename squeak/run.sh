@@ -36,34 +36,66 @@ squeak::check_options() {
 }
 
 ################################################################################
-# Select vm according to build environment. Exit with '1' if environtment is not
-# supported.
-# Locals:
-#   cog_vm
-#   cog_vm_file
+# Get vm filename according to build environment. Returns '' if environment is
+# not supported.
 # Globals:
-#   SMALLTALK_CI_VMS
+#   SMALLTALK_CI_IMAGE
+# Arguments:
+#   os_name
+# Returns:
+#   VM filename for download
 ################################################################################
-squeak::select_vm() {
-  local os_name="$(uname -s)"
+squeak::get_vm_filename() {
+  local os_name=$1
 
   case "${os_name}" in
     "Linux")
       if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
         echo "cogspurlinux-15.33.3427.tgz"
-        export SMALLTALK_CI_VM="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
       else
         echo "coglinux-15.33.3427.tgz"
-        export SMALLTALK_CI_VM="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
       fi
       ;;
     "Darwin")
       if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
         echo "CogSpur.app-15.33.3427.tgz"
-        export SMALLTALK_CI_VM="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
       else
         echo "Cog.app-15.33.3427.tgz"
-        export SMALLTALK_CI_VM="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
+      fi
+      ;;
+    *)
+      print_error "Unsupported platform '${os_name}'."
+      ;;
+  esac
+}
+
+################################################################################
+# Get vm path according to build environment. Returns '' if environment is not
+# supported.
+# Globals:
+#   SMALLTALK_CI_VMS
+#   SMALLTALK_CI_IMAGE
+# Arguments:
+#   os_name
+# Returns:
+#   VM path
+################################################################################
+squeak::get_vm_path() {
+  local os_name=$1
+
+  case "${os_name}" in
+    "Linux")
+      if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
+        echo "${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
+      else
+        echo "${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
+      fi
+      ;;
+    "Darwin")
+      if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
+        echo "${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
+      else
+        echo "${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
       fi
       ;;
     *)
@@ -80,10 +112,14 @@ squeak::select_vm() {
 #   SMALLTALK_CI_VMS
 ################################################################################
 squeak::prepare_vm() {
-  local cog_vm_file="$(squeak::select_vm)"
+  local os_name="$(uname -s)"
+  local cog_vm_file="$(squeak::get_vm_filename "${os_name}")"
   is_empty "${cog_vm_file}" && exit 1
   local download_url="${VM_DOWNLOAD}/${cog_vm_file}"
   local target="${SMALLTALK_CI_CACHE}/${cog_vm_file}"
+
+  export SMALLTALK_CI_VM="$(squeak::get_vm_path "${os_name}")"
+  is_empty "${SMALLTALK_CI_VM}" && exit 1
 
   if ! is_file "${target}"; then
     print_timed "Downloading virtual machine..."

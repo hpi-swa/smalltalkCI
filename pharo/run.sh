@@ -25,7 +25,7 @@ pharo::check_options() {
 # Return:
 #   Pharo image download url
 ################################################################################
-pharo::select_image_url() {
+pharo::get_image_url() {
   local smalltalk_name=$1
 
   case "${smalltalk_name}" in
@@ -58,7 +58,7 @@ pharo::select_image_url() {
 # Return:
 #   Pharo vm download url
 ################################################################################
-pharo::select_vm_url() {
+pharo::get_vm_url() {
   local smalltalk_name=$1
 
   case "${smalltalk_name}" in
@@ -93,7 +93,7 @@ pharo::select_vm_url() {
 ################################################################################
 pharo::prepare_vm() {
   local smalltalk_name=$1
-  local pharo_vm_url="$(pharo::select_vm_url "${smalltalk_name}")"
+  local pharo_vm_url="$(pharo::get_vm_url "${smalltalk_name}")"
   local pharo_vm_folder="${SMALLTALK_CI_VMS}/${smalltalk_name}"
 
   if [[ "${keep_open}" = "true" ]]; then
@@ -106,7 +106,7 @@ pharo::prepare_vm() {
     print_timed "Downloading ${smalltalk_name} vm..."
     mkdir "${pharo_vm_folder}"
     pushd "${pharo_vm_folder}" > /dev/null
-    download_file "get.pharo.org/${pharo_vm_url}" | bash
+    download_file "${pharo_vm_url}" | bash
     popd > /dev/null
     print_timed_result "Time to download ${smalltalk_name} vm"
 
@@ -127,14 +127,14 @@ pharo::prepare_vm() {
 ################################################################################
 pharo::prepare_image() {
   local smalltalk_name=$1
-  local pharo_image_url="$(pharo::select_image_url "${smalltalk_name}")"
+  local pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
   local pharo_image_file="${smalltalk_name}.image"
   local pharo_changes_file="${smalltalk_name}.changes"
 
   if ! is_file "${SMALLTALK_CI_CACHE}/${pharo_image_file}"; then
     print_timed "Downloading ${smalltalk_name} image..."
     pushd "${SMALLTALK_CI_CACHE}" > /dev/null
-    download_file "get.pharo.org/${pharo_image_url}" | bash
+    download_file "${pharo_image_url}" | bash
     mv "Pharo.image" "${pharo_image_file}"
     mv "Pharo.changes" "${pharo_changes_file}"
     popd > /dev/null
