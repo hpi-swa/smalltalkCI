@@ -121,9 +121,13 @@ download_file() {
   fi
 }
 
+return_vars() {
+  (IFS='|'; echo "$*")
+}
+
 set_vars() {
   local variables=${@:1:(($# - 1))}
-  local values="${@: -1}"
+  local values="${!#}"
 
   IFS='|' read ${variables[@]} <<< "${values}"
 }
