@@ -229,7 +229,7 @@ squeak::load_project_and_run_tests() {
   vm_args=(${directory} ${baseline} ${baseline_group} ${exclude_categories} \
       ${exclude_classes} ${force_update} ${keep_open})
 
-  if is_travis_build; then
+  if is_travis_build && [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
     cog_vm_flags=(-nosound -nodisplay)
   fi
 
