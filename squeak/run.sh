@@ -36,73 +36,114 @@ squeak::check_options() {
 }
 
 ################################################################################
-# Get vm filename according to build environment. Returns '' if environment is
-# not supported.
-# Globals:
-#   SMALLTALK_CI_IMAGE
+# Select Squeak image. Exit with '1' if smalltalk_name is unsupported.
 # Arguments:
-#   os_name
+#   Smalltalk image name
 # Returns:
-#   VM filename for download
+#   Image filename string
 ################################################################################
-squeak::get_vm_filename() {
-  local os_name=$1
+squeak::get_image_filename() {
+  local smalltalk_name=$1
 
-  case "${os_name}" in
-    "Linux")
-      if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
-        echo "cogspurlinux-15.33.3427.tgz"
-      else
-        echo "coglinux-15.33.3427.tgz"
-      fi
+  case "${smalltalk_name}" in
+    "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk")
+      echo "Squeak-Trunk.tar.gz"
       ;;
-    "Darwin")
-      if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
-        echo "CogSpur.app-15.33.3427.tgz"
-      else
-        echo "Cog.app-15.33.3427.tgz"
-      fi
+    "Squeak-5.0"|"Squeak5.0")
+      echo "Squeak-5.0.tar.gz"
+      ;;
+    "Squeak-4.6"|"Squeak4.6")
+      echo "Squeak-4.6.tar.gz"
+      ;;
+    "Squeak-4.5"|"Squeak4.5")
+      echo "Squeak-4.5.tar.gz"
       ;;
     *)
-      print_error "Unsupported platform '${os_name}'."
+      print_error "Unsupported Squeak version '${smalltalk_name}'."
+      exit 1
       ;;
   esac
 }
 
 ################################################################################
-# Get vm path according to build environment. Returns '' if environment is not
-# supported.
+# Download image if necessary and extract it.
 # Globals:
-#   SMALLTALK_CI_VMS
+#   IMAGE_DOWNLOAD
+#   SMALLTALK_CI_CACHE
+#   SMALLTALK_CI_BUILD
+#   SMALLTALK_CI_IMAGE
+# Arguments:
+#   smalltalk_name
+################################################################################
+squeak::prepare_image() {
+  local smalltalk_name=$1
+  local image_filename
+  local download_url
+  local target
+
+  image_filename=$(squeak::get_image_filename "${smalltalk_name}")
+  download_url="${IMAGE_DOWNLOAD}/${image_filename}"
+  target="${SMALLTALK_CI_CACHE}/${image_filename}"
+
+  if ! is_file "${target}"; then
+    print_timed "Downloading ${smalltalk_name} testing image..."
+    download_file "${download_url}" > "${target}"
+    print_timed_result "Time to download ${smalltalk_name} testing image"
+  fi
+
+  print_info "Extracting image..."
+  tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
+
+  if ! is_file "${SMALLTALK_CI_IMAGE}"; then
+    print_error "Unable to prepare image at '${SMALLTALK_CI_IMAGE}'."
+    exit 1
+  fi
+}
+
+################################################################################
+# Get vm filename and path according to build environment. Exit with '1' if
+# environment is not supported.
+# Globals:
 #   SMALLTALK_CI_IMAGE
 # Arguments:
 #   os_name
 # Returns:
-#   VM path
+#   'vm_filename|vm_path' string
 ################################################################################
-squeak::get_vm_path() {
+squeak::get_vm_details() {
   local os_name=$1
+  local vm_filename
+  local vm_path
 
   case "${os_name}" in
     "Linux")
       if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
-        echo "${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
+        vm_filename="cogspurlinux-15.33.3427.tgz"
+        vm_path="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
       else
-        echo "${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
+        vm_filename="coglinux-15.33.3427.tgz"
+        vm_path="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
       fi
       ;;
     "Darwin")
       if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
-        echo "${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
+        vm_filename="CogSpur.app-15.33.3427.tgz"
+        vm_path="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
       else
-        echo "${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
+        vm_filename="Cog.app-15.33.3427.tgz"
+        vm_path="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
       fi
       ;;
     *)
       print_error "Unsupported platform '${os_name}'."
+      exit 1
       ;;
   esac
+
+  echo "${vm_filename}|${vm_path}"
 }
+
+
 
 ################################################################################
 # Download and extract vm if necessary.
@@ -112,14 +153,18 @@ squeak::get_vm_path() {
 #   SMALLTALK_CI_VMS
 ################################################################################
 squeak::prepare_vm() {
-  local os_name="$(uname -s)"
-  local cog_vm_file="$(squeak::get_vm_filename "${os_name}")"
-  is_empty "${cog_vm_file}" && exit 1
-  local download_url="${VM_DOWNLOAD}/${cog_vm_file}"
-  local target="${SMALLTALK_CI_CACHE}/${cog_vm_file}"
+  local vm_details
+  local vm_filename
+  local vm_path
+  local download_url
+  local target
 
-  export SMALLTALK_CI_VM="$(squeak::get_vm_path "${os_name}")"
-  is_empty "${SMALLTALK_CI_VM}" && exit 1
+  vm_details=$(squeak::get_vm_details "$(uname -s)")
+  set_vars vm_filename vm_path "${vm_details}"
+  download_url="${VM_DOWNLOAD}/${vm_filename}"
+  target="${SMALLTALK_CI_CACHE}/${vm_filename}"
+
+  export SMALLTALK_CI_VM="${vm_path}"
 
   if ! is_file "${target}"; then
     print_timed "Downloading virtual machine..."
@@ -138,68 +183,6 @@ squeak::prepare_vm() {
 
   print_info "Cog VM Information:"
   "${SMALLTALK_CI_VM}" -version
-}
-
-################################################################################
-# Select Squeak image. Exit with '1' if smalltalk_name is unsupported.
-# Arguments:
-#   Smalltalk image name
-# Returns:
-#   Image filename string
-################################################################################
-squeak::select_image() {
-  local smalltalk_name=$1
-
-  case "${smalltalk_name}" in
-    "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk")
-      echo "Squeak-Trunk.tar.gz"
-      ;;
-    "Squeak-5.0"|"Squeak5.0")
-      echo "Squeak-5.0.tar.gz"
-      ;;
-    "Squeak-4.6"|"Squeak4.6")
-      echo "Squeak-4.6.tar.gz"
-      ;;
-    "Squeak-4.5"|"Squeak4.5")
-      echo "Squeak-4.5.tar.gz"
-      ;;
-    *)
-      print_error "Unsupported Squeak version '${smalltalk_name}'."
-      ;;
-  esac
-}
-
-################################################################################
-# Download image if necessary and extract it.
-# Globals:
-#   IMAGE_DOWNLOAD
-#   SMALLTALK_CI_CACHE
-#   SMALLTALK_CI_BUILD
-#   SMALLTALK_CI_IMAGE
-# Arguments:
-#   smalltalk_name
-################################################################################
-squeak::prepare_image() {
-  local smalltalk_name=$1
-  local image_file=$(squeak::select_image "${smalltalk_name}")
-  local download_url="${IMAGE_DOWNLOAD}/${image_file}"
-  local target="${SMALLTALK_CI_CACHE}/${image_file}"
-
-  is_empty "${image_file}" && exit 1
-
-  if ! is_file "${target}"; then
-    print_timed "Downloading ${smalltalk_name} testing image..."
-    download_file "${download_url}" > "${target}"
-    print_timed_result "Time to download ${smalltalk_name} testing image"
-  fi
-
-  print_info "Extracting image..."
-  tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
-
-  if ! is_file "${SMALLTALK_CI_IMAGE}"; then
-    print_error "Unable to prepare image at '${SMALLTALK_CI_IMAGE}'."
-    exit 1
-  fi
 }
 
 ################################################################################

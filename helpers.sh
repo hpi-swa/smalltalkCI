@@ -120,3 +120,10 @@ download_file() {
     exit 1
   fi
 }
+
+set_vars() {
+  local variables=${@:1:(($# - 1))}
+  local values="${@: -1}"
+
+  IFS='|' read ${variables[@]} <<< "${values}"
+}
