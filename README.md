@@ -4,6 +4,13 @@ Community-supported framework for building Smalltalk projects on [Travis CI][Tra
 It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] and aims to make testing Smalltalk projects easy and fast.
 
 
+## Table of contents
+- [Features](#features)
+- [List Of Images Supported](#images)
+- [How To Use](#how-to-use)
+- [`.travis.yml` Templates](#templates)
+- [Contributing](#contributing)
+
 ## Features
 - Configuration via `.travis.yml` only ([see below for templates](#travisyml-template))
 - Runs on Travis' [container-based infrastructure][cbi] - [*"Builds-start-in-seconds"*][bsis]
@@ -113,6 +120,9 @@ baseline: myProject
 ...
 ```
 
+## Contributing
+Please feel free to [open an issues][issues] or to [send pull requests][pullRequests] if you'd like to discuss an idea or a problem. 
+
 [TravisCI]: http://travis-ci.org/
 [TravisHowTo]: http://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI%3A
 [daleheinrich]: https://github.com/dalehenrich
@@ -122,3 +132,5 @@ baseline: myProject
 [metacello]: https://github.com/dalehenrich/metacello-work
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
+[issues]: https://github.com/hpi-swa/smalltalkCI/issues
+[pullRequests]: https://help.github.com/articles/using-pull-requests/
