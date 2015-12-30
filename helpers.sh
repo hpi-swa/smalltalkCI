@@ -16,6 +16,10 @@ print_error() {
   printf "\e[1;31m%s\e[0m\n" "$1" 1>&2
 }
 
+print_debug() {
+  printf "\e[0;37m%s\e[0m\n" "$1"
+}
+
 print_timed() {
   LAST_PRINT=$(date +%s)
   print_info "$1"
@@ -38,6 +42,7 @@ print_help() {
     --baseline              Overwrite baseline.
     --baseline-group        Overwrite baseline group.
     --builder-ci            Use builderCI (default 'false').
+    -d | --debug            Enable debug mode.
     --directory             Overwrite directory.
     --excluded-categories   Overwrite categories to be excluded (Squeak only).
     --excluded-classes      Overwrite classes to be excluded (Squeak only).
@@ -101,6 +106,10 @@ is_spur_image() {
 
   image_format_number="$(hexdump -n 4 -e '2/4 "%04d " "\n"' "${image_path}")"
   [[ $((image_format_number>>(spur_bit-1) & 1)) -eq 1 ]]
+}
+
+debug_enabled() {
+  [[ "${config_debug}" = "true" ]]
 }
 
 download_file() {

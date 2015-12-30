@@ -5,16 +5,16 @@ set -e
 ################################################################################
 # Check options and set defaults if unavailable.
 # Locals:
-#   baseline_group
-#   directory
-#   tests
+#   config_baseline_group
+#   config_directory
+#   config_tests
 # Returns:
 #   0
 ################################################################################
 pharo::check_options() {
-  is_empty "${baseline_group}" && baseline_group="default"
-  is_empty "${directory}" && directory=""
-  is_empty "${tests}" && tests="${baseline}.*"
+  is_empty "${config_baseline_group}" && config_baseline_group="default"
+  is_empty "${config_directory}" && config_directory=""
+  is_empty "${config_tests}" && config_tests="${config_baseline}.*"
   return 0
 }
 
@@ -86,6 +86,8 @@ pharo::get_vm_url() {
 
 ################################################################################
 # Download and move vm if necessary.
+# Locals:
+#   config_keep_open
 # Globals:
 #   SMALLTALK_CI_VM
 # Arguments:
@@ -96,7 +98,7 @@ pharo::prepare_vm() {
   local pharo_vm_url="$(pharo::get_vm_url "${smalltalk_name}")"
   local pharo_vm_folder="${SMALLTALK_CI_VMS}/${smalltalk_name}"
 
-  if [[ "${keep_open}" = "true" ]]; then
+  if [[ "${config_keep_open}" = "true" ]]; then
     export SMALLTALK_CI_VM="${pharo_vm_folder}/pharo-ui"
   else
     export SMALLTALK_CI_VM="${pharo_vm_folder}/pharo"
@@ -149,9 +151,10 @@ pharo::prepare_image() {
 ################################################################################
 # Load project into Pharo image.
 # Locals:
-#   baseline
-#   project_home
-#   baseline_group
+#   config_baseline
+#   config_baseline_group
+#   config_directory
+#   config_project_home
 # Globals:
 #   SMALLTALK_CI_VM
 #   SMALLTALK_CI_IMAGE
@@ -160,9 +163,9 @@ pharo::load_project() {
   print_info "Loading project..."
   "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
   Metacello new 
-    baseline: '${baseline}';
-    repository: 'filetree://${project_home}/${directory}';
-    load: '${baseline_group}'.
+    baseline: '${config_baseline}';
+    repository: 'filetree://${config_project_home}/${config_directory}';
+    load: '${config_baseline_group}'.
   "
 }
 
@@ -192,10 +195,10 @@ pharo::run_tests() {
 ################################################################################
 run_build() {
   pharo::check_options
-  pharo::prepare_image "${smalltalk}"
-  pharo::prepare_vm "${smalltalk}"
+  pharo::prepare_image "${config_smalltalk}"
+  pharo::prepare_vm "${config_smalltalk}"
   pharo::load_project
 
-  pharo::run_tests "${tests}"
+  pharo::run_tests "${config_tests}"
   return $?
 }

@@ -20,6 +20,8 @@ matrix:
       script:
         - bash tests/run_tests.sh
         - bash tests/helpers_tests.sh
+        - bash tests/pharo_tests.sh
+        - bash tests/squeak_tests.sh
 
     - smalltalk: Squeak-trunk
       os: linux

@@ -9,28 +9,28 @@ readonly VM_DOWNLOAD="http://mirandabanda.org/files/Cog/VM/VM.r3427"
 ################################################################################
 # Check options and set defaults if unavailable.
 # Locals:
-#   baseline_group
-#   exclude_categories
-#   exclude_classes
-#   force_update
-#   keep_open
-#   run_script
-#   project_home
+#   config_baseline_group
+#   config_exclude_categories
+#   config_exclude_classes
+#   config_force_update
+#   config_keep_open
+#   config_run_script
+#   config_project_home
 # Globals:
 #   SMALLTALK_CI_HOME
 # Returns:
 #   0
 ################################################################################
 squeak::check_options() {
-  is_empty "${baseline_group}" && baseline_group="TravisCI"
-  is_empty "${exclude_categories}" && exclude_categories="nil"
-  is_empty "${exclude_classes}" && exclude_classes="nil"
-  is_empty "${force_update}" && force_update="false"
-  is_empty "${keep_open}" && keep_open="false"
-  if is_empty "${run_script}"; then
-    run_script="${SMALLTALK_CI_HOME}/squeak/run.st"
+  is_empty "${config_baseline_group}" && config_baseline_group="TravisCI"
+  is_empty "${config_exclude_categories}" && config_exclude_categories="nil"
+  is_empty "${config_exclude_classes}" && config_exclude_classes="nil"
+  is_empty "${config_force_update}" && config_force_update="false"
+  is_empty "${config_keep_open}" && config_keep_open="false"
+  if is_empty "${config_run_script}"; then
+    config_run_script="${SMALLTALK_CI_HOME}/squeak/run.st"
   else
-    run_script="${project_home}/${run_script}"
+    config_run_script="${config_project_home}/${config_run_script}"
   fi
   return 0
 }
@@ -107,17 +107,19 @@ squeak::prepare_image() {
 #   SMALLTALK_CI_IMAGE
 # Arguments:
 #   os_name
+#   require_spur: '1' for Spur support
 # Returns:
 #   'vm_filename|vm_path' string
 ################################################################################
 squeak::get_vm_details() {
   local os_name=$1
+  local require_spur=$2
   local vm_filename
   local vm_path
 
   case "${os_name}" in
     "Linux")
-      if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
+      if [[ "$require_spur" -eq 1 ]]; then
         vm_filename="cogspurlinux-15.33.3427.tgz"
         vm_path="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
       else
@@ -126,7 +128,7 @@ squeak::get_vm_details() {
       fi
       ;;
     "Darwin")
-      if is_spur_image "${SMALLTALK_CI_IMAGE}"; then
+      if [[ "$require_spur" -eq 1 ]]; then
         vm_filename="CogSpur.app-15.33.3427.tgz"
         vm_path="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
       else
@@ -143,8 +145,6 @@ squeak::get_vm_details() {
   return_vars "${vm_filename}" "${vm_path}"
 }
 
-
-
 ################################################################################
 # Download and extract vm if necessary.
 # Globals:
@@ -153,13 +153,15 @@ squeak::get_vm_details() {
 #   SMALLTALK_CI_VMS
 ################################################################################
 squeak::prepare_vm() {
+  local require_spur=0
   local vm_details
   local vm_filename
   local vm_path
   local download_url
   local target
 
-  vm_details=$(squeak::get_vm_details "$(uname -s)")
+  is_spur_image "${SMALLTALK_CI_IMAGE}" && require_spur=1
+  vm_details=$(squeak::get_vm_details "$(uname -s)" "${require_spur}")
   set_vars vm_filename vm_path "${vm_details}"
   download_url="${VM_DOWNLOAD}/${vm_filename}"
   target="${SMALLTALK_CI_CACHE}/${vm_filename}"
@@ -188,15 +190,14 @@ squeak::prepare_vm() {
 ################################################################################
 # Load project and run tests.
 # Locals:
-#   directory
-#   baseline
-#   baseline_group
-#   exclude_categories
-#   exclude_classes
-#   force_update
-#   keep_open
-#   run_script
-#   vm_args
+#   config_directory
+#   config_baseline
+#   config_baseline_group
+#   config_exclude_categories
+#   config_exclude_classes
+#   config_force_update
+#   config_keep_open
+#   config_run_script
 # Globals:
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
@@ -209,15 +210,23 @@ squeak::load_project_and_run_tests() {
 
   print_info "Load project into image and run tests..."
 
-  vm_args=(${directory} ${baseline} ${baseline_group} ${exclude_categories} \
-      ${exclude_classes} ${force_update} ${keep_open})
+  vm_args=(
+      ${config_directory} \
+      ${config_baseline} \
+      ${config_baseline_group} \
+      ${config_exclude_categories} \
+      ${config_exclude_classes} \
+      ${config_force_update} \
+      ${config_keep_open}
+  )
+
 
   if is_travis_build && [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
     cog_vm_flags=(-nosound -nodisplay)
   fi
 
   "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
-      "${run_script}" "${vm_args[@]}"
+      "${config_run_script}" "${vm_args[@]}"
   return $?
 }
 
@@ -228,7 +237,7 @@ squeak::load_project_and_run_tests() {
 ################################################################################
 run_build() {
   squeak::check_options
-  squeak::prepare_image "${smalltalk}"
+  squeak::prepare_image "${config_smalltalk}"
   squeak::prepare_vm
 
   squeak::load_project_and_run_tests

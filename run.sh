@@ -22,10 +22,10 @@ check_os() {
 }
 
 ################################################################################
-# Set and verify $project_home. Use $PROJECT_HOME if set, otherwise use path
-# provided as argument.
+# Set and verify $config_project_home. Use $PROJECT_HOME if set, otherwise use
+# path provided as argument.
 # Locals:
-#   project_home
+#   config_project_home
 # Globals:
 #   PROJECT_HOME
 # Arguments:
@@ -35,32 +35,32 @@ determine_project_home() {
   local custom_home=$1
 
   if is_not_empty "${PROJECT_HOME}"; then
-    project_home="${PROJECT_HOME}"
+    config_project_home="${PROJECT_HOME}"
   else
-    project_home="${custom_home}"
+    config_project_home="${custom_home}"
   fi
 
-  if ! is_dir "${project_home}"; then
+  if ! is_dir "${config_project_home}"; then
     print_error "Project home is not found."
     exit 1
   fi
 
-  if [[ "${project_home:0:1}" != "/" ]]; then
-    project_home="$(cd "${project_home}" && pwd)"
+  if [[ "${config_project_home:0:1}" != "/" ]]; then
+    config_project_home="$(cd "${config_project_home}" && pwd)"
   fi
 }
 
 ################################################################################
-# Use global environment variables to set local variables.
+# Use global environment variables to set local configuration variables.
 # Locals:
-#   baseline_group
-#   directory
-#   force_update
-#   builder_ci_fallback
-#   run_script
-#   excluded_categories
-#   excluded_classes
-#   keep_open
+#   config_baseline_group
+#   config_directory
+#   config_force_update
+#   config_builder_ci_fallback
+#   config_run_script
+#   config_excluded_categories
+#   config_excluded_classes
+#   config_keep_open
 # Globals:
 #   BASELINE_GROUP
 #   BUILDERCI
@@ -73,33 +73,33 @@ determine_project_home() {
 # Returns:
 #   0
 ################################################################################
-check_env_vars_options() {
+load_config_from_environment() {
   is_not_empty "${BASELINE_GROUP}" \
-      && baseline_group="${BASELINE_GROUP}"
+      && config_baseline_group="${BASELINE_GROUP}"
   is_not_empty "${PACKAGES}" \
-      && directory="${PACKAGES}"
+      && config_directory="${PACKAGES}"
   is_not_empty "${FORCE_UPDATE}" \
-      && force_update="${FORCE_UPDATE}"
+      && config_force_update="${FORCE_UPDATE}"
   is_not_empty "${BUILDERCI}" \
-      && builder_ci_fallback="${BUILDERCI}"
+      && config_builder_ci_fallback="${BUILDERCI}"
   is_not_empty "${RUN_SCRIPT}" \
-      && run_script="${RUN_SCRIPT}"
+      && config_run_script="${RUN_SCRIPT}"
   is_not_empty "${EXCLUDE_CATEGORIES}" \
-      && excluded_categories="${EXCLUDE_CATEGORIES}"
+      && config_excluded_categories="${EXCLUDE_CATEGORIES}"
   is_not_empty "${EXCLUDE_CLASSES}" \
-      && excluded_classes="${EXCLUDE_CLASSES}"
+      && config_excluded_classes="${EXCLUDE_CLASSES}"
   is_not_empty "${KEEP_OPEN}" \
-      && keep_open="${KEEP_OPEN}"
+      && config_keep_open="${KEEP_OPEN}"
   return 0
 }
 
 ################################################################################
-# Check if project's '.travis.yml' exists and call yml parser to load options.
+# Check if project's '.travis.yml' exists and call yml parser to load config.
 # Locales:
 #   project_home
 ################################################################################
-load_options_from_yml() {
-  local user_travis_conf="${project_home}/.travis.yml"
+load_config_from_yml() {
+  local user_travis_conf="${config_project_home}/.travis.yml"
 
   if is_file "${user_travis_conf}"; then
     eval "$(ruby yaml_parser.rb "${user_travis_conf}")"
@@ -115,12 +115,12 @@ load_options_from_yml() {
 #   baseline
 #   directory
 ################################################################################
-validate_options() {
-  if is_empty "${smalltalk}"; then
+validate_configuration() {
+  if is_empty "${config_smalltalk}"; then
     print_error "Smalltalk image is not defined."
     exit 1
   fi
-  if is_empty "${baseline}"; then
+  if is_empty "${config_baseline}"; then
     print_error "Baseline could not be found."
     exit 1
   fi
@@ -166,8 +166,8 @@ parse_args() {
   fi  
 
   determine_project_home "${!#}" # Use last argument as fallback path
-  load_options_from_yml
-  check_env_vars_options
+  load_config_from_yml
+  load_config_from_environment
 
 
   # Handle all arguments and flags
@@ -175,37 +175,40 @@ parse_args() {
   do
     case "$1" in
     --baseline)
-      baseline="$2"
+      config_baseline="$2"
       shift 2 ;;
     --baseline-group)
-      baseline_group="$2"
+      config_baseline_group="$2"
       shift 2 ;;
     --builder-ci)
-      builder_ci_fallback="true"
+      config_builder_ci_fallback="true"
       shift ;;
     --directory)
-      directory="$2"
+      config_directory="$2"
       shift 2 ;;
+    -d | --debug)
+      config_debug="true"
+      shift ;;
     --excluded-categories)
-      excluded_categories="$2"
+      config_excluded_categories="$2"
       shift 2 ;;
     --excluded-classes)
-      excluded_classes="$2"
+      config_excluded_classes="$2"
       shift 2 ;;
     --force-update)
-      force_update="true"
+      config_force_update="true"
       shift ;;
     -h | --help)
       print_help
       exit 0 ;;
     -o | --keep-open)
-      keep_open="true"
+      config_keep_open="true"
       shift ;;
     --script)
-      run_script="$2"
+      config_run_script="$2"
       shift 2 ;;
     -s | --smalltalk)
-      smalltalk="$2"
+      config_smalltalk="$2"
       shift 2 ;;
     --)
       shift
@@ -218,19 +221,19 @@ parse_args() {
     esac
   done
 
-  validate_options
+  validate_configuration
 }
 
 is_fallback_enabled() {
-  [[ "${builder_ci_fallback}" == "true" ]] \
-      || [[ "${SMALLTALK}" == "GemStone"* ]]
+  [[ "${config_builder_ci_fallback}" == "true" ]] \
+      || [[ "${config_smalltalk}" == "GemStone"* ]]
 }
 
 ################################################################################
 # Initiate builderCI fallback build.
 # Locals:
-#   smalltalk
-#   project_home
+#   config_smalltalk
+#   config_project_home
 # Globals:
 #   BUILDER_CI_DOWNLOAD_URL
 # Returns:
@@ -252,8 +255,8 @@ builder_ci_fallback() {
   fi
 
   print_info "Starting legacy build using builderCI..."
-  export ST="${smalltalk}"
-  export PROJECT_HOME="${project_home}"
+  export ST="${config_smalltalk}"
+  export PROJECT_HOME="${config_project_home}"
   cd "${HOME}"
   wget -q -O builderCI.zip "${BUILDER_CI_DOWNLOAD_URL}"
   unzip -q builderCI.zip
@@ -270,7 +273,7 @@ builder_ci_fallback() {
 ################################################################################
 # Make sure all required folders exist, create build folder and symlink project.
 # Locals:
-#   project_home
+#   config_project_home
 # Globals:
 #   SMALLTALK_CI_CACHE
 #   SMALLTALK_CI_BUILD_BASE
@@ -286,7 +289,7 @@ prepare_folders() {
   # Create folder for this build (should not exist)
   mkdir "${SMALLTALK_CI_BUILD}"
   # Link project folder to git_cache
-  ln -s "${project_home}" "${SMALLTALK_CI_GIT}"
+  ln -s "${config_project_home}" "${SMALLTALK_CI_GIT}"
 }
 
 ################################################################################
@@ -297,7 +300,7 @@ prepare_folders() {
 #   Status code of build
 ################################################################################
 run() {
-  case "${smalltalk}" in
+  case "${config_smalltalk}" in
     Squeak*)
       print_info "Starting Squeak build..."
       source "${SMALLTALK_CI_HOME}/squeak/run.sh"
@@ -307,10 +310,17 @@ run() {
       source "${SMALLTALK_CI_HOME}/pharo/run.sh"
       ;;
     *)
-      print_error "Unknown Smalltalk version '${smalltalk}'."
+      print_error "Unknown Smalltalk version '${config_smalltalk}'."
       exit 1
       ;;
   esac
+
+  if debug_enabled; then
+    print_debug "Configuration before platform-specific code:"
+    for var in ${!config_@}; do
+      print_debug "${var}=${!var}"
+    done
+  fi
 
   run_build
   return $?
@@ -332,7 +342,7 @@ check_build_status() {
     if is_travis_build; then
       print_info "\n\nTo reproduce the failed build locally, download
         smalltalkCI and try running something like:"
-      print_notice "\n./run.sh -s \"${smalltalk}\" --keep-open
+      print_notice "\n./run.sh -s \"${config_smalltalk}\" --keep-open
           /path/to/your/project"
     fi
   fi
@@ -345,17 +355,18 @@ check_build_status() {
 #   All positional parameters
 ################################################################################
 main() {
-  local smalltalk=${SMALLTALK}
-  local project_home
-  local baseline
-  local baseline_group
-  local directory="packages"
-  local force_update
-  local builder_ci_fallback="false"
-  local run_script
-  local excluded_categories
-  local excluded_classes
-  local keep_open="false"
+  local config_smalltalk="${SMALLTALK}"
+  local config_project_home
+  local config_baseline
+  local config_baseline_group
+  local config_debug="false"
+  local config_directory="packages"
+  local config_force_update
+  local config_builder_ci_fallback="false"
+  local config_run_script
+  local config_excluded_categories
+  local config_excluded_classes
+  local config_keep_open="false"
   local exit_status=0
 
   check_os

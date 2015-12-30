@@ -4,37 +4,37 @@ readonly BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "${BASE}/run.sh"
 
 test_determine_project_home() {
-  local project_home
+  local config_project_home
 
   if [[ -z "${PROJECT_HOME}" ]]; then
     determine_project_home "/tmp"
-    assertEquals "/tmp" "${project_home}"
+    assertEquals "/tmp" "${config_project_home}"
 
     determine_project_home "../"
-    assertNotNull "${project_home}"
-    assertEquals "/" "${project_home:0:1}"
+    assertNotNull "${config_project_home}"
+    assertEquals "/" "${config_project_home:0:1}"
 
     PROJECT_HOME="/tmp"
     determine_project_home "/foo"
-    assertEquals "${PROJECT_HOME}" "${project_home}"
+    assertEquals "${PROJECT_HOME}" "${config_project_home}"
     unset PROJECT_HOME
   else
     determine_project_home "/tmp"
-    assertEquals "${PROJECT_HOME}" "${project_home}"
+    assertEquals "${PROJECT_HOME}" "${config_project_home}"
   fi
 
   return 0
 }
 
-test_check_env_vars_options() {
-  local baseline_group=""
-  local directory
-  local force_update
-  local builder_ci_fallback
-  local run_script
-  local excluded_categories
-  local excluded_classes
-  local keep_open
+test_load_config_from_environment() {
+  local config_baseline_group=""
+  local config_directory
+  local config_force_update
+  local config_builder_ci_fallback
+  local config_run_script
+  local config_excluded_categories
+  local config_excluded_classes
+  local config_keep_open
 
   BASELINE_GROUP="foo1"
   PACKAGES="foo2"
@@ -45,20 +45,20 @@ test_check_env_vars_options() {
   EXCLUDE_CLASSES="foo4"
   KEEP_OPEN="true"
 
-  check_env_vars_options
+  load_config_from_environment
 
-  assertEquals "foo1" "${baseline_group}"
-  assertEquals "foo2" "${directory}"
-  assertEquals "false" "${force_update}"
-  assertEquals "true" "${builder_ci_fallback}"
-  assertEquals "foo.st" "${run_script}"
-  assertEquals "foo3" "${excluded_categories}"
-  assertEquals "foo4" "${excluded_classes}"
-  assertEquals "true" "${keep_open}"
+  assertEquals "foo1" "${config_baseline_group}"
+  assertEquals "foo2" "${config_directory}"
+  assertEquals "false" "${config_force_update}"
+  assertEquals "true" "${config_builder_ci_fallback}"
+  assertEquals "foo.st" "${config_run_script}"
+  assertEquals "foo3" "${config_excluded_categories}"
+  assertEquals "foo4" "${config_excluded_classes}"
+  assertEquals "true" "${config_keep_open}"
 }
 
 test_prepare_folders() {
-  project_home="/tmp"
+  config_project_home="/tmp"
   SMALLTALK_CI_HOME="${BASE}/tests"
   source "${BASE}/env_vars"
 

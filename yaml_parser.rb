@@ -51,11 +51,11 @@ end
 
 # Use first smalltalk value if $SMALLTALK is not set
 if config.has_key?("smalltalk")
-  puts "[[ -z \"${smalltalk}\" ]] && "\
-       "smalltalk=(\"#{config["smalltalk"].first}\")"
+  puts "[[ -z \"${config_smalltalk}\" ]] && "\
+       "config_smalltalk=(\"#{config["smalltalk"].first}\")"
 end
 
 # Print output
 output.each { |key, value|
-  puts "#{key}=(\"#{value}\")"
+  puts "config_#{key}=(\"#{value}\")"
 }
