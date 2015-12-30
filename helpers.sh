@@ -16,6 +16,11 @@ print_error() {
   printf "\e[1;31m%s\e[0m\n" "$1" 1>&2
 }
 
+print_error_and_exit() {
+  print_error "$1"
+  exit 1
+}
+
 print_debug() {
   printf "\e[0;37m%s\e[0m\n" "$1"
 }

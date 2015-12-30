@@ -15,8 +15,7 @@ check_os() {
     "Linux"|"Darwin")
       ;;
     *)
-      print_error "Unsupported platform '$(uname -s)'"
-      exit 1
+      print_error_and_exit "Unsupported platform '$(uname -s)'"
       ;;
   esac
 }
@@ -41,8 +40,7 @@ determine_project_home() {
   fi
 
   if ! is_dir "${config_project_home}"; then
-    print_error "Project home is not found."
-    exit 1
+    print_error_and_exit "Project home is not found."
   fi
 
   if [[ "${config_project_home:0:1}" != "/" ]]; then
@@ -117,12 +115,10 @@ load_config_from_yml() {
 ################################################################################
 validate_configuration() {
   if is_empty "${config_smalltalk}"; then
-    print_error "Smalltalk image is not defined."
-    exit 1
+    print_error_and_exit "Smalltalk image is not defined."
   fi
   if is_empty "${config_baseline}"; then
-    print_error "Baseline could not be found."
-    exit 1
+    print_error_and_exit "Baseline could not be found."
   fi
   if [[ ${directory:0:1} == "/" ]]; then
     directory=${directory:1}
@@ -176,51 +172,66 @@ parse_args() {
     case "$1" in
     --baseline)
       config_baseline="$2"
-      shift 2 ;;
+      shift 2
+      ;;
     --baseline-group)
       config_baseline_group="$2"
-      shift 2 ;;
+      shift 2
+      ;;
     --builder-ci)
       config_builder_ci_fallback="true"
-      shift ;;
+      shift
+      ;;
     --clean)
       config_clean="true"
-      shift ;;
+      shift
+      ;;
     --directory)
       config_directory="$2"
-      shift 2 ;;
+      shift 2
+      ;;
     -d | --debug)
       config_debug="true"
-      shift ;;
+      shift
+      ;;
     --excluded-categories)
       config_excluded_categories="$2"
-      shift 2 ;;
+      shift 2
+      ;;
     --excluded-classes)
       config_excluded_classes="$2"
-      shift 2 ;;
+      shift 2
+      ;;
     --force-update)
       config_force_update="true"
-      shift ;;
+      shift
+      ;;
     -h | --help)
       print_help
-      exit 0 ;;
+      exit 0
+      ;;
     -o | --keep-open)
       config_keep_open="true"
-      shift ;;
+      shift
+      ;;
     --script)
       config_run_script="$2"
-      shift 2 ;;
+      shift 2
+      ;;
     -s | --smalltalk)
       config_smalltalk="$2"
-      shift 2 ;;
+      shift 2
+      ;;
     --)
       shift
-      break ;;
+      break
+      ;;
     -*)
-      print_error "Unknown option: $1"
-      exit 1 ;;
+      print_error_and_exit "Unknown option: $1"
+      ;;
     *) 
-      break ;;
+      break
+      ;;
     esac
   done
 
@@ -245,15 +256,13 @@ is_fallback_enabled() {
 builder_ci_fallback() {
   # Make sure the script runs on Linux
   if [[ "$(uname -s)" != "Linux" ]]; then
-    print_error "builderCI only supports Linux builds."
-    exit 1
+    print_error_and_exit "builderCI only supports Linux builds."
   fi
   if is_travis_build; then
     # Make sure the script runs on standard infrastructure
     sudo -n true
     if [[ "$?" != 0 ]]; then
-      print_error "sudo is not available."
-      exit 1
+      print_error_and_exit "sudo is not available."
     fi
   fi
 
@@ -353,8 +362,7 @@ run() {
       source "${SMALLTALK_CI_HOME}/pharo/run.sh"
       ;;
     *)
-      print_error "Unknown Smalltalk version '${config_smalltalk}'."
-      exit 1
+      print_error_and_exit "Unknown Smalltalk version '${config_smalltalk}'."
       ;;
   esac
 

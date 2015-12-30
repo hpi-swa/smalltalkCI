@@ -45,8 +45,7 @@ pharo::get_image_url() {
       echo "get.pharo.org/30"
       ;;
     *)
-      print_error "Unsupported Pharo version '${smalltalk_name}'."
-      exit 1
+      print_error_and_exit "Unsupported Pharo version '${smalltalk_name}'."
       ;;
   esac
 }
@@ -78,8 +77,7 @@ pharo::get_vm_url() {
       echo "get.pharo.org/vm30"
       ;;
     *)
-      print_error "Unsupported Pharo version '${smalltalk_name}'."
-      exit 1
+      print_error_and_exit "Unsupported Pharo version '${smalltalk_name}'."
       ;;
   esac
 }
@@ -113,8 +111,7 @@ pharo::prepare_vm() {
     set +e
     pharo_zeroconf="$(download_file "${pharo_vm_url}")"
     if [[ ! $? -eq 0 ]]; then
-      print_error "Download failed."
-      exit 1
+      print_error_and_exit "Download failed."
     fi
     set -e
 
@@ -125,8 +122,7 @@ pharo::prepare_vm() {
     print_timed_result "Time to download ${smalltalk_name} vm"
 
     if ! is_file "${SMALLTALK_CI_VM}"; then
-      print_error "Unable to set up virtual machine at '${SMALLTALK_CI_VM}'."
-      exit 1
+      print_error_and_exit "Unable to set vm up at '${SMALLTALK_CI_VM}'."
     fi
   fi
 }
@@ -153,8 +149,7 @@ pharo::prepare_image() {
     set +e
     pharo_zeroconf="$(download_file "${pharo_image_url}")"
     if [[ ! $? -eq 0 ]]; then
-      print_error "Download failed."
-      exit 1
+      print_error_and_exit "Download failed."
     fi
     set -e
 

@@ -59,8 +59,7 @@ squeak::get_image_filename() {
       echo "Squeak-4.5.tar.gz"
       ;;
     *)
-      print_error "Unsupported Squeak version '${smalltalk_name}'."
-      exit 1
+      print_error_and_exit "Unsupported Squeak version '${smalltalk_name}'."
       ;;
   esac
 }
@@ -90,8 +89,7 @@ squeak::prepare_image() {
     set +e
     download_file "${download_url}" > "${target}"
     if [[ ! $? -eq 0 ]]; then
-      print_error "Download failed."
-      exit 1
+      print_error_and_exit "Download failed."
     fi
     set -e
     print_timed_result "Time to download ${smalltalk_name} testing image"
@@ -101,8 +99,7 @@ squeak::prepare_image() {
   tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
 
   if ! is_file "${SMALLTALK_CI_IMAGE}"; then
-    print_error "Unable to prepare image at '${SMALLTALK_CI_IMAGE}'."
-    exit 1
+    print_error_and_exit "Unable to prepare image at '${SMALLTALK_CI_IMAGE}'."
   fi
 }
 
@@ -143,8 +140,7 @@ squeak::get_vm_details() {
       fi
       ;;
     *)
-      print_error "Unsupported platform '${os_name}'."
-      exit 1
+      print_error_and_exit "Unsupported platform '${os_name}'."
       ;;
   esac
 
@@ -179,8 +175,7 @@ squeak::prepare_vm() {
     set +e
     download_file "${download_url}" > "${target}"
     if [[ ! $? -eq 0 ]]; then
-      print_error "Download failed."
-      exit 1
+      print_error_and_exit "Download failed."
     fi
     set -e
     print_timed_result "Time to download virtual machine"
@@ -190,8 +185,7 @@ squeak::prepare_vm() {
     print_info "Extracting virtual machine..."
     tar xzf "${target}" -C "${SMALLTALK_CI_VMS}"
     if ! is_file "${SMALLTALK_CI_VM}"; then
-      print_error "Unable to set up virtual machine at '${SMALLTALK_CI_VM}'."
-      exit 1
+      print_error_and_exit "Unable to set vm up at '${SMALLTALK_CI_VM}'."
     fi
   fi
 
