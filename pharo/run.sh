@@ -116,7 +116,7 @@ pharo::prepare_vm() {
     set -e
 
     # Execute Pharo Zeroconf Script
-    cat "${pharo_zeroconf}" | bash
+    bash -c "${pharo_zeroconf}"
 
     popd > /dev/null
     print_timed_result "Time to download ${smalltalk_name} vm"
@@ -154,7 +154,7 @@ pharo::prepare_image() {
     set -e
 
     # Execute Pharo Zeroconf Script
-    cat "${pharo_zeroconf}" | bash
+    bash -c "${pharo_zeroconf}"
 
     mv "Pharo.image" "${pharo_image_file}"
     mv "Pharo.changes" "${pharo_changes_file}"
