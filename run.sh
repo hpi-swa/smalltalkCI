@@ -68,8 +68,6 @@ determine_project_home() {
 #   KEEP_OPEN
 #   PACKAGES
 #   RUN_SCRIPT
-# Returns:
-#   0
 ################################################################################
 load_config_from_environment() {
   is_not_empty "${BASELINE_GROUP}" \
@@ -251,7 +249,7 @@ is_fallback_enabled() {
 # Globals:
 #   BUILDER_CI_DOWNLOAD_URL
 # Returns:
-#   builderCI status code ('0' if successful, otherwise value != '0')
+#   builderCI status code
 ################################################################################
 builder_ci_fallback() {
   # Make sure the script runs on Linux
@@ -427,12 +425,10 @@ main() {
   check_clean_up
 
   if is_fallback_enabled; then
-    builder_ci_fallback
-    exit_status=$?
+    builder_ci_fallback || exit_status=$?
   else
     prepare_folders
-    run
-    exit_status=$?
+    run || exit_status=$?
   fi
   
   check_build_status "${exit_status}"

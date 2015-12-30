@@ -8,8 +8,6 @@ set -e
 #   config_baseline_group
 #   config_directory
 #   config_tests
-# Returns:
-#   0
 ################################################################################
 pharo::check_options() {
   is_empty "${config_baseline_group}" && config_baseline_group="default"

@@ -18,8 +18,6 @@ readonly VM_DOWNLOAD="http://mirandabanda.org/files/Cog/VM/VM.r3427"
 #   config_project_home
 # Globals:
 #   SMALLTALK_CI_HOME
-# Returns:
-#   0
 ################################################################################
 squeak::check_options() {
   is_empty "${config_baseline_group}" && config_baseline_group="TravisCI"
@@ -39,7 +37,7 @@ squeak::check_options() {
 # Select Squeak image. Exit with '1' if smalltalk_name is unsupported.
 # Arguments:
 #   Smalltalk image name
-# Returns:
+# Prints:
 #   Image filename string
 ################################################################################
 squeak::get_image_filename() {
@@ -111,7 +109,7 @@ squeak::prepare_image() {
 # Arguments:
 #   os_name
 #   require_spur: '1' for Spur support
-# Returns:
+# Prints:
 #   'vm_filename|vm_path' string
 ################################################################################
 squeak::get_vm_details() {
