@@ -183,6 +183,9 @@ parse_args() {
     --builder-ci)
       config_builder_ci_fallback="true"
       shift ;;
+    --clean)
+      config_clean="true"
+      shift ;;
     --directory)
       config_directory="$2"
       shift 2 ;;
@@ -292,6 +295,46 @@ prepare_folders() {
   ln -s "${config_project_home}" "${SMALLTALK_CI_GIT}"
 }
 
+
+################################################################################
+# Run cleanup if requested by user.
+# Locals:
+#   config_clean
+################################################################################
+check_clean_up() {
+  local user_input
+  local question1="Are you sure you want to clear builds and cache? (y/N): "
+  local question2="Continue with build? (y/N): "
+  if [[ "${config_clean}" = "true" ]]; then
+    read -p "${question1}" user_input
+    if [[ "${user_input}" = "y" ]]; then
+      clean_up
+    fi
+    read -p "${question2}" user_input
+    [[ "${user_input}" != "y" ]] && exit 0
+  fi
+  return 0
+}
+
+################################################################################
+# Remove all builds and clear cache.
+# Globals:
+#   SMALLTALK_CI_CACHE
+#   SMALLTALK_CI_BUILD_BASE
+################################################################################
+clean_up() {
+  if is_dir "${SMALLTALK_CI_CACHE}" || ! is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+    print_info "Cleaning up..."
+    print_info "Removing the following directories:"
+    print_info "  ${SMALLTALK_CI_CACHE}"
+    print_info "  ${SMALLTALK_CI_BUILD_BASE}"
+    rm -rf "${SMALLTALK_CI_CACHE}" "${SMALLTALK_CI_BUILD_BASE}"
+    print_info "Done."
+  else
+    print_notice "Nothing to clean up."
+  fi
+}
+
 ################################################################################
 # Load platform-specific package and run the build.
 # Locals:
@@ -359,6 +402,7 @@ main() {
   local config_project_home
   local config_baseline
   local config_baseline_group
+  local config_clean="false"
   local config_debug="false"
   local config_directory="packages"
   local config_force_update
@@ -372,6 +416,7 @@ main() {
   check_os
   parse_args "$@"
   check_and_set_paths
+  check_clean_up
 
   if is_fallback_enabled; then
     builder_ci_fallback

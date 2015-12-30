@@ -97,6 +97,7 @@ pharo::prepare_vm() {
   local smalltalk_name=$1
   local pharo_vm_url="$(pharo::get_vm_url "${smalltalk_name}")"
   local pharo_vm_folder="${SMALLTALK_CI_VMS}/${smalltalk_name}"
+  local pharo_zeroconf
 
   if [[ "${config_keep_open}" = "true" ]]; then
     export SMALLTALK_CI_VM="${pharo_vm_folder}/pharo-ui"
@@ -108,7 +109,18 @@ pharo::prepare_vm() {
     print_timed "Downloading ${smalltalk_name} vm..."
     mkdir "${pharo_vm_folder}"
     pushd "${pharo_vm_folder}" > /dev/null
-    download_file "${pharo_vm_url}" | bash
+
+    set +e
+    pharo_zeroconf="$(download_file "${pharo_vm_url}")"
+    if [[ ! $? -eq 0 ]]; then
+      print_error "Download failed."
+      exit 1
+    fi
+    set -e
+
+    # Execute Pharo Zeroconf Script
+    cat "${pharo_zeroconf}" | bash
+
     popd > /dev/null
     print_timed_result "Time to download ${smalltalk_name} vm"
 
@@ -132,11 +144,23 @@ pharo::prepare_image() {
   local pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
   local pharo_image_file="${smalltalk_name}.image"
   local pharo_changes_file="${smalltalk_name}.changes"
+  local pharo_zeroconf
 
   if ! is_file "${SMALLTALK_CI_CACHE}/${pharo_image_file}"; then
     print_timed "Downloading ${smalltalk_name} image..."
     pushd "${SMALLTALK_CI_CACHE}" > /dev/null
-    download_file "${pharo_image_url}" | bash
+
+    set +e
+    pharo_zeroconf="$(download_file "${pharo_image_url}")"
+    if [[ ! $? -eq 0 ]]; then
+      print_error "Download failed."
+      exit 1
+    fi
+    set -e
+
+    # Execute Pharo Zeroconf Script
+    cat "${pharo_zeroconf}" | bash
+
     mv "Pharo.image" "${pharo_image_file}"
     mv "Pharo.changes" "${pharo_changes_file}"
     popd > /dev/null

@@ -87,7 +87,13 @@ squeak::prepare_image() {
 
   if ! is_file "${target}"; then
     print_timed "Downloading ${smalltalk_name} testing image..."
+    set +e
     download_file "${download_url}" > "${target}"
+    if [[ ! $? -eq 0 ]]; then
+      print_error "Download failed."
+      exit 1
+    fi
+    set -e
     print_timed_result "Time to download ${smalltalk_name} testing image"
   fi
 
@@ -170,7 +176,13 @@ squeak::prepare_vm() {
 
   if ! is_file "${target}"; then
     print_timed "Downloading virtual machine..."
+    set +e
     download_file "${download_url}" > "${target}"
+    if [[ ! $? -eq 0 ]]; then
+      print_error "Download failed."
+      exit 1
+    fi
+    set -e
     print_timed_result "Time to download virtual machine"
   fi
 
