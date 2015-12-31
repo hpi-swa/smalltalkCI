@@ -1,15 +1,8 @@
 # smalltalkCI [![Build Status](https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master)](https://travis-ci.org/hpi-swa/smalltalkCI)
-Community-supported framework for building Smalltalk projects on [Travis CI][TravisCI] (continuous integration) infrastructure.
+Community-supported framework for building Smalltalk projects on [Travis CI][travisCI] (continuous integration) infrastructure.
 
 It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] and aims to make testing Smalltalk projects easy and fast.
 
-
-## Table of contents
-- [Features](#features)
-- [List Of Images Supported](#images)
-- [How To Use](#how-to-use)
-- [`.travis.yml` Templates](#templates)
-- [Contributing](#contributing)
 
 ## Features
 - Configuration via `.travis.yml` only ([see below for templates](#travisyml-template))
@@ -47,90 +40,28 @@ It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] 
 ## How To Use
 1. [Create a Baseline for your project][baseline].
 2. Export your Smalltalk project with [FileTree/Metacello][metacello].
-3. [Enable Travis CI for your repository][TravisHowTo] and create a `.travis.yml` from one of the templates below.
+3. [Enable Travis CI for your repository][travisHowTo] and create a `.travis.yml` from one of the templates below.
 4. Enjoy your fast Smalltalk builds!
 
 
 <a name="templates"/>
 ## `.travis.yml` Templates
+`.travis.yml` templates for all supported platforms can be found in the [wiki][templates].
 
-### Squeak-specific
-```yml
-language: smalltalk
-sudo: false
-smalltalk:
-  - Squeak-trunk
-  - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
-  # - Squeak-4.4                        # requires `sudo: true` and `BUILDERCI=true`
-  # - Squeak-4.3                        # requires `sudo: true` and `BUILDERCI=true`
-baseline: myProject
-env:
-  global:
-    # - BASELINE_GROUP="TravisCI"       # Name of the group to load from baseline
-    # - PACKAGES="packages"             # Directory where Filetree looks for packages
-    # - FORCE_UPDATE="false"            # Forces image update if set to `true` 
-    # - RUN_SCRIPT="CustomRunScript.st" # .st file relative to your project's root
-    # - EXCLUDE_CATEGORIES=""           # comma-separated list of category prefixes to exclude from testing
-    # - EXCLUDE_CLASSES=""              # comma-separated list of class names to exclude from testing
-    # - BUILDERCI=false                 # Set to `true` for builderCI fallback
-```
-
-### Pharo-specific
-```yml
-language: smalltalk
-sudo: false
-smalltalk:
-  - Pharo-alpha
-  - Pharo-stable
-  - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
-  # - Pharo-2.0                   # requires `sudo: true` and `BUILDERCI=true`
-  # - Pharo-1.4                   # requires `sudo: true` and `BUILDERCI=true`
-  # - PharoCore-1.2               # requires `sudo: true` and `BUILDERCI=true`
-  # - PharoCore-1.1               # requires `sudo: true` and `BUILDERCI=true`
-baseline: myProject
-env:
-  global:
-    # - TESTS="PackagesToTest"    # RegEx, i.e.: [A-Z].*, default is defined as BASELINE.*
-    # - BASELINE_GROUP="default"  # Name of the group to load from baseline
-    # - PACKAGES="."              # Directory where Filetree looks for package
-    # - BUILDERCI=false           # Set to `true` for builderCI fallback
-```
-
-### GemStone-specific
-
-*Currently, [builderCI][builderCI] is used for GemStone builds. [Here is how to use it.][builderCIHowTo]*
-
-```yml
-language: smalltalk
-sudo: true
-smalltalk:
-   - GemStone-3.2.7
-   - GemStone-3.2.0
-   - GemStone-3.1.0.6
-   - GemStone-3.1.0.2
-   - GemStone-3.0.1
-   - GemStone-2.4.6
-   - GemStone-2.4.5
-   - GemStone-2.4.4.1
-baseline: myProject
-...
-```
 
 ## Contributing
-Please feel free to [open an issues][issues] or to [send pull requests][pullRequests] if you'd like to discuss an idea or a problem. 
+Please feel free to [open issues][issues] or to [send pull requests][pullRequests] if you'd like to discuss an idea or a problem. 
 
-[TravisCI]: http://travis-ci.org/
-[TravisHowTo]: http://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI%3A
-[daleheinrich]: https://github.com/dalehenrich
+
+[baseline]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-baseline
+[bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
 [builderCI]: https://github.com/dalehenrich/builderCI
 [builderCIHowTo]: https://github.com/dalehenrich/builderCI#using-builderci
-[baseline]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-baseline
-[metacello]: https://github.com/dalehenrich/metacello-work
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
-[bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
+[daleheinrich]: https://github.com/dalehenrich
 [issues]: https://github.com/hpi-swa/smalltalkCI/issues
+[metacello]: https://github.com/dalehenrich/metacello-work
 [pullRequests]: https://help.github.com/articles/using-pull-requests/
+[templates]:https://github.com/hpi-swa/smalltalkCI/wiki#templates
+[travisCI]: http://travis-ci.org/
+[travisHowTo]: http://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI%3A
