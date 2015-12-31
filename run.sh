@@ -389,9 +389,11 @@ check_build_status() {
   else
     print_error "Build failed :("
     if is_travis_build; then
-      print_info "\n\nTo reproduce the failed build locally, download
+      printf "\n\n"
+      print_info "To reproduce the failed build locally, download
         smalltalkCI and try running something like:"
-      print_notice "\n./run.sh -s \"${config_smalltalk}\" --keep-open
+      printf "\n"
+      print_notice "./run.sh -s \"${config_smalltalk}\" --keep-open
           /path/to/your/project"
     fi
   fi
