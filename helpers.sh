@@ -62,6 +62,17 @@ print_help() {
 EOF
 }
 
+print_junit_xml() {
+  local path=$1
+
+  printf "\n\n"
+  print_info "#### JUnit XML Output Start ####"
+  cat "${path}/"*.xml
+  printf "\n"
+  print_info "#### JUnit XML Output End ####"
+  printf "\n\n"
+}
+
 is_empty() {
   local var=$1
 

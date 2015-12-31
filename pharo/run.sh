@@ -211,11 +211,16 @@ pharo::run_tests() {
 #   Status code of build
 ################################################################################
 run_build() {
+  local exit_status=0
+
   pharo::check_options
   pharo::prepare_image "${config_smalltalk}"
   pharo::prepare_vm "${config_smalltalk}"
   pharo::load_project
 
-  pharo::run_tests "${config_tests}"
-  return $?
+  pharo::run_tests "${config_tests}" || exit_status=$?
+
+  print_junit_xml "${SMALLTALK_CI_BUILD}"
+
+  return "${exit_status}"
 }
