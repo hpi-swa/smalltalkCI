@@ -58,9 +58,9 @@ smalltalk:
   - Squeak-4.5
   # - Squeak-4.4                        # requires `sudo: true` and `BUILDERCI=true`
   # - Squeak-4.3                        # requires `sudo: true` and `BUILDERCI=true`
-baseline: myProject
 env:
   global:
+    - BASELINE="myProject"
     # - BASELINE_GROUP="TravisCI"       # Name of the group to load from baseline
     # - PACKAGES="packages"             # Directory where Filetree looks for packages
     # - FORCE_UPDATE="false"            # Forces image update if set to `true` 
@@ -84,9 +84,9 @@ smalltalk:
   # - Pharo-1.4                   # requires `sudo: true` and `BUILDERCI=true`
   # - PharoCore-1.2               # requires `sudo: true` and `BUILDERCI=true`
   # - PharoCore-1.1               # requires `sudo: true` and `BUILDERCI=true`
-baseline: myProject
 env:
   global:
+    - BASELINE="myProject"
     # - TESTS="PackagesToTest"    # RegEx, i.e.: [A-Z].*, default is defined as BASELINE.*
     # - BASELINE_GROUP="default"  # Name of the group to load from baseline
     # - PACKAGES="."              # Directory where Filetree looks for package
@@ -109,8 +109,6 @@ smalltalk:
    - GemStone-2.4.6
    - GemStone-2.4.5
    - GemStone-2.4.4.1
-baseline: myProject
-...
 ```
 
 [TravisCI]: http://travis-ci.org/
