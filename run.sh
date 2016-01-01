@@ -11,11 +11,12 @@ readonly BUILDER_CI_DOWNLOAD_URL="${BUILDER_CI_REPO_URL}/archive/master.zip"
 # Check OS to be Linux or OS X, otherwise exit with '1'.
 ################################################################################
 check_os() {
-  case "$(uname -s)" in
+  local os_name=$(uname -s)
+  case "${os_name}" in
     "Linux"|"Darwin")
       ;;
     *)
-      print_error_and_exit "Unsupported platform '$(uname -s)'"
+      print_error_and_exit "Unsupported platform '${os_name}'."
       ;;
   esac
 }
@@ -118,7 +119,7 @@ validate_configuration() {
   if is_empty "${config_baseline}"; then
     print_error_and_exit "Baseline could not be found."
   fi
-  if [[ ${directory:0:1} == "/" ]]; then
+  if [[ "${directory:0:1}" = "/" ]]; then
     directory=${directory:1}
     print_notice "Please remove the leading slash from 'directory'."
   fi
@@ -220,6 +221,10 @@ parse_args() {
       config_smalltalk="$2"
       shift 2
       ;;
+    -v | --verbose)
+      config_verbose="true"
+      shift
+      ;;
     --)
       shift
       break
@@ -237,7 +242,7 @@ parse_args() {
 }
 
 is_fallback_enabled() {
-  [[ "${config_builder_ci_fallback}" == "true" ]] \
+  [[ "${config_builder_ci_fallback}" = "true" ]] \
       || [[ "${config_smalltalk}" == "GemStone"* ]]
 }
 
@@ -419,10 +424,12 @@ main() {
   local config_excluded_categories
   local config_excluded_classes
   local config_keep_open="false"
+  local config_verbose="false"
   local exit_status=0
 
   check_os
   parse_args "$@"
+  [[ "${config_verbose}" = "true"]] && set -x
   check_and_set_paths
   check_clean_up
 
@@ -437,6 +444,6 @@ main() {
   exit ${exit_status}
 }
 
-if [[ "$(basename -- "$0")" == "run.sh" ]]; then
+if [[ "$(basename -- "$0")" = "run.sh" ]]; then
   main "$@"
 fi

@@ -56,6 +56,7 @@ print_help() {
     -o | --keep-open        Keep image open and do not close on error.
     --script                Overwrite custom script to run (Squeak only).
     -s | --smalltalk        Overwrite Smalltalk image selection.
+    -v | --verbose          Enable 'set -x'.
 
   EXAMPLE: run.sh -s "Squeak-trunk" --directory "subdir" /path/to/project
 
