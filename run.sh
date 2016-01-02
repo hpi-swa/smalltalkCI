@@ -108,9 +108,9 @@ load_config_from_yml() {
 ################################################################################
 # Validate options and exit with '1' if an option is invalid.
 # Locals:
-#   smalltalk
-#   baseline
-#   directory
+#   config_smalltalk
+#   config_baseline
+#   config_directory
 ################################################################################
 validate_configuration() {
   if is_empty "${config_smalltalk}"; then
@@ -141,16 +141,16 @@ check_and_set_paths() {
 # Load options from project's '.travis.yml', global environment variables and
 # user's parameters.
 # Locals:
-#   baseline
-#   baseline_group
-#   builder_ci_fallback
-#   directory
-#   excluded_categories
-#   excluded_classes
-#   force_update
-#   keep_open
-#   run_script
-#   smalltalk
+#   config_baseline
+#   config_baseline_group
+#   config_builder_ci_fallback
+#   config_directory
+#   config_excluded_categories
+#   config_excluded_classes
+#   config_force_update
+#   config_keep_open
+#   config_run_script
+#   config_smalltalk
 # Arguments:
 #   All positional parameters
 ################################################################################
@@ -350,7 +350,7 @@ clean_up() {
 ################################################################################
 # Load platform-specific package and run the build.
 # Locals:
-#   smalltalk
+#   config_smalltalk
 # Returns:
 #   Status code of build
 ################################################################################

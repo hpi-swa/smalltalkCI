@@ -88,14 +88,16 @@ pharo::get_vm_url() {
 #   SMALLTALK_CI_VM
 # Arguments:
 #   smalltalk_name
+#   headful: 'true' for headful, 'false' for headless mode
 ################################################################################
 pharo::prepare_vm() {
   local smalltalk_name=$1
+  local headful=$2
   local pharo_vm_url="$(pharo::get_vm_url "${smalltalk_name}")"
   local pharo_vm_folder="${SMALLTALK_CI_VMS}/${smalltalk_name}"
   local pharo_zeroconf
 
-  if [[ "${config_keep_open}" = "true" ]]; then
+  if [[ "${headful}" = "true" ]]; then
     export SMALLTALK_CI_VM="${pharo_vm_folder}/pharo-ui"
   else
     export SMALLTALK_CI_VM="${pharo_vm_folder}/pharo"
@@ -215,7 +217,7 @@ run_build() {
 
   pharo::check_options
   pharo::prepare_image "${config_smalltalk}"
-  pharo::prepare_vm "${config_smalltalk}"
+  pharo::prepare_vm "${config_smalltalk}" "${config_keep_open}"
   pharo::load_project
 
   pharo::run_tests "${config_tests}" || exit_status=$?
