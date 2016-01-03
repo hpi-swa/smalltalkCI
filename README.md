@@ -5,7 +5,7 @@ It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] 
 
 
 ## Features
-- Configuration via `.travis.yml` only ([see below for templates](#travisyml-template))
+- Configuration via `.travis.yml` only ([see below for templates](#template))
 - Runs on Travis' [container-based infrastructure][cbi] - [*"Builds-start-in-seconds"*][bsis]
 - Supports Linux and OS X and can be run locally
 - builderCI fallback for builds that are not yet supported on the new infrastructure
