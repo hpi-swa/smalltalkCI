@@ -2,7 +2,8 @@
 
 set -e
 
-source helpers.sh
+readonly SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_PATH}/helpers.sh"
 
 readonly BUILDER_CI_REPO_URL="https://github.com/dalehenrich/builderCI"
 readonly BUILDER_CI_DOWNLOAD_URL="${BUILDER_CI_REPO_URL}/archive/master.zip"
@@ -99,7 +100,7 @@ load_config_from_yml() {
   local user_travis_conf="${config_project_home}/.travis.yml"
 
   if is_file "${user_travis_conf}"; then
-    eval "$(ruby yaml_parser.rb "${user_travis_conf}")"
+    eval "$(ruby "${SCRIPT_PATH}/yaml_parser.rb" "${user_travis_conf}")"
   else
     print_notice "Could not find '${user_travis_conf}'."
   fi
@@ -132,7 +133,7 @@ validate_configuration() {
 ################################################################################
 check_and_set_paths() {
   if is_empty "${SMALLTALK_CI_HOME}" && ! is_travis_build; then
-    export SMALLTALK_CI_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    export SMALLTALK_CI_HOME="${SCRIPT_PATH}"
     source "${SMALLTALK_CI_HOME}/env_vars"
   fi
 }
