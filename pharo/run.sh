@@ -177,6 +177,8 @@ pharo::prepare_image() {
 # Globals:
 #   SMALLTALK_CI_VM
 #   SMALLTALK_CI_IMAGE
+# Returns:
+#   Status code of project loading
 ################################################################################
 pharo::load_project() {
   print_info "Loading project..."
@@ -186,6 +188,7 @@ pharo::load_project() {
     repository: 'filetree://${config_project_home}/${config_directory}';
     load: '${config_baseline_group}'.
   "
+  return $?
 }
 
 ################################################################################
@@ -218,7 +221,12 @@ run_build() {
   pharo::check_options
   pharo::prepare_image "${config_smalltalk}"
   pharo::prepare_vm "${config_smalltalk}" "${config_keep_open}"
-  pharo::load_project
+  pharo::load_project || exit_status=$?
+
+  if [[ ! ${exit_status} -eq 0 ]]; then
+    print_error "Project could not be loaded."
+    return "${exit_status}"
+  fi
 
   pharo::run_tests "${config_tests}" || exit_status=$?
 
