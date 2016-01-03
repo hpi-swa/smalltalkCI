@@ -399,8 +399,7 @@ check_build_status() {
       print_info "To reproduce the failed build locally, download
         smalltalkCI and try running something like:"
       printf "\n"
-      print_notice "./run.sh -s \"${config_smalltalk}\" --keep-open
-          /path/to/your/project"
+      print_notice "./run.sh -o -s \"${config_smalltalk}\" /path/to/project"
     fi
   fi
   printf "\n"
