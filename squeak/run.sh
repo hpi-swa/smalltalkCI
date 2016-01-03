@@ -192,13 +192,11 @@ squeak::prepare_vm() {
 }
 
 ################################################################################
-# Load project and run tests.
+# Load project and save image.
 # Locals:
 #   config_directory
 #   config_baseline
 #   config_baseline_group
-#   config_exclude_categories
-#   config_exclude_classes
 #   config_force_update
 #   config_keep_open
 #   config_run_script
@@ -208,22 +206,60 @@ squeak::prepare_vm() {
 # Returns:
 #   Status code of build
 ################################################################################
-squeak::load_project_and_run_tests() {
+squeak::load_project() {
   local vm_args
   local cog_vm_flags=()
+  local load_script="${SMALLTALK_CI_HOME}/squeak/load.st"
+  local load_status=0
 
-  print_info "Load project into image and run tests..."
+  print_info "Load project into image..."
 
   vm_args=(
       ${config_directory} \
       ${config_baseline} \
       ${config_baseline_group} \
-      ${config_exclude_categories} \
-      ${config_exclude_classes} \
       ${config_force_update} \
       ${config_keep_open}
   )
 
+  if is_travis_build && [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
+    cog_vm_flags=(-nosound -nodisplay)
+  fi
+
+  "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
+      "${load_script}" "${vm_args[@]}" || load_status=$?
+
+  printf "\n" # Squeak exit msg is missing a linebreak
+
+  return "${load_status}"
+}
+
+################################################################################
+# Run tests for baseline.
+# Locals:
+#   config_baseline
+#   config_exclude_categories
+#   config_exclude_classes
+#   config_keep_open
+#   config_run_script
+# Globals:
+#   SMALLTALK_CI_IMAGE
+#   SMALLTALK_CI_VM
+# Returns:
+#   Status code of build
+################################################################################
+squeak::run_tests() {
+  local vm_args
+  local cog_vm_flags=()
+
+  print_info "Run tests..."
+
+  vm_args=(
+      ${config_baseline} \
+      ${config_exclude_categories} \
+      ${config_exclude_classes} \
+      ${config_keep_open}
+  )
 
   if is_travis_build && [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
     cog_vm_flags=(-nosound -nodisplay)
@@ -240,10 +276,19 @@ squeak::load_project_and_run_tests() {
 #   Status code of build
 ################################################################################
 run_build() {
+  local exit_status=0
+
   squeak::check_options
   squeak::prepare_image "${config_smalltalk}"
   squeak::prepare_vm
 
-  squeak::load_project_and_run_tests
-  return $?
+  squeak::load_project || exit_status=$?
+
+  if [[ ! ${exit_status} -eq 0 ]]; then
+    print_error "Project could not be loaded."
+    return "${exit_status}"
+  fi
+
+  squeak::run_tests || exit_status=$?
+  return "${exit_status}"
 }
