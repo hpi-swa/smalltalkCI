@@ -1,18 +1,22 @@
-| baselineName categoryListString classListString keepOpen timeToRun |
+| baselineName configurationName categoryListString classListString target keepOpen timeToRun |
 
 baselineName := Smalltalk argumentAt: 1.
-categoryListString := Smalltalk argumentAt: 2.
-classListString := Smalltalk argumentAt: 3.
-keepOpen := Smalltalk argumentAt: 4.
+configurationName := Smalltalk argumentAt: 2.
+categoryListString := Smalltalk argumentAt: 3.
+classListString := Smalltalk argumentAt: 4.
+keepOpen := Smalltalk argumentAt: 5.
 
 "Prepare exclusion strings"
 categoryListString = 'nil' ifTrue: [ categoryListString := ''].
 classListString = 'nil' ifTrue: [ classListString := ''].
 
+baselineName = 'nil' ifFalse: [ target := 'BaselineOf', baselineName ].
+configurationName = 'nil' ifFalse: [ target := 'ConfigurationOf', configurationName ].
+
 "Run the tests"
 timeToRun := [
   MetacelloBuilderTravisCI
-    runHarnessFor: { 'BaselineOf', baselineName. }
+    runHarnessFor: { target. }
     exclude: categoryListString
     exclude: classListString ] timeToRun.
 
