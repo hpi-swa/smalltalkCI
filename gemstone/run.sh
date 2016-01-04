@@ -70,12 +70,11 @@ gemstone::load_project() {
   local stone_name=$1
 
   print_info "Loading project..."
-  $GS_HOME/bin/devKitCommandLine todeIt ${stone_name} << EOF
-    eval \` \\\
-      Metacello new baseline: '${config_baseline}'; \\ 
-        repository: 'filetree://${config_project_home}/${config_directory}'; \\ 
-        load: '${config_baseline_group}'. \\
-      \`
+
+  $GS_HOME/bin/devKitCommandLine serverDoIt ${stone_name} << EOF
+    Metacello new baseline: '${config_baseline}';
+      repository: 'filetree://${config_project_home}/${config_directory}';
+      load: '${config_baseline_group}'.
 EOF
   return $?
 }
