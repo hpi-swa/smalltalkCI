@@ -40,7 +40,7 @@ It is highly inspired by [@dalehenrich][daleheinrich]'s [builderCI][builderCI] a
 ## How To Use
 1. [Create a Baseline for your project][baseline].
 2. Export your Smalltalk project with [FileTree/Metacello][metacello].
-3. [Enable Travis CI for your repository][travisHowTo] and create a `.travis.yml` from one of the templates below.
+3. [Enable Travis CI for your repository][travisHowTo] and create a `.travis.yml` from one of the [templates][templates].
 4. Enjoy your fast Smalltalk builds!
 
 
