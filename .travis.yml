@@ -14,6 +14,10 @@ install:
   - unzip -q fixtures.zip
   - export PROJECT_HOME="$(pwd)/smalltalkCI-gs_fixtures"
 
+addons:
+  hosts:
+    - travis.dev
+
 matrix:
   include:
     - language: generic
