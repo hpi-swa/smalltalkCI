@@ -314,8 +314,14 @@ prepare_folders() {
   is_dir "${SMALLTALK_CI_CACHE}" || mkdir "${SMALLTALK_CI_CACHE}"
   is_dir "${SMALLTALK_CI_BUILD_BASE}" || mkdir "${SMALLTALK_CI_BUILD_BASE}"
   is_dir "${SMALLTALK_CI_VMS}" || mkdir "${SMALLTALK_CI_VMS}"
-  # Create folder for this build (should not exist)
-  mkdir "${SMALLTALK_CI_BUILD}"
+
+  # Create folder for this build
+  if is_dir "${SMALLTALK_CI_BUILD}"; then
+    print_info "Build folder already exists at ${SMALLTALK_CI_BUILD}."
+  else
+    mkdir "${SMALLTALK_CI_BUILD}"
+  fi
+
   # Link project folder to git_cache
   ln -s "${config_project_home}" "${SMALLTALK_CI_GIT}"
 }
