@@ -14,7 +14,6 @@ readonly GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
 gemstone::check_options() {
   is_empty "${config_baseline_group}" && config_baseline_group="default"
   is_empty "${config_directory}" && config_directory=""
-  is_empty "${config_tests}" && config_tests="${config_baseline}.*"
   is_empty "${config_devkit_branch}" && config_devkit_branch="dev"
   is_empty "${config_gemstone_version}" && config_gemstone_version=`echo ${config_smalltalk} | cut -f2 -d-`
   is_empty "${config_stone_name}" && config_stone_name="travis"
@@ -75,6 +74,7 @@ gemstone::load_project() {
     Metacello new baseline: '${config_baseline}';
       repository: 'filetree://${config_project_home}/${config_directory}';
       load: '${config_baseline_group}'.
+    System commitTransaction.
 EOF
   return $?
 }
