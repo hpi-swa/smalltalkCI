@@ -1,24 +1,18 @@
 language: smalltalk
-sudo: true
+sudo: false
 
+baseline: SWTDemo
 
 env:
   global:
-    - BASELINE="SWTDemo"
     - BASELINE_GROUP="TravisCI"
     - PACKAGES="packages"
 
-addons:
-  hosts:
-    - travis.dev
-
 install:
-  - sudo hostname travis.dev
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
-  - wget -q -O fixtures.zip https://github.com/dalehenrich/smalltalkCI/archive/gs_fixtures.zip
+  - wget -q -O fixtures.zip https://github.com/hpi-swa/smalltalkCI/archive/gs_fixtures.zip
   - unzip -q fixtures.zip
   - export PROJECT_HOME="$(pwd)/smalltalkCI-gs_fixtures"
-
 
 matrix:
   include:
@@ -29,6 +23,13 @@ matrix:
         - bash tests/pharo_tests.sh
         - bash tests/squeak_tests.sh
 
-    - smalltalk: GemStone-3.2.12
+    - smalltalk: GemStone-3.2.12  # test with container
       os: linux
+      sudo: required
+    - smalltalk: GemStone-3.0.1   # test with builderCI
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true
+
   fast_finish: true
