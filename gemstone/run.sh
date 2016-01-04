@@ -110,7 +110,6 @@ EOF
 run_build() {
   local exit_status=0
 
-  sudo hostname smalltalkci
   echo "DEBUG: hostname: `hostname`"
   cat /etc/hosts
   gemstone::check_options

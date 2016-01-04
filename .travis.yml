@@ -13,6 +13,7 @@ addons:
     - travis.dev
 
 install:
+  - sudo hostname travis.dev
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
   - wget -q -O fixtures.zip https://github.com/dalehenrich/smalltalkCI/archive/gs_fixtures.zip
   - unzip -q fixtures.zip
