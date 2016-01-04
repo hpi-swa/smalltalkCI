@@ -367,6 +367,7 @@ run() {
     GemStone*)
       print_info "Starting GemStone build..."
       source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
+      ;;
     *)
       print_error_and_exit "Unknown Smalltalk version '${config_smalltalk}'."
       ;;
