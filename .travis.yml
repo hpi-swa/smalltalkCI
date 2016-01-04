@@ -60,22 +60,22 @@ matrix:
     - smalltalk: Pharo-3.0
       os: osx
 
-    # - smalltalk: Squeak-4.4
-    #   os: linux
-    #   sudo: required
-    #   group: legacy
-    #   env: BUILDERCI=true
+    - smalltalk: Squeak-4.4
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true
     # - smalltalk: Squeak-4.3
     #   os: linux
     #   sudo: required
     #   group: legacy
     #   env: BUILDERCI=true
 
-    # - smalltalk: Pharo-2.0
-    #   os: linux
-    #   sudo: required
-    #   group: legacy
-    #   env: BUILDERCI=true
+    - smalltalk: Pharo-2.0
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true
     # - smalltalk: Pharo-1.4
     #   os: linux
     #   sudo: required
@@ -92,10 +92,10 @@ matrix:
     #   group: legacy
     #   env: BUILDERCI=true
 
-    # - smalltalk: GemStone-3.2.7
-    #   os: linux
-    #   sudo: required
-    #   group: legacy
+    - smalltalk: GemStone-3.2.7
+      os: linux
+      sudo: required
+      group: legacy
     # - smalltalk: GemStone-3.2.0
     #   os: linux
     #   sudo: required
