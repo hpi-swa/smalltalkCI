@@ -46,7 +46,8 @@ gemstone::prepare_stone() {
   local stone_name=$1
   local gemstone_version=$2
 
-  touch $GS_HOME/bin/.gsdevkitSysSetup  # Operating system setup already performed
+  # uncomment the following when os prereqs handled in smalltalk.rb - https://github.com/hpi-swa/smalltalkCI/issues/28
+  # touch $GS_HOME/bin/.gsdevkitSysSetup  # Operating system setup already performed
   $GS_HOME/bin/installServer 
   $GS_HOME/bin/createStone $stone_name $gemstone_version
   return 0
