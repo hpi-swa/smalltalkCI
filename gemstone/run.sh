@@ -16,6 +16,8 @@ gemstone::check_options() {
   is_empty "${config_directory}" && config_directory=""
   is_empty "${config_tests}" && config_tests="${config_baseline}.*"
   is_empty "${config_devkit_branch}" && config_devkit_branch="dev"
+  is_empty "${config_gemstone_version}" && config_gemstone_version=`echo ${config_smalltalk} | cut -f2 -d-`
+  is_empty "${config_stone_name}" && config_stone_name="travis"
   return 0
 }
 
@@ -24,7 +26,7 @@ gemstone::check_options() {
 # Arguments:
 #   devkit_branch
 ################################################################################
-gemstone::prepar_gsdevkit_home() {
+gemstone::prepare_gsdevkit_home() {
   local devkit_branch=$1
 
   git clone ${GS_DEVKIT_DOWNLOAD}
@@ -43,58 +45,60 @@ gemstone::prepar_gsdevkit_home() {
 gemstone::prepare_stone() {
   local stone_name=$1
   local gemstone_version=$2
-  local setupType=server
 
   touch $GS_HOME/bin/.gsdevkitSysSetup  # Operating system setup already performed
-  $GS_HOME/bin/
-
+  $GS_HOME/bin/installServer 
+  $GS_HOME/bin/createStone $stone_name $gemstone_version
+  return 0
 }
 
 ################################################################################
-# Load project into Pharo image.
+# Load project into GemStone stone.
+# Arguments:
+#   stone_name
 # Locals:
 #   config_baseline
 #   config_baseline_group
 #   config_directory
 #   config_project_home
-# Globals:
-#   SMALLTALK_CI_VM
-#   SMALLTALK_CI_IMAGE
 # Returns:
 #   Status code of project loading
 ################################################################################
-pharo::load_project() {
+gemstone::load_project() {
+  local stone_name=$1
+
   print_info "Loading project..."
-  "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
-  Metacello new 
-    baseline: '${config_baseline}';
-    repository: 'filetree://${config_project_home}/${config_directory}';
-    load: '${config_baseline_group}'.
-  "
+  $GS_HOME/bin/devKitCommandLine todeIt ${stone_name} << EOF
+    eval \`
+      Metacello new baseline: '${config_baseline}'; \\ 
+        repository: 'filetree://${config_project_home}/${config_directory}'; \\ 
+        load: '${config_baseline_group}'. \\
+      \`
+EOF
   return $?
 }
 
 ################################################################################
-# Run tests in Pharo image.
-# Globals:
-#   SMALLTALK_CI_VM
-#   SMALLTALK_CI_IMAGE
+# Run tests in GemStone stone.
 # Arguments:
-#   String matching a package name to test
+#   stone_name
+#   The name of project to test
 # Returns:
 #   Status code of build
 ################################################################################
-pharo::run_tests() {
-  local tests=$1
+gemstone::run_tests() {
+  local stone_name=$1
+  local project_name=$2
 
   print_info "Run tests..."
-  "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" test --junit-xml-output \
-      --fail-on-failure "${tests}" 2>&1
+  $GS_HOME/bin/devKitCommandLine todeIt ${stone_name} << EOF
+    test --batch project ${project_name}
+EOF
   return $?
 }
 
 ################################################################################
-# Main entry point for Pharo builds.
+# Main entry point for GemStone builds.
 # Returns:
 #   Status code of build
 ################################################################################
@@ -103,17 +107,15 @@ run_build() {
 
   gemstone::check_options
   gemstone::prepare_gsdevkit_home "${config_devkit_branch}"
-  gemstone::prepare_stone "${config_stone_name}" 
-  pharo::load_project || exit_status=$?
+  gemstone::prepare_stone "${config_stone_name}" "${config_gemstone_version}"
+  gemstone::load_project "${config_stone_name}" || exit_status=$?
 
   if [[ ! ${exit_status} -eq 0 ]]; then
     print_error "Project could not be loaded."
     return "${exit_status}"
   fi
 
-  pharo::run_tests "${config_tests}" || exit_status=$?
-
-  print_junit_xml "${SMALLTALK_CI_BUILD}"
+  gemstone::run_tests "${config_stone_name}" "${config_baseline}" || exit_status=$?
 
   return "${exit_status}"
 }

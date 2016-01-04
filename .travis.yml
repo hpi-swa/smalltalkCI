@@ -1,5 +1,5 @@
 language: smalltalk
-sudo: false
+sudo: true
 
 baseline: SWTDemo
 
