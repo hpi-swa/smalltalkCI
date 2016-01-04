@@ -44,8 +44,6 @@ print_help() {
   This program prepares Smalltalk images/vms, loads projects and runs tests.
 
   OPTIONS:
-    --baseline              Overwrite baseline.
-    --baseline-group        Overwrite baseline group.
     --builder-ci            Use builderCI (default 'false').
     -d | --debug            Enable debug mode.
     --directory             Overwrite directory.
@@ -53,6 +51,10 @@ print_help() {
     --excluded-classes      Overwrite classes to be excluded (Squeak only).
     --force-update          Force an update in Squeak image (default 'false').
     -h | --help             Show this help text.
+    --mc-baseline           Overwrite baseline.
+    --mc-baseline-group     Overwrite baseline group.
+    --mc-config             Overwrite Metacello configuration.
+    --mc-config-version     Overwrite Metacello configuration version.
     -o | --keep-open        Keep image open and do not close on error.
     --script                Overwrite custom script to run (Squeak only).
     -s | --smalltalk        Overwrite Smalltalk image selection.

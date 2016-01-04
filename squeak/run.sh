@@ -20,7 +20,10 @@ readonly VM_DOWNLOAD="http://mirandabanda.org/files/Cog/VM/VM.r3427"
 #   SMALLTALK_CI_HOME
 ################################################################################
 squeak::check_options() {
+  is_empty "${config_baseline}" && config_baseline="nil"
   is_empty "${config_baseline_group}" && config_baseline_group="TravisCI"
+  is_empty "${config_configuration}" && config_configuration="nil"
+  is_empty "${config_configuration_version}" && config_configuration_version="nil"
   is_empty "${config_exclude_categories}" && config_exclude_categories="nil"
   is_empty "${config_exclude_classes}" && config_exclude_classes="nil"
   is_empty "${config_force_update}" && config_force_update="false"
@@ -192,13 +195,13 @@ squeak::prepare_vm() {
 }
 
 ################################################################################
-# Load project and run tests.
+# Load project and save image.
 # Locals:
 #   config_directory
 #   config_baseline
 #   config_baseline_group
-#   config_exclude_categories
-#   config_exclude_classes
+#   config_configuration
+#   config_configuration_version
 #   config_force_update
 #   config_keep_open
 #   config_run_script
@@ -208,22 +211,79 @@ squeak::prepare_vm() {
 # Returns:
 #   Status code of build
 ################################################################################
-squeak::load_project_and_run_tests() {
+squeak::load_project() {
+  local vm_args
+  local cog_vm_flags=()
+  local load_script
+  local load_status=0
+
+  print_info "Load project into image..."
+
+  if is_travis_build && [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
+    cog_vm_flags=(-nosound -nodisplay)
+  fi
+
+  if [[ "${config_baseline}" != "nil" ]]; then
+    load_script="${SMALLTALK_CI_HOME}/squeak/load_baseline.st"
+    vm_args=(
+        ${config_directory} \
+        ${config_baseline} \
+        ${config_baseline_group} \
+        ${config_force_update} \
+        ${config_keep_open}
+    )
+
+    "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
+        "${load_script}" "${vm_args[@]}" || load_status=$?
+  elif [[ "${config_configuration}" != "nil" ]]; then
+    load_script="${SMALLTALK_CI_HOME}/squeak/load_configuration.st"
+    vm_args=(
+        ${config_directory} \
+        ${config_configuration} \
+        ${config_configuration_version} \
+        ${config_force_update} \
+        ${config_keep_open}
+    )
+
+    "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
+        "${load_script}" "${vm_args[@]}" || load_status=$?
+  else
+    print_error "No Metacello baseline or configuration specified."
+    return 1
+  fi
+
+  printf "\n" # Squeak exit msg is missing a linebreak
+
+  return "${load_status}"
+}
+
+################################################################################
+# Run tests for baseline.
+# Locals:
+#   config_baseline
+#   config_exclude_categories
+#   config_exclude_classes
+#   config_keep_open
+#   config_run_script
+# Globals:
+#   SMALLTALK_CI_IMAGE
+#   SMALLTALK_CI_VM
+# Returns:
+#   Status code of build
+################################################################################
+squeak::run_tests() {
   local vm_args
   local cog_vm_flags=()
 
-  print_info "Load project into image and run tests..."
+  print_info "Run tests..."
 
   vm_args=(
-      ${config_directory} \
       ${config_baseline} \
-      ${config_baseline_group} \
+      ${config_configuration} \
       ${config_exclude_categories} \
       ${config_exclude_classes} \
-      ${config_force_update} \
       ${config_keep_open}
   )
-
 
   if is_travis_build && [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
     cog_vm_flags=(-nosound -nodisplay)
@@ -240,10 +300,19 @@ squeak::load_project_and_run_tests() {
 #   Status code of build
 ################################################################################
 run_build() {
+  local exit_status=0
+
   squeak::check_options
   squeak::prepare_image "${config_smalltalk}"
   squeak::prepare_vm
 
-  squeak::load_project_and_run_tests
-  return $?
+  squeak::load_project || exit_status=$?
+
+  if [[ ! ${exit_status} -eq 0 ]]; then
+    print_error "Project could not be loaded."
+    return "${exit_status}"
+  fi
+
+  squeak::run_tests || exit_status=$?
+  return "${exit_status}"
 }
