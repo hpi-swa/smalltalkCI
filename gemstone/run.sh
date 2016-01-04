@@ -50,6 +50,10 @@ gemstone::prepare_stone() {
   # touch $GS_HOME/bin/.gsdevkitSysSetup  # Operating system setup already performed
   $GS_HOME/bin/installServer 
   $GS_HOME/bin/createStone $stone_name $gemstone_version
+
+  echo "DEBUG: session description"
+  cat $GS_HOME/sys/local/sessions/${stone_name}
+  cat /etc/hosts
   return 0
 }
 
@@ -106,7 +110,7 @@ EOF
 run_build() {
   local exit_status=0
 
-  echo `hostname`
+  echo "DEBUG: hostname: `hostname`"
   gemstone::check_options
   gemstone::prepare_gsdevkit_home "${config_devkit_branch}"
   gemstone::prepare_stone "${config_stone_name}" "${config_gemstone_version}"
