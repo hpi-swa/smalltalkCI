@@ -2,7 +2,7 @@
 
 set -e
 
-readonly GS_DEVKIT_DOWNLOAD="git@github.com:GsDevKit/GsDevKit_home.git"
+readonly GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
 
 ################################################################################
 # Check options and set defaults if unavailable.
