@@ -12,7 +12,7 @@ install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
   - wget -q -O fixtures.zip https://github.com/dalehenrich/smalltalkCI/archive/gs_fixtures.zip
   - unzip -q fixtures.zip
-  - export PROJECT_HOME="$(pwd)/smalltalkCI-fixtures"
+  - export PROJECT_HOME="$(pwd)/smalltalkCI-gs_fixtures"
 
 matrix:
   include:
