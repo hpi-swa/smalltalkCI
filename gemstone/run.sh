@@ -111,6 +111,7 @@ run_build() {
   local exit_status=0
 
   echo "DEBUG: hostname: `hostname`"
+  cat /etc/hosts
   gemstone::check_options
   gemstone::prepare_gsdevkit_home "${config_devkit_branch}"
   gemstone::prepare_stone "${config_stone_name}" "${config_gemstone_version}"
