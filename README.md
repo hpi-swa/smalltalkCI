@@ -1,11 +1,11 @@
 # smalltalkCI [![Build Status](https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master)](https://travis-ci.org/hpi-swa/smalltalkCI)
 Community-supported framework for building Smalltalk projects on [Travis CI][travisCI] (continuous integration) infrastructure.
 
-It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] and aims to make testing Smalltalk projects easy and fast.
+It is highly inspired by [@dalehenrich][daleheinrich]'s [builderCI][builderCI] and aims to make testing Smalltalk projects easy and fast.
 
 
 ## Features
-- Configuration via `.travis.yml` only ([see below for templates](#travisyml-template))
+- Configuration via `.travis.yml` only ([see below for templates](#templates))
 - Runs on Travis' [container-based infrastructure][cbi] - [*"Builds-start-in-seconds"*][bsis]
 - Supports Linux and OS X and can be run locally
 - builderCI fallback for builds that are not yet supported on the new infrastructure
@@ -22,17 +22,17 @@ It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] 
 
 <a name="images"/>
 ## List Of Images Supported
-| Squeak          | Pharo            | GemStone            |
-| --------------- | ---------------- | ------------------- |
-| `Squeak-trunk`  | `Pharo-alpha`    | `GemStone-3.2.7`*   |
-| `Squeak-5.0`    | `Pharo-stable`   | `GemStone-3.2.0`*   |
-| `Squeak-4.6`    | `Pharo-5.0`      | `GemStone-3.1.0.6`* |
-| `Squeak-4.5`    | `Pharo-4.0`      | `GemStone-3.1.0.2`* |
-| `Squeak-4.4`*   | `Pharo-3.0`      | `GemStone-3.0.1`*   |
-| `Squeak-4.3`*   | `Pharo-2.0`*     | `GemStone-2.4.6`*   |
-|                 | `Pharo-1.4`*     | `GemStone-2.4.5`*   |
-|                 | `PharoCore-1.2`* | `GemStone-2.4.4.1`* |
-|                 | `PharoCore-1.1`* |                     |
+| Squeak          | Pharo            | GemStone             |
+| --------------- | ---------------- | -------------------- |
+| `Squeak-trunk`  | `Pharo-alpha`    |  `GemStone-3.x`*     |
+| `Squeak-5.0`    | `Pharo-stable`   |  `GemStone-2.4.7`*   |
+| `Squeak-4.6`    | `Pharo-5.0`      |  `GemStone-2.4.6`*   |
+| `Squeak-4.5`    | `Pharo-4.0`      |  `GemStone-2.4.5`*   |
+| `Squeak-4.4`*   | `Pharo-3.0`      |  `GemStone-2.4.4.1`* |
+| `Squeak-4.3`*   | `Pharo-2.0`*     |                      |
+|                 | `Pharo-1.4`*     |                      |
+|                 | `PharoCore-1.2`* |                      |
+|                 | `PharoCore-1.1`* |                      |
 
 *requires builderCI fallback
 
@@ -40,7 +40,7 @@ It is highly inspired by [@daleheinrich][daleheinrich]'s [builderCI][builderCI] 
 ## How To Use
 1. [Create a Baseline for your project][baseline].
 2. Export your Smalltalk project with [FileTree/Metacello][metacello].
-3. [Enable Travis CI for your repository][travisHowTo] and create a `.travis.yml` from one of the templates below.
+3. [Enable Travis CI for your repository][travisHowTo] and create a `.travis.yml` from one of the [templates][templates].
 4. Enjoy your fast Smalltalk builds!
 
 
