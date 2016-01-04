@@ -51,9 +51,6 @@ gemstone::prepare_stone() {
   $GS_HOME/bin/installServer 
   $GS_HOME/bin/createStone $stone_name $gemstone_version
 
-  echo "DEBUG: session description"
-  cat $GS_HOME/sys/local/sessions/${stone_name}
-  cat /etc/hosts
   return 0
 }
 
@@ -74,7 +71,7 @@ gemstone::load_project() {
 
   print_info "Loading project..."
   $GS_HOME/bin/devKitCommandLine todeIt ${stone_name} << EOF
-    eval \`
+    eval \` \\
       Metacello new baseline: '${config_baseline}'; \\ 
         repository: 'filetree://${config_project_home}/${config_directory}'; \\ 
         load: '${config_baseline_group}'. \\
@@ -110,8 +107,6 @@ EOF
 run_build() {
   local exit_status=0
 
-  echo "DEBUG: hostname: `hostname`"
-  cat /etc/hosts
   gemstone::check_options
   gemstone::prepare_gsdevkit_home "${config_devkit_branch}"
   gemstone::prepare_stone "${config_stone_name}" "${config_gemstone_version}"
