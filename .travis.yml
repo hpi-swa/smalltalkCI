@@ -1,5 +1,6 @@
 language: smalltalk
 sudo: true
+group: legacy # Avoid GCE builds for now
 
 smalltalk:
 #  - Squeak-trunk
@@ -40,6 +41,7 @@ matrix:
   include:
     # Bash tests
     - language: generic
+      sudo: false
       script:
         - bash tests/run_tests.sh
         - bash tests/helpers_tests.sh
