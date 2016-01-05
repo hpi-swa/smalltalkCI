@@ -434,7 +434,7 @@ check_build_status() {
 main() {
   local config_smalltalk="${SMALLTALK}"
   local config_project_home
-  local config_baseline
+  local config_baseline="${BASELINE}"
   local config_baseline_group
   local config_builder_ci_fallback="false"
   local config_clean="false"
