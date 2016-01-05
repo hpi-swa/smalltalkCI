@@ -1,5 +1,6 @@
 language: smalltalk
 sudo: true
+group: legacy # Avoid GCE builds for now
 
 smalltalk:
 #  - Squeak-trunk
