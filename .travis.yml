@@ -27,9 +27,8 @@ env:
     - PACKAGES="packages"
 
 addons:
-  apt:
-    hosts:
-      - travis.dev
+  hosts:
+    - travis.dev
 
 install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
