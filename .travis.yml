@@ -1,10 +1,10 @@
 language: smalltalk
 sudo: false
 
-baseline: SWTDemo
 
 env:
   global:
+    - BASELINE="SWTDemo"
     - BASELINE_GROUP="TravisCI"
     - PACKAGES="packages"
 
@@ -28,6 +28,8 @@ matrix:
         - bash tests/pharo_tests.sh
         - bash tests/squeak_tests.sh
 
+    - smalltalk: Squeak-trunk
+      os: linux
     - smalltalk: GemStone-3.2.12  # test with container
       os: linux
       sudo: required
