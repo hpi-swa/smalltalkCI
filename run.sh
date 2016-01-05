@@ -452,11 +452,14 @@ main() {
   local config_verbose="false"
   local exit_status=0
 
+  echo "${TRAVIS_OS_NAME}"
   if [ "${TRAVIS_OS_NAME}" = "linux" ] ; then
     sudo hostname travis.dev
   else # then osx
     sudo scutil --set HostName travis.dev
   fi
+  cat /etc/hosts
+  hostname
   check_os
   parse_args "$@"
   [[ "${config_verbose}" = "true" ]] && set -x
