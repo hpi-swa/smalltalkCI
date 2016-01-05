@@ -72,6 +72,8 @@ determine_project_home() {
 #   RUN_SCRIPT
 ################################################################################
 load_config_from_environment() {
+  is_not_empty "${BASELINE}" \
+      && config_baseline="${BASELINE}"
   is_not_empty "${BASELINE_GROUP}" \
       && config_baseline_group="${BASELINE_GROUP}"
   is_not_empty "${PACKAGES}" \
@@ -434,7 +436,7 @@ check_build_status() {
 main() {
   local config_smalltalk="${SMALLTALK}"
   local config_project_home
-  local config_baseline="${BASELINE}"
+  local config_baseline
   local config_baseline_group
   local config_builder_ci_fallback="false"
   local config_clean="false"
