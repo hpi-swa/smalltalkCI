@@ -111,6 +111,8 @@ run_build() {
   gemstone::prepare_stone "${config_stone_name}" "${config_gemstone_version}"
   gemstone::load_project "${config_stone_name}" || exit_status=$?
 
+  sudo hostname travis.dev # not needed when https://github.com/hpi-swa/smalltalkCI/issues/28 fixed
+
   if [[ ! ${exit_status} -eq 0 ]]; then
     print_error "Project could not be loaded."
     return "${exit_status}"
