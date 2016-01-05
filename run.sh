@@ -454,7 +454,7 @@ main() {
 
   if [ "${TRAVIS_OS_NAME}" = "linux" ] ; then
     sudo hostname travis.dev
-  else "then osx"
+  else # then osx
     sudo scutil --set HostName travis.dev
   fi
   check_os
