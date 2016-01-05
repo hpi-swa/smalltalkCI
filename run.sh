@@ -255,8 +255,7 @@ parse_args() {
 }
 
 is_fallback_enabled() {
-  [[ "${config_builder_ci_fallback}" = "true" ]] \
-      || [[ "${config_smalltalk}" == "GemStone"* ]]
+  [[ "${config_builder_ci_fallback}" = "true" ]]
 }
 
 ################################################################################
@@ -382,6 +381,10 @@ run() {
     Pharo*)
       print_info "Starting Pharo build..."
       source "${SMALLTALK_CI_HOME}/pharo/run.sh"
+      ;;
+    GemStone*)
+      print_info "Starting GemStone build..."
+      source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
       ;;
     *)
       print_error_and_exit "Unknown Smalltalk version '${config_smalltalk}'."
