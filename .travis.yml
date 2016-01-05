@@ -36,5 +36,8 @@ matrix:
       sudo: required
       group: legacy
       env: BUILDERCI=true
-
   fast_finish: true
+
+branches:
+  except:
+    - fixtures

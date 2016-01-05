@@ -50,9 +50,8 @@ if config.has_key?("env") and config["env"].has_key?("global")
 end
 
 # Use first smalltalk value if $SMALLTALK is not set
-if config.has_key?("smalltalk")
-  puts "[[ -z \"${config_smalltalk}\" ]] && "\
-       "config_smalltalk=(\"#{config["smalltalk"].first}\")"
+if !ENV.has_key?("SMALLTALK") and config.has_key?("smalltalk")
+  puts "config_smalltalk=(\"#{config["smalltalk"].first}\")"
 end
 
 # Print output

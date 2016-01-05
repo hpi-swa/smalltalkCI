@@ -12,7 +12,10 @@ set -e
 pharo::check_options() {
   is_empty "${config_baseline_group}" && config_baseline_group="default"
   is_empty "${config_directory}" && config_directory=""
-  is_empty "${config_tests}" && config_tests="${config_baseline}.*"
+  if is_empty "${config_tests}"; then
+    ! is_empty "${config_baseline}" && config_tests="${config_baseline}.*"
+    ! is_empty "${config_configuration}" && config_tests="${config_configuration}.*"
+  fi
   return 0
 }
 
@@ -172,6 +175,8 @@ pharo::prepare_image() {
 # Locals:
 #   config_baseline
 #   config_baseline_group
+#   config_configuration
+#   config_configuration_version
 #   config_directory
 #   config_project_home
 # Globals:
@@ -182,13 +187,33 @@ pharo::prepare_image() {
 ################################################################################
 pharo::load_project() {
   print_info "Loading project..."
-  "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
-  Metacello new 
-    baseline: '${config_baseline}';
-    repository: 'filetree://${config_project_home}/${config_directory}';
-    load: '${config_baseline_group}'.
-  "
-  return $?
+
+  if ! is_empty "${config_baseline}"; then
+    "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
+    Metacello new 
+      baseline: '${config_baseline}';
+      repository: 'filetree://${config_project_home}/${config_directory}';
+      load: '${config_baseline_group}'.
+    "
+    return $?
+  elif ! is_empty "${config_configuration}"; then
+    "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
+    | version |
+    version := '${config_configuration_version}'.
+    (version first = \$#)
+      ifTrue: [ version := version allButFirst asSymbol ].
+
+    Metacello new 
+      configuration: '${config_configuration}';
+      version: version;
+      repository: 'filetree://${config_project_home}/${config_directory}';
+      load.
+    "
+    return $?
+  else
+    print_error "No Metacello baseline or configuration specified."
+    return 1
+  fi
 }
 
 ################################################################################
