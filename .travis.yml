@@ -1,6 +1,22 @@
 language: smalltalk
 sudo: false
 
+smalltalk:
+  - Squeak-trunk
+  - Squeak-5.0
+  - Squeak-4.6
+  - Squeak-4.5
+
+  - Pharo-alpha
+  - Pharo-stable
+  - Pharo-5.0
+  - Pharo-4.0
+  - Pharo-3.0
+
+os:
+  - linux
+  - osx
+
 env:
   global:
     - BASELINE="SWTDemo"
@@ -15,6 +31,7 @@ install:
 
 matrix:
   include:
+    # Bash tests
     - language: generic
       script:
         - bash tests/run_tests.sh
@@ -22,43 +39,7 @@ matrix:
         - bash tests/pharo_tests.sh
         - bash tests/squeak_tests.sh
 
-    - smalltalk: Squeak-trunk
-      os: linux
-    - smalltalk: Squeak-trunk
-      os: osx
-    - smalltalk: Squeak-5.0
-      os: linux
-    - smalltalk: Squeak-5.0
-      os: osx
-    - smalltalk: Squeak-4.6
-      os: linux
-    - smalltalk: Squeak-4.6
-      os: osx
-    - smalltalk: Squeak-4.5
-      os: linux
-    - smalltalk: Squeak-4.5
-      os: osx
-    - smalltalk: Pharo-alpha
-      os: linux
-    - smalltalk: Pharo-alpha
-      os: osx
-    - smalltalk: Pharo-stable
-      os: linux
-    - smalltalk: Pharo-stable
-      os: osx
-    - smalltalk: Pharo-5.0
-      os: linux
-    - smalltalk: Pharo-5.0
-      os: osx
-    - smalltalk: Pharo-4.0
-      os: linux
-    - smalltalk: Pharo-4.0
-      os: osx
-    - smalltalk: Pharo-3.0
-      os: linux
-    - smalltalk: Pharo-3.0
-      os: osx
-
+    # Legacy Squeak builds using builderCI
     - smalltalk: Squeak-4.4
       os: linux
       sudo: required
@@ -70,6 +51,7 @@ matrix:
     #   group: legacy
     #   env: BUILDERCI=true
 
+    # Legacy Pharo builds using builderCI
     - smalltalk: Pharo-2.0
       os: linux
       sudo: required
@@ -91,6 +73,7 @@ matrix:
     #   group: legacy
     #   env: BUILDERCI=true
 
+    # Legacy GemStone builds using builderCI
     - smalltalk: GemStone-3.2.7
       os: linux
       sudo: required
@@ -141,7 +124,3 @@ matrix:
     - smalltalk: GemStone-2.4.5
     - smalltalk: GemStone-2.4.4.1
   fast_finish: true
-
-branches:
-  except:
-    - fixtures
