@@ -452,6 +452,7 @@ main() {
   local config_verbose="false"
   local exit_status=0
 
+  sudo hostname travis.dev
   check_os
   parse_args "$@"
   [[ "${config_verbose}" = "true" ]] && set -x
