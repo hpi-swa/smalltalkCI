@@ -124,3 +124,7 @@ matrix:
     - smalltalk: GemStone-2.4.5
     - smalltalk: GemStone-2.4.4.1
   fast_finish: true
+
+branches:
+  except:
+    - fixtures
