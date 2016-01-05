@@ -58,6 +58,10 @@ matrix:
 
     # Legacy Pharo builds using builderCI
     - smalltalk: Pharo-2.0
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true      
     # - smalltalk: Pharo-1.4
     #   os: linux
     #   sudo: required
