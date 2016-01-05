@@ -61,7 +61,7 @@ matrix:
       os: linux
       sudo: required
       group: legacy
-      env: BUILDERCI=true      
+      env: BUILDERCI=true
     # - smalltalk: Pharo-1.4
     #   os: linux
     #   sudo: required

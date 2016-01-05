@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 set -e
 
 readonly SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -72,8 +73,6 @@ determine_project_home() {
 #   RUN_SCRIPT
 ################################################################################
 load_config_from_environment() {
-  is_not_empty "${BASELINE}" \
-      && config_baseline="${BASELINE}"
   is_not_empty "${BASELINE_GROUP}" \
       && config_baseline_group="${BASELINE_GROUP}"
   is_not_empty "${PACKAGES}" \
