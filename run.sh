@@ -117,8 +117,8 @@ validate_configuration() {
   if is_empty "${config_smalltalk}"; then
     print_error_and_exit "Smalltalk image is not defined."
   fi
-  if is_empty "${config_baseline}"; then
-    print_error_and_exit "Baseline could not be found."
+  if is_empty "${config_baseline}" && is_empty "${config_configuration}"; then
+    print_error_and_exit "No Metacello baseline or configuration specified."
   fi
   if [[ "${directory:0:1}" = "/" ]]; then
     directory=${directory:1}
@@ -170,14 +170,6 @@ parse_args() {
   while :
   do
     case "$1" in
-    --baseline)
-      config_baseline="$2"
-      shift 2
-      ;;
-    --baseline-group)
-      config_baseline_group="$2"
-      shift 2
-      ;;
     --builder-ci)
       config_builder_ci_fallback="true"
       shift
@@ -209,6 +201,26 @@ parse_args() {
     -h | --help)
       print_help
       exit 0
+      ;;
+    --mc-baseline)
+      config_baseline="$2"
+      # Clear configuration
+      config_configuration=""
+      shift 2
+      ;;
+    --mc-baseline-group)
+      config_baseline_group="$2"
+      shift 2
+      ;;
+    --mc-config)
+      config_configuration="$2"
+      # Clear baseline
+      config_baseline=""
+      shift 2
+      ;;
+    --mc-config-version)
+      config_configuration_version="$2"
+      shift 2
       ;;
     -o | --keep-open)
       config_keep_open="true"
@@ -302,8 +314,14 @@ prepare_folders() {
   is_dir "${SMALLTALK_CI_CACHE}" || mkdir "${SMALLTALK_CI_CACHE}"
   is_dir "${SMALLTALK_CI_BUILD_BASE}" || mkdir "${SMALLTALK_CI_BUILD_BASE}"
   is_dir "${SMALLTALK_CI_VMS}" || mkdir "${SMALLTALK_CI_VMS}"
-  # Create folder for this build (should not exist)
-  mkdir "${SMALLTALK_CI_BUILD}"
+
+  # Create folder for this build
+  if is_dir "${SMALLTALK_CI_BUILD}"; then
+    print_info "Build folder already exists at ${SMALLTALK_CI_BUILD}."
+  else
+    mkdir "${SMALLTALK_CI_BUILD}"
+  fi
+
   # Link project folder to git_cache
   ln -s "${config_project_home}" "${SMALLTALK_CI_GIT}"
 }
@@ -415,15 +433,18 @@ main() {
   local config_project_home
   local config_baseline
   local config_baseline_group
+  local config_builder_ci_fallback="false"
   local config_clean="false"
+  local config_configuration
+  local config_configuration_version="#stable"
   local config_debug="false"
   local config_directory="packages"
-  local config_force_update
-  local config_builder_ci_fallback="false"
-  local config_run_script
   local config_excluded_categories
   local config_excluded_classes
+  local config_force_update
   local config_keep_open="false"
+  local config_run_script
+  local config_tests
   local config_verbose="false"
   local exit_status=0
 
