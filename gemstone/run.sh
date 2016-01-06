@@ -107,9 +107,9 @@ run_build() {
   local exit_status=0
 
   # not needed when https://github.com/hpi-swa/smalltalkCI/issues/28 fixed
-  if [ "${TRAVIS_OS_NAME}" = "linux" ] ; then
+  if [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
     sudo hostname travis.dev
-  else # then osx
+  elif [[ "${TRAVIS_OS_NAME}" = "osx" ]]; then
     sudo scutil --set HostName travis.dev
   fi
 
