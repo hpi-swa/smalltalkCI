@@ -106,17 +106,17 @@ EOF
 run_build() {
   local exit_status=0
 
-  gemstone::check_options
-  gemstone::prepare_gsdevkit_home "${config_devkit_branch}"
-  gemstone::prepare_stone "${config_stone_name}" "${config_gemstone_version}"
-  gemstone::load_project "${config_stone_name}" || exit_status=$?
-
   # not needed when https://github.com/hpi-swa/smalltalkCI/issues/28 fixed
   if [ "${TRAVIS_OS_NAME}" = "linux" ] ; then
     sudo hostname travis.dev
   else # then osx
     sudo scutil --set HostName travis.dev
   fi
+
+  gemstone::check_options
+  gemstone::prepare_gsdevkit_home "${config_devkit_branch}"
+  gemstone::prepare_stone "${config_stone_name}" "${config_gemstone_version}"
+  gemstone::load_project "${config_stone_name}" || exit_status=$?
 
   if [[ ! ${exit_status} -eq 0 ]]; then
     print_error "Project could not be loaded."
