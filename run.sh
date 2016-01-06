@@ -385,11 +385,6 @@ run() {
       ;;
     GemStone*)
       print_info "Starting GemStone build..."
-      if [ "${TRAVIS_OS_NAME}" = "linux" ] ; then
-        sudo hostname travis.dev
-      else # then osx
-        sudo scutil --set HostName travis.dev
-      fi
       source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
       ;;
     *)
