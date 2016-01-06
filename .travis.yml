@@ -29,6 +29,11 @@ install:
   - unzip -q fixtures.zip
   - export PROJECT_HOME="$(pwd)/smalltalkCI-fixtures"
 
+addons:
+  hosts:
+    # For GemStone builds
+    - travis.dev
+
 matrix:
   include:
     # GemStone builds
@@ -36,16 +41,10 @@ matrix:
       os: linux
       sudo: required
       group: legacy
-      addons:
-        hosts:
-          - travis.dev
     - smalltalk: GemStone-3.2.12
       os: osx
       sudo: required
       group: legacy
-      addons:
-        hosts:
-          - travis.dev
 
     # Bash tests
     - language: generic
