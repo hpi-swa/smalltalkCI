@@ -1,21 +1,17 @@
 language: smalltalk
-sudo: true
-group: legacy # Avoid GCE builds for now
+sudo: false
 
 smalltalk:
-#  - Squeak-trunk
-##  - Squeak-5.0
-##  - Squeak-4.6
-##  - Squeak-4.5
-#
-##      - Pharo-alpha
-##  - Pharo-stable
-##  - Pharo-5.0
-##  - Pharo-4.0
-##  - Pharo-3.0
+  - Squeak-trunk
+  - Squeak-5.0
+  - Squeak-4.6
+  - Squeak-4.5
 
-  - GemStone-3.2.12
-#  - GemStone-3.1.0.6
+  - Pharo-alpha
+  - Pharo-stable
+  - Pharo-5.0
+  - Pharo-4.0
+  - Pharo-3.0
 
 os:
   - linux
@@ -26,10 +22,6 @@ env:
     - BASELINE="SWTDemo"
     - BASELINE_GROUP="TravisCI"
     - PACKAGES="packages"
-
-addons:
-  hosts:
-    - travis.dev
 
 install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
@@ -48,70 +40,83 @@ matrix:
         - bash tests/pharo_tests.sh
         - bash tests/squeak_tests.sh
 
-#    # Legacy Squeak builds using builderCI
-#    - smalltalk: Squeak-4.4
-#      os: linux
-#      sudo: required
-#      group: legacy
-#      env: BUILDERCI=true
-#    # - smalltalk: Squeak-4.3
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    #   env: BUILDERCI=true
-#
-#    # Legacy Pharo builds using builderCI
-#    - smalltalk: Pharo-2.0
-#      os: linux
-#      sudo: required
-#      group: legacy
-#      env: BUILDERCI=true
-#    # - smalltalk: Pharo-1.4
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    #   env: BUILDERCI=true
-#    # - smalltalk: PharoCore-1.2
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    #   env: BUILDERCI=true
-#    # - smalltalk: PharoCore-1.1
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    #   env: BUILDERCI=true
-#
-#    # Legacy GemStone builds using builderCI
-#    - smalltalk: GemStone-3.2.7
-#      os: linux
-#      sudo: required
-#      group: legacy
-#      env: BUILDERCI=true
-#    # - smalltalk: GemStone-3.2.0
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    # - smalltalk: GemStone-3.1.0.5
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    # - smalltalk: GemStone-3.1.0
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    # - smalltalk: GemStone-3.0.1
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    # - smalltalk: GemStone-2.4.7
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    # - smalltalk: GemStone-2.4.4.1
-#    #   os: linux
-#    #   sudo: required
-#    :    #   group: legacy
+    # Add GemStone builds
+    - smalltalk: GemStone-3.2.12
+      os: linux
+      sudo: required
+      group: legacy
+    - smalltalk: GemStone-3.2.12
+      os: osx
+      sudo: required
+      group: legacy
+
+    # Legacy Squeak builds using builderCI
+    - smalltalk: Squeak-4.4
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true
+    # - smalltalk: Squeak-4.3
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    #   env: BUILDERCI=true
+
+    # Legacy Pharo builds using builderCI
+    - smalltalk: Pharo-2.0
+      os: linux
+      sudo: required
+      group: legacy
+      env: BUILDERCI=true
+    # - smalltalk: Pharo-1.4
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    #   env: BUILDERCI=true
+    # - smalltalk: PharoCore-1.2
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    #   env: BUILDERCI=true
+    # - smalltalk: PharoCore-1.1
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    #   env: BUILDERCI=true
+
+    # Legacy GemStone builds using builderCI
+    - smalltalk: GemStone-3.2.7
+      os: linux
+      sudo: required
+      group: legacy
+    # - smalltalk: GemStone-3.2.0
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    # - smalltalk: GemStone-3.1.0.6
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    # - smalltalk: GemStone-3.1.0.2
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    # - smalltalk: GemStone-3.0.1
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    # - smalltalk: GemStone-2.4.6
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    # - smalltalk: GemStone-2.4.5
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    # - smalltalk: GemStone-2.4.4.1
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
   allow_failures:
     - smalltalk: Squeak-4.4
     - smalltalk: Squeak-4.3
@@ -123,10 +128,11 @@ matrix:
 
     - smalltalk: GemStone-3.2.7
     - smalltalk: GemStone-3.2.0
-    - smalltalk: GemStone-3.1.0.5
-    - smalltalk: GemStone-3.1.0
+    - smalltalk: GemStone-3.1.0.6
+    - smalltalk: GemStone-3.1.0.2
     - smalltalk: GemStone-3.0.1
-    - smalltalk: GemStone-2.4.7
+    - smalltalk: GemStone-2.4.6
+    - smalltalk: GemStone-2.4.5
     - smalltalk: GemStone-2.4.4.1
   fast_finish: true
 
