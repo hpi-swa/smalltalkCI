@@ -36,10 +36,16 @@ matrix:
       os: linux
       sudo: required
       group: legacy
+      addons:
+        hosts:
+          - travis.dev
     - smalltalk: GemStone-3.2.12
       os: osx
       sudo: required
       group: legacy
+      addons:
+        hosts:
+          - travis.dev
 
     # Bash tests
     - language: generic
