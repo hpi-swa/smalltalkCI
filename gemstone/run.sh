@@ -111,7 +111,12 @@ run_build() {
   gemstone::prepare_stone "${config_stone_name}" "${config_gemstone_version}"
   gemstone::load_project "${config_stone_name}" || exit_status=$?
 
-  sudo hostname travis.dev # not needed when https://github.com/hpi-swa/smalltalkCI/issues/28 fixed
+  # not needed when https://github.com/hpi-swa/smalltalkCI/issues/28 fixed
+  if [ "${TRAVIS_OS_NAME}" = "linux" ] ; then
+    sudo hostname travis.dev
+  else # then osx
+    sudo scutil --set HostName travis.dev
+  fi
 
   if [[ ! ${exit_status} -eq 0 ]]; then
     print_error "Project could not be loaded."
