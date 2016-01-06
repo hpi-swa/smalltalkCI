@@ -95,34 +95,42 @@ matrix:
       os: linux
       sudo: required
       group: legacy
+      env: BUILDERCI=true
     # - smalltalk: GemStone-3.2.0
     #   os: linux
     #   sudo: required
     #   group: legacy
+    #   env: BUILDERCI=true
     # - smalltalk: GemStone-3.1.0.6
     #   os: linux
     #   sudo: required
     #   group: legacy
+    #   env: BUILDERCI=true
     # - smalltalk: GemStone-3.1.0.2
     #   os: linux
     #   sudo: required
     #   group: legacy
+    #   env: BUILDERCI=true
     # - smalltalk: GemStone-3.0.1
     #   os: linux
     #   sudo: required
     #   group: legacy
+    #   env: BUILDERCI=true
     # - smalltalk: GemStone-2.4.6
     #   os: linux
     #   sudo: required
     #   group: legacy
+    #   env: BUILDERCI=true
     # - smalltalk: GemStone-2.4.5
     #   os: linux
     #   sudo: required
     #   group: legacy
+    #   env: BUILDERCI=true
     # - smalltalk: GemStone-2.4.4.1
     #   os: linux
     #   sudo: required
     #   group: legacy
+    #   env: BUILDERCI=true
   allow_failures:
     - smalltalk: Squeak-4.4
     - smalltalk: Squeak-4.3
