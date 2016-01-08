@@ -36,7 +36,7 @@ check_os() {
 determine_project_home() {
   local custom_home=$1
 
-  if is_travis && is_empty "${custom_home}"; then
+  if is_travis_build && is_empty "${custom_home}"; then
     config_project_home="${TRAVIS_BUILD_DIR}"
   else
     config_project_home="${custom_home}"
