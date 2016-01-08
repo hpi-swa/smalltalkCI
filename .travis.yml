@@ -33,6 +33,7 @@ install:
   - cd $HOME
   - wget -q -O fixtures.zip https://github.com/hpi-swa/smalltalkCI/archive/fixtures.zip
   - unzip -q fixtures.zip
+  - ls -lisa "$HOME/smalltalkCI-fixtures"
 
 script: $SMALLTALK_CI_HOME/run.sh --debug "$HOME/smalltalkCI-fixtures"
 
