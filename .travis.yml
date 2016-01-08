@@ -140,7 +140,6 @@ matrix:
 
     - smalltalk: GemStone-3.2.7
     - smalltalk: GemStone-3.2.0
-    - smalltalk: GemStone-3.1.0.6
     - smalltalk: GemStone-3.1.0.2
     - smalltalk: GemStone-3.0.1
     - smalltalk: GemStone-2.4.6
