@@ -23,6 +23,11 @@ env:
     - BASELINE_GROUP="TravisCI"
     - PACKAGES="packages"
 
+cache:
+  apt: true
+  directories:
+  - $SMALLTALK_CI_BUILD/github-cache
+
 install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
   - wget -q -O fixtures.zip https://github.com/hpi-swa/smalltalkCI/archive/fixtures.zip
