@@ -14,10 +14,19 @@ test_determine_project_home() {
     assertNotNull "${config_project_home}"
     assertEquals "/" "${config_project_home:0:1}"
 
-    PROJECT_HOME="/tmp"
-    determine_project_home "/foo"
-    assertEquals "${PROJECT_HOME}" "${config_project_home}"
-    unset PROJECT_HOME
+    TRAVIS="true"
+    TRAVIS_BUILD_DIR="/usr"
+    determine_project_home "/tmp"
+    assertEquals "/tmp" "${config_project_home}"
+    unset TRAVIS_BUILD_DIR
+    unset TRAVIS
+
+    TRAVIS="true"
+    TRAVIS_BUILD_DIR="/tmp"
+    determine_project_home
+    assertEquals "${TRAVIS_BUILD_DIR}" "${config_project_home}"
+    unset TRAVIS_BUILD_DIR
+    unset TRAVIS
   else
     determine_project_home "/tmp"
     assertEquals "${PROJECT_HOME}" "${config_project_home}"
