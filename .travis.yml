@@ -30,11 +30,11 @@ cache:
 
 install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
+  - cd $HOME
   - wget -q -O fixtures.zip https://github.com/hpi-swa/smalltalkCI/archive/fixtures.zip
   - unzip -q fixtures.zip
-  - export PROJECT_HOME="$(pwd)/smalltalkCI-fixtures"
 
-script: $SMALLTALK_CI_HOME/run.sh --debug
+script: $SMALLTALK_CI_HOME/run.sh --debug "$HOME/smalltalkCI-fixtures"
 
 matrix:
   include:
