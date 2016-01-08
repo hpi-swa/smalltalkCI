@@ -26,13 +26,15 @@ env:
 cache:
   apt: true
   directories:
-  - $HOME/smalltalkCI-master/_builds/travis
+  - _builds/travis
 
 install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
   - wget -q -O fixtures.zip https://github.com/hpi-swa/smalltalkCI/archive/fixtures.zip
   - unzip -q fixtures.zip
   - export PROJECT_HOME="$(pwd)/smalltalkCI-fixtures"
+
+script: $SMALLTALK_CI_HOME/run.sh --debug
 
 matrix:
   include:
