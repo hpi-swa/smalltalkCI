@@ -24,20 +24,20 @@ check_os() {
 }
 
 ################################################################################
-# Set and verify $config_project_home. Use $PROJECT_HOME if set, otherwise use
-# path provided as argument.
+# Set and verify $config_project_home. Use $TRAVIS_BUILD_DIR if set, otherwise
+# use path provided as argument.
 # Locals:
 #   config_project_home
 # Globals:
-#   PROJECT_HOME
+#   TRAVIS_BUILD_DIR
 # Arguments:
 #   Custom project home path
 ################################################################################
 determine_project_home() {
   local custom_home=$1
 
-  if is_not_empty "${PROJECT_HOME}"; then
-    config_project_home="${PROJECT_HOME}"
+  if is_not_empty "${TRAVIS_BUILD_DIR}"; then
+    config_project_home="${TRAVIS_BUILD_DIR}"
   else
     config_project_home="${custom_home}"
   fi
