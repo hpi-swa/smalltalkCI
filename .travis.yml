@@ -26,7 +26,7 @@ env:
 cache:
   apt: true
   directories:
-  - $SMALLTALK_CI_BUILD/github-cache
+  - $HOME/smalltalkCI-master/_builds/travis
 
 install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
