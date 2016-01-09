@@ -51,6 +51,18 @@ matrix:
       addons:
         hosts:
           - travis.dev
+    - smalltalk: GemStone-3.1.0.6
+      os: linux
+      sudo: required
+      addons:
+        hosts:
+          - travis.dev
+    - smalltalk: GemStone-3.1.0.6
+      os: osx
+      sudo: required
+      addons:
+        hosts:
+          - travis.dev
 
     # Bash tests
     - language: generic
