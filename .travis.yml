@@ -118,11 +118,6 @@ matrix:
     #   sudo: required
     #   group: legacy
     #   env: BUILDERCI=true
-    # - smalltalk: GemStone-3.1.0.6
-    #   os: linux
-    #   sudo: required
-    #   group: legacy
-    #   env: BUILDERCI=true
     # - smalltalk: GemStone-3.1.0.2
     #   os: linux
     #   sudo: required

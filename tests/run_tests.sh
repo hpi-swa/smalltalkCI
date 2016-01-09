@@ -5,27 +5,22 @@ source "${BASE}/run.sh"
 
 test_determine_project_home() {
   local config_project_home
+  local travis="${TRAVIS}"
 
-  if [[ -z "${PROJECT_HOME}" ]]; then
-    determine_project_home "/tmp"
-    assertEquals "/tmp" "${config_project_home}"
+  determine_project_home "/tmp"
+  assertEquals "/tmp" "${config_project_home}"
 
-    determine_project_home "../"
-    assertNotNull "${config_project_home}"
-    assertEquals "/" "${config_project_home:0:1}"
+  determine_project_home "../"
+  assertNotNull "${config_project_home}"
+  assertEquals "/" "${config_project_home:0:1}"
 
-    TRAVIS="true"
-    TRAVIS_BUILD_DIR="/tmp"
-    determine_project_home "/usr"
-    assertEquals "/usr" "${config_project_home}"
-    determine_project_home
-    assertEquals "${TRAVIS_BUILD_DIR}" "${config_project_home}"
-    unset TRAVIS_BUILD_DIR
-    unset TRAVIS
-  else
-    determine_project_home "/tmp"
-    assertEquals "${PROJECT_HOME}" "${config_project_home}"
-  fi
+
+  [[ -z "${travis}" ]] && TRAVIS="true" && TRAVIS_BUILD_DIR="/tmp"
+  determine_project_home "/usr"
+  assertEquals "/usr" "${config_project_home}"
+  determine_project_home
+  assertEquals "${TRAVIS_BUILD_DIR}" "${config_project_home}"
+  [[ -z "${travis}" ]] && unset TRAVIS_BUILD_DIR && unset TRAVIS
 
   return 0
 }
