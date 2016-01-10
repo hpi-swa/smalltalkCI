@@ -13,8 +13,6 @@ test_determine_project_home() {
 
   determine_project_home "../"
   echo "Check 1.1"
-  assertNotNull "${config_project_home}"
-  echo "Check 1.2"
   assertEquals "/" "${config_project_home:0:1}"
   echo "Check 2"
 
