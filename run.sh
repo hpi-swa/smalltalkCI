@@ -36,7 +36,7 @@ check_os() {
 determine_project_home() {
   local custom_home=$1
 
-  if is_travis_build && is_empty "${custom_home}"; then
+  if is_travis_build && ! is_dir "${custom_home}"; then
     echo "Debug:"
     printenv
     echo "${TRAVIS_BUILD_DIR}"
