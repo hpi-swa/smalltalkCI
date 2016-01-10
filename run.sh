@@ -37,6 +37,9 @@ determine_project_home() {
   local custom_home=$1
 
   if is_travis_build && is_empty "${custom_home}"; then
+    echo "Debug:"
+    printenv
+    echo "${TRAVIS_BUILD_DIR}"
     config_project_home="${TRAVIS_BUILD_DIR}"
   else
     config_project_home="${custom_home}"
@@ -95,7 +98,7 @@ load_config_from_environment() {
 ################################################################################
 # Check if project's '.travis.yml' exists and call yml parser to load config.
 # Locales:
-#   project_home
+#   config_project_home
 ################################################################################
 load_config_from_yml() {
   local user_travis_conf="${config_project_home}/.travis.yml"
