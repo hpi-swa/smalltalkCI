@@ -9,18 +9,22 @@ test_determine_project_home() {
 
   determine_project_home "/tmp"
   assertEquals "/tmp" "${config_project_home}"
+  echo "Check 1"
 
   determine_project_home "../"
   assertNotNull "${config_project_home}"
   assertEquals "/" "${config_project_home:0:1}"
+  echo "Check 2"
 
-
-  [[ -z "${travis}" ]] && TRAVIS="true" && TRAVIS_BUILD_DIR="/tmp"
+  [[ -z "${travis}" ]] && export TRAVIS="true" && export TRAVIS_BUILD_DIR="/tmp"
   determine_project_home "/usr"
   assertEquals "/usr" "${config_project_home}"
+  echo "Check 3"
   determine_project_home
   assertEquals "${TRAVIS_BUILD_DIR}" "${config_project_home}"
+  echo "Check 4"
   [[ -z "${travis}" ]] && unset TRAVIS_BUILD_DIR && unset TRAVIS
+  echo "Check 5"
 
   return 0
 }
