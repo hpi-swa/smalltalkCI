@@ -37,9 +37,6 @@ determine_project_home() {
   local custom_home=$1
 
   if is_travis_build && ! is_dir "${custom_home}"; then
-    echo "Debug:"
-    printenv
-    echo "${TRAVIS_BUILD_DIR}"
     config_project_home="${TRAVIS_BUILD_DIR}"
   else
     config_project_home="${custom_home}"
