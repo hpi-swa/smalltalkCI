@@ -3,5 +3,5 @@
 		 },
 	"instance" : {
 		"setUp" : "fniep 1/10/2016 16:10",
-		"testIsComplete" : "fniep 1/11/2016 00:00",
-		"testVerifyPlatform" : "fniep 1/11/2016 00:00" } }
+		"testIsComplete" : "fniep 1/11/2016 02:45",
+		"testIsPlatformCompatible" : "fniep 1/11/2016 02:47" } }

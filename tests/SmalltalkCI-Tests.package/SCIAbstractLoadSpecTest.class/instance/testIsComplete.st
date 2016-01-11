@@ -1,3 +1,3 @@
 testing
 testIsComplete
-	self assert: (self spec isComplete) equals: false
+	self assert: false equals: (self spec isComplete)

@@ -2,12 +2,7 @@ SCISpec {
     #loadSpecs : [
         SCIMetacelloLoadSpec {
             #baseline : 'SmalltalkCITests',
-            #platform: #squeak,
-            #directory : 'tests'
-        },
-        SCIMetacelloLoadSpec {
-            #baseline : 'SmalltalkCITests',
-            #platform: #pharo,
+            #platforms : [ #squeak, #pharo ],
             #directory : 'tests'
         }
     ],
