@@ -52,23 +52,6 @@ determine_project_home() {
 }
 
 ################################################################################
-# Use global environment variables to set local configuration variables.
-# Locals:
-#   config_builder_ci_fallback
-#   config_run_script
-# Globals:
-#   BUILDERCI
-#   RUN_SCRIPT
-################################################################################
-load_config_from_environment() {
-  is_not_empty "${BUILDERCI}" \
-      && config_builder_ci_fallback="${BUILDERCI}"
-  is_not_empty "${RUN_SCRIPT}" \
-      && config_run_script="${RUN_SCRIPT}"
-  return 0
-}
-
-################################################################################
 # Validate options and exit with '1' if an option is invalid.
 # Locals:
 #   config_smalltalk
@@ -96,7 +79,6 @@ check_and_set_paths() {
 # user's parameters.
 # Locals:
 #   config_builder_ci_fallback
-#   config_run_script
 #   config_smalltalk
 # Arguments:
 #   All positional parameters
@@ -108,8 +90,6 @@ parse_args() {
   fi  
 
   determine_project_home "${!#}" # Use last argument as fallback path
-  load_config_from_environment
-
 
   # Handle all arguments and flags
   while :
@@ -123,10 +103,6 @@ parse_args() {
       config_clean="true"
       shift
       ;;
-    --directory)
-      config_directory="$2"
-      shift 2
-      ;;
     -d | --debug)
       config_debug="true"
       shift
@@ -135,9 +111,9 @@ parse_args() {
       print_help
       exit 0
       ;;
-    --script)
-      config_run_script="$2"
-      shift 2
+    --headful)
+      config_headless="false"
+      shift
       ;;
     -s | --smalltalk)
       config_smalltalk="$2"
@@ -343,20 +319,10 @@ check_build_status() {
 main() {
   local config_smalltalk="${SMALLTALK}"
   local config_project_home
-  local config_baseline
-  local config_baseline_group
   local config_builder_ci_fallback="false"
   local config_clean="false"
-  local config_configuration
-  local config_configuration_version="#stable"
   local config_debug="false"
-  local config_directory="packages"
-  local config_excluded_categories
-  local config_excluded_classes
-  local config_force_update
-  local config_keep_open="false"
-  local config_run_script
-  local config_tests
+  local config_headless="true"
   local config_verbose="false"
   local exit_status=0
 

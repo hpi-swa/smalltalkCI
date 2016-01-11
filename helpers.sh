@@ -45,18 +45,10 @@ print_help() {
 
   OPTIONS:
     --builder-ci            Use builderCI (default 'false').
+    --clean                 Clear cache and delete builds.
     -d | --debug            Enable debug mode.
-    --directory             Overwrite directory.
-    --excluded-categories   Overwrite categories to be excluded (Squeak only).
-    --excluded-classes      Overwrite classes to be excluded (Squeak only).
-    --force-update          Force an update in Squeak image (default 'false').
     -h | --help             Show this help text.
-    --mc-baseline           Overwrite baseline.
-    --mc-baseline-group     Overwrite baseline group.
-    --mc-config             Overwrite Metacello configuration.
-    --mc-config-version     Overwrite Metacello configuration version.
-    -o | --keep-open        Keep image open and do not close on error.
-    --script                Overwrite custom script to run (Squeak only).
+    --headful               Open vm in headful mode.
     -s | --smalltalk        Overwrite Smalltalk image selection.
     -v | --verbose          Enable 'set -x'.
 

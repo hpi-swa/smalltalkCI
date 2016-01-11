@@ -3,23 +3,6 @@
 set -e
 
 ################################################################################
-# Check options and set defaults if unavailable.
-# Locals:
-#   config_baseline_group
-#   config_directory
-#   config_tests
-################################################################################
-pharo::check_options() {
-  is_empty "${config_baseline_group}" && config_baseline_group="default"
-  is_empty "${config_directory}" && config_directory=""
-  if is_empty "${config_tests}"; then
-    ! is_empty "${config_baseline}" && config_tests="${config_baseline}.*"
-    ! is_empty "${config_configuration}" && config_tests="${config_configuration}.*"
-  fi
-  return 0
-}
-
-################################################################################
 # Select Pharo image download url. Exit if smalltalk_name is unsupported.
 # Arguments:
 #   smalltalk_name
@@ -85,8 +68,6 @@ pharo::get_vm_url() {
 
 ################################################################################
 # Download and move vm if necessary.
-# Locals:
-#   config_keep_open
 # Globals:
 #   SMALLTALK_CI_VM
 # Arguments:
@@ -95,15 +76,15 @@ pharo::get_vm_url() {
 ################################################################################
 pharo::prepare_vm() {
   local smalltalk_name=$1
-  local headful=$2
+  local headless=$2
   local pharo_vm_url="$(pharo::get_vm_url "${smalltalk_name}")"
   local pharo_vm_folder="${SMALLTALK_CI_VMS}/${smalltalk_name}"
   local pharo_zeroconf
 
-  if [[ "${headful}" = "true" ]]; then
-    export SMALLTALK_CI_VM="${pharo_vm_folder}/pharo-ui"
-  else
+  if [[ "${headless}" = "true" ]]; then
     export SMALLTALK_CI_VM="${pharo_vm_folder}/pharo"
+  else
+    export SMALLTALK_CI_VM="${pharo_vm_folder}/pharo-ui"
   fi
 
   if ! is_dir "${pharo_vm_folder}"; then
@@ -172,21 +153,20 @@ pharo::prepare_image() {
 
 ################################################################################
 # Load project into Pharo image.
-# Locals:
-#   config_baseline
-#   config_baseline_group
-#   config_configuration
-#   config_configuration_version
-#   config_directory
-#   config_project_home
 # Globals:
 #   SMALLTALK_CI_VM
 #   SMALLTALK_CI_IMAGE
+# Arguments:
+#   project_home
 # Returns:
-#   Status code of project loading
+#   Status code of build
 ################################################################################
 pharo::load_and_test_project() {
+  local project_home=$1
+  local status=0
+
   print_info "Loading and testing project..."
+  
   "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
   | stream |
   stream := '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st'.
@@ -194,8 +174,10 @@ pharo::load_and_test_project() {
   stream := MultiByteFileStream newFrom: stream.
   stream fileIn.
   stream close.
-  SCISpec automatedTestOf: '${config_project_home}/smalltalk.ston'
-  "
+  SCISpec automatedTestOf: '${project_home}/smalltalk.ston'
+  " || status=$?
+
+  return "${status}"
 }
 
 ################################################################################
@@ -206,12 +188,9 @@ pharo::load_and_test_project() {
 run_build() {
   local exit_status=0
 
-  pharo::check_options
   pharo::prepare_image "${config_smalltalk}"
-  pharo::prepare_vm "${config_smalltalk}" "${config_keep_open}"
-
-  pharo::load_and_test_project || exit_status=$?
-
+  pharo::prepare_vm "${config_smalltalk}" "${config_headless}"
+  pharo::load_and_test_project "${config_project_home}" || exit_status=$?
   print_junit_xml "${SMALLTALK_CI_BUILD}"
 
   return "${exit_status}"

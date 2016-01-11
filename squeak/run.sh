@@ -7,36 +7,6 @@ readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}/filetreeci/images"
 readonly VM_DOWNLOAD="http://mirandabanda.org/files/Cog/VM/VM.r3427"
 
 ################################################################################
-# Check options and set defaults if unavailable.
-# Locals:
-#   config_baseline_group
-#   config_exclude_categories
-#   config_exclude_classes
-#   config_force_update
-#   config_keep_open
-#   config_run_script
-#   config_project_home
-# Globals:
-#   SMALLTALK_CI_HOME
-################################################################################
-squeak::check_options() {
-  is_empty "${config_baseline}" && config_baseline="nil"
-  is_empty "${config_baseline_group}" && config_baseline_group="TravisCI"
-  is_empty "${config_configuration}" && config_configuration="nil"
-  is_empty "${config_configuration_version}" && config_configuration_version="nil"
-  is_empty "${config_exclude_categories}" && config_exclude_categories="nil"
-  is_empty "${config_exclude_classes}" && config_exclude_classes="nil"
-  is_empty "${config_force_update}" && config_force_update="false"
-  is_empty "${config_keep_open}" && config_keep_open="false"
-  if is_empty "${config_run_script}"; then
-    config_run_script="${SMALLTALK_CI_HOME}/squeak/run.st"
-  else
-    config_run_script="${config_project_home}/${config_run_script}"
-  fi
-  return 0
-}
-
-################################################################################
 # Select Squeak image. Exit with '1' if smalltalk_name is unsupported.
 # Arguments:
 #   Smalltalk image name
@@ -110,18 +80,16 @@ squeak::prepare_image() {
 # Globals:
 #   SMALLTALK_CI_IMAGE
 # Arguments:
-#   os_name
 #   require_spur: '1' for Spur support
 # Prints:
 #   'vm_filename|vm_path' string
 ################################################################################
 squeak::get_vm_details() {
-  local os_name=$1
-  local require_spur=$2
+  local require_spur=$1
   local vm_filename
   local vm_path
 
-  case "${os_name}" in
+  case "$(uname -s)" in
     "Linux")
       if [[ "$require_spur" -eq 1 ]]; then
         vm_filename="cogspurlinux-15.33.3427.tgz"
@@ -164,7 +132,7 @@ squeak::prepare_vm() {
   local target
 
   is_spur_image "${SMALLTALK_CI_IMAGE}" && require_spur=1
-  vm_details=$(squeak::get_vm_details "$(uname -s)" "${require_spur}")
+  vm_details=$(squeak::get_vm_details "${require_spur}")
   set_vars vm_filename vm_path "${vm_details}"
   download_url="${VM_DOWNLOAD}/${vm_filename}"
   target="${SMALLTALK_CI_CACHE}/${vm_filename}"
@@ -196,15 +164,6 @@ squeak::prepare_vm() {
 
 ################################################################################
 # Load project and save image.
-# Locals:
-#   config_directory
-#   config_baseline
-#   config_baseline_group
-#   config_configuration
-#   config_configuration_version
-#   config_force_update
-#   config_keep_open
-#   config_run_script
 # Globals:
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
@@ -212,15 +171,21 @@ squeak::prepare_vm() {
 #   Status code of build
 ################################################################################
 squeak::load_and_test_project() {
-  local vm_args
   local cog_vm_flags=()
-  local load_script
-  local load_status=0
+  local status=0
 
   print_info "Loading and testing project..."
 
-  if is_travis_build && [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
-    cog_vm_flags=(-nosound -nodisplay)
+  if is_travis_build || [[ "${config_headless}" = "true" ]]; then
+    case "$(uname -s)" in
+      "Linux")
+        cog_vm_flags=(-nosound -nodisplay)
+        ;;
+      "Darwin")
+        cog_vm_flags=(-headless)
+        ;;
+    esac
+    
   fi
 
   cat >$SMALLTALK_CI_BUILD/run.st <<EOL
@@ -234,11 +199,11 @@ squeak::load_and_test_project() {
 EOL
 
   "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
-      "${SMALLTALK_CI_BUILD}/run.st" || load_status=$?
+      "${SMALLTALK_CI_BUILD}/run.st" || status=$?
 
   printf "\n" # Squeak exit msg is missing a linebreak
 
-  return "${load_status}"
+  return "${status}"
 }
 
 ################################################################################
@@ -249,12 +214,9 @@ EOL
 run_build() {
   local exit_status=0
 
-  squeak::check_options
   squeak::prepare_image "${config_smalltalk}"
   squeak::prepare_vm
-
   squeak::load_and_test_project || exit_status=$?
-
   print_junit_xml "${SMALLTALK_CI_BUILD}"
 
   return "${exit_status}"

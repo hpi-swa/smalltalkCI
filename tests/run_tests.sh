@@ -23,19 +23,6 @@ test_determine_project_home() {
   return 0
 }
 
-test_load_config_from_environment() {
-  local config_builder_ci_fallback
-  local config_run_script
-
-  BUILDERCI="true"
-  RUN_SCRIPT="foo.st"
-
-  load_config_from_environment
-
-  assertEquals "true" "${config_builder_ci_fallback}"
-  assertEquals "foo.st" "${config_run_script}"
-}
-
 test_prepare_folders() {
   config_project_home="/tmp"
   SMALLTALK_CI_HOME="${BASE}/tests"
