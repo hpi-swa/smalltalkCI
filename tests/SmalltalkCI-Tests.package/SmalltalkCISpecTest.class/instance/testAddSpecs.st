@@ -8,5 +8,5 @@ testAddSpecs
 	self spec addLoadSpec:
 		(SCIMetacelloLoadSpec new
 			baseline: 'Foo';
-			platforms: { SCISpec platformSymbol }).
+			platforms: { SmalltalkCISpec platformSymbol }).
 	self assert: 1 equals: (self spec loadSpecs size).

@@ -4,13 +4,13 @@ testIsComplete
 	
 	self spec
 		baseline: 'Foo';
-		platforms: { SCISpec platformSymbol }.
+		platforms: { SmalltalkCISpec platformSymbol }.
 	self assert: (self spec isComplete) equals: true.
 
 	self spec
 		baseline: nil;
 		configuration: 'Foo';
-		platforms: { SCISpec platformSymbol }.
+		platforms: { SmalltalkCISpec platformSymbol }.
 	self assert: (self spec isComplete) equals: true.
 	
 	

@@ -197,7 +197,7 @@ squeak::load_and_test_project() {
   stream := MultiByteFileStream newFrom: stream.
   stream fileIn.
   stream close.
-  SCISpec automatedTestOf: '${config_project_home}/smalltalk.ston'
+  SmalltalkCISpec automatedTestOf: '${config_project_home}/smalltalk.ston'
 EOL
 
   "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \

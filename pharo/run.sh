@@ -174,7 +174,7 @@ pharo::load_and_test_project() {
     stream := MultiByteFileStream newFrom: stream.
     stream fileIn.
     stream close.
-    SCISpec automatedTestOf: '${project_home}/smalltalk.ston'
+    SmalltalkCISpec automatedTestOf: '${project_home}/smalltalk.ston'
   " || status=$?
 
   return "${status}"

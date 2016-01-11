@@ -1,4 +1,4 @@
-SCISpec {
+SmalltalkCISpec {
     #loadSpecs : [
         SCIMetacelloLoadSpec {
             #baseline : 'SmalltalkCITests',
@@ -6,5 +6,7 @@ SCISpec {
             #directory : 'tests'
         }
     ],
-    #tests : [ 'SmalltalkCI-Tests' ] 
+    #tests : {
+        #categories : [ 'SmalltalkCI-Tests' ]
+    }
 }
