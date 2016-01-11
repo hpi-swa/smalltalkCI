@@ -168,13 +168,13 @@ pharo::load_and_test_project() {
   print_info "Loading and testing project..."
   
   "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
-  | stream |
-  stream := '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st'.
-  stream := StandardFileStream oldFileNamed: stream.
-  stream := MultiByteFileStream newFrom: stream.
-  stream fileIn.
-  stream close.
-  SCISpec automatedTestOf: '${project_home}/smalltalk.ston'
+    | stream |
+    stream := '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st'.
+    stream := StandardFileStream oldFileNamed: stream.
+    stream := MultiByteFileStream newFrom: stream.
+    stream fileIn.
+    stream close.
+    SCISpec automatedTestOf: '${project_home}/smalltalk.ston'
   " || status=$?
 
   return "${status}"
