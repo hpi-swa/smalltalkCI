@@ -6,11 +6,19 @@ gitPath := (Smalltalk at: #'FileDirectory' ifAbsent: [  ])
   ifNil: [ ((Smalltalk at: #'FileSystem') workingDirectory / gitCache) pathString ]
   ifNotNil: [:fileDirectoryClass | (fileDirectoryClass default directoryNamed: gitCache ) fullName].
 
-stream := gitPath, '/smalltalkCI/lib/SmalltalkCI-Core.st'.
-stream := StandardFileStream oldFileNamed: stream.
-stream := MultiByteFileStream newFrom: stream.
-stream fileIn.
-stream close.
+Smalltalk at: #MultiByteFileStream
+  ifPresent: [ :mbfs |
+    stream := gitPath, '/smalltalkCI/lib/SmalltalkCI-Core.st'.
+    stream := StandardFileStream oldFileNamed: stream.
+    stream := mbfs newFrom: stream.
+    stream fileIn.
+    stream close ]
+  ifAbsent: [
+    Smalltalk at: #BinaryOrTextFile
+      ifPresent: [
+        (BinaryOrTextFile openReadOnServer: gitPath, '/smalltalkCI/lib/SmalltalkCI-Core.st') 
+          fileIn;
+          close ] ].
 
 Metacello new
   baseline: 'SmalltalkCITests';
