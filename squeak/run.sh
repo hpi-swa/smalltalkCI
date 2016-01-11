@@ -80,16 +80,18 @@ squeak::prepare_image() {
 # Globals:
 #   SMALLTALK_CI_IMAGE
 # Arguments:
+#   os_name
 #   require_spur: '1' for Spur support
 # Prints:
 #   'vm_filename|vm_path' string
 ################################################################################
 squeak::get_vm_details() {
-  local require_spur=$1
+  local os_name=$1
+  local require_spur=$2
   local vm_filename
   local vm_path
 
-  case "$(uname -s)" in
+  case "${os_name}" in
     "Linux")
       if [[ "$require_spur" -eq 1 ]]; then
         vm_filename="cogspurlinux-15.33.3427.tgz"
@@ -132,7 +134,7 @@ squeak::prepare_vm() {
   local target
 
   is_spur_image "${SMALLTALK_CI_IMAGE}" && require_spur=1
-  vm_details=$(squeak::get_vm_details "${require_spur}")
+  vm_details=$(squeak::get_vm_details "$(uname -s)" "${require_spur}")
   set_vars vm_filename vm_path "${vm_details}"
   download_url="${VM_DOWNLOAD}/${vm_filename}"
   target="${SMALLTALK_CI_CACHE}/${vm_filename}"
