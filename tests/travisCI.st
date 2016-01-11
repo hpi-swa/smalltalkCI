@@ -12,7 +12,8 @@ Smalltalk at: #MultiByteFileStream
     stream := StandardFileStream oldFileNamed: stream.
     stream := mbfs newFrom: stream.
     stream fileIn.
-    stream close ]
+    stream close ].
+Smalltalk at: #MultiByteFileStream
   ifAbsent: [
     Smalltalk at: #BinaryOrTextFile
       ifPresent: [
