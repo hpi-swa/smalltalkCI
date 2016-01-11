@@ -24,34 +24,16 @@ test_determine_project_home() {
 }
 
 test_load_config_from_environment() {
-  local config_baseline_group=""
-  local config_directory
-  local config_force_update
   local config_builder_ci_fallback
   local config_run_script
-  local config_excluded_categories
-  local config_excluded_classes
-  local config_keep_open
 
-  BASELINE_GROUP="foo1"
-  PACKAGES="foo2"
-  FORCE_UPDATE="false"
   BUILDERCI="true"
   RUN_SCRIPT="foo.st"
-  EXCLUDE_CATEGORIES="foo3"
-  EXCLUDE_CLASSES="foo4"
-  KEEP_OPEN="true"
 
   load_config_from_environment
 
-  assertEquals "foo1" "${config_baseline_group}"
-  assertEquals "foo2" "${config_directory}"
-  assertEquals "false" "${config_force_update}"
   assertEquals "true" "${config_builder_ci_fallback}"
   assertEquals "foo.st" "${config_run_script}"
-  assertEquals "foo3" "${config_excluded_categories}"
-  assertEquals "foo4" "${config_excluded_classes}"
-  assertEquals "true" "${config_keep_open}"
 }
 
 test_prepare_folders() {
