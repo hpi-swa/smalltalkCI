@@ -185,54 +185,17 @@ pharo::prepare_image() {
 # Returns:
 #   Status code of project loading
 ################################################################################
-pharo::load_project() {
-  print_info "Loading project..."
-
-  if ! is_empty "${config_baseline}"; then
-    "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
-    Metacello new 
-      baseline: '${config_baseline}';
-      repository: 'filetree://${config_project_home}/${config_directory}';
-      load: '${config_baseline_group}'.
-    "
-    return $?
-  elif ! is_empty "${config_configuration}"; then
-    "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
-    | version |
-    version := '${config_configuration_version}'.
-    (version first = \$#)
-      ifTrue: [ version := version allButFirst asSymbol ].
-
-    Metacello new 
-      configuration: '${config_configuration}';
-      version: version;
-      repository: 'filetree://${config_project_home}/${config_directory}';
-      load.
-    "
-    return $?
-  else
-    print_error "No Metacello baseline or configuration specified."
-    return 1
-  fi
-}
-
-################################################################################
-# Run tests in Pharo image.
-# Globals:
-#   SMALLTALK_CI_VM
-#   SMALLTALK_CI_IMAGE
-# Arguments:
-#   String matching a package name to test
-# Returns:
-#   Status code of build
-################################################################################
-pharo::run_tests() {
-  local tests=$1
-
-  print_info "Run tests..."
-  "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" test --junit-xml-output \
-      --fail-on-failure "${tests}" 2>&1
-  return $?
+pharo::load_and_test_project() {
+  print_info "Loading and testing project..."
+  "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
+  | stream |
+  stream := '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st'.
+  stream := StandardFileStream oldFileNamed: stream.
+  stream := MultiByteFileStream newFrom: stream.
+  stream fileIn.
+  stream close.
+  SCISpec automatedTestOf: '${config_project_home}/smalltalk.ston'
+  "
 }
 
 ################################################################################
@@ -246,14 +209,8 @@ run_build() {
   pharo::check_options
   pharo::prepare_image "${config_smalltalk}"
   pharo::prepare_vm "${config_smalltalk}" "${config_keep_open}"
-  pharo::load_project || exit_status=$?
 
-  if [[ ! ${exit_status} -eq 0 ]]; then
-    print_error "Project could not be loaded."
-    return "${exit_status}"
-  fi
-
-  pharo::run_tests "${config_tests}" || exit_status=$?
+  pharo::load_and_test_project || exit_status=$?
 
   print_junit_xml "${SMALLTALK_CI_BUILD}"
 

@@ -17,24 +17,14 @@ os:
   - linux
   - osx
 
-env:
-  global:
-    - BASELINE="SWTDemo"
-    - BASELINE_GROUP="TravisCI"
-    - PACKAGES="packages"
-
 cache:
   directories:
   - _builds/travis/github-cache
 
 install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
-  - cd $HOME
-  - wget -q -O fixtures.zip https://github.com/hpi-swa/smalltalkCI/archive/fixtures.zip
-  - unzip -q fixtures.zip
-  - ls -lisa "$HOME/smalltalkCI-fixtures"
 
-script: $SMALLTALK_CI_HOME/run.sh --debug "$HOME/smalltalkCI-fixtures"
+script: $SMALLTALK_CI_HOME/run.sh --debug
 
 matrix:
   include:

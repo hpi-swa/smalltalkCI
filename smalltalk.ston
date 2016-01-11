@@ -1,0 +1,15 @@
+SCISpec {
+    #loadSpecs : [
+        SCIMetacelloLoadSpec {
+            #baseline : 'SmalltalkCITests',
+            #platform: #squeak,
+            #directory : 'tests'
+        },
+        SCIMetacelloLoadSpec {
+            #baseline : 'SmalltalkCITests',
+            #platform: #pharo,
+            #directory : 'tests'
+        }
+    ],
+    #tests : [ 'SmalltalkCI-Tests' ] 
+}

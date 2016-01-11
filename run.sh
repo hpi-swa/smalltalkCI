@@ -54,76 +54,28 @@ determine_project_home() {
 ################################################################################
 # Use global environment variables to set local configuration variables.
 # Locals:
-#   config_baseline_group
-#   config_directory
-#   config_force_update
 #   config_builder_ci_fallback
 #   config_run_script
-#   config_excluded_categories
-#   config_excluded_classes
-#   config_keep_open
 # Globals:
-#   BASELINE_GROUP
 #   BUILDERCI
-#   EXCLUDE_CATEGORIES
-#   EXCLUDE_CLASSES
-#   FORCE_UPDATE
-#   KEEP_OPEN
-#   PACKAGES
 #   RUN_SCRIPT
 ################################################################################
 load_config_from_environment() {
-  is_not_empty "${BASELINE_GROUP}" \
-      && config_baseline_group="${BASELINE_GROUP}"
-  is_not_empty "${PACKAGES}" \
-      && config_directory="${PACKAGES}"
-  is_not_empty "${FORCE_UPDATE}" \
-      && config_force_update="${FORCE_UPDATE}"
   is_not_empty "${BUILDERCI}" \
       && config_builder_ci_fallback="${BUILDERCI}"
   is_not_empty "${RUN_SCRIPT}" \
       && config_run_script="${RUN_SCRIPT}"
-  is_not_empty "${EXCLUDE_CATEGORIES}" \
-      && config_excluded_categories="${EXCLUDE_CATEGORIES}"
-  is_not_empty "${EXCLUDE_CLASSES}" \
-      && config_excluded_classes="${EXCLUDE_CLASSES}"
-  is_not_empty "${KEEP_OPEN}" \
-      && config_keep_open="${KEEP_OPEN}"
   return 0
-}
-
-################################################################################
-# Check if project's '.travis.yml' exists and call yml parser to load config.
-# Locales:
-#   config_project_home
-################################################################################
-load_config_from_yml() {
-  local user_travis_conf="${config_project_home}/.travis.yml"
-
-  if is_file "${user_travis_conf}"; then
-    eval "$(ruby "${SCRIPT_PATH}/yaml_parser.rb" "${user_travis_conf}")"
-  else
-    print_notice "Could not find '${user_travis_conf}'."
-  fi
 }
 
 ################################################################################
 # Validate options and exit with '1' if an option is invalid.
 # Locals:
 #   config_smalltalk
-#   config_baseline
-#   config_directory
 ################################################################################
 validate_configuration() {
   if is_empty "${config_smalltalk}"; then
     print_error_and_exit "Smalltalk image is not defined."
-  fi
-  if is_empty "${config_baseline}" && is_empty "${config_configuration}"; then
-    print_error_and_exit "No Metacello baseline or configuration specified."
-  fi
-  if [[ "${directory:0:1}" = "/" ]]; then
-    directory=${directory:1}
-    print_notice "Please remove the leading slash from 'directory'."
   fi
 }
 
@@ -143,14 +95,7 @@ check_and_set_paths() {
 # Load options from project's '.travis.yml', global environment variables and
 # user's parameters.
 # Locals:
-#   config_baseline
-#   config_baseline_group
 #   config_builder_ci_fallback
-#   config_directory
-#   config_excluded_categories
-#   config_excluded_classes
-#   config_force_update
-#   config_keep_open
 #   config_run_script
 #   config_smalltalk
 # Arguments:
@@ -163,7 +108,6 @@ parse_args() {
   fi  
 
   determine_project_home "${!#}" # Use last argument as fallback path
-  load_config_from_yml
   load_config_from_environment
 
 
@@ -187,45 +131,9 @@ parse_args() {
       config_debug="true"
       shift
       ;;
-    --excluded-categories)
-      config_excluded_categories="$2"
-      shift 2
-      ;;
-    --excluded-classes)
-      config_excluded_classes="$2"
-      shift 2
-      ;;
-    --force-update)
-      config_force_update="true"
-      shift
-      ;;
     -h | --help)
       print_help
       exit 0
-      ;;
-    --mc-baseline)
-      config_baseline="$2"
-      # Clear configuration
-      config_configuration=""
-      shift 2
-      ;;
-    --mc-baseline-group)
-      config_baseline_group="$2"
-      shift 2
-      ;;
-    --mc-config)
-      config_configuration="$2"
-      # Clear baseline
-      config_baseline=""
-      shift 2
-      ;;
-    --mc-config-version)
-      config_configuration_version="$2"
-      shift 2
-      ;;
-    -o | --keep-open)
-      config_keep_open="true"
-      shift
       ;;
     --script)
       config_run_script="$2"

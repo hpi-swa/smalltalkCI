@@ -211,87 +211,34 @@ squeak::prepare_vm() {
 # Returns:
 #   Status code of build
 ################################################################################
-squeak::load_project() {
+squeak::load_and_test_project() {
   local vm_args
   local cog_vm_flags=()
   local load_script
   local load_status=0
 
-  print_info "Load project into image..."
+  print_info "Loading and testing project..."
 
   if is_travis_build && [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
     cog_vm_flags=(-nosound -nodisplay)
   fi
 
-  if [[ "${config_baseline}" != "nil" ]]; then
-    load_script="${SMALLTALK_CI_HOME}/squeak/load_baseline.st"
-    vm_args=(
-        ${config_directory} \
-        ${config_baseline} \
-        ${config_baseline_group} \
-        ${config_force_update} \
-        ${config_keep_open}
-    )
+  cat >$SMALLTALK_CI_BUILD/run.st <<EOL
+| stream |
+  stream := '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st'.
+  stream := StandardFileStream oldFileNamed: stream.
+  stream := MultiByteFileStream newFrom: stream.
+  stream fileIn.
+  stream close.
+  SCISpec automatedTestOf: '${config_project_home}/smalltalk.ston'
+EOL
 
-    "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
-        "${load_script}" "${vm_args[@]}" || load_status=$?
-  elif [[ "${config_configuration}" != "nil" ]]; then
-    load_script="${SMALLTALK_CI_HOME}/squeak/load_configuration.st"
-    vm_args=(
-        ${config_directory} \
-        ${config_configuration} \
-        ${config_configuration_version} \
-        ${config_force_update} \
-        ${config_keep_open}
-    )
-
-    "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
-        "${load_script}" "${vm_args[@]}" || load_status=$?
-  else
-    print_error "No Metacello baseline or configuration specified."
-    return 1
-  fi
+  "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
+      "${SMALLTALK_CI_BUILD}/run.st" || load_status=$?
 
   printf "\n" # Squeak exit msg is missing a linebreak
 
   return "${load_status}"
-}
-
-################################################################################
-# Run tests for baseline.
-# Locals:
-#   config_baseline
-#   config_exclude_categories
-#   config_exclude_classes
-#   config_keep_open
-#   config_run_script
-# Globals:
-#   SMALLTALK_CI_IMAGE
-#   SMALLTALK_CI_VM
-# Returns:
-#   Status code of build
-################################################################################
-squeak::run_tests() {
-  local vm_args
-  local cog_vm_flags=()
-
-  print_info "Run tests..."
-
-  vm_args=(
-      ${config_baseline} \
-      ${config_configuration} \
-      ${config_exclude_categories} \
-      ${config_exclude_classes} \
-      ${config_keep_open}
-  )
-
-  if is_travis_build && [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
-    cog_vm_flags=(-nosound -nodisplay)
-  fi
-
-  "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
-      "${config_run_script}" "${vm_args[@]}"
-  return $?
 }
 
 ################################################################################
@@ -306,13 +253,9 @@ run_build() {
   squeak::prepare_image "${config_smalltalk}"
   squeak::prepare_vm
 
-  squeak::load_project || exit_status=$?
+  squeak::load_and_test_project || exit_status=$?
 
-  if [[ ! ${exit_status} -eq 0 ]]; then
-    print_error "Project could not be loaded."
-    return "${exit_status}"
-  fi
+  print_junit_xml "${SMALLTALK_CI_BUILD}"
 
-  squeak::run_tests || exit_status=$?
   return "${exit_status}"
 }
