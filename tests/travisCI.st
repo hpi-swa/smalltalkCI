@@ -1,10 +1,16 @@
-| gitPath gitCache |
+| stream gitPath gitCache |
 Transcript cr; show: 'travis---->travisCI.st'.
 
 gitCache := 'git_cache'.
 gitPath := (Smalltalk at: #'FileDirectory' ifAbsent: [  ])
   ifNil: [ ((Smalltalk at: #'FileSystem') workingDirectory / gitCache) pathString ]
   ifNotNil: [:fileDirectoryClass | (fileDirectoryClass default directoryNamed: gitCache ) fullName].
+
+stream := gitPath, '/smalltalkCI/lib/SmalltalkCI-Core.st'.
+stream := StandardFileStream oldFileNamed: stream.
+stream := MultiByteFileStream newFrom: stream.
+stream fileIn.
+stream close.
 
 Metacello new
   baseline: 'SmalltalkCITests';
