@@ -3,7 +3,7 @@
 set -e
 
 readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts"
-readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}/filetreeci/images"
+readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}/smalltalkci"
 readonly VM_DOWNLOAD="http://mirandabanda.org/files/Cog/VM/VM.r3427"
 
 ################################################################################
@@ -191,12 +191,6 @@ squeak::load_and_test_project() {
   fi
 
   cat >$SMALLTALK_CI_BUILD/run.st <<EOL
-| stream |
-  stream := '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st'.
-  stream := StandardFileStream oldFileNamed: stream.
-  stream := MultiByteFileStream newFrom: stream.
-  stream fileIn.
-  stream close.
   SmalltalkCISpec automatedTestOf: '${config_project_home}/smalltalk.ston'
 EOL
 
