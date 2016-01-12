@@ -6,7 +6,7 @@ SmalltalkCISpec {
             #directory : 'tests'
         }
     ],
-    #tests : {
+    #testing : {
         #categories : [ 'SmalltalkCI-Tests' ]
     }
 }

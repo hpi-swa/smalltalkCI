@@ -2,9 +2,9 @@
 	"class" : {
 		 },
 	"instance" : {
-		"setUp" : "fniep 1/11/2016 23:35",
-		"spec" : "fniep 1/10/2016 23:51",
-		"spec:" : "fniep 1/10/2016 23:51",
-		"testAddSpecs" : "fniep 1/11/2016 23:35",
-		"testGetTestClasses" : "fniep 1/11/2016 23:36",
-		"testRequireSTON" : "fniep 1/11/2016 01:20" } }
+		"setUp" : "fn 1/11/2016 23:35",
+		"spec" : "fn 1/10/2016 23:51",
+		"spec:" : "fn 1/10/2016 23:51",
+		"testAddSpecs" : "fn 1/11/2016 23:35",
+		"testGetTestClasses" : "fn 1/12/2016 22:16",
+		"testRequireSTON" : "fn 1/11/2016 23:38" } }

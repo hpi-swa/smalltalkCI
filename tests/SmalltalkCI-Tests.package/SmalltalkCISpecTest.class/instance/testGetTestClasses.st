@@ -1,7 +1,7 @@
 testing
 testGetTestClasses
 	| classes |
-	self spec tests: (Dictionary new
+	self spec testing: (Dictionary new
 		add: #classes->#(#SmalltalkCISpecTest);
 		add: #categories->#('SmalltalkCI-Core' 'Kernel-Objects');
 		yourself).
@@ -10,7 +10,7 @@ testGetTestClasses
 	self assert: (classes includes: SmalltalkCISpec).
 	self assert: (classes includes: Object).
 
-	self spec tests: (Dictionary new
+	self spec testing: (Dictionary new
 		add: #classes->#(#SmalltalkCISpecTest);
 		add: #categories->#('SmalltalkCI-Core' 'Kernel-Objects');
 		add: #exclude->(Dictionary new

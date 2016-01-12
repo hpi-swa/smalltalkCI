@@ -2,6 +2,6 @@
 	"class" : {
 		 },
 	"instance" : {
-		"setUp" : "fniep 1/10/2016 16:10",
-		"testIsComplete" : "fniep 1/11/2016 23:34",
-		"testIsPlatformCompatible" : "fniep 1/11/2016 23:35" } }
+		"setUp" : "fn 1/10/2016 16:10",
+		"testIsComplete" : "fn 1/11/2016 23:34",
+		"testIsPlatformCompatible" : "fn 1/11/2016 23:35" } }
