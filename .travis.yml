@@ -3,7 +3,7 @@ sudo: false
 
 env:
   global:
-    - DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/filetreeci/images/"
+    - DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/smalltalkci/"
   matrix:
     - SMALLTALK="Squeak-Trunk"
     - SMALLTALK="Squeak-5.0"
@@ -17,6 +17,10 @@ addons:
     - libc6:i386
     # UUIDPlugin
     - libuuid1:i386
+
+install:
+  - wget -q -O smalltalkCI.zip https://github.com/hpi-swa/smalltalkCI/archive/dev.zip
+  - unzip -q smalltalkCI.zip
 
 script: ./prepare.sh $SMALLTALK
 

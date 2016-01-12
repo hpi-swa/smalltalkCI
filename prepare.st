@@ -9,15 +9,8 @@ fileInBlock := [ :fileName |
     scriptsPath readOnlyFileNamed: fileName
       do: [ :fileStream | fileStream fileIn ] ].
 
-fileInBlock value: 'MetacelloBuilderTravisCI.st'.
-fileInBlock value: 'TravisCITranscriptStream.st'.
-fileInBlock value: 'CommandLineToolSet.st'.
-
-"Install TravisCITranscriptStream"
-Smalltalk at: #Transcript put: TravisCITranscriptStream new.
-
-"Initialize exit code"
-Smalltalk at: #travisCIExitCode put: 0.
+fileInBlock value: 'smalltalkCI-dev/lib/SmalltalkCI-Core.st'.
+(SCIMetacelloLoadSpec new) installDependencies.
 
 disableUpdate := Smalltalk argumentAt: 2.
 disableUpdate = 'true' ifFalse: [
@@ -28,33 +21,6 @@ disableUpdate = 'true' ifFalse: [
       ifFalse: [ (updater respondsTo: #updateFromDefaultRepository)
                   ifTrue: [ updater updateFromDefaultRepository ]] ]
       on: Warning do: [ :ex | ex resume: true ]] ].
-
-"Get the Metacello configuration (for Squeak users)"
-Installer gemsource
-    project: 'metacello';
-    addPackage: 'ConfigurationOfMetacello';
-    install.
-
-"Bootstrap Metacello Preview, using mcz files (#'previewBootstrap' symbolic version"
-((Smalltalk at: #ConfigurationOfMetacello) project 
-  version: #'previewBootstrap') load.
-
-"Load the Preview version of Metacello from GitHub"
-(Smalltalk at: #Metacello) new
-  configuration: 'MetacelloPreview';
-  version: #stable;
-  repository: 'github://dalehenrich/metacello-work:configuration';
-  load.
-
-"Now load latest version of Metacello"
-(Smalltalk at: #Metacello) new
-  baseline: 'Metacello';
-  repository: 'github://dalehenrich/metacello-work:master/repository';
-  get.
-(Smalltalk at: #Metacello) new
-  baseline: 'Metacello';
-  repository: 'github://dalehenrich/metacello-work:master/repository';
-  load.
 
 "Only keep the latest changes"
 Smalltalk condenseChanges.
