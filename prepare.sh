@@ -36,7 +36,6 @@ BUILD_PATH="$BUILD_BASE/$BUILD_ID"
 VM_PATH="$CACHE_PATH/vms"
 VM_DOWNLOAD="https://squeak.fniephaus.com"
 IMAGE_PATH="$BASE_PATH/image"
-SCRIPTS_PATH="$BASE_PATH/scripts"
 
 # Select platform
 # ==============================================================================
@@ -101,7 +100,7 @@ case "$(uname -s)" in
         COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
         if [ "$TRAVIS" = "true" ]; then
             COG_VM_FILE="$COG_VM_FILE_BASE.min.tar.gz"
-            COG_VM_PARAM="-nosound -nodisplay"
+            COG_VM_PARAM="-nosound -nodisplay -exitonwarn"
         fi
         ;;
     "Darwin")
@@ -114,6 +113,7 @@ case "$(uname -s)" in
             COG_VM_PATH="$VM_PATH/Cog.app/Contents/MacOS/Squeak"
         fi
         COG_VM_FILE="$COG_VM_FILE_BASE.tar.gz"
+        COG_VM_PARAM="-exitonwarn"
         ;;
     *)
         print_error "$(basename $0): unknown platform $(uname -s)"
@@ -158,7 +158,7 @@ print_info "Extracting sources file..."
 gunzip -c "$CACHE_PATH/$SOURCES_ARCHIVE" > "$BUILD_PATH/$SOURCES_FILE"
 
 print_info "Preparing image for CI..."
-"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/$IMAGE_FILE" "$SCRIPTS_PATH/prepare.st" "$SCRIPTS_PATH" "$DISABLE_UPDATE"
+"$COG_VM_PATH" $COG_VM_PARAM "$BUILD_PATH/$IMAGE_FILE" "$BASE_PATH/prepare.st" "$BASE_PATH" "$DISABLE_UPDATE"
 
 printf "\n"
 print_info "Exporting image..."

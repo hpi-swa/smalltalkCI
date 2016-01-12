@@ -1,12 +1,12 @@
-| scriptsPath disableUpdate exportName fileDirectoryClass fileInBlock |
+| basePath disableUpdate exportName fileDirectoryClass fileInBlock |
 
-scriptsPath := FileDirectory on: (Smalltalk argumentAt: 1).
-scriptsPath exists ifFalse: [
+basePath := FileDirectory on: (Smalltalk argumentAt: 1).
+basePath exists ifFalse: [
   Transcript show: 'Scripts path does not exist.'.
   ^ false ].
 
 fileInBlock := [ :fileName |
-    scriptsPath readOnlyFileNamed: fileName
+    basePath readOnlyFileNamed: fileName
       do: [ :fileStream | fileStream fileIn ] ].
 
 fileInBlock value: 'smalltalkCI-dev/lib/SmalltalkCI-Core.st'.
