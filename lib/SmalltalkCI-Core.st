@@ -16,9 +16,7 @@ Object subclass: #SCIAbstractLoadSpec	instanceVariableNames: 'projectDirectory'
   suitePosition := suiteFailures := suiteErrors := 0.
   progressFile := StandardFileStream stdout
   ! !!SCITestReport methodsFor: 'initialization' stamp: 'EstebanLorenzano 8/26/2015 12:06'!initializeOn: aTestSuite
-  suite := aTestSuite! !!SCITestReport methodsFor: 'running' stamp: 'IgorStasenko 1/6/2012 15:12'!done
-  "just close the file"
-  [ progressFile close ] on: Error do: []! !!SCITestReport methodsFor: 'running' stamp: 'fn 1/10/2016 10:56'!run
+  suite := aTestSuite! !!SCITestReport methodsFor: 'running' stamp: 'fn 1/10/2016 10:56'!run
 	[ 
       	self setUp.
       	suiteTime := [ self runAll ]
@@ -151,11 +149,10 @@ Object subclass: #SCIAbstractLoadSpec	instanceVariableNames: 'projectDirectory'
   classes
     do: [ :each | each addToSuiteFromSelectors: suite ].
   ^ self runSuite: suite! !!SCITestReport class methodsFor: 'running' stamp: 'CamilloBruni 8/30/2013 13:37'!runPackage: aString
-  ^ self runClasses: (RPackage organizer packageNamed: aString) definedClasses named: aString! !!SCITestReport class methodsFor: 'running' stamp: 'EstebanLorenzano 8/26/2015 12:06'!runSuite: aTestSuite
+  ^ self runClasses: (RPackage organizer packageNamed: aString) definedClasses named: aString! !!SCITestReport class methodsFor: 'running' stamp: 'fn 1/13/2016 00:23'!runSuite: aTestSuite
   ^ self new
     initializeOn: aTestSuite; 
-    run;
-    done! !TranscriptStream subclass: #SCITranscriptStream	instanceVariableNames: ''	classVariableNames: ''	poolDictionaries: ''	category: 'SmalltalkCI-Core'!!SCITranscriptStream methodsFor: 'overrides' stamp: 'fn 7/22/2015 18:10'!cr
+    run! !TranscriptStream subclass: #SCITranscriptStream	instanceVariableNames: ''	classVariableNames: ''	poolDictionaries: ''	category: 'SmalltalkCI-Core'!!SCITranscriptStream methodsFor: 'overrides' stamp: 'fn 7/22/2015 18:10'!cr
     super cr.
     "Print to stdout for TravisCI"
     FileStream stdout nextPut: Character cr.! !!SCITranscriptStream methodsFor: 'overrides' stamp: 'fn 7/22/2015 18:10'!crlf
