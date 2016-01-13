@@ -73,7 +73,7 @@ Object subclass: #SCIAbstractLoadSpec	instanceVariableNames: 'projectDirectory'
   "Initialize the test resources."
   suite resources do: [ :each |
     each isAvailable
-      ifFalse: [ each signalInitializationError ] ]! !!SCITestReport methodsFor: 'running' stamp: 'fn 1/10/2016 10:57'!tearDown
+      ifFalse: [ each signalInitializationError ] ]! !!SCITestReport methodsFor: 'running' stamp: 'fn 1/13/2016 00:10'!tearDown
   suite resources 
     do: [ :each | each reset ].
     
@@ -91,8 +91,7 @@ Object subclass: #SCIAbstractLoadSpec	instanceVariableNames: 'projectDirectory'
   
   progressFile 
     nextPutAll: 'finished running suite: ';
-    nextPutAll: suite name;
-    close! !!SCITestReport methodsFor: 'accessing' stamp: 'EstebanLorenzano 8/21/2015 07:43'!suiteErrors
+    nextPutAll: suite name! !!SCITestReport methodsFor: 'accessing' stamp: 'EstebanLorenzano 8/21/2015 07:43'!suiteErrors
   ^ suiteErrors! !!SCITestReport methodsFor: 'accessing' stamp: 'EstebanLorenzano 8/21/2015 07:42'!suiteFailures
   ^ suiteFailures! !!SCITestReport methodsFor: 'accessing' stamp: 'EstebanLorenzano 8/21/2015 07:48'!suitePassing 
   ^ self suiteTotal - self suiteFailures - self suiteErrors! !!SCITestReport methodsFor: 'accessing' stamp: 'EstebanLorenzano 8/21/2015 08:02'!suiteTotal
