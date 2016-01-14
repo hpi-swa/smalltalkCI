@@ -29,8 +29,7 @@ gemstone::prepare_stone() {
 
   gemstone_version="$(echo $2 | cut -f2 -d-)"
 
-  # uncomment the following when os prereqs handled in smalltalk.rb - https://github.com/hpi-swa/smalltalkCI/issues/28
-  # touch $GS_HOME/bin/.gsdevkitSysSetup  # Operating system setup already performed
+  touch $GS_HOME/bin/.gsdevkitSysSetup  # Operating system setup already performed
   $GS_HOME/bin/installServer 
   $GS_HOME/bin/createStone $stone_name $gemstone_version
 
@@ -71,13 +70,6 @@ EOF
 run_build() {
   local stone_name="travis"
   local exit_status=0
-
-  # not needed when https://github.com/hpi-swa/smalltalkCI/issues/28 fixed
-  if [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
-    sudo hostname travis.dev
-  elif [[ "${TRAVIS_OS_NAME}" = "osx" ]]; then
-    sudo scutil --set HostName travis.dev
-  fi
 
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${stone_name}" "${config_smalltalk}"
