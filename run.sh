@@ -111,7 +111,7 @@ parse_args() {
       print_help
       exit 0
       ;;
-    --headful)
+    --headfull)
       config_headless="false"
       shift
       ;;
