@@ -433,7 +433,7 @@ check_build_status() {
 #   All positional parameters
 ################################################################################
 main() {
-  local config_smalltalk="${SMALLTALK}"
+  local config_smalltalk="${TRAVIS_SMALLTALK_VERSION}"
   local config_project_home
   local config_baseline
   local config_baseline_group
