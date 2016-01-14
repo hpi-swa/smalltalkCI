@@ -56,14 +56,18 @@ squeak::prepare_image() {
   target="${SMALLTALK_CI_CACHE}/${image_filename}"
 
   if ! is_file "${target}"; then
-    print_timed "Downloading ${smalltalk_name} testing image..."
-    set +e
-    download_file "${download_url}" > "${target}"
-    if [[ ! $? -eq 0 ]]; then
-      print_error_and_exit "Download failed."
-    fi
-    set -e
-    print_timed_result "Time to download ${smalltalk_name} testing image"
+    travis_fold start download_image "Downloading ${smalltalk_name} testing image..."
+      reset_timer
+
+      set +e
+      download_file "${download_url}" > "${target}"
+      if [[ ! $? -eq 0 ]]; then
+        print_error_and_exit "Download failed."
+      fi
+      set -e
+
+      print_timed_result "Time to download ${smalltalk_name} testing image"
+    travis_fold end download_image
   fi
 
   print_info "Extracting image..."
@@ -142,14 +146,18 @@ squeak::prepare_vm() {
   export SMALLTALK_CI_VM="${vm_path}"
 
   if ! is_file "${target}"; then
-    print_timed "Downloading virtual machine..."
-    set +e
-    download_file "${download_url}" > "${target}"
-    if [[ ! $? -eq 0 ]]; then
-      print_error_and_exit "Download failed."
-    fi
-    set -e
-    print_timed_result "Time to download virtual machine"
+    travis_fold start download_vm "Downloading virtual machine..."
+      reset_timer
+
+      set +e
+      download_file "${download_url}" > "${target}"
+      if [[ ! $? -eq 0 ]]; then
+        print_error_and_exit "Download failed."
+      fi
+      set -e
+
+      print_timed_result "Time to download virtual machine"
+    travis_fold end download_vm
   fi
 
   if ! is_file "${SMALLTALK_CI_VM}"; then

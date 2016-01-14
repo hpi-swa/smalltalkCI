@@ -31,9 +31,12 @@ reset_timer() {
 }
 
 print_timed_result() {
+  local title=$1
+  local time_diff
+
   if [[ -n "${LAST_PRINT}" ]]; then
-    diff=$(($(date +%s) - LAST_PRINT))
-    print_info "[$1: ${diff}s]"
+    time_diff=$(($(date +%s) - LAST_PRINT))
+    printf "\e[0;33m%s: %ss\e[0m\n" "${title}" "${time_diff}"
   fi
 }
 
