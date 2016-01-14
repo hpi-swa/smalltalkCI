@@ -72,13 +72,13 @@ gemstone::load_and_test_project() {
   travis_fold start load_and_test "Loading and testing project..."
     reset_timer
 
-    $GS_HOME/bin/devKitCommandLine serverDoIt ${stone_name} << EOF
+    $GS_HOME/bin/devKitCommandLine serverDoIt ${stone_name} << EOF || status=$?
       (BinaryOrTextFile openReadOnServer: '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st') 
         fileIn;
         close.
       SmalltalkCISpec automatedTestOf: '${project_home}/smalltalk.ston'
       System commitTransaction.
-EOF || status=$?
+EOF
 
     print_timed_result "Time to load and test project"
   travis_fold end load_and_test
