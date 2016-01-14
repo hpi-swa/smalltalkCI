@@ -277,10 +277,11 @@ run() {
   esac
 
   if debug_enabled; then
-    print_debug "Configuration before platform-specific code:"
-    for var in ${!config_@}; do
-      print_debug "${var}=${!var}"
-    done
+    travis_fold start display_config "Configuration before platform-specific code"
+      for var in ${!config_@}; do
+        echo "${var}=${!var}"
+      done
+    travis_fold end display_config
   fi
 
   run_build

@@ -160,8 +160,9 @@ squeak::prepare_vm() {
     fi
   fi
 
-  print_info "Cog VM Information:"
-  "${SMALLTALK_CI_VM}" -version
+  travis_fold start display_vm_version "Cog VM Information"
+    "${SMALLTALK_CI_VM}" -version
+  travis_fold end display_vm_version
 }
 
 ################################################################################
@@ -176,28 +177,32 @@ squeak::load_and_test_project() {
   local cog_vm_flags=()
   local status=0
 
-  print_info "Loading and testing project..."
+  travis_fold start load_and_test "Loading and testing project..."
+    reset_timer
 
-  if is_travis_build || [[ "${config_headless}" = "true" ]]; then
-    case "$(uname -s)" in
-      "Linux")
-        cog_vm_flags=(-nosound -nodisplay)
-        ;;
-      "Darwin")
-        cog_vm_flags=(-headless)
-        ;;
-    esac
-    
-  fi
+    if is_travis_build || [[ "${config_headless}" = "true" ]]; then
+      case "$(uname -s)" in
+        "Linux")
+          cog_vm_flags=(-nosound -nodisplay)
+          ;;
+        "Darwin")
+          cog_vm_flags=(-headless)
+          ;;
+      esac
+      
+    fi
 
-  cat >$SMALLTALK_CI_BUILD/run.st <<EOL
+    cat >$SMALLTALK_CI_BUILD/run.st <<EOL
   SmalltalkCISpec automatedTestOf: '${config_project_home}/smalltalk.ston'
 EOL
 
-  "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
-      "${SMALLTALK_CI_BUILD}/run.st" || status=$?
+    "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
+        "${SMALLTALK_CI_BUILD}/run.st" || status=$?
 
-  printf "\n" # Squeak exit msg is missing a linebreak
+    printf "\n" # Squeak exit msg is missing a linebreak
+
+    print_timed_result "Time to load and test project"
+  travis_fold end load_and_test
 
   return "${status}"
 }

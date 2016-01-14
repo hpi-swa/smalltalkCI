@@ -1,7 +1,7 @@
 #!/bin/bash
 
 print_info() {
-  printf "\e[0;34m%s\e[0m\n" "$1"
+  printf "\e[1;34m%s\e[0m\n" "$1"
 }
 
 print_notice() {
@@ -21,19 +21,32 @@ print_error_and_exit() {
   exit 1
 }
 
-print_debug() {
-  printf "\e[0;37m%s\e[0m\n" "$1"
+print_timed() {
+  reset_timer
+  print_info "$1"
 }
 
-print_timed() {
+reset_timer() {
   LAST_PRINT=$(date +%s)
-  print_info "$1"
 }
 
 print_timed_result() {
   if [[ -n "${LAST_PRINT}" ]]; then
     diff=$(($(date +%s) - LAST_PRINT))
     print_info "[$1: ${diff}s]"
+  fi
+}
+
+travis_fold() {
+  local action=$1
+  local name=$2
+  local title=$3
+
+  if is_travis_build; then
+    echo -en "travis_fold:${action}:${name}\r\033[0K"
+  fi
+  if is_not_empty "${title}"; then
+    echo -e "\033[34;1m${title}\033[0m"
   fi
 }
 

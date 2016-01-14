@@ -10,10 +10,13 @@ readonly GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
 gemstone::prepare_gsdevkit_home() {
   local devkit_branch="dev"
 
-  git clone "${GS_DEVKIT_DOWNLOAD}"
-  cd "GsDevKit_home"
-  git checkout "${devkit_branch}"
-  export GS_HOME="$(pwd)"
+  travis_fold start clone_gsdevkit "Cloning GsDevKit..."
+    git clone "${GS_DEVKIT_DOWNLOAD}"
+    cd "GsDevKit_home"
+    git checkout "${devkit_branch}"
+    export GS_HOME="$(pwd)"
+  travis_fold end clone_gsdevkit
+
   return 0
 }
 
@@ -29,9 +32,24 @@ gemstone::prepare_stone() {
 
   gemstone_version="$(echo $2 | cut -f2 -d-)"
 
-  touch $GS_HOME/bin/.gsdevkitSysSetup  # Operating system setup already performed
-  $GS_HOME/bin/installServer 
-  $GS_HOME/bin/createStone $stone_name $gemstone_version
+  # Operating system setup already performed
+  touch $GS_HOME/bin/.gsdevkitSysSetup
+
+  travis_fold start install_server "Installing server..."
+    reset_timer
+
+    $GS_HOME/bin/installServer 
+
+    print_timed_result "Time to install server"
+  travis_fold end install_server
+
+  travis_fold start create_stone "Creating stone..."
+    reset_timer
+
+    $GS_HOME/bin/createStone $stone_name $gemstone_version
+
+    print_timed_result "Time to create stone"
+  travis_fold end create_stone
 
   return 0
 }
@@ -49,17 +67,23 @@ gemstone::prepare_stone() {
 ################################################################################
 gemstone::load_and_test_project() {
   local stone_name=$1
+  local status=0
 
-  print_info "Loading project..."
+  travis_fold start load_and_test "Loading and testing project..."
+    reset_timer
 
-  $GS_HOME/bin/devKitCommandLine serverDoIt ${stone_name} << EOF
-    (BinaryOrTextFile openReadOnServer: '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st') 
-      fileIn;
-      close.
-    SmalltalkCISpec automatedTestOf: '${project_home}/smalltalk.ston'
-    System commitTransaction.
-EOF
-  return $?
+    $GS_HOME/bin/devKitCommandLine serverDoIt ${stone_name} << EOF
+      (BinaryOrTextFile openReadOnServer: '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st') 
+        fileIn;
+        close.
+      SmalltalkCISpec automatedTestOf: '${project_home}/smalltalk.ston'
+      System commitTransaction.
+EOF || status=$?
+
+    print_timed_result "Time to load and test project"
+  travis_fold end load_and_test
+
+  return "${status}"
 }
 
 ################################################################################

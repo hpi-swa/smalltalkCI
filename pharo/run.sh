@@ -88,22 +88,24 @@ pharo::prepare_vm() {
   fi
 
   if ! is_dir "${pharo_vm_folder}"; then
-    print_timed "Downloading ${smalltalk_name} vm..."
-    mkdir "${pharo_vm_folder}"
-    pushd "${pharo_vm_folder}" > /dev/null
+    travis_fold start download_vm "Downloading ${smalltalk_name} vm..."
+      reset_timer
+      mkdir "${pharo_vm_folder}"
+      pushd "${pharo_vm_folder}" > /dev/null
 
-    set +e
-    pharo_zeroconf="$(download_file "${pharo_vm_url}")"
-    if [[ ! $? -eq 0 ]]; then
-      print_error_and_exit "Download failed."
-    fi
-    set -e
+      set +e
+      pharo_zeroconf="$(download_file "${pharo_vm_url}")"
+      if [[ ! $? -eq 0 ]]; then
+        print_error_and_exit "Download failed."
+      fi
+      set -e
 
-    # Execute Pharo Zeroconf Script
-    bash -c "${pharo_zeroconf}"
+      # Execute Pharo Zeroconf Script
+      bash -c "${pharo_zeroconf}"
 
-    popd > /dev/null
-    print_timed_result "Time to download ${smalltalk_name} vm"
+      popd > /dev/null
+      print_timed_result "Time to download ${smalltalk_name} vm"
+    travis_fold end download_vm
 
     if ! is_file "${SMALLTALK_CI_VM}"; then
       print_error_and_exit "Unable to set vm up at '${SMALLTALK_CI_VM}'."
@@ -127,23 +129,25 @@ pharo::prepare_image() {
   local pharo_zeroconf
 
   if ! is_file "${SMALLTALK_CI_CACHE}/${pharo_image_file}"; then
-    print_timed "Downloading ${smalltalk_name} image..."
-    pushd "${SMALLTALK_CI_CACHE}" > /dev/null
+    travis_fold start download_image "Downloading ${smalltalk_name} image..."
+      reset_timer
+      pushd "${SMALLTALK_CI_CACHE}" > /dev/null
 
-    set +e
-    pharo_zeroconf="$(download_file "${pharo_image_url}")"
-    if [[ ! $? -eq 0 ]]; then
-      print_error_and_exit "Download failed."
-    fi
-    set -e
+      set +e
+      pharo_zeroconf="$(download_file "${pharo_image_url}")"
+      if [[ ! $? -eq 0 ]]; then
+        print_error_and_exit "Download failed."
+      fi
+      set -e
 
-    # Execute Pharo Zeroconf Script
-    bash -c "${pharo_zeroconf}"
+      # Execute Pharo Zeroconf Script
+      bash -c "${pharo_zeroconf}"
 
-    mv "Pharo.image" "${pharo_image_file}"
-    mv "Pharo.changes" "${pharo_changes_file}"
-    popd > /dev/null
-    print_timed_result "Time to download ${smalltalk_name} image"
+      mv "Pharo.image" "${pharo_image_file}"
+      mv "Pharo.changes" "${pharo_changes_file}"
+      popd > /dev/null
+      print_timed_result "Time to download ${smalltalk_name} image"
+    travis_fold end download_image
   fi
 
   print_info "Preparing image..."
@@ -165,17 +169,21 @@ pharo::load_and_test_project() {
   local project_home=$1
   local status=0
 
-  print_info "Loading and testing project..."
+  travis_fold start load_and_test "Loading and testing project..."
+    reset_timer
   
-  "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
-    | stream |
-    stream := '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st'.
-    stream := StandardFileStream oldFileNamed: stream.
-    stream := MultiByteFileStream newFrom: stream.
-    stream fileIn.
-    stream close.
-    SmalltalkCISpec automatedTestOf: '${project_home}/smalltalk.ston'
-  " || status=$?
+    "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
+      | stream |
+      stream := '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st'.
+      stream := StandardFileStream oldFileNamed: stream.
+      stream := MultiByteFileStream newFrom: stream.
+      stream fileIn.
+      stream close.
+      SmalltalkCISpec automatedTestOf: '${project_home}/smalltalk.ston'
+    " || status=$?
+
+    print_timed_result "Time to load and test project"
+  travis_fold end load_and_test
 
   return "${status}"
 }
