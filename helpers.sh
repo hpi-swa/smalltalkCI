@@ -21,38 +21,6 @@ print_error_and_exit() {
   exit 1
 }
 
-print_timed() {
-  reset_timer
-  print_info "$1"
-}
-
-reset_timer() {
-  LAST_PRINT=$(date +%s)
-}
-
-print_timed_result() {
-  local title=$1
-  local time_diff
-
-  if [[ -n "${LAST_PRINT}" ]]; then
-    time_diff=$(($(date +%s) - LAST_PRINT))
-    printf "\e[0;33m%s: %ss\e[0m\n" "${title}" "${time_diff}"
-  fi
-}
-
-travis_fold() {
-  local action=$1
-  local name=$2
-  local title=$3
-
-  if is_travis_build; then
-    echo -en "travis_fold:${action}:${name}\r\033[0K"
-  fi
-  if is_not_empty "${title}"; then
-    echo -e "\033[34;1m${title}\033[0m"
-  fi
-}
-
 print_help() {
   cat <<EOF
   USAGE: run.sh [options] /path/to/project
@@ -166,4 +134,55 @@ set_vars() {
   local values="${!#}"
 
   IFS='|' read -r "${variables[@]}" <<< "${values}"
+}
+
+
+################################################################################
+# Travis-related helper functions (based on https://git.io/vzcTj).
+################################################################################
+
+timer_start() {
+  timer_start_time=$(timer_nanoseconds)
+  if is_travis_build; then
+    travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
+    echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
+  fi
+}
+
+timer_finish() {
+  timer_end_time=$(timer_nanoseconds)
+  local duration=$(($timer_end_time-$timer_start_time))
+  if is_travis_build; then
+    echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
+  else
+    duration=$(echo "scale=3;${duration}/1000000000" | bc)
+    printf "\e[0;34m > Time to run: %ss \e[0m\n" "${duration}"
+  fi
+}
+
+function timer_nanoseconds() {
+  local cmd="date"
+  local format="+%s%N"
+  local os=$(uname)
+
+  if hash gdate > /dev/null 2>&1; then
+    cmd="gdate" # use gdate if available
+  elif [[ "$os" = Darwin ]]; then
+    format="+%s000000000" # fallback to second precision on darwin (does not support %N)
+  fi
+
+  $cmd -u $format
+}
+
+travis_fold() {
+  local action=$1
+  local name=$2
+  local title=$3
+
+  if is_travis_build; then
+    echo -en "travis_fold:${action}:${name}\r\033[0K"
+  fi
+  if is_not_empty "${title}"; then
+    echo -e "\033[34;1m${title}\033[0m"
+  fi
 }

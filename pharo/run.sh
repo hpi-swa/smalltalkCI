@@ -89,7 +89,8 @@ pharo::prepare_vm() {
 
   if ! is_dir "${pharo_vm_folder}"; then
     travis_fold start download_vm "Downloading ${smalltalk_name} vm..."
-      reset_timer
+      timer_start
+
       mkdir "${pharo_vm_folder}"
       pushd "${pharo_vm_folder}" > /dev/null
 
@@ -104,7 +105,8 @@ pharo::prepare_vm() {
       bash -c "${pharo_zeroconf}"
 
       popd > /dev/null
-      print_timed_result "Time to download ${smalltalk_name} vm"
+
+      timer_finish
     travis_fold end download_vm
 
     if ! is_file "${SMALLTALK_CI_VM}"; then
@@ -130,7 +132,8 @@ pharo::prepare_image() {
 
   if ! is_file "${SMALLTALK_CI_CACHE}/${pharo_image_file}"; then
     travis_fold start download_image "Downloading ${smalltalk_name} image..."
-      reset_timer
+      timer_start
+
       pushd "${SMALLTALK_CI_CACHE}" > /dev/null
 
       set +e
@@ -146,7 +149,8 @@ pharo::prepare_image() {
       mv "Pharo.image" "${pharo_image_file}"
       mv "Pharo.changes" "${pharo_changes_file}"
       popd > /dev/null
-      print_timed_result "Time to download ${smalltalk_name} image"
+
+      timer_finish
     travis_fold end download_image
   fi
 
@@ -170,7 +174,7 @@ pharo::load_and_test_project() {
   local status=0
 
   travis_fold start load_and_test "Loading and testing project..."
-    reset_timer
+    timer_start
   
     "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
       | stream |
@@ -182,7 +186,7 @@ pharo::load_and_test_project() {
       SmalltalkCISpec automatedTestOf: '${project_home}/smalltalk.ston'
     " || status=$?
 
-    print_timed_result "Time to load and test project"
+    timer_finish
   travis_fold end load_and_test
 
   return "${status}"

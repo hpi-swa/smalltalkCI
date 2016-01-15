@@ -11,10 +11,14 @@ gemstone::prepare_gsdevkit_home() {
   local devkit_branch="dev"
 
   travis_fold start clone_gsdevkit "Cloning GsDevKit..."
+    timer_start
+
     git clone "${GS_DEVKIT_DOWNLOAD}"
     cd "GsDevKit_home"
     git checkout "${devkit_branch}"
     export GS_HOME="$(pwd)"
+
+    timer_finish
   travis_fold end clone_gsdevkit
 
   return 0
@@ -36,19 +40,19 @@ gemstone::prepare_stone() {
   touch $GS_HOME/bin/.gsdevkitSysSetup
 
   travis_fold start install_server "Installing server..."
-    reset_timer
+    timer_start
 
     $GS_HOME/bin/installServer 
 
-    print_timed_result "Time to install server"
+    timer_finish
   travis_fold end install_server
 
   travis_fold start create_stone "Creating stone..."
-    reset_timer
+    timer_start
 
     $GS_HOME/bin/createStone $stone_name $gemstone_version
 
-    print_timed_result "Time to create stone"
+    timer_finish
   travis_fold end create_stone
 
   return 0
@@ -70,7 +74,7 @@ gemstone::load_and_test_project() {
   local status=0
 
   travis_fold start load_and_test "Loading and testing project..."
-    reset_timer
+    timer_start
 
     $GS_HOME/bin/devKitCommandLine serverDoIt ${stone_name} << EOF || status=$?
       (BinaryOrTextFile openReadOnServer: '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st') 
@@ -80,7 +84,7 @@ gemstone::load_and_test_project() {
       System commitTransaction.
 EOF
 
-    print_timed_result "Time to load and test project"
+    timer_finish
   travis_fold end load_and_test
 
   return "${status}"

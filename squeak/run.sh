@@ -57,7 +57,7 @@ squeak::prepare_image() {
 
   if ! is_file "${target}"; then
     travis_fold start download_image "Downloading ${smalltalk_name} testing image..."
-      reset_timer
+      timer_start
 
       set +e
       download_file "${download_url}" > "${target}"
@@ -66,7 +66,7 @@ squeak::prepare_image() {
       fi
       set -e
 
-      print_timed_result "Time to download ${smalltalk_name} testing image"
+      timer_finish
     travis_fold end download_image
   fi
 
@@ -147,7 +147,7 @@ squeak::prepare_vm() {
 
   if ! is_file "${target}"; then
     travis_fold start download_vm "Downloading virtual machine..."
-      reset_timer
+      timer_start
 
       set +e
       download_file "${download_url}" > "${target}"
@@ -156,7 +156,7 @@ squeak::prepare_vm() {
       fi
       set -e
 
-      print_timed_result "Time to download virtual machine"
+      timer_finish
     travis_fold end download_vm
   fi
 
@@ -186,7 +186,7 @@ squeak::load_and_test_project() {
   local status=0
 
   travis_fold start load_and_test "Loading and testing project..."
-    reset_timer
+    timer_start
 
     if is_travis_build || [[ "${config_headless}" = "true" ]]; then
       case "$(uname -s)" in
@@ -209,7 +209,7 @@ EOL
 
     printf "\n" # Squeak exit msg is missing a linebreak
 
-    print_timed_result "Time to load and test project"
+    timer_finish
   travis_fold end load_and_test
 
   return "${status}"
