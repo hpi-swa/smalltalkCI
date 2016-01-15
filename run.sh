@@ -328,7 +328,7 @@ main() {
   local exit_status=0
 
   check_os
-  parse_args $@
+  parse_args "$@"
   [[ "${config_verbose}" = "true" ]] && set -x
   check_and_set_paths
   check_clean_up

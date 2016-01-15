@@ -56,7 +56,8 @@ squeak::prepare_image() {
   target="${SMALLTALK_CI_CACHE}/${image_filename}"
 
   if ! is_file "${target}"; then
-    timed_fold_start download_image "Downloading ${smalltalk_name} testing image..."
+    travis_fold start download_image "Downloading ${smalltalk_name} testing image..."
+      timer_start
 
       set +e
       download_file "${download_url}" > "${target}"
@@ -65,7 +66,8 @@ squeak::prepare_image() {
       fi
       set -e
 
-    timed_fold_end download_image
+      timer_finish
+    travis_fold end download_image
   fi
 
   print_info "Extracting image..."
@@ -144,7 +146,8 @@ squeak::prepare_vm() {
   export SMALLTALK_CI_VM="${vm_path}"
 
   if ! is_file "${target}"; then
-    timed_fold_start download_vm "Downloading virtual machine..."
+    travis_fold start download_vm "Downloading virtual machine..."
+      timer_start
 
       set +e
       download_file "${download_url}" > "${target}"
@@ -153,7 +156,8 @@ squeak::prepare_vm() {
       fi
       set -e
 
-    timed_fold_end download_vm
+      timer_finish
+    travis_fold end download_vm
   fi
 
   if ! is_file "${SMALLTALK_CI_VM}"; then
@@ -181,7 +185,8 @@ squeak::load_and_test_project() {
   local cog_vm_flags=()
   local status=0
 
-  timed_fold_start load_and_test "Loading and testing project..."
+  travis_fold start load_and_test "Loading and testing project..."
+    timer_start
 
     if is_travis_build || [[ "${config_headless}" = "true" ]]; then
       case "$(uname -s)" in
@@ -204,7 +209,8 @@ EOL
 
     printf "\n" # Squeak exit msg is missing a linebreak
 
-  timed_fold_end load_and_test
+    timer_finish
+  travis_fold end load_and_test
 
   return "${status}"
 }

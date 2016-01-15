@@ -186,13 +186,3 @@ travis_fold() {
     echo -e "\033[34;1m${title}\033[0m"
   fi
 }
-
-timed_fold_start() {
-  timer_start
-  travis_fold start $1 $2
-}
-
-timed_fold_end() {
-  travis_fold end $1
-  timer_finish
-}
