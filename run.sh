@@ -210,6 +210,36 @@ prepare_folders() {
   ln -s "${config_project_home}" "${SMALLTALK_CI_GIT}"
 }
 
+################################################################################
+# Provide backward compatibility by creating a smalltalk.ston config file if not
+# present.
+# Locals:
+#   config_project_home
+# Globals:
+#   BASELINE
+#   PACKAGES
+################################################################################
+check_backward_compatibility() {
+  if ! is_file "${config_project_home}/smalltalk.ston"; then
+    print_error "No SmalltalkCISpec found for the project!"
+    print_info "Creating a SmalltalkCISpec..."
+
+    cat >$config_project_home/smalltalk.ston <<EOL
+SmalltalkCISpec {
+  #loadSpecs : [
+      SCIMetacelloLoadSpec {
+          #baseline : '${BASELINE}',
+          #directory : '${PACKAGES}',
+          #platforms : [ #squeak, #pharo, #gemstone ]
+      }
+  ]
+}
+EOL
+    print_error "=============================================================="
+    cat $config_project_home/smalltalk.ston
+    print_error "=============================================================="
+  fi
+}
 
 ################################################################################
 # Run cleanup if requested by user.
@@ -238,7 +268,8 @@ check_clean_up() {
 #   SMALLTALK_CI_BUILD_BASE
 ################################################################################
 clean_up() {
-  if is_dir "${SMALLTALK_CI_CACHE}" || ! is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+  if is_dir "${SMALLTALK_CI_CACHE}" || \
+        ! is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
     print_info "Cleaning up..."
     print_info "Removing the following directories:"
     print_info "  ${SMALLTALK_CI_CACHE}"
@@ -277,7 +308,7 @@ run() {
   esac
 
   if debug_enabled; then
-    travis_fold start display_config "Configuration before platform-specific code"
+    travis_fold start display_config "Current configuration"
       for var in ${!config_@}; do
         echo "${var}=${!var}"
       done
@@ -303,8 +334,8 @@ check_build_status() {
     print_error "Build failed :("
     if is_travis_build; then
       printf "\n\n"
-      print_info "To reproduce the failed build locally, download " \
-                  "smalltalkCI and try running something like:"
+      print_info "To reproduce the failed build locally, download smalltalkCI \
+and try running something like:"
       printf "\n"
       print_notice "  ./run.sh -o -s \"${config_smalltalk}\" /path/to/project"
     fi
@@ -337,6 +368,7 @@ main() {
     builder_ci_fallback || exit_status=$?
   else
     prepare_folders
+    check_backward_compatibility
     run || exit_status=$?
   fi
   
