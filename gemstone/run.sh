@@ -80,7 +80,7 @@ gemstone::load_and_test_project() {
       (BinaryOrTextFile openReadOnServer: '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st') 
         fileIn;
         close.
-      SmalltalkCISpec automatedTestOf: '${project_home}/smalltalk.ston'
+      SmalltalkCISpec runCIFor: '${project_home}/smalltalk.ston'
       System commitTransaction.
 EOF
 

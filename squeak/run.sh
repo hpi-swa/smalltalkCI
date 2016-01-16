@@ -201,7 +201,7 @@ squeak::load_and_test_project() {
     fi
 
     cat >$SMALLTALK_CI_BUILD/run.st <<EOL
-  SmalltalkCISpec automatedTestOf: '${config_project_home}/smalltalk.ston'
+  SmalltalkCISpec runCIFor: '${config_project_home}/smalltalk.ston'
 EOL
 
     "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
