@@ -220,9 +220,20 @@ prepare_folders() {
 #   PACKAGES
 ################################################################################
 check_backward_compatibility() {
+  local load
+
   if ! is_file "${config_project_home}/smalltalk.ston"; then
     print_error "No SmalltalkCISpec found for the project!"
     print_info "Creating a SmalltalkCISpec..."
+
+    case "${config_smalltalk}" in
+      Squeak*)
+        load="TravisCI"
+        ;;
+      *)
+        load="default"
+        ;;
+    esac
 
     cat >$config_project_home/smalltalk.ston <<EOL
 SmalltalkCISpec {
@@ -230,6 +241,7 @@ SmalltalkCISpec {
       SCIMetacelloLoadSpec {
           #baseline : '${BASELINE}',
           #directory : '${PACKAGES}',
+          #load : [ '${load}' ],
           #platforms : [ #squeak, #pharo, #gemstone ]
       }
   ]
