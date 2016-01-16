@@ -2,11 +2,11 @@
 
 set -e
 
-readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts"
-readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}/smalltalkci"
+readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/\
+smalltalkci"
+readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}"
 readonly VM_DOWNLOAD="http://mirandabanda.org/files/Cog/VM/VM.r3427"
-readonly SQUEAK_SSL_DOWNLOAD="https://github.com/squeak-smalltalk/squeakssl/\
-releases/download/v0.2.0b/linux32.zip"
+readonly SQUEAK_SSL_DOWNLOAD="${BASE_DOWNLOAD}/linux32.zip"
 
 ################################################################################
 # Select Squeak image. Exit with '1' if smalltalk_name is unsupported.
