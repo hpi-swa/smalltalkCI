@@ -37,12 +37,12 @@ test_get_vm_details() {
   vm_details="$(squeak::get_vm_details "Linux" 1)"
   set_vars vm_filename vm_path "${vm_details}"
   assertEquals "cogspurlinux-15.33.3427.tgz" "${vm_filename}"
-  assertEquals "${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak" "${vm_path}"
+  assertEquals "${SMALLTALK_CI_VMS}/cogspurlinux/squeak" "${vm_path}"
 
   vm_details="$(squeak::get_vm_details "Linux" 0)"
   set_vars vm_filename vm_path "${vm_details}"
   assertEquals "coglinux-15.33.3427.tgz" "${vm_filename}"
-  assertEquals "${SMALLTALK_CI_VMS}/coglinux/bin/squeak" "${vm_path}"
+  assertEquals "${SMALLTALK_CI_VMS}/coglinux/squeak" "${vm_path}"
 
   vm_details="$(squeak::get_vm_details "Darwin" 1)"
   set_vars vm_filename vm_path "${vm_details}"
