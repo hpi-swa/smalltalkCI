@@ -5,6 +5,8 @@ set -e
 readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts"
 readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}/smalltalkci"
 readonly VM_DOWNLOAD="http://mirandabanda.org/files/Cog/VM/VM.r3427"
+readonly SQUEAK_SSL_DOWNLOAD="https://github.com/squeak-smalltalk/squeakssl/\
+releases/download/v0.2.0b/linux32.zip"
 
 ################################################################################
 # Select Squeak image. Exit with '1' if smalltalk_name is unsupported.
@@ -136,12 +138,15 @@ squeak::prepare_vm() {
   local vm_path
   local download_url
   local target
+  local squeakssl_target squeakssl_bin
 
   is_spur_image "${SMALLTALK_CI_IMAGE}" && require_spur=1
   vm_details=$(squeak::get_vm_details "$(uname -s)" "${require_spur}")
   set_vars vm_filename vm_path "${vm_details}"
   download_url="${VM_DOWNLOAD}/${vm_filename}"
   target="${SMALLTALK_CI_CACHE}/${vm_filename}"
+  squeakssl_target="${SMALLTALK_CI_CACHE}/squeakssl.zip"
+  squeakssl_bin="${SMALLTALK_CI_CACHE}/linux32/SqueakSSL"
 
   export SMALLTALK_CI_VM="${vm_path}"
 
@@ -156,6 +161,22 @@ squeak::prepare_vm() {
       fi
       set -e
 
+      if [[ "$(uname -s)" = "Linux" ]] && ! is_file "${squeakssl_target}"; then
+        travis_fold start download_squeak_ssl "Downloading SqueakSSL plugin..."
+          timer_start
+
+          set +e
+          download_file "${SQUEAK_SSL_DOWNLOAD}" > "${squeakssl_target}"
+          if [[ ! $? -eq 0 ]]; then
+            print_error_and_exit "Download failed."
+          fi
+          unzip "${squeakssl_target}" -d "${SMALLTALK_CI_CACHE}"
+          set -e
+
+          timer_finish
+        travis_fold end download_squeak_ssl
+      fi
+
       timer_finish
     travis_fold end download_vm
   fi
@@ -166,6 +187,9 @@ squeak::prepare_vm() {
     if ! is_file "${SMALLTALK_CI_VM}"; then
       print_error_and_exit "Unable to set vm up at '${SMALLTALK_CI_VM}'."
     fi
+
+    print_info "Patching SqueakSSL plugin..."
+    mv "${squeakssl_bin}" "${SMALLTALK_CI_VM}/../lib/squeak/4.5-3427/"
   fi
 
   travis_fold start display_vm_version "Cog VM Information"
