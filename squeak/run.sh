@@ -189,7 +189,7 @@ squeak::prepare_vm() {
     fi
 
     print_info "Patching SqueakSSL plugin..."
-    mv "${squeakssl_bin}" "${SMALLTALK_CI_VM}/../lib/squeak/4.5-3427/"
+    mv "${squeakssl_bin}" "$(dirname "{SMALLTALK_CI_VM}")/../lib/squeak/4.5-3427/"
   fi
 
   travis_fold start display_vm_version "Cog VM Information"
