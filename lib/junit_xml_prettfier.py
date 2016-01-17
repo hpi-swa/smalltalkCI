@@ -49,14 +49,8 @@ def get_time(time):
     time = float(time)
   except ValueError:
     print_error('%s is not a float.' % time)
-    return 'n/a'
-
-  color = ''
-  if time > 0.5:
-    color = ANSI_RED
-  elif time > 0.1:
-    color = ANSI_YELLOW
-  return '%s%.3f%s seconds' % (color, time, ANSI_RESET)
+    return time
+  return '%.3f seconds' % time
 
 def get_summary():
   color = ANSI_GREEN
