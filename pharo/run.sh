@@ -183,7 +183,7 @@ pharo::load_and_test_project() {
       stream := MultiByteFileStream newFrom: stream.
       stream fileIn.
       stream close.
-      SmalltalkCISpec runCIFor: '${project_home}/smalltalk.ston'
+      SmalltalkCISpec runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
     " || status=$?
 
     timer_finish

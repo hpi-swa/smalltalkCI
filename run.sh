@@ -6,6 +6,7 @@ set -e
 readonly SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_PATH}/helpers.sh"
 
+readonly SMALLTALK_CI_DEFAULT_CONFIG='smalltalkCI.ston'
 readonly BUILDER_CI_REPO_URL="https://github.com/dalehenrich/builderCI"
 readonly BUILDER_CI_DOWNLOAD_URL="${BUILDER_CI_REPO_URL}/archive/master.zip"
 
@@ -211,8 +212,7 @@ prepare_folders() {
 }
 
 ################################################################################
-# Provide backward compatibility by creating a smalltalk.ston config file if not
-# present.
+# Provide backward compatibility by creating a config file if not present.
 # Locals:
 #   config_project_home
 # Globals:
@@ -222,7 +222,7 @@ prepare_folders() {
 check_backward_compatibility() {
   local load
 
-  if ! is_file "${config_project_home}/smalltalk.ston"; then
+  if ! is_file "${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}"; then
     print_error "No SmalltalkCISpec found for the project!"
     print_info "Creating a SmalltalkCISpec..."
 
@@ -235,7 +235,7 @@ check_backward_compatibility() {
         ;;
     esac
 
-    cat >$config_project_home/smalltalk.ston <<EOL
+    cat >${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG} <<EOL
 SmalltalkCISpec {
   #loadSpecs : [
       SCIMetacelloLoadSpec {
@@ -248,7 +248,7 @@ SmalltalkCISpec {
 }
 EOL
     print_error "=============================================================="
-    cat $config_project_home/smalltalk.ston
+    cat ${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}
     print_error "=============================================================="
   fi
 }
