@@ -4,7 +4,7 @@
 import glob
 import os
 import sys
-import xml.etree.ElementTree
+import xml.etree.ElementTree as et
 
 ANSI_BOLD = '\033[1m'
 ANSI_RED = '\033[31m'
@@ -41,8 +41,16 @@ def get_fail(title, time):
   return '  %s%s %s%s (%s)' % (
       ANSI_RED, FAIL, title, ANSI_RESET, get_time(time))
 
+def get_exception_title(string):
+  return '%s%s%s' % (ANSI_YELLOW, string, ANSI_RESET)
+
 def get_time(time):
-  time = float(time)
+  try:
+    time = float(time)
+  except ValueError:
+    print_error('%s is not a float.' % time)
+    return 'n/a'
+
   color = ''
   if time > 0.5:
     color = ANSI_RED
@@ -60,6 +68,9 @@ def get_summary():
 
 def print_line(color):
   print '%s%s%s' % (color, ''.join(['#']*80), ANSI_RESET)
+
+def print_error(string):
+  print '%s%s%s%s' % (ANSI_BOLD, ANSI_RED, string, ANSI_RESET)
 
 def is_travis_build():
   return os.environ.get('TRAVIS') == 'true'
@@ -86,12 +97,14 @@ def prettify_class_name(suite, class_name):
       is_error = True
       for child in children:
         if child.tag == 'error':
-          body.append(ANSI_YELLOW + '    > Error:' + ANSI_RESET)
           ERRORS += 1
         elif child.tag == 'failure':
-          body.append(ANSI_YELLOW + '    > Failure:' + ANSI_RESET)
           is_error = False
           FAILURES += 1
+
+        body.append(get_exception_title('    > %s: %s' % (
+            child.attrib.get('type'), child.attrib.get('message'))))
+
         if child.text is not None:
           body.append(child.text)
       if is_error:
@@ -109,12 +122,21 @@ def prettify(directory):
   for file_path in glob.glob('%s/*.xml' % directory):
     print ''
 
-    suite = xml.etree.ElementTree.parse(file_path).getroot()
+    try:
+      suite = et.parse(file_path).getroot()
+    except et.ParseError:
+      print_error('%s cannot be parsed.' % file_path)
+      continue
+
     print_line(ANSI_BLUE_BOLD)
     print get_title(suite.attrib['name'], suite.attrib['tests'],
                     suite.attrib['failures'], suite.attrib['errors'],
                     suite.attrib['time'])
-    TIME += float(suite.attrib['time'])
+    try:
+      TIME += float(suite.attrib['time'])
+    except ValueError:
+      print_error('%s cannot be parsed.' % suite.attrib['time'])
+
     print_line(ANSI_BLUE_BOLD)
 
     class_names = set()
