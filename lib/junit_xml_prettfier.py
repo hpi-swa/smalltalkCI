@@ -114,7 +114,7 @@ def prettify_class_name(suite, class_name):
       travis_fold(slugify(class_name), title, '\n'.join(body))
     else:
       print get_success(testcase.attrib['name'], testcase.attrib['time'])
-  TESTS += 1
+    TESTS += 1
 
 def prettify(directory):
   global TIME
