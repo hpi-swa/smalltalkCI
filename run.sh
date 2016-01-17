@@ -332,30 +332,6 @@ run() {
 }
 
 ################################################################################
-# Print success or failure message according to the status code provided.
-# Arguments:
-#   Status code
-################################################################################
-check_build_status() {
-  local status=$1
-
-  printf "\n\n"
-  if [[ ${status} -eq 0 ]]; then
-    print_success "Build successful :)"
-  else
-    print_error "Build failed :("
-    if is_travis_build; then
-      printf "\n\n"
-      print_info "To reproduce the failed build locally, download smalltalkCI \
-and try running something like:"
-      printf "\n"
-      print_notice "  ./run.sh -o -s \"${config_smalltalk}\" /path/to/project"
-    fi
-  fi
-  printf "\n"
-}
-
-################################################################################
 # Main entry point. Exit with build status code.
 # Arguments:
 #   All positional parameters
@@ -384,7 +360,7 @@ main() {
     run || exit_status=$?
   fi
   
-  check_build_status "${exit_status}"
+  print_results ${exit_status} "${SMALLTALK_CI_BUILD}"
   exit ${exit_status}
 }
 

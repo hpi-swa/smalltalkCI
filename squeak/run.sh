@@ -229,7 +229,6 @@ run_build() {
   squeak::prepare_image "${config_smalltalk}"
   squeak::prepare_vm
   squeak::load_and_test_project || exit_status=$?
-  print_junit_xml "${SMALLTALK_CI_BUILD}"
 
   return "${exit_status}"
 }

@@ -203,7 +203,6 @@ run_build() {
   pharo::prepare_image "${config_smalltalk}"
   pharo::prepare_vm "${config_smalltalk}" "${config_headless}"
   pharo::load_and_test_project "${config_project_home}" || exit_status=$?
-  print_junit_xml "${SMALLTALK_CI_BUILD}"
 
   return "${exit_status}"
 }

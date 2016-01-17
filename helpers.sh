@@ -41,15 +41,25 @@ print_help() {
 EOF
 }
 
-print_junit_xml() {
-  local path=$1
+print_results() {
+  local status=$1
+  local build_dir=$2
 
-  printf "\n\n"
-  print_info "#### JUnit XML Output Start ####"
-  cat "${path}/"*.xml
+  python "${SMALLTALK_CI_HOME}/lib/junit_xml_prettfier.py" "${build_dir}"
+  print_steps_to_reproduce_locally $status
+}
+
+print_steps_to_reproduce_locally() {
+  local status=$1
+
+  if true; then
+    printf "\n"
+    echo "     To reproduce the failed build locally, download smalltalkCI"
+    echo "     and try to run something like:"
+    printf "\n"
+    print_notice "      ./run.sh -o -s \"${config_smalltalk}\" /path/to/project"
+  fi
   printf "\n"
-  print_info "#### JUnit XML Output End ####"
-  printf "\n\n"
 }
 
 is_empty() {
