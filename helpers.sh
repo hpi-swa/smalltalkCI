@@ -46,19 +46,20 @@ print_results() {
   local build_dir=$2
 
   python "${SMALLTALK_CI_HOME}/lib/junit_xml_prettfier.py" "${build_dir}"
-  print_steps_to_reproduce_locally $status
+
+  if is_travis_build && ! [[ ${status} -eq 0 ]]; then
+    print_steps_to_reproduce_locally $status
+  fi
 }
 
 print_steps_to_reproduce_locally() {
   local status=$1
 
-  if true; then
-    printf "\n"
-    echo "     To reproduce the failed build locally, download smalltalkCI"
-    echo "     and try to run something like:"
-    printf "\n"
-    print_notice "      ./run.sh -o -s \"${config_smalltalk}\" /path/to/project"
-  fi
+  printf "\n"
+  echo "     To reproduce the failed build locally, download smalltalkCI"
+  echo "     and try to run something like:"
+  printf "\n"
+  print_notice "      ./run.sh -o -s \"${config_smalltalk}\" /path/to/project"
   printf "\n"
 }
 

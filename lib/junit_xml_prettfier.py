@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys
 import glob
 import os
+import sys
 import xml.etree.ElementTree
 
 ANSI_BOLD = '\033[1m'
