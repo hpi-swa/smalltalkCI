@@ -71,7 +71,7 @@ Object subclass: #SCIAbstractLoadSpec	instanceVariableNames: 'projectDirectory'
   "Initialize the test resources."
   suite resources do: [ :each |
     each isAvailable
-      ifFalse: [ each signalInitializationError ] ]! !!SCITestReport methodsFor: 'running' stamp: 'fn 1/13/2016 00:10'!tearDown
+      ifFalse: [ each signalInitializationError ] ]! !!SCITestReport methodsFor: 'running' stamp: 'fn 1/17/2016 02:57'!tearDown
   suite resources 
     do: [ :each | each reset ].
     
@@ -83,7 +83,7 @@ Object subclass: #SCIAbstractLoadSpec	instanceVariableNames: 'projectDirectory'
   stream 
     nextPutAll: ' failures="'; print: suiteFailures; 
     nextPutAll: '" errors="'; print: suiteErrors; 
-    nextPutAll: '" time="'; print: suiteTime / 1000.0; 
+    nextPutAll: '" time="'; print: (self formatTime: suiteTime); 
     nextPutAll: '">'.
   stream close.
   
@@ -95,8 +95,8 @@ Object subclass: #SCIAbstractLoadSpec	instanceVariableNames: 'projectDirectory'
   ^ self suiteTotal - self suiteFailures - self suiteErrors! !!SCITestReport methodsFor: 'accessing' stamp: 'EstebanLorenzano 8/21/2015 08:02'!suiteTotal
   ^ suite 
     ifNotNil: [ suite tests size ]
-    ifNil: [ 0 ]! !!SCITestReport methodsFor: 'testing' stamp: 'EstebanLorenzano 8/21/2015 07:29'!hasFailuresOrErrors 
-  ^ suiteFailures ~= 0 or: [ suiteErrors ~= 0 ]! !!SCITestReport methodsFor: 'private' stamp: 'fn 1/10/2016 10:57'!beginTestCase: aTestCase runBlock: aBlock
+    ifNil: [ 0 ]! !!SCITestReport methodsFor: 'compatibility' stamp: 'fn 1/17/2016 02:57'!formatTime: aTime	| time |	time := aTime.	(aTime respondsTo: #asMilliSeconds)    		ifTrue: [ time := aTime asMilliSeconds ].	^ time / 1000.0	! !!SCITestReport methodsFor: 'testing' stamp: 'EstebanLorenzano 8/21/2015 07:29'!hasFailuresOrErrors 
+  ^ suiteFailures ~= 0 or: [ suiteErrors ~= 0 ]! !!SCITestReport methodsFor: 'private' stamp: 'fn 1/17/2016 02:57'!beginTestCase: aTestCase runBlock: aBlock
   | time |
   progressFile 
     nextPutAll: 'starting testcase: ' ; 
@@ -106,13 +106,13 @@ Object subclass: #SCIAbstractLoadSpec	instanceVariableNames: 'projectDirectory'
     nextPutAll: ' ... '; 
     flush.
     
-  time := aBlock timeToRun.
+  time := self formatTime: (aBlock timeToRun).
   stream tab; 
     nextPutAll: '<testcase classname="'; 
     nextPutAll: (self encode: (aTestCase class category copyReplaceAll: '-' with: '.')); 
     nextPut: $.; nextPutAll: (self encode: aTestCase class name); 
     nextPutAll: '" name="'; nextPutAll: (self encode: aTestCase selector); 
-    nextPutAll: '" time="'; print: (time / 1000.0); 
+    nextPutAll: '" time="'; print: time; 
     nextPutAll: '">'; lf
   
 ! !!SCITestReport methodsFor: 'private' stamp: 'CamilloBruni 11/4/2013 08:29'!endTestCase
