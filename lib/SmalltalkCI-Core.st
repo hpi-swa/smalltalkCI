@@ -22,7 +22,7 @@ Object subclass: #SCIAbstractLoadSpec	instanceVariableNames: 'projectDirectory'
       	suiteTime := [ self runAll ]
         		timeToRun ]
           			ensure: [ self tearDown ]! !!SCITestReport methodsFor: 'running' stamp: 'fniep 1/12/2016 22:15'!runAll
-  suite tests do: [ :each | each run: self ]! !!SCITestReport methodsFor: 'running' stamp: 'MaxLeske 11/6/2013 10:03'!runCase: aTestCase
+  suite tests do: [ :each | each run: self ]! !!SCITestReport methodsFor: 'running' stamp: 'fn 1/17/2016 14:49'!runCase: aTestCase
   | error stack  |
   self 
     beginTestCase: aTestCase
@@ -30,11 +30,11 @@ Object subclass: #SCIAbstractLoadSpec	instanceVariableNames: 'projectDirectory'
       on: Halt , Error, TestFailure
       do: [ :err |
         error := err.
-        aTestCase isExpectedFailure ifFalse: [self serializeError: error of: aTestCase].
+        aTestCase shouldPass ifTrue: [self serializeError: error of: aTestCase].
         stack := self stackTraceString: err of: aTestCase ]]
-      on: TestSkip do: [ :err| "nothing to do..." ] ].
+      on: (Smalltalk at: #TestSkip ifAbsent: []) do: [ :err| "nothing to do..." ] ].
     
-  (error isNil or: [aTestCase isExpectedFailure])  ifFalse: [
+  (error notNil and: [aTestCase shouldPass])  ifTrue: [
     (error isKindOf: TestFailure)
       ifTrue: [ self writeError: error stack: stack ]
       ifFalse: [ self writeFailure: error stack: stack ]].
