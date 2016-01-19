@@ -1,5 +1,5 @@
 SmalltalkCISpec {
-    #loadSpecs : [
+    #loading : [
         SCIMetacelloLoadSpec {
             #baseline : 'SmalltalkCITests',
             #directory : 'tests',
