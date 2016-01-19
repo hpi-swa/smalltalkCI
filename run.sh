@@ -6,7 +6,7 @@ set -e
 readonly SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_PATH}/helpers.sh"
 
-readonly SMALLTALK_CI_DEFAULT_CONFIG='smalltalkCI.ston'
+readonly SMALLTALK_CI_DEFAULT_CONFIG='smalltalk.ston'
 readonly BUILDER_CI_REPO_URL="https://github.com/dalehenrich/builderCI"
 readonly BUILDER_CI_DOWNLOAD_URL="${BUILDER_CI_REPO_URL}/archive/master.zip"
 
