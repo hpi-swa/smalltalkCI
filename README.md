@@ -1,7 +1,7 @@
 # smalltalkCI [![Build Status](https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master)](https://travis-ci.org/hpi-swa/smalltalkCI)
 Community-supported framework for building Smalltalk projects on [Travis CI][travisCI] (continuous integration) infrastructure.
 
-It is inspired by [@dalehenrich][dalehenrich]'s [builderCI][builderCI] and aims to provide a uniform and easy way to load and test Smalltalk projects on GitHub.
+It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy way to load and test Smalltalk projects on GitHub.
 
 
 ## Features
@@ -178,7 +178,6 @@ Please feel free to [open issues][issues] or to [send pull requests][pullRequest
 [builderCI]: https://github.com/dalehenrich/builderCI
 [builderCIHowTo]: https://github.com/dalehenrich/builderCI#using-builderci
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
-[dalehenrich]: https://github.com/dalehenrich
 [filetree]: https://github.com/dalehenrich/filetree
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
 [issues]: https://github.com/hpi-swa/smalltalkCI/issues
