@@ -122,14 +122,14 @@ SmalltalkCISpec {
     `#include` or `#exclude`.
     */
     #categories : [ 'MyProject-Tests' ],                      // Define categories to test explicitly
-    #classes : [ 'MyProjectTestCase' ]                        // Define classes to test explicitly
+    #classes : [ #MyProjectTestCase ]                         // Define classes to test explicitly
     #include : {
       #categories : [ 'AnotherProject-Tests' ],               // Include categories to test
-      #classes : [ 'AnotherProjectTestCase' ]                 // Include classes to test
+      #classes : [ #AnotherProjectTestCase ]                  // Include classes to test
     },
     #exclude : {
       #categories : [ 'AnotherProject-Tests' ],               // Exclude categories from testing
-      #classes : [ 'AnotherProjectTestCase' ]                 // Exclude classes from testing
+      #classes : [ #AnotherProjectTestCase ]                  // Exclude classes from testing
     }
   }
 }
