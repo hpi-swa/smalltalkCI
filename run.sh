@@ -365,7 +365,6 @@ main() {
   fi
 
   print_results "${SMALLTALK_CI_BUILD}" || exit_status=$?
-  print_info "Works"
   exit ${exit_status}
 }
 
