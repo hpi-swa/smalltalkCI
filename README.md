@@ -1,67 +1,192 @@
 # smalltalkCI [![Build Status](https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master)](https://travis-ci.org/hpi-swa/smalltalkCI)
 Community-supported framework for building Smalltalk projects on [Travis CI][travisCI] (continuous integration) infrastructure.
 
-It is highly inspired by [@dalehenrich][daleheinrich]'s [builderCI][builderCI] and aims to make testing Smalltalk projects easy and fast.
+It is inspired by [@dalehenrich][dalehenrich]'s [builderCI][builderCI] and aims to provide a uniform and easy way to load and test Smalltalk projects on GitHub.
 
 
 ## Features
-- Configuration via `.travis.yml` only ([see below for templates](#templates))
-- Runs on Travis' [container-based infrastructure][cbi] - [*"Builds-start-in-seconds"*][bsis]
-- Supports Linux and OS X and can be run locally
-- builderCI fallback for builds that are not yet supported on the new infrastructure
-
-### Squeak-specific
-- Uses prepared Squeak images to minimize overhead during builds
-- Displays `Transcript` directly in Travis log
-- Prints error messages and shows stack traces for debugging purposes
-- Supports custom run scripts (`RUN_SCRIPT`)
-
-### Pharo-specific
-- Uses Pharo's built-in command-line testing framework
-
-
-<a name="images"/>
-## List Of Images Supported
-| Squeak          | Pharo            | GemStone             |
-| --------------- | ---------------- | -------------------- |
-| `Squeak-trunk`  | `Pharo-alpha`    |  `GemStone-3.x`*     |
-| `Squeak-5.0`    | `Pharo-stable`   |  `GemStone-2.4.7`*   |
-| `Squeak-4.6`    | `Pharo-5.0`      |  `GemStone-2.4.6`*   |
-| `Squeak-4.5`    | `Pharo-4.0`      |  `GemStone-2.4.5`*   |
-| `Squeak-4.4`*   | `Pharo-3.0`      |  `GemStone-2.4.4.1`* |
-| `Squeak-4.3`*   | `Pharo-2.0`*     |                      |
-|                 | `Pharo-1.4`*     |                      |
-|                 | `PharoCore-1.2`* |                      |
-|                 | `PharoCore-1.1`* |                      |
-
-*requires builderCI fallback
+- Simple configuration via `.travis.yml` and `smalltalk.ston` ([see below for templates](#templates))
+- Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
+- Runs on Travis' [container-based infrastructure][cbi] ([*"Builds start in seconds"*][bsis])
+- Supports Linux and OS X and can be run locally for debug purposes
+- Exports test results in the JUnit XML format as part of the Travis build log
+- builderCI fallback for builds that are not yet supported
 
 
 ## How To Use
-1. [Create a Baseline for your project][baseline].
-2. Export your Smalltalk project with [FileTree/Metacello][metacello].
-3. [Enable Travis CI for your repository][travisHowTo] and create a `.travis.yml` from one of the [templates][templates].
-4. Enjoy your fast Smalltalk builds!
+1. Export your project in a [compatible format](#load_formats).
+2. [Enable Travis CI for your repository][travisHowTo].
+3. Create a `.travis.yml` and specifiy the [Smalltalk image(s)](#images) you want your project to be tested against.
+4. Create a `smalltalk.ston` ([see below for templates](#templates)) and specify how to load and test your project.
+5. Push all of this to GitHub and enjoy your fast Smalltalk builds!
+
+
+<a name="images"/>
+## List Of Supported Images
+| Squeak          | Pharo            | GemStone                 |
+| --------------- | ---------------- | ------------------------ |
+| `Squeak-trunk`  | `Pharo-alpha`    | *[Work in progress][gs]* |
+| `Squeak-5.0`    | `Pharo-stable`   |                          |
+| `Squeak-4.6`    | `Pharo-5.0`      |                          |
+| `Squeak-4.5`    | `Pharo-4.0`      |                          |
+|                 | `Pharo-3.0`      |                          |
+
+
+<a name="load_formats"/>
+## Compatible Project Loading Formats
+
+- [FileTree][filetree]/[Metacello][metacello] [Baseline][mc_baseline] or [Configuration][mc_configuration] (*Git-compatible*)
+- *More to follow...*
 
 
 <a name="templates"/>
-## `.travis.yml` Templates
-`.travis.yml` templates for all supported platforms can be found in the [wiki][templates].
+## Templates
+
+### `.travis.yml` Template
+
+```yml
+language: smalltalk
+sudo: false
+
+# Select operating system(s)
+os:
+  - linux
+  - osx
+
+# Select compatible Smalltalk image(s)
+smalltalk:
+  - Squeak-trunk
+  - Squeak-5.0
+  - Squeak-4.6
+  - Squeak-4.5
+
+  - Pharo-alpha
+  - Pharo-stable
+  - Pharo-5.0
+  - Pharo-4.0
+  - Pharo-3.0
+```
+
+### Minimal `smalltalk.ston` Template
+
+The following `SmalltalkCISpec` will load `BaselineOfMyProject` using
+Metacello/FileTree from the `./packages` directory in Squeak, Pharo and GemStone.
+
+```javascript
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'MyProject',
+      #directory : 'packages',
+      #platforms : [ #squeak, #pharo, #gemstone ]
+    }
+  ]
+}
+```
+
+### Complete `smalltalk.ston` Template
+
+*Please note that the `smalltalk.ston` must be a valid [STON][STON] file.*
+
+```javascript
+SmalltalkCISpec {
+  #loading : [
+    /*
+    There can be multiple LoadSpecs in `#loading`. `smalltalkCI` will load all
+    LoadSpecs that are compatible with the selected Smalltalk image (specified
+    via `#platforms`).
+    */
+    SCIMetacelloLoadSpec {
+      /*
+      A `SCIMetacelloLoadSpec` loads a project either via the specified
+      Metacello `#baseline` or the Metacello `#configuration`. If a `#directory`
+      is specified, the project will be loaded using FileTree/Metacello from the
+      given directory. Otherwise, it will be loaded from the specified
+      `#repository`.
+      */
+      #baseline : 'MyProject',                                // Define MC Baseline
+      #configuration : 'MyProject',                           // Alternatively, define MC Configuration
+      #directory : 'tests',                                   // Path to packages if FileTree is used
+      #repository : 'http://ss3.gemtalksystems.com/ss/...',   // Alternatively, define MC repository
+      #load : [ 'default' ],                                  // Define MC load attributes
+      #platforms : [ #squeak, #pharo, #gemstone ]             // Define compatible platforms
+    }
+  ],
+  #testing : {
+    /*
+    By default, smalltalkCI will determine the tests to run from the given
+    LoadSpecs. If this is not sufficient, it is possible to define the tests
+    on category-level or class-level in here. Test categories or classes can be
+    specified explicitly (ignore tests determined from LoadSpecs completely).
+    If you only want to include or exclude tests from the default, you can use
+    `#include` or `#exclude`.
+    */
+    #categories : [ 'MyProject-Tests' ],                      // Define categories to test explicitly
+    #classes : [ 'MyProjectTestCase' ]                        // Define classes to test explicitly
+    #include : {
+      #categories : [ 'AnotherProject-Tests' ],               // Include categories to test
+      #classes : [ 'AnotherProjectTestCase' ]                 // Include classes to test
+    },
+    #exclude : {
+      #categories : [ 'AnotherProject-Tests' ],               // Exclude categories from testing
+      #classes : [ 'AnotherProjectTestCase' ]                 // Exclude classes from testing
+    }
+  }
+}
+```
+
+
+## Further Configuration
+
+### builderCI Fallback
+If you want to use the builderCI fallback, make sure that there is a
+`tests/travisCI.st` in your repository and add the following lines to your `.travis.yml`:
+
+```yml
+sudo: true
+...
+script: $SMALLTALK_CI_HOME/run.sh --builder-ci
+```
+
+### Other Options
+smalltalkCI supports a couple of other options that can be useful for debugging
+purposes or when used locally:
+
+```
+USAGE: run.sh [options] /path/to/project
+
+This program prepares Smalltalk images/vms, loads projects and runs tests.
+
+OPTIONS:
+  --builder-ci            Use builderCI (default 'false').
+  --clean                 Clear cache and delete builds.
+  -d | --debug            Enable debug mode.
+  -h | --help             Show this help text.
+  --headfull              Open vm in headfull mode and do not close image.
+  -s | --smalltalk        Overwrite Smalltalk image selection.
+  -v | --verbose          Enable 'set -x'.
+
+EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/projects
+```
 
 
 ## Contributing
-Please feel free to [open issues][issues] or to [send pull requests][pullRequests] if you'd like to discuss an idea or a problem. 
+Please feel free to [open issues][issues] or to [send pull requests][pullRequests] if you'd like to discuss an idea or a problem.
 
 
-[baseline]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-baseline
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
 [builderCI]: https://github.com/dalehenrich/builderCI
 [builderCIHowTo]: https://github.com/dalehenrich/builderCI#using-builderci
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
-[daleheinrich]: https://github.com/dalehenrich
+[dalehenrich]: https://github.com/dalehenrich
+[filetree]: https://github.com/dalehenrich/filetree
+[gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
 [issues]: https://github.com/hpi-swa/smalltalkCI/issues
+[mc_baseline]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-baseline
+[mc_configuration]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-configuration
 [metacello]: https://github.com/dalehenrich/metacello-work
 [pullRequests]: https://help.github.com/articles/using-pull-requests/
+[ston]: https://github.com/svenvc/ston/blob/master/ston-paper.md#smalltalk-object-notation-ston
 [templates]:https://github.com/hpi-swa/smalltalkCI/wiki#templates
 [travisCI]: http://travis-ci.org/
 [travisHowTo]: http://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI%3A
