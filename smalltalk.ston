@@ -5,5 +5,10 @@ SmalltalkCISpec {
       #directory : 'tests',
       #platforms : [ #squeak, #pharo, #gemstone ]
     }
-  ]
+  ],
+  #testing : {
+    #exclude : {
+      #classes : [ #SCIExcludedTests ]
+    }
+  }
 }

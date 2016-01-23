@@ -88,7 +88,7 @@ parse_args() {
   if ! is_travis_build && [[ $# -eq 0 ]]; then
     print_help
     exit 0
-  fi  
+  fi
 
   determine_project_home "${!#}" # Use last argument as fallback path
 
@@ -131,7 +131,7 @@ parse_args() {
     -*)
       print_error_and_exit "Unknown option: $1"
       ;;
-    *) 
+    *)
       break
       ;;
     esac
@@ -358,9 +358,14 @@ main() {
     prepare_folders
     check_backward_compatibility
     run || exit_status=$?
+    if [[ "${exit_status}" -ne 0 ]]; then
+      print_error "Failed to load and test project."
+      exit ${exit_status}
+    fi
   fi
-  
-  print_results ${exit_status} "${SMALLTALK_CI_BUILD}"
+
+  print_results "${SMALLTALK_CI_BUILD}" || exit_status=$?
+  print_info "Works"
   exit ${exit_status}
 }
 

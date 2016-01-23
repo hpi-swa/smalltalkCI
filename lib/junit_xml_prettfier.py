@@ -35,11 +35,11 @@ def get_success(title, time):
 
 def get_error(title, time):
   return '  %s%s %s%s (%s)' % (
-      ANSI_YELLOW, FAIL, title, ANSI_RESET, get_time(time))
+      ANSI_RED, FAIL, title, ANSI_RESET, get_time(time))
 
 def get_fail(title, time):
   return '  %s%s %s%s (%s)' % (
-      ANSI_RED, FAIL, title, ANSI_RESET, get_time(time))
+      ANSI_YELLOW, FAIL, title, ANSI_RESET, get_time(time))
 
 def get_exception_title(string):
   return '%s%s%s' % (ANSI_YELLOW, string, ANSI_RESET)
@@ -146,6 +146,8 @@ def prettify(directory):
   print ''
   print get_summary()
   print ''
+  if ERRORS + FAILURES > 0:
+    sys.exit(1)
 
 if __name__ == '__main__':
   if len(sys.argv) != 2:

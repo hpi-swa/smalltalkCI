@@ -42,8 +42,8 @@ EOF
 }
 
 print_results() {
-  local status=$1
-  local build_dir=$2
+  local build_dir=$1
+  local status=0
   local junit_xml_file
   junit_xml_file="${build_dir}/smalltalkCI.xml"
 
@@ -53,11 +53,14 @@ print_results() {
     travis_fold end junit_xml
   fi
 
-  python "${SMALLTALK_CI_HOME}/lib/junit_xml_prettfier.py" "${build_dir}"
+  python "${SMALLTALK_CI_HOME}/lib/junit_xml_prettfier.py" \
+      "${build_dir}" || status=$?
 
   if is_travis_build && ! [[ ${status} -eq 0 ]]; then
     print_steps_to_reproduce_locally $status
   fi
+
+  return "${status}"
 }
 
 print_steps_to_reproduce_locally() {
