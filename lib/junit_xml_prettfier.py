@@ -56,9 +56,9 @@ def get_summary():
   color = ANSI_GREEN
   if ERRORS + FAILURES > 0:
     color = ANSI_RED
-  return '%s%s     Executed %s tests, with %s errors and %s failures in' \
+  return '%s%s     Executed %s tests, with %s failures and %s errors in' \
          ' %s seconds.%s' % (
-             ANSI_BOLD, color, TESTS, ERRORS, FAILURES, TIME, ANSI_RESET)
+             ANSI_BOLD, color, TESTS, FAILURES, ERRORS, TIME, ANSI_RESET)
 
 def print_line(color):
   print '%s%s%s' % (color, ''.join(['#']*80), ANSI_RESET)
