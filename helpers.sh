@@ -44,6 +44,14 @@ EOF
 print_results() {
   local status=$1
   local build_dir=$2
+  local junit_xml_file
+  junit_xml_file="${build_dir}/smalltalkCI.xml"
+
+  if is_travis_build && is_file "${junit_xml_file}"; then
+    travis_fold start junit_xml "JUnit XML Output"
+      cat "${junit_xml_file}"
+    travis_fold end junit_xml
+  fi
 
   python "${SMALLTALK_CI_HOME}/lib/junit_xml_prettfier.py" "${build_dir}"
 
