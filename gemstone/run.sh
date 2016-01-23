@@ -5,7 +5,7 @@ set -e
 readonly GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
 
 ################################################################################
-# Clone the GsDevKit_home project. 
+# Clone the GsDevKit_home project.
 ################################################################################
 gemstone::prepare_gsdevkit_home() {
   local devkit_branch="dev"
@@ -25,7 +25,7 @@ gemstone::prepare_gsdevkit_home() {
 }
 
 ################################################################################
-# Create a GemStone stone. 
+# Create a GemStone stone.
 # Arguments:
 #   stone_name
 #   config_smalltalk
@@ -42,7 +42,7 @@ gemstone::prepare_stone() {
   travis_fold start install_server "Installing server..."
     timer_start
 
-    $GS_HOME/bin/installServer 
+    $GS_HOME/bin/installServer
 
     timer_finish
   travis_fold end install_server
@@ -77,10 +77,10 @@ gemstone::load_and_test_project() {
     timer_start
 
     $GS_HOME/bin/devKitCommandLine serverDoIt ${stone_name} << EOF || status=$?
-      (BinaryOrTextFile openReadOnServer: '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st') 
+      (BinaryOrTextFile openReadOnServer: '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st')
         fileIn;
         close.
-      (Smalltalk at: \#SmalltalkCISpec) runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
+      (Smalltalk at: \#SmalltalkCI) runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
       System commitTransaction.
 EOF
 

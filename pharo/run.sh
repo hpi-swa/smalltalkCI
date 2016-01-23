@@ -175,7 +175,7 @@ pharo::load_and_test_project() {
 
   travis_fold start load_and_test "Loading and testing project..."
     timer_start
-  
+
     "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
       | stream |
       stream := '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st'.
@@ -183,7 +183,7 @@ pharo::load_and_test_project() {
       stream := MultiByteFileStream newFrom: stream.
       stream fileIn.
       stream close.
-      SmalltalkCISpec runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
+      (Smalltalk at: #SmalltalkCI) runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
     " || status=$?
 
     timer_finish
