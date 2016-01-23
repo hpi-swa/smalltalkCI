@@ -32,11 +32,11 @@ print_help() {
     --clean                 Clear cache and delete builds.
     -d | --debug            Enable debug mode.
     -h | --help             Show this help text.
-    --headful               Open vm in headful mode.
+    --headfull              Open vm in headfull mode and do not close image.
     -s | --smalltalk        Overwrite Smalltalk image selection.
     -v | --verbose          Enable 'set -x'.
 
-  EXAMPLE: run.sh -s "Squeak-trunk" --directory "subdir" /path/to/project
+  EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/project
 
 EOF
 }
