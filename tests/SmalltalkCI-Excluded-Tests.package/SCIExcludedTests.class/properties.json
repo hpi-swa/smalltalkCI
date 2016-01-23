@@ -1,5 +1,5 @@
 {
-	"category" : "SmalltalkCI-Tests",
+	"category" : "SmalltalkCI-Excluded-Tests",
 	"classinstvars" : [
 		 ],
 	"classvars" : [

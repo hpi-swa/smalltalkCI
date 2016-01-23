@@ -17,7 +17,7 @@ Smalltalk at: #MultiByteFileStream
   ifAbsent: [
     Smalltalk at: #BinaryOrTextFile
       ifPresent: [
-        (BinaryOrTextFile openReadOnServer: gitPath, '/smalltalkCI/lib/SmalltalkCI-Core.st') 
+        (BinaryOrTextFile openReadOnServer: gitPath, '/smalltalkCI/lib/SmalltalkCI-Core.st')
           fileIn;
           close ] ].
 
@@ -29,9 +29,9 @@ Metacello new
 Metacello new
   baseline: 'SmalltalkCITests';
   repository: 'filetree://', gitPath, '/smalltalkCI/tests';
-  load: 'default'.
+  load: 'builderCI'.
 
-"If e.g. your tests change code in the image dynamically, the image will require you to set 
+"If e.g. your tests change code in the image dynamically, the image will require you to set
 author initials which might fail these tests. So we set some dummy initials here to avoid this."
 (Smalltalk at: #MetacelloPlatform) current authorName: 'travisCI'.
 
