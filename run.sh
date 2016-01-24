@@ -6,9 +6,9 @@ set -e
 readonly SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_PATH}/helpers.sh"
 
-readonly SMALLTALK_CI_DEFAULT_CONFIG='smalltalk.ston'
 readonly BUILDER_CI_REPO_URL="https://github.com/dalehenrich/builderCI"
 readonly BUILDER_CI_DOWNLOAD_URL="${BUILDER_CI_REPO_URL}/archive/master.zip"
+SMALLTALK_CI_DEFAULT_CONFIG='smalltalk.ston'
 
 ################################################################################
 # Check OS to be Linux or OS X, otherwise exit with '1'.
@@ -212,12 +212,28 @@ prepare_folders() {
 }
 
 ################################################################################
+# Allow STON config filename to start with a dot.
+# Locals:
+#   config_project_home
+# Globals:
+#   SMALLTALK_CI_DEFAULT_CONFIG
+################################################################################
+locate_ston_config() {
+  if ! is_file "${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}"; then
+    if is_file "${config_project_home}/.${SMALLTALK_CI_DEFAULT_CONFIG}"; then
+      SMALLTALK_CI_DEFAULT_CONFIG=".${SMALLTALK_CI_DEFAULT_CONFIG}"
+    fi
+  fi
+}
+
+################################################################################
 # Provide backward compatibility by creating a config file if not present.
 # Locals:
 #   config_project_home
 # Globals:
 #   BASELINE
 #   PACKAGES
+#   SMALLTALK_CI_DEFAULT_CONFIG
 ################################################################################
 check_backward_compatibility() {
   local load
@@ -356,6 +372,7 @@ main() {
     builder_ci_fallback || exit_status=$?
   else
     prepare_folders
+    locate_ston_config
     check_backward_compatibility
     run || exit_status=$?
     if [[ "${exit_status}" -ne 0 ]]; then

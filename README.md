@@ -5,7 +5,7 @@ It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy 
 
 
 ## Features
-- Simple configuration via `.travis.yml` and `smalltalk.ston` ([see below for templates](#templates))
+- Simple configuration via `.travis.yml` and `.smalltalk.ston` ([see below for templates](#templates))
 - Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
 - Runs on Travis' [container-based infrastructure][cbi] ([*"Builds start in seconds"*][bsis])
 - Supports Linux and OS X and can be run locally for debug purposes
@@ -17,7 +17,7 @@ It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy 
 1. Export your project in a [compatible format](#load_formats).
 2. [Enable Travis CI for your repository][travisHowTo].
 3. Create a `.travis.yml` and specifiy the [Smalltalk image(s)](#images) you want your project to be tested against.
-4. Create a `smalltalk.ston` ([see below for templates](#templates)) and specify how to load and test your project.
+4. Create a `.smalltalk.ston` ([see below for templates](#templates)) and specify how to load and test your project.
 5. Push all of this to GitHub and enjoy your fast Smalltalk builds!
 
 
@@ -67,7 +67,7 @@ smalltalk:
   - Pharo-3.0
 ```
 
-### Minimal `smalltalk.ston` Template
+### Minimal `.smalltalk.ston` Template
 
 The following `SmalltalkCISpec` will load `BaselineOfMyProject` using
 Metacello/FileTree from the `./packages` directory in Squeak, Pharo and GemStone.
@@ -84,9 +84,9 @@ SmalltalkCISpec {
 }
 ```
 
-### Complete `smalltalk.ston` Template
+### Complete `.smalltalk.ston` Template
 
-*Please note that the `smalltalk.ston` must be a valid [STON][STON] file.*
+*Please note that the `.smalltalk.ston` must be a valid [STON][STON] file. The file can also be called just `smalltalk.ston`*
 
 ```javascript
 SmalltalkCISpec {
