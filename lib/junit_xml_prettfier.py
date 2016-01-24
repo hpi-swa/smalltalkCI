@@ -73,10 +73,9 @@ def slugify(string):
   return string.lower().replace(' ', '_')
 
 def travis_fold(name, title, body):
-  if is_travis_build():
-    print 'travis_fold:start:%s\r%s' % (name, ANSI_CLEAR)
   print title
   if is_travis_build():
+    print 'travis_fold:start:%s\r%s' % (name, ANSI_CLEAR)
     if body != '':
       print body
     print 'travis_fold:end:%s\r%s' % (name, ANSI_CLEAR)
