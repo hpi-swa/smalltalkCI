@@ -34,11 +34,7 @@ matrix:
     # Bash tests
     - language: generic
       sudo: false
-      script:
-        - bash $SMALLTALK_CI_HOME/tests/run_tests.sh
-        - bash $SMALLTALK_CI_HOME/tests/helpers_tests.sh
-        - bash $SMALLTALK_CI_HOME/tests/pharo_tests.sh
-        - bash $SMALLTALK_CI_HOME/tests/squeak_tests.sh
+      script: bash $SMALLTALK_CI_HOME/tests/all_tests.sh
 
     # Legacy Squeak builds using builderCI
     - smalltalk: Squeak-4.4

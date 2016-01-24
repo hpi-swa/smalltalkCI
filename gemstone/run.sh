@@ -20,8 +20,6 @@ gemstone::prepare_gsdevkit_home() {
 
     timer_finish
   travis_fold end clone_gsdevkit
-
-  return 0
 }
 
 ################################################################################
@@ -54,8 +52,6 @@ gemstone::prepare_stone() {
 
     timer_finish
   travis_fold end create_stone
-
-  return 0
 }
 
 ################################################################################
