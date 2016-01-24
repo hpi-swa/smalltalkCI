@@ -116,12 +116,14 @@ SmalltalkCISpec {
     /*
     By default, smalltalkCI will determine the tests to run from the given
     LoadSpecs. If this is not sufficient, it is possible to define the tests
-    on category-level or class-level in here. Test categories or classes can be
-    specified explicitly (ignore tests determined from LoadSpecs completely).
-    If you only want to include or exclude tests from the default, you can use
-    `#include` or `#exclude`.
+    on category-level or class-level in here. With `#categories` it is possible
+    to define category names or category prefixes (end with `*`), `#classes`
+    expects a list of class name symbols. Both can be specified explicitly
+    (ignore tests determined from LoadSpecs completely). If you only want to
+    include or exclude tests from the default, you can use `#include` or
+    `#exclude`.
     */
-    #categories : [ 'MyProject-Tests' ],                      // Define categories to test explicitly
+    #categories : [ 'MyProject-*' ],                          // Define categories to test explicitly
     #classes : [ #MyProjectTestCase ]                         // Define classes to test explicitly
     #include : {
       #categories : [ 'AnotherProject-Tests' ],               // Include categories to test
