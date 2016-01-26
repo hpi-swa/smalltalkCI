@@ -177,7 +177,8 @@ pharo::load_and_test_project() {
     timer_start
 
     "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval "
-      '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st' asFileReference fileIn.
+		#('Core' 'Pharo') do: [ :each | 
+			('${SMALLTALK_CI_HOME}/lib/SmalltalkCI-', each, '.st') asFileReference fileIn ].
       (Smalltalk at: #SmalltalkCI) runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
     " || status=$?
 
