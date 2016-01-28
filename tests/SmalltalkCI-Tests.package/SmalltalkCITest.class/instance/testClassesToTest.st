@@ -4,9 +4,9 @@ testClassesToTest
 		baseline: 'SmalltalkCITests';
 		platforms: { SmalltalkCI platformClass platformSymbol }).
 
+	"Test categories prefixes"
+	self classesToTestCategories.
+	
 	"Test packages prefixes (for pharo)"
 	SmalltalkCI platformClass platformSymbol = #pharo
-		ifTrue: [ ^ self classesToTestPackages ].
-			
-	"Test categories prefixes"
-	self classesToTestCategories
+		ifTrue: [ self classesToTestPackages ]

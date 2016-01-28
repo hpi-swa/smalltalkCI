@@ -24,7 +24,7 @@ classesToTestCategories
 		add: #categories->#('SmalltalkCI-*' 'Kernel-Objects');
 		yourself).
 	
-	classes := self spec classesToTest.
+	classes := self ci classesToTest.
 	self assert: (classes includes: SmalltalkCISpec).
 	self assert: (classes includes: SmalltalkCISpecTest).
 	self assert: (classes includes: Object).
@@ -37,7 +37,7 @@ classesToTestCategories
 			add: #categories->#('SmalltalkCI-Core' 'Kernel-Objects');
 			yourself);
 		yourself).
-	classes := self spec classesToTest.
+	classes := self ci classesToTest.
 	self assert: (classes includes: Dictionary).
 	self assert: (classes includes: SmalltalkCISpecTest).
 	self assert: (classes includes: SmalltalkCISpec).
@@ -54,7 +54,7 @@ classesToTestCategories
 			add: #categories->#('Kernel-Objects');
 			yourself);
 		yourself).
-	classes := self spec classesToTest.
+	classes := self ci classesToTest.
 	self assert: (classes includes: SmalltalkCISpecTest).
 	self assert: (classes includes: SmalltalkCISpec) not.
 	self assert: (classes includes: Object) not
