@@ -120,17 +120,17 @@ SmalltalkCISpec {
     default, you can use `#include` or `#exclude`.
     */
     #categories : [ 'MyProject-*' ],                          // Define categories to test explicitly
-    #classes : [ #MyProjectTestCase ]                         // Define classes to test explicitly
-    #packages : [ 'MyProject.*' ],                            // Define Pharo packages to test
+    #classes : [ #MyProjectTestCase ],                        // Define classes to test explicitly
+    #packages : [ 'MyProject.*' ]                             // Define Pharo packages to test
     #include : {
       #categories : [ 'AnotherProject-Tests' ],               // Include categories to test
-      #classes : [ #AnotherProjectTestCase ]                  // Include classes to test
-      #packages : [ 'AnotherProject.*' ],                     // Include Pharo packages to test
+      #classes : [ #AnotherProjectTestCase ],                 // Include classes to test
+      #packages : [ 'AnotherProject.*' ]                      // Include Pharo packages to test
     },
     #exclude : {
       #categories : [ 'AnotherProject-Tests' ],               // Exclude categories from testing
-      #classes : [ #AnotherProjectTestCase ]                  // Exclude classes from testing
-      #packages : [ 'AnotherProject.*' ],                     // Exclude Pharo packages from testing
+      #classes : [ #AnotherProjectTestCase ],                 // Exclude classes from testing
+      #packages : [ 'AnotherProject.*' ]                      // Exclude Pharo packages from testing
     }
   }
 }
