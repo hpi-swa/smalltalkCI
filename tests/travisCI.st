@@ -1,5 +1,6 @@
-| stream gitPath gitCache |
+| packages stream gitPath gitCache |
 Transcript cr; show: 'travis---->travisCI.st'.
+packages := #('Core' 'Gemstone' 'Pharo' 'Squeak').
 
 gitCache := 'git_cache'.
 gitPath := (Smalltalk at: #'FileDirectory' ifAbsent: [  ])
@@ -8,18 +9,20 @@ gitPath := (Smalltalk at: #'FileDirectory' ifAbsent: [  ])
 
 Smalltalk at: #MultiByteFileStream
   ifPresent: [ :mbfs |
-    stream := gitPath, '/smalltalkCI/lib/SmalltalkCI-Core.st'.
-    stream := StandardFileStream oldFileNamed: stream.
-    stream := mbfs newFrom: stream.
-    stream fileIn.
-    stream close ].
+     packages do: [ :each |
+      stream := gitPath, '/smalltalkCI/src/SmalltalkCI-', each, '.st'.
+      stream := StandardFileStream oldFileNamed: stream.
+      stream := mbfs newFrom: stream.
+      stream fileIn.
+      stream close ] ].
 Smalltalk at: #MultiByteFileStream
   ifAbsent: [
-    Smalltalk at: #BinaryOrTextFile
-      ifPresent: [
-        (BinaryOrTextFile openReadOnServer: gitPath, '/smalltalkCI/lib/SmalltalkCI-Core.st')
-          fileIn;
-          close ] ].
+    packages do: [ :each |
+      Smalltalk at: #BinaryOrTextFile
+        ifPresent: [
+          (BinaryOrTextFile openReadOnServer: gitPath, '/smalltalkCI/src/SmalltalkCI-', each, '.st')
+            fileIn;
+            close ] ] ].
 
 Metacello new
   baseline: 'SmalltalkCITests';
