@@ -123,10 +123,12 @@ SmalltalkCISpec {
     #classes : [ #MyProjectTestCase ]                         // Define classes to test explicitly
     #include : {
       #categories : [ 'AnotherProject-Tests' ],               // Include categories to test
+      #packages : [ 'AnotherProject.*' ],                     // Include packages to test (Pharo exclusive)
       #classes : [ #AnotherProjectTestCase ]                  // Include classes to test
     },
     #exclude : {
       #categories : [ 'AnotherProject-Tests' ],               // Exclude categories from testing
+      #packages : [ 'AnotherProject.*' ],                     // Exclude packages from testing (Pharo exclusive)
       #classes : [ #AnotherProjectTestCase ]                  // Exclude classes from testing
     }
   }

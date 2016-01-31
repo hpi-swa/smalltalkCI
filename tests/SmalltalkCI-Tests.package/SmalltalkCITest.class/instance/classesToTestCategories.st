@@ -1,11 +1,7 @@
 testing
-testGetTestClasses
+classesToTestCategories
 	| classes |
-	self spec addLoadSpec: (SCIMetacelloLoadSpec new
-		baseline: 'SmalltalkCITests';
-		platforms: { SmalltalkCISpec platformSymbol }).
-
-	"Test explicit test definition"
+	
 	self spec testing: (Dictionary new
 		add: #classes->#(#Dictionary);
 		add: #categories->#('SmalltalkCI-Core' 'Kernel-Objects');
@@ -18,22 +14,22 @@ testGetTestClasses
 			add: #categories->#('Kernel-Objects');
 			yourself);
 		yourself).
-	classes := self spec getTestClasses.
+	classes := self ci classesToTest.
 	self assert: (classes includes: Dictionary).
 	self assert: (classes includes: SmalltalkCISpec).
 	self assert: (classes includes: SmalltalkCISpecTest) not.
 	self assert: (classes includes: Object).
-	
-	"Test category prefixes"
+		
 	self spec testing: (Dictionary new
 		add: #categories->#('SmalltalkCI-*' 'Kernel-Objects');
 		yourself).
-	classes := self spec getTestClasses.
+	
+	classes := self ci classesToTest.
 	self assert: (classes includes: SmalltalkCISpec).
 	self assert: (classes includes: SmalltalkCISpecTest).
 	self assert: (classes includes: Object).
 	self assert: (classes includes: Error) not.
-
+	
 	"Test #include:"
 	self spec testing: (Dictionary new
 		add: #include->(Dictionary new
@@ -41,7 +37,7 @@ testGetTestClasses
 			add: #categories->#('SmalltalkCI-Core' 'Kernel-Objects');
 			yourself);
 		yourself).
-	classes := self spec getTestClasses.
+	classes := self ci classesToTest.
 	self assert: (classes includes: Dictionary).
 	self assert: (classes includes: SmalltalkCISpecTest).
 	self assert: (classes includes: SmalltalkCISpec).
@@ -58,7 +54,7 @@ testGetTestClasses
 			add: #categories->#('Kernel-Objects');
 			yourself);
 		yourself).
-	classes := self spec getTestClasses.
+	classes := self ci classesToTest.
 	self assert: (classes includes: SmalltalkCISpecTest).
 	self assert: (classes includes: SmalltalkCISpec) not.
-	self assert: (classes includes: Object) not.
+	self assert: (classes includes: Object) not
