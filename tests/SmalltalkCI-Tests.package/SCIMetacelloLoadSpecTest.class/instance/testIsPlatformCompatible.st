@@ -1,6 +1,6 @@
 testing
 testIsPlatformCompatible
-	self spec platforms: {SmalltalkCISpec platformSymbol}.
+	self spec platforms: {SmalltalkCI platformSymbol}.
 	self assert: true equals: self spec isPlatformCompatible.
 	
 	self spec platforms: #(#bogus).
