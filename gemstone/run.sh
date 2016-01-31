@@ -73,7 +73,7 @@ gemstone::load_and_test_project() {
     timer_start
 
     $GS_HOME/bin/devKitCommandLine serverDoIt ${stone_name} << EOF || status=$?
-      (BinaryOrTextFile openReadOnServer: '${SMALLTALK_CI_HOME}/lib/SmalltalkCI-Core.st')
+      (BinaryOrTextFile openReadOnServer: '${SMALLTALK_CI_HOME}/src/SmalltalkCI-Core.st')
         fileIn;
         close.
       (Smalltalk at: \#SmalltalkCI) runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
