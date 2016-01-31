@@ -9,8 +9,10 @@ fileInBlock := [ :fileName |
     basePath readOnlyFileNamed: fileName
       do: [ :fileStream | fileStream fileIn ] ].
 
-fileInBlock value: 'smalltalkCI-dev/lib/SmalltalkCI-Core.st'.
-(SCIMetacelloLoadSpec new) installDependencies.
+fileInBlock value: 'smalltalkCI-dev/src/SmalltalkCI-Core.st'.
+fileInBlock value: 'smalltalkCI-dev/src/SmalltalkCI-Squeak.st'.
+SmalltalkCISqueak installMetacello.
+SCIMetacelloLoadSpec setAuthor: 'TravisCI'.
 
 disableUpdate := Smalltalk argumentAt: 2.
 disableUpdate = 'true' ifFalse: [
