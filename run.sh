@@ -253,7 +253,7 @@ check_backward_compatibility() {
 
     cat >${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG} <<EOL
 SmalltalkCISpec {
-  #loadSpecs : [
+  #loading : [
       SCIMetacelloLoadSpec {
           #baseline : '${BASELINE}',
           #directory : '${PACKAGES}',
