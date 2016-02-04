@@ -1,0 +1,3 @@
+bootstrapping
+installMetacello
+	^ self subclassResponsibility

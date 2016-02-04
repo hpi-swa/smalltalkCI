@@ -1,0 +1,3 @@
+helpers
+isHeadless
+	^ self subclassResponsibility

@@ -1,0 +1,9 @@
+{
+	"class" : {
+		"getAuthor" : "fn 1/31/2016 21:39",
+		"installMetacello" : "fn 1/31/2016 19:30",
+		"isHeadless" : "travisCI 1/27/2016 17:03",
+		"isPlatformCompatible" : "fn 1/31/2016 17:58",
+		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:36" },
+	"instance" : {
+		 } }
