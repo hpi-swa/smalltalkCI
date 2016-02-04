@@ -1,0 +1,7 @@
+{
+	"class" : {
+		 },
+	"instance" : {
+		"setUp" : "fniep 1/10/2016 16:10",
+		"testIsComplete" : "fn 1/31/2016 19:50",
+		"testIsPlatformCompatible" : "fn 1/31/2016 19:50" } }

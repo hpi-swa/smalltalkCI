@@ -1,7 +1,7 @@
 #!/bin/bash
 
 print_info() {
-  printf "\e[0;34m%s\e[0m\n" "$1"
+  printf "\e[1;34m%s\e[0m\n" "$1"
 }
 
 print_notice() {
@@ -21,22 +21,6 @@ print_error_and_exit() {
   exit 1
 }
 
-print_debug() {
-  printf "\e[0;37m%s\e[0m\n" "$1"
-}
-
-print_timed() {
-  LAST_PRINT=$(date +%s)
-  print_info "$1"
-}
-
-print_timed_result() {
-  if [[ -n "${LAST_PRINT}" ]]; then
-    diff=$(($(date +%s) - LAST_PRINT))
-    print_info "[$1: ${diff}s]"
-  fi
-}
-
 print_help() {
   cat <<EOF
   USAGE: run.sh [options] /path/to/project
@@ -45,35 +29,49 @@ print_help() {
 
   OPTIONS:
     --builder-ci            Use builderCI (default 'false').
+    --clean                 Clear cache and delete builds.
     -d | --debug            Enable debug mode.
-    --directory             Overwrite directory.
-    --excluded-categories   Overwrite categories to be excluded (Squeak only).
-    --excluded-classes      Overwrite classes to be excluded (Squeak only).
-    --force-update          Force an update in Squeak image (default 'false').
     -h | --help             Show this help text.
-    --mc-baseline           Overwrite baseline.
-    --mc-baseline-group     Overwrite baseline group.
-    --mc-config             Overwrite Metacello configuration.
-    --mc-config-version     Overwrite Metacello configuration version.
-    -o | --keep-open        Keep image open and do not close on error.
-    --script                Overwrite custom script to run (Squeak only).
+    --headfull              Open vm in headfull mode and do not close image.
     -s | --smalltalk        Overwrite Smalltalk image selection.
     -v | --verbose          Enable 'set -x'.
 
-  EXAMPLE: run.sh -s "Squeak-trunk" --directory "subdir" /path/to/project
+  EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/project
 
 EOF
 }
 
-print_junit_xml() {
-  local path=$1
+print_results() {
+  local build_dir=$1
+  local status=0
+  local junit_xml_file
+  junit_xml_file="${build_dir}/smalltalkCI.xml"
 
-  printf "\n\n"
-  print_info "#### JUnit XML Output Start ####"
-  cat "${path}/"*.xml
+  if is_travis_build && is_file "${junit_xml_file}"; then
+    travis_fold start junit_xml "JUnit XML Output"
+      cat "${junit_xml_file}"
+    travis_fold end junit_xml
+  fi
+
+  python "${SMALLTALK_CI_HOME}/lib/junit_xml_prettfier.py" \
+      "${build_dir}" || status=$?
+
+  if is_travis_build && ! [[ ${status} -eq 0 ]]; then
+    print_steps_to_reproduce_locally $status
+  fi
+
+  return "${status}"
+}
+
+print_steps_to_reproduce_locally() {
+  local status=$1
+
   printf "\n"
-  print_info "#### JUnit XML Output End ####"
-  printf "\n\n"
+  echo "     To reproduce the failed build locally, download smalltalkCI"
+  echo "     and try to run something like:"
+  printf "\n"
+  print_notice "      ./run.sh -o -s \"${config_smalltalk}\" /path/to/project"
+  printf "\n"
 }
 
 is_empty() {
@@ -158,4 +156,55 @@ set_vars() {
   local values="${!#}"
 
   IFS='|' read -r "${variables[@]}" <<< "${values}"
+}
+
+
+################################################################################
+# Travis-related helper functions (based on https://git.io/vzcTj).
+################################################################################
+
+timer_start() {
+  timer_start_time=$(timer_nanoseconds)
+  if is_travis_build; then
+    travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
+    echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
+  fi
+}
+
+timer_finish() {
+  timer_end_time=$(timer_nanoseconds)
+  local duration=$(($timer_end_time-$timer_start_time))
+  if is_travis_build; then
+    echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
+  else
+    duration=$(echo "scale=3;${duration}/1000000000" | bc)
+    printf "\e[0;34m > Time to run: %ss \e[0m\n" "${duration}"
+  fi
+}
+
+function timer_nanoseconds() {
+  local cmd="date"
+  local format="+%s%N"
+  local os=$(uname)
+
+  if hash gdate > /dev/null 2>&1; then
+    cmd="gdate" # use gdate if available
+  elif [[ "$os" = Darwin ]]; then
+    format="+%s000000000" # fallback to second precision on darwin (does not support %N)
+  fi
+
+  $cmd -u $format
+}
+
+travis_fold() {
+  local action=$1
+  local name=$2
+  local title=$3
+
+  if is_travis_build; then
+    echo -en "travis_fold:${action}:${name}\r\033[0K"
+  fi
+  if is_not_empty "${title}"; then
+    echo -e "\033[34;1m${title}\033[0m"
+  fi
 }

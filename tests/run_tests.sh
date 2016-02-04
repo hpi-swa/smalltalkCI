@@ -1,60 +1,26 @@
-#! /bin/sh
+#!/bin/bash
 
 readonly BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "${BASE}/run.sh"
 
 test_determine_project_home() {
   local config_project_home
+  local travis="${TRAVIS}"
 
-  if [[ -z "${PROJECT_HOME}" ]]; then
-    determine_project_home "/tmp"
-    assertEquals "/tmp" "${config_project_home}"
+  determine_project_home "/tmp"
+  assertEquals "/tmp" "${config_project_home}"
 
-    determine_project_home "../"
-    assertNotNull "${config_project_home}"
-    assertEquals "/" "${config_project_home:0:1}"
+  determine_project_home "../"
+  assertEquals "/" "${config_project_home:0:1}"
 
-    PROJECT_HOME="/tmp"
-    determine_project_home "/foo"
-    assertEquals "${PROJECT_HOME}" "${config_project_home}"
-    unset PROJECT_HOME
-  else
-    determine_project_home "/tmp"
-    assertEquals "${PROJECT_HOME}" "${config_project_home}"
-  fi
+  [[ -z "${travis}" ]] && export TRAVIS="true" && export TRAVIS_BUILD_DIR="/tmp"
+  determine_project_home "/usr"
+  assertEquals "/usr" "${config_project_home}"
+  determine_project_home
+  assertEquals "${TRAVIS_BUILD_DIR}" "${config_project_home}"
+  [[ -z "${travis}" ]] && unset TRAVIS_BUILD_DIR && unset TRAVIS
 
   return 0
-}
-
-test_load_config_from_environment() {
-  local config_baseline_group=""
-  local config_directory
-  local config_force_update
-  local config_builder_ci_fallback
-  local config_run_script
-  local config_excluded_categories
-  local config_excluded_classes
-  local config_keep_open
-
-  BASELINE_GROUP="foo1"
-  PACKAGES="foo2"
-  FORCE_UPDATE="false"
-  BUILDERCI="true"
-  RUN_SCRIPT="foo.st"
-  EXCLUDE_CATEGORIES="foo3"
-  EXCLUDE_CLASSES="foo4"
-  KEEP_OPEN="true"
-
-  load_config_from_environment
-
-  assertEquals "foo1" "${config_baseline_group}"
-  assertEquals "foo2" "${config_directory}"
-  assertEquals "false" "${config_force_update}"
-  assertEquals "true" "${config_builder_ci_fallback}"
-  assertEquals "foo.st" "${config_run_script}"
-  assertEquals "foo3" "${config_excluded_categories}"
-  assertEquals "foo4" "${config_excluded_classes}"
-  assertEquals "true" "${config_keep_open}"
 }
 
 test_prepare_folders() {

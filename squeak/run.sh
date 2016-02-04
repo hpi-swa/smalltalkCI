@@ -2,39 +2,10 @@
 
 set -e
 
-readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts"
-readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}/filetreeci/images"
-readonly VM_DOWNLOAD="http://mirandabanda.org/files/Cog/VM/VM.r3427"
-
-################################################################################
-# Check options and set defaults if unavailable.
-# Locals:
-#   config_baseline_group
-#   config_exclude_categories
-#   config_exclude_classes
-#   config_force_update
-#   config_keep_open
-#   config_run_script
-#   config_project_home
-# Globals:
-#   SMALLTALK_CI_HOME
-################################################################################
-squeak::check_options() {
-  is_empty "${config_baseline}" && config_baseline="nil"
-  is_empty "${config_baseline_group}" && config_baseline_group="TravisCI"
-  is_empty "${config_configuration}" && config_configuration="nil"
-  is_empty "${config_configuration_version}" && config_configuration_version="nil"
-  is_empty "${config_exclude_categories}" && config_exclude_categories="nil"
-  is_empty "${config_exclude_classes}" && config_exclude_classes="nil"
-  is_empty "${config_force_update}" && config_force_update="false"
-  is_empty "${config_keep_open}" && config_keep_open="false"
-  if is_empty "${config_run_script}"; then
-    config_run_script="${SMALLTALK_CI_HOME}/squeak/run.st"
-  else
-    config_run_script="${config_project_home}/${config_run_script}"
-  fi
-  return 0
-}
+readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/\
+smalltalkci"
+readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}"
+readonly VM_DOWNLOAD="${BASE_DOWNLOAD}/vms"
 
 ################################################################################
 # Select Squeak image. Exit with '1' if smalltalk_name is unsupported.
@@ -86,14 +57,18 @@ squeak::prepare_image() {
   target="${SMALLTALK_CI_CACHE}/${image_filename}"
 
   if ! is_file "${target}"; then
-    print_timed "Downloading ${smalltalk_name} testing image..."
-    set +e
-    download_file "${download_url}" > "${target}"
-    if [[ ! $? -eq 0 ]]; then
-      print_error_and_exit "Download failed."
-    fi
-    set -e
-    print_timed_result "Time to download ${smalltalk_name} testing image"
+    travis_fold start download_image "Downloading ${smalltalk_name} testing image..."
+      timer_start
+
+      set +e
+      download_file "${download_url}" > "${target}"
+      if [[ ! $? -eq 0 ]]; then
+        print_error_and_exit "Download failed."
+      fi
+      set -e
+
+      timer_finish
+    travis_fold end download_image
   fi
 
   print_info "Extracting image..."
@@ -125,10 +100,10 @@ squeak::get_vm_details() {
     "Linux")
       if [[ "$require_spur" -eq 1 ]]; then
         vm_filename="cogspurlinux-15.33.3427.tgz"
-        vm_path="${SMALLTALK_CI_VMS}/cogspurlinux/bin/squeak"
+        vm_path="${SMALLTALK_CI_VMS}/cogspurlinux/squeak"
       else
         vm_filename="coglinux-15.33.3427.tgz"
-        vm_path="${SMALLTALK_CI_VMS}/coglinux/bin/squeak"
+        vm_path="${SMALLTALK_CI_VMS}/coglinux/squeak"
       fi
       ;;
     "Darwin")
@@ -168,18 +143,24 @@ squeak::prepare_vm() {
   set_vars vm_filename vm_path "${vm_details}"
   download_url="${VM_DOWNLOAD}/${vm_filename}"
   target="${SMALLTALK_CI_CACHE}/${vm_filename}"
+  squeakssl_target="${SMALLTALK_CI_CACHE}/squeakssl.zip"
+  squeakssl_bin="${SMALLTALK_CI_CACHE}/linux32/SqueakSSL"
 
   export SMALLTALK_CI_VM="${vm_path}"
 
   if ! is_file "${target}"; then
-    print_timed "Downloading virtual machine..."
-    set +e
-    download_file "${download_url}" > "${target}"
-    if [[ ! $? -eq 0 ]]; then
-      print_error_and_exit "Download failed."
-    fi
-    set -e
-    print_timed_result "Time to download virtual machine"
+    travis_fold start download_vm "Downloading virtual machine..."
+      timer_start
+
+      set +e
+      download_file "${download_url}" > "${target}"
+      if [[ ! $? -eq 0 ]]; then
+        print_error_and_exit "Download failed."
+      fi
+      set -e
+
+      timer_finish
+    travis_fold end download_vm
   fi
 
   if ! is_file "${SMALLTALK_CI_VM}"; then
@@ -190,108 +171,50 @@ squeak::prepare_vm() {
     fi
   fi
 
-  print_info "Cog VM Information:"
-  "${SMALLTALK_CI_VM}" -version
+  travis_fold start display_vm_version "Cog VM Information"
+    "${SMALLTALK_CI_VM}" -version
+  travis_fold end display_vm_version
 }
 
 ################################################################################
 # Load project and save image.
-# Locals:
-#   config_directory
-#   config_baseline
-#   config_baseline_group
-#   config_configuration
-#   config_configuration_version
-#   config_force_update
-#   config_keep_open
-#   config_run_script
 # Globals:
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
 # Returns:
 #   Status code of build
 ################################################################################
-squeak::load_project() {
-  local vm_args
+squeak::load_and_test_project() {
   local cog_vm_flags=()
-  local load_script
-  local load_status=0
+  local status=0
 
-  print_info "Load project into image..."
+  travis_fold start load_and_test "Loading and testing project..."
+    timer_start
 
-  if is_travis_build && [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
-    cog_vm_flags=(-nosound -nodisplay)
-  fi
+    if is_travis_build || [[ "${config_headless}" = "true" ]]; then
+      case "$(uname -s)" in
+        "Linux")
+          cog_vm_flags=(-nosound -nodisplay)
+          ;;
+        "Darwin")
+          cog_vm_flags=(-headless)
+          ;;
+      esac
+    fi
 
-  if [[ "${config_baseline}" != "nil" ]]; then
-    load_script="${SMALLTALK_CI_HOME}/squeak/load_baseline.st"
-    vm_args=(
-        ${config_directory} \
-        ${config_baseline} \
-        ${config_baseline_group} \
-        ${config_force_update} \
-        ${config_keep_open}
-    )
+    cat >$SMALLTALK_CI_BUILD/run.st <<EOL
+  SmalltalkCI runCIFor: '${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
+EOL
 
     "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
-        "${load_script}" "${vm_args[@]}" || load_status=$?
-  elif [[ "${config_configuration}" != "nil" ]]; then
-    load_script="${SMALLTALK_CI_HOME}/squeak/load_configuration.st"
-    vm_args=(
-        ${config_directory} \
-        ${config_configuration} \
-        ${config_configuration_version} \
-        ${config_force_update} \
-        ${config_keep_open}
-    )
+        "${SMALLTALK_CI_BUILD}/run.st" || status=$?
 
-    "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
-        "${load_script}" "${vm_args[@]}" || load_status=$?
-  else
-    print_error "No Metacello baseline or configuration specified."
-    return 1
-  fi
+    printf "\n" # Squeak exit msg is missing a linebreak
 
-  printf "\n" # Squeak exit msg is missing a linebreak
+    timer_finish
+  travis_fold end load_and_test
 
-  return "${load_status}"
-}
-
-################################################################################
-# Run tests for baseline.
-# Locals:
-#   config_baseline
-#   config_exclude_categories
-#   config_exclude_classes
-#   config_keep_open
-#   config_run_script
-# Globals:
-#   SMALLTALK_CI_IMAGE
-#   SMALLTALK_CI_VM
-# Returns:
-#   Status code of build
-################################################################################
-squeak::run_tests() {
-  local vm_args
-  local cog_vm_flags=()
-
-  print_info "Run tests..."
-
-  vm_args=(
-      ${config_baseline} \
-      ${config_configuration} \
-      ${config_exclude_categories} \
-      ${config_exclude_classes} \
-      ${config_keep_open}
-  )
-
-  if is_travis_build && [[ "${TRAVIS_OS_NAME}" = "linux" ]]; then
-    cog_vm_flags=(-nosound -nodisplay)
-  fi
-
-  "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
-      "${config_run_script}" "${vm_args[@]}"
-  return $?
+  return "${status}"
 }
 
 ################################################################################
@@ -302,17 +225,9 @@ squeak::run_tests() {
 run_build() {
   local exit_status=0
 
-  squeak::check_options
   squeak::prepare_image "${config_smalltalk}"
   squeak::prepare_vm
+  squeak::load_and_test_project || exit_status=$?
 
-  squeak::load_project || exit_status=$?
-
-  if [[ ! ${exit_status} -eq 0 ]]; then
-    print_error "Project could not be loaded."
-    return "${exit_status}"
-  fi
-
-  squeak::run_tests || exit_status=$?
   return "${exit_status}"
 }

@@ -8,6 +8,7 @@ source "${SCRIPT_PATH}/helpers.sh"
 
 readonly BUILDER_CI_REPO_URL="https://github.com/dalehenrich/builderCI"
 readonly BUILDER_CI_DOWNLOAD_URL="${BUILDER_CI_REPO_URL}/archive/master.zip"
+SMALLTALK_CI_DEFAULT_CONFIG='smalltalk.ston'
 
 ################################################################################
 # Check OS to be Linux or OS X, otherwise exit with '1'.
@@ -24,20 +25,20 @@ check_os() {
 }
 
 ################################################################################
-# Set and verify $config_project_home. Use $PROJECT_HOME if set, otherwise use
-# path provided as argument.
+# Set and verify $config_project_home. Use $TRAVIS_BUILD_DIR if set, otherwise
+# use path provided as argument.
 # Locals:
 #   config_project_home
 # Globals:
-#   PROJECT_HOME
+#   TRAVIS_BUILD_DIR
 # Arguments:
 #   Custom project home path
 ################################################################################
 determine_project_home() {
   local custom_home=$1
 
-  if is_not_empty "${PROJECT_HOME}"; then
-    config_project_home="${PROJECT_HOME}"
+  if is_travis_build && ! is_dir "${custom_home}"; then
+    config_project_home="${TRAVIS_BUILD_DIR}"
   else
     config_project_home="${custom_home}"
   fi
@@ -52,78 +53,13 @@ determine_project_home() {
 }
 
 ################################################################################
-# Use global environment variables to set local configuration variables.
-# Locals:
-#   config_baseline_group
-#   config_directory
-#   config_force_update
-#   config_builder_ci_fallback
-#   config_run_script
-#   config_excluded_categories
-#   config_excluded_classes
-#   config_keep_open
-# Globals:
-#   BASELINE_GROUP
-#   BUILDERCI
-#   EXCLUDE_CATEGORIES
-#   EXCLUDE_CLASSES
-#   FORCE_UPDATE
-#   KEEP_OPEN
-#   PACKAGES
-#   RUN_SCRIPT
-################################################################################
-load_config_from_environment() {
-  is_not_empty "${BASELINE_GROUP}" \
-      && config_baseline_group="${BASELINE_GROUP}"
-  is_not_empty "${PACKAGES}" \
-      && config_directory="${PACKAGES}"
-  is_not_empty "${FORCE_UPDATE}" \
-      && config_force_update="${FORCE_UPDATE}"
-  is_not_empty "${BUILDERCI}" \
-      && config_builder_ci_fallback="${BUILDERCI}"
-  is_not_empty "${RUN_SCRIPT}" \
-      && config_run_script="${RUN_SCRIPT}"
-  is_not_empty "${EXCLUDE_CATEGORIES}" \
-      && config_excluded_categories="${EXCLUDE_CATEGORIES}"
-  is_not_empty "${EXCLUDE_CLASSES}" \
-      && config_excluded_classes="${EXCLUDE_CLASSES}"
-  is_not_empty "${KEEP_OPEN}" \
-      && config_keep_open="${KEEP_OPEN}"
-  return 0
-}
-
-################################################################################
-# Check if project's '.travis.yml' exists and call yml parser to load config.
-# Locales:
-#   project_home
-################################################################################
-load_config_from_yml() {
-  local user_travis_conf="${config_project_home}/.travis.yml"
-
-  if is_file "${user_travis_conf}"; then
-    eval "$(ruby "${SCRIPT_PATH}/yaml_parser.rb" "${user_travis_conf}")"
-  else
-    print_notice "Could not find '${user_travis_conf}'."
-  fi
-}
-
-################################################################################
 # Validate options and exit with '1' if an option is invalid.
 # Locals:
 #   config_smalltalk
-#   config_baseline
-#   config_directory
 ################################################################################
 validate_configuration() {
   if is_empty "${config_smalltalk}"; then
     print_error_and_exit "Smalltalk image is not defined."
-  fi
-  if is_empty "${config_baseline}" && is_empty "${config_configuration}"; then
-    print_error_and_exit "No Metacello baseline or configuration specified."
-  fi
-  if [[ "${directory:0:1}" = "/" ]]; then
-    directory=${directory:1}
-    print_notice "Please remove the leading slash from 'directory'."
   fi
 }
 
@@ -143,15 +79,7 @@ check_and_set_paths() {
 # Load options from project's '.travis.yml', global environment variables and
 # user's parameters.
 # Locals:
-#   config_baseline
-#   config_baseline_group
 #   config_builder_ci_fallback
-#   config_directory
-#   config_excluded_categories
-#   config_excluded_classes
-#   config_force_update
-#   config_keep_open
-#   config_run_script
 #   config_smalltalk
 # Arguments:
 #   All positional parameters
@@ -160,12 +88,9 @@ parse_args() {
   if ! is_travis_build && [[ $# -eq 0 ]]; then
     print_help
     exit 0
-  fi  
+  fi
 
   determine_project_home "${!#}" # Use last argument as fallback path
-  load_config_from_yml
-  load_config_from_environment
-
 
   # Handle all arguments and flags
   while :
@@ -179,57 +104,17 @@ parse_args() {
       config_clean="true"
       shift
       ;;
-    --directory)
-      config_directory="$2"
-      shift 2
-      ;;
     -d | --debug)
       config_debug="true"
-      shift
-      ;;
-    --excluded-categories)
-      config_excluded_categories="$2"
-      shift 2
-      ;;
-    --excluded-classes)
-      config_excluded_classes="$2"
-      shift 2
-      ;;
-    --force-update)
-      config_force_update="true"
       shift
       ;;
     -h | --help)
       print_help
       exit 0
       ;;
-    --mc-baseline)
-      config_baseline="$2"
-      # Clear configuration
-      config_configuration=""
-      shift 2
-      ;;
-    --mc-baseline-group)
-      config_baseline_group="$2"
-      shift 2
-      ;;
-    --mc-config)
-      config_configuration="$2"
-      # Clear baseline
-      config_baseline=""
-      shift 2
-      ;;
-    --mc-config-version)
-      config_configuration_version="$2"
-      shift 2
-      ;;
-    -o | --keep-open)
-      config_keep_open="true"
+    --headfull)
+      config_headless="false"
       shift
-      ;;
-    --script)
-      config_run_script="$2"
-      shift 2
       ;;
     -s | --smalltalk)
       config_smalltalk="$2"
@@ -246,7 +131,7 @@ parse_args() {
     -*)
       print_error_and_exit "Unknown option: $1"
       ;;
-    *) 
+    *)
       break
       ;;
     esac
@@ -256,8 +141,7 @@ parse_args() {
 }
 
 is_fallback_enabled() {
-  [[ "${config_builder_ci_fallback}" = "true" ]] \
-      || [[ "${config_smalltalk}" == "GemStone"* ]]
+  [[ "${config_builder_ci_fallback}" = "true" ]]
 }
 
 ################################################################################
@@ -327,6 +211,63 @@ prepare_folders() {
   ln -s "${config_project_home}" "${SMALLTALK_CI_GIT}"
 }
 
+################################################################################
+# Allow STON config filename to start with a dot.
+# Locals:
+#   config_project_home
+# Globals:
+#   SMALLTALK_CI_DEFAULT_CONFIG
+################################################################################
+locate_ston_config() {
+  if ! is_file "${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}"; then
+    if is_file "${config_project_home}/.${SMALLTALK_CI_DEFAULT_CONFIG}"; then
+      SMALLTALK_CI_DEFAULT_CONFIG=".${SMALLTALK_CI_DEFAULT_CONFIG}"
+    fi
+  fi
+}
+
+################################################################################
+# Provide backward compatibility by creating a config file if not present.
+# Locals:
+#   config_project_home
+# Globals:
+#   BASELINE
+#   PACKAGES
+#   SMALLTALK_CI_DEFAULT_CONFIG
+################################################################################
+check_backward_compatibility() {
+  local load
+
+  if ! is_file "${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}"; then
+    print_error "No SmalltalkCISpec found for the project!"
+    print_info "Creating a SmalltalkCISpec..."
+
+    case "${config_smalltalk}" in
+      Squeak*)
+        load="TravisCI"
+        ;;
+      *)
+        load="default"
+        ;;
+    esac
+
+    cat >${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG} <<EOL
+SmalltalkCISpec {
+  #loading : [
+      SCIMetacelloLoadSpec {
+          #baseline : '${BASELINE}',
+          #directory : '${PACKAGES}',
+          #load : [ '${load}' ],
+          #platforms : [ #squeak, #pharo, #gemstone ]
+      }
+  ]
+}
+EOL
+    print_error "=============================================================="
+    cat ${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}
+    print_error "=============================================================="
+  fi
+}
 
 ################################################################################
 # Run cleanup if requested by user.
@@ -355,7 +296,8 @@ check_clean_up() {
 #   SMALLTALK_CI_BUILD_BASE
 ################################################################################
 clean_up() {
-  if is_dir "${SMALLTALK_CI_CACHE}" || ! is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+  if is_dir "${SMALLTALK_CI_CACHE}" || \
+        ! is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
     print_info "Cleaning up..."
     print_info "Removing the following directories:"
     print_info "  ${SMALLTALK_CI_CACHE}"
@@ -384,44 +326,25 @@ run() {
       print_info "Starting Pharo build..."
       source "${SMALLTALK_CI_HOME}/pharo/run.sh"
       ;;
+    GemStone*)
+      print_info "Starting GemStone build..."
+      source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
+      ;;
     *)
       print_error_and_exit "Unknown Smalltalk version '${config_smalltalk}'."
       ;;
   esac
 
   if debug_enabled; then
-    print_debug "Configuration before platform-specific code:"
-    for var in ${!config_@}; do
-      print_debug "${var}=${!var}"
-    done
+    travis_fold start display_config "Current configuration"
+      for var in ${!config_@}; do
+        echo "${var}=${!var}"
+      done
+    travis_fold end display_config
   fi
 
   run_build
   return $?
-}
-
-################################################################################
-# Print success or failure message according to the status code provided.
-# Arguments:
-#   Status code
-################################################################################
-check_build_status() {
-  local status=$1
-
-  printf "\n\n"
-  if [[ ${status} -eq 0 ]]; then
-    print_success "Build successful :)"
-  else
-    print_error "Build failed :("
-    if is_travis_build; then
-      printf "\n\n"
-      print_info "To reproduce the failed build locally, download
-        smalltalkCI and try running something like:"
-      printf "\n"
-      print_notice "./run.sh -o -s \"${config_smalltalk}\" /path/to/project"
-    fi
-  fi
-  printf "\n"
 }
 
 ################################################################################
@@ -430,22 +353,12 @@ check_build_status() {
 #   All positional parameters
 ################################################################################
 main() {
-  local config_smalltalk="${SMALLTALK}"
+  local config_smalltalk="${TRAVIS_SMALLTALK_VERSION}"
   local config_project_home
-  local config_baseline
-  local config_baseline_group
   local config_builder_ci_fallback="false"
   local config_clean="false"
-  local config_configuration
-  local config_configuration_version="#stable"
   local config_debug="false"
-  local config_directory="packages"
-  local config_excluded_categories
-  local config_excluded_classes
-  local config_force_update
-  local config_keep_open="false"
-  local config_run_script
-  local config_tests
+  local config_headless="true"
   local config_verbose="false"
   local exit_status=0
 
@@ -459,10 +372,16 @@ main() {
     builder_ci_fallback || exit_status=$?
   else
     prepare_folders
+    locate_ston_config
+    check_backward_compatibility
     run || exit_status=$?
+    if [[ "${exit_status}" -ne 0 ]]; then
+      print_error "Failed to load and test project."
+      exit ${exit_status}
+    fi
   fi
-  
-  check_build_status "${exit_status}"
+
+  print_results "${SMALLTALK_CI_BUILD}" || exit_status=$?
   exit ${exit_status}
 }
 

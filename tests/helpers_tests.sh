@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 readonly BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "${BASE}/helpers.sh"
@@ -28,10 +28,10 @@ test_is_not_empty() {
 }
 
 test_is_file() {
-  if is_file "foo.txt"; then
+  if is_file "${BASE}/foo.txt"; then
     fail "foo.txt should not be a file."
   fi
-  if ! is_file "run.sh"; then
+  if ! is_file "${BASE}/run.sh"; then
     fail "run.sh should be a file."
   fi
 }
