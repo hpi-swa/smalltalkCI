@@ -1,6 +1,6 @@
 testing
-testClassesToTestBug
-  "make sure that no errors are thrown if an excluded test isn't preent in test set"
+testClassesForIssue49
+  "https://github.com/hpi-swa/smalltalkCI/issues/49"
 
   | classes |
   self spec
