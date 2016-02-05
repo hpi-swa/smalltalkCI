@@ -8,7 +8,23 @@ beginTestCase: aTestCase runBlock: aBlock
     nextPutAll: aTestCase selector;
     nextPutAll: ' ... '.
   time := self formatTime: aBlock timeToRun.
-  progressFile
-    nextPutAll: '" time="';
-    nextPutAll: (time printShowingDecimalPlaces: 3);
-    nextPutAll: ' ... '
+  self produceXMLLog
+    ifTrue: [ 
+      stream
+        tab;
+        nextPutAll: '<testcase classname="';
+        nextPutAll:
+            (self encode: (aTestCase class category copyReplaceAll: '-' with: '.'));
+        nextPut: $.;
+        nextPutAll: (self encode: aTestCase class name);
+        nextPutAll: '" name="';
+        nextPutAll: (self encode: aTestCase selector);
+        nextPutAll: '" time="';
+        nextPutAll: (time printShowingDecimalPlaces: 3);
+        nextPutAll: '">';
+        lf ]
+    ifFalse: [ 
+      progressFile
+        nextPutAll: '" time="';
+        nextPutAll: (time printShowingDecimalPlaces: 3);
+        nextPutAll: ' ... ' ]

@@ -10,7 +10,11 @@
 		"suiteTime",
 		"suiteFailures",
 		"suiteErrors",
-		"progressFile" ],
+		"progressFile",
+		"stream",
+		"suitePosition",
+		"produceXMLLog",
+		"oldTranscript" ],
 	"name" : "SCITestReport",
 	"pools" : [
 		 ],
