@@ -24,7 +24,7 @@ tearDown
         nextPutAll: '">'.
       stream close.
       progressFile
-        print: self;
+        nextPutAll: self printString;
         cr;
         nextPutAll: 'finished running suite: ';
         nextPutAll: suite name ]
