@@ -40,13 +40,13 @@ TDScriptLeafNode{#name:'smalltalkCI',#contents:'[ :topez :objIn :tokens :command
             asTDLeafNode parent directoryEntry fullName.
           ciResult := SmalltalkCI
             runCIForSpec: smalltalkCISpec
-            projectDirectory: projectDirectoryPath ].
+            projectDirectory: projectDirectoryPath 
+    produceXMLLog: false].
       opts
         at: \'custom\'
         ifPresent: [ :arg | 
           | smalltalkCISpec projectDirectoryPath ciResult |
           smalltalkCISpec := shellTool resolveAtPathReference: arg.
-          
           true
             ifTrue: [ 
               projectDirectoryPath := (shellTool resolveAtPathNodeReference: arg) asTDLeafNode
@@ -80,4 +80,4 @@ EXAMPLES
   /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Gemstone.st
   /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Report.st
 \'
-        topez: topez ] ]',#creationTime:DateAndTime['2016-02-04T13:10:46.155944108963-08:00'],#modificationTime:DateAndTime['2016-02-04T18:15:13.6813039779663-08:00']}
+        topez: topez ] ]',#creationTime:DateAndTime['2016-02-04T13:10:46.155944108963-08:00'],#modificationTime:DateAndTime['2016-02-05T10:20:45.8105928897857-08:00']}
