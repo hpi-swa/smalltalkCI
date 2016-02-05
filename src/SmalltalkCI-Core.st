@@ -233,7 +233,7 @@ classesToTest
 	spec testing 
 		at: #exclude 
 		ifPresent: [ :excludeDict |
-			classes removeAll: (self classesToTestFrom: excludeDict) ].
+			classes removeAllFoundIn: (self classesToTestFrom: excludeDict) ].
 	
 	^ classes! !
 
