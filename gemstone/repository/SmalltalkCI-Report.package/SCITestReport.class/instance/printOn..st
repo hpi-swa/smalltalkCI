@@ -7,7 +7,7 @@ printOn: aStream
     nextPutAll: '# ' , suite name , ': ';
     nextPutAll: self suiteTotal printString , ' Tests, ';
     nextPutAll: self suiteFailures printString , ' Failures, ';
-    nextPutAll: self suieErrors printString , ' Errors in ';
+    nextPutAll: self suiteErrors printString , ' Errors in ';
     nextPutAll:
         ((self formatTime: suiteTime) printShowingDecimalPlaces: 3) , 's';
     cr;
