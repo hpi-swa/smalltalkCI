@@ -11,8 +11,6 @@ testClassesToTestBug
   self spec
     testing:
       (Dictionary new
-        add: #'classes' -> #(#'Dictionary');
-        add: #'categories' -> #('SmalltalkCI-Core');
         add:
             #'exclude'
                 ->
