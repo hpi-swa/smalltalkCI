@@ -6,6 +6,7 @@ TDScriptLeafNode{#name:'smalltalkCI',#contents:'[ :topez :objIn :tokens :command
       {#(\'help\' $h #\'none\').
       #(\'filein\' nil #\'required\').
       #(\'test\' nil #\'required\').
+      #(\'custom\' nil #\'required\').
       #(\'loadTests\' nil #\'required\')}
     optionsAndArguments: [ :options :operands | 
       opts := options.
@@ -39,8 +40,21 @@ TDScriptLeafNode{#name:'smalltalkCI',#contents:'[ :topez :objIn :tokens :command
             asTDLeafNode parent directoryEntry fullName.
           ciResult := SmalltalkCI
             runCIForSpec: smalltalkCISpec
-            projectDirectory: projectDirectoryPath.
-          self halt ] ]
+            projectDirectory: projectDirectoryPath ].
+      opts
+        at: \'custom\'
+        ifPresent: [ :arg | 
+          | smalltalkCISpec projectDirectoryPath ciResult |
+          smalltalkCISpec := shellTool resolveAtPathReference: arg.
+          
+          true
+            ifTrue: [ 
+              projectDirectoryPath := (shellTool resolveAtPathNodeReference: arg) asTDLeafNode
+                parent directoryEntry fullName.
+              smalltalkCISpec testing removeKey: #\'exclude\' ifAbsent: [  ].
+              ciResult := SmalltalkCI
+                runCIForSpec: smalltalkCISpec
+                projectDirectory: projectDirectoryPath ] ] ]
     ifPresent: [ :ignored | 
       TDManPage
         viewManPage:
@@ -48,7 +62,7 @@ TDScriptLeafNode{#name:'smalltalkCI',#contents:'[ :topez :objIn :tokens :command
   smalltalkCI - smalltalkCI script utility template
 SYNOPSIS
   smalltalkCI [-h|--help] [--filein=<file-path] [--loadTests=<test-repo-path>] \\
-              [--test=<smalltalk.ston-file-path>]
+              [--test=<smalltalk.ston-file-path>] [--custom=<smalltalk.ston-file-path>]
 DESCRIPTION
   First off, you should `mount` the gemstone/tode directory in the SmalltalkCI project:
 
@@ -57,6 +71,7 @@ DESCRIPTION
 EXAMPLES
   ./smalltalkCI -h
 
+  /home/smalltalkCI/smalltalkCI --custom=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
   /home/smalltalkCI/smalltalkCI --test=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
 
   /home/smalltalkCI/smalltalkCI --loadTests=@/sys/stone/dirs/SmalltalkCI/tests
@@ -65,4 +80,4 @@ EXAMPLES
   /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Gemstone.st
   /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Report.st
 \'
-        topez: topez ] ]',#creationTime:DateAndTime['2016-02-04T13:10:46.155944108963-08:00'],#modificationTime:DateAndTime['2016-02-04T16:36:22.5784010887146-08:00']}
+        topez: topez ] ]',#creationTime:DateAndTime['2016-02-04T13:10:46.155944108963-08:00'],#modificationTime:DateAndTime['2016-02-04T18:15:13.6813039779663-08:00']}
