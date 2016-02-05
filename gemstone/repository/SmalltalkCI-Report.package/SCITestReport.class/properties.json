@@ -13,8 +13,7 @@
 		"progressFile",
 		"stream",
 		"suitePosition",
-		"produceXMLLog",
-		"oldTranscript" ],
+		"produceXMLLog" ],
 	"name" : "SCITestReport",
 	"pools" : [
 		 ],

@@ -8,6 +8,7 @@ writeException: error stack: stack
         nextPutAll:
             (self encode: (error messageText ifNil: [ error description ]));
         nextPutAll: '">';
+        cr;
         nextPutAll: (self encode: stack) ]
     ifFalse: [ 
       progressFile

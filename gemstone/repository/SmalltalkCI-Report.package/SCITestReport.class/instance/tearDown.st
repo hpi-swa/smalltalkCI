@@ -36,5 +36,4 @@ tearDown
         cr ].
   progressFile
     nextPutAll: 'finished running suite: ';
-    nextPutAll: suite name.
-  Transcript := oldTranscript
+    nextPutAll: suite name
