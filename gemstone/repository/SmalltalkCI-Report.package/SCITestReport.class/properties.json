@@ -7,8 +7,6 @@
 	"commentStamp" : "TorstenBergmann 2/12/2014 22:31",
 	"instvars" : [
 		"suite",
-		"stream",
-		"suitePosition",
 		"suiteTime",
 		"suiteFailures",
 		"suiteErrors",

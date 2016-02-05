@@ -2,5 +2,7 @@ initialization
 initialize
   super initialize.
   suiteTime := 0 asDuration.
-  suitePosition := suiteFailures := suiteErrors := 0.
-  progressFile := StandardFileStream stdout
+  suiteFailures := suiteErrors := 0.
+  true
+    ifTrue: [ progressFile := Transcript ]
+    ifFalse: [ progressFile := GsFile stdoutServer ]

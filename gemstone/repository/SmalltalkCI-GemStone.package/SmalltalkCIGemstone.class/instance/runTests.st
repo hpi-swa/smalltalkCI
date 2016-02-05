@@ -1,3 +1,3 @@
 executing
 runTests
-	self subclassResponsibility
+  SCITestReport runClasses: self classesToTest named: 'SmalltalkCI'
