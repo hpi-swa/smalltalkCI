@@ -36,4 +36,6 @@ tearDown
         cr ].
   progressFile
     nextPutAll: 'finished running suite: ';
-    nextPutAll: suite name
+    nextPutAll: suite name;
+    cr;
+    print: self
