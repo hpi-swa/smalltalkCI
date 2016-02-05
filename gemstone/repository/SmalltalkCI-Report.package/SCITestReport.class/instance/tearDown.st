@@ -22,7 +22,12 @@ tearDown
         nextPutAll: '" time="';
         nextPutAll: ((self formatTime: suiteTime) printShowingDecimalPlaces: 3);
         nextPutAll: '">'.
-      stream close ]
+      stream close.
+      progressFile
+        print: self;
+        cr;
+        nextPutAll: 'finished running suite: ';
+        nextPutAll: suite name ]
     ifFalse: [ 
       progressFile
         nextPutAll: ' failures=';
@@ -33,9 +38,6 @@ tearDown
         nextPutAll: ' time=';
         nextPutAll: ((self formatTime: suiteTime) printShowingDecimalPlaces: 3);
         nextPutAll: ' seconds elapsed.';
-        cr ].
-  progressFile
-    nextPutAll: 'finished running suite: ';
-    nextPutAll: suite name;
-    cr;
-    print: self
+        cr;
+        nextPutAll: 'finished running suite: ';
+        nextPutAll: suite name ]
