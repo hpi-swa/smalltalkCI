@@ -11,5 +11,5 @@ classesToTest
     ifPresent: [ :includeDict | classes addAll: (self classesToTestFrom: includeDict) ].
   spec testing
     at: #'exclude'
-    ifPresent: [ :excludeDict | classes removeAll: (self classesToTestFrom: excludeDict) ].
+    ifPresent: [ :excludeDict | classes removeAllFoundIn: (self classesToTestFrom: excludeDict) ].
   ^ classes
