@@ -277,6 +277,11 @@ spec: aSmalltalkCISpec
 	spec := aSmalltalkCISpec! !
 
 
+!SmalltalkCI methodsFor: 'accessing' stamp: 'dkh 2/4/2016 16:01'!
+projectDirectory: aDirectoryPathString
+  projectDirectory := aDirectoryPathString! !
+
+
 !SmalltalkCI methodsFor: 'initialization' stamp: 'fn 1/31/2016 22:08'!
 initialize
 	SmalltalkCI platformClass requireSTON! !
@@ -304,6 +309,15 @@ SmalltalkCI class
 !SmalltalkCI class methodsFor: 'instance creation' stamp: 'travisCI 1/27/2016 17:10'!
 new
 	self error: 'Use #runCIFor:'! !
+
+
+!SmalltalkCI class methodsFor: 'executing' stamp: 'dkh 2/4/2016 16:01'!
+runCIForSpec: aSmalltalkCISpec projectDirectory: aDirectoryPathString
+  ^ self platformClass basicNew
+    initialize;
+    spec: aSmalltalkCISpec;
+    projectDirectory: aDirectoryPathString;
+    runCI! !
 
 
 !SmalltalkCI class methodsFor: 'executing' stamp: 'EstebanLorenzano 1/26/2016 17:36'!
