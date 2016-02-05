@@ -123,7 +123,7 @@ writeError: error stack: stack
   stream nextPutAll: '</error>'; lf! !
 
 !SCITestReport methodsFor: 'private' stamp: 'CamilloBruni 7/20/2012 16:53'!
-writeException: error stack: stack.
+writeException: error stack: stack
 
   stream
     nextPutAll: (self encode: error class name);

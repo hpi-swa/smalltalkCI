@@ -63,5 +63,6 @@ EXAMPLES
 
   /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Core.st
   /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Gemstone.st
+  /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Report.st
 \'
-        topez: topez ] ]',#creationTime:DateAndTime['2016-02-04T13:10:46.155944108963-08:00'],#modificationTime:DateAndTime['2016-02-04T15:42:00.5852119922637-08:00']}
+        topez: topez ] ]',#creationTime:DateAndTime['2016-02-04T13:10:46.155944108963-08:00'],#modificationTime:DateAndTime['2016-02-04T16:36:22.5784010887146-08:00']}
