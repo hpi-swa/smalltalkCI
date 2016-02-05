@@ -1,3 +1,3 @@
 helpers
 getAuthor
-	^ (Smalltalk at: #MCPlatformSupport) authorInitialsPerSe
+  ^ (Smalltalk at: #'MCPlatformSupport') authorInitials

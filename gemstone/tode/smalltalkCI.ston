@@ -1,0 +1,67 @@
+TDScriptLeafNode{#name:'smalltalkCI',#contents:'[ :topez :objIn :tokens :command :commandNode | 
+  | opts args |
+  \"for help: ./smalltalkCI -h\"
+  command
+    getOptsMixedLongShort:
+      {#(\'help\' $h #\'none\').
+      #(\'filein\' nil #\'required\').
+      #(\'test\' nil #\'required\').
+      #(\'loadTests\' nil #\'required\')}
+    optionsAndArguments: [ :options :operands | 
+      opts := options.
+      args := operands ].
+  opts
+    at: \'help\'
+    ifAbsent: [ 
+      | shellTool |
+      shellTool := topez toolInstanceFor: \'mount\'.
+      opts
+        at: \'filein\'
+        ifPresent: [ :arg | 
+          | chunkFileEntry |
+          chunkFileEntry := shellTool resolveFilePath: arg.
+          (BinaryOrTextFile openReadOnServer: chunkFileEntry fullName) fileIn ].
+      opts
+        at: \'loadTests\'
+        ifPresent: [ :arg | 
+          | reposFileEntry |
+          reposFileEntry := shellTool resolveFilePath: arg.
+          Metacello new
+            baseline: \'SmalltalkCITests\';
+            repository: \'filetree://\' , reposFileEntry fullName;
+            load ].
+      opts
+        at: \'test\'
+        ifPresent: [ :arg | 
+          | smalltalkCISpec projectDirectoryPath ciResult |
+          smalltalkCISpec := shellTool resolveAtPathReference: arg.
+          projectDirectoryPath := (shellTool resolveAtPathNodeReference: arg)
+            asTDLeafNode parent directoryEntry fullName.
+          ciResult := SmalltalkCI
+            runCIForSpec: smalltalkCISpec
+            projectDirectory: projectDirectoryPath.
+          self halt ] ]
+    ifPresent: [ :ignored | 
+      TDManPage
+        viewManPage:
+          \'NAME
+  smalltalkCI - smalltalkCI script utility template
+SYNOPSIS
+  smalltalkCI [-h|--help] [--filein=<file-path] [--loadTests=<test-repo-path>] \\
+              [--test=<smalltalk.ston-file-path>]
+DESCRIPTION
+  First off, you should `mount` the gemstone/tode directory in the SmalltalkCI project:
+
+    mount @/sys/stone/dirs/SmalltalkCI/gemstone/tode/ /home smalltalkCI
+
+EXAMPLES
+  ./smalltalkCI -h
+
+  /home/smalltalkCI/smalltalkCI --test=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
+
+  /home/smalltalkCI/smalltalkCI --loadTests=@/sys/stone/dirs/SmalltalkCI/tests
+
+  /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Core.st
+  /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Gemstone.st
+\'
+        topez: topez ] ]',#creationTime:DateAndTime['2016-02-04T13:10:46.155944108963-08:00'],#modificationTime:DateAndTime['2016-02-04T15:42:00.5852119922637-08:00']}
