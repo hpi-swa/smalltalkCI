@@ -35,7 +35,7 @@ gemstone::prepare_stone() {
   gemstone_version="$(echo $2 | cut -f2 -d-)"
 
   # Operating system setup already performed
-  # touch $GS_HOME/bin/.gsdevkitSysSetup
+  touch $GS_HOME/bin/.gsdevkitSysSetup
 
   travis_fold start install_server "Installing server..."
     timer_start
