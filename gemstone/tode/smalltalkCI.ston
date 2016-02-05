@@ -6,6 +6,7 @@ TDScriptLeafNode{#name:'smalltalkCI',#contents:'[ :topez :objIn :tokens :command
       {#(\'help\' $h #\'none\').
       #(\'filein\' nil #\'required\').
       #(\'test\' nil #\'required\').
+      #(\'xml\' nil #\'required\').
       #(\'custom\' nil #\'required\').
       #(\'loadTests\' nil #\'required\')}
     optionsAndArguments: [ :options :operands | 
@@ -16,6 +17,34 @@ TDScriptLeafNode{#name:'smalltalkCI',#contents:'[ :topez :objIn :tokens :command
     ifAbsent: [ 
       | shellTool |
       shellTool := topez toolInstanceFor: \'mount\'.
+      opts
+        at: \'xml\'
+        ifPresent: [ :arg | 
+          | smalltalkCISpec projectDirectoryPath ciResult stonStream |
+          stonStream := WriteStream on: String new.
+          stonStream
+            nextPutAll:
+              \'SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : \'\'SmalltalkCITests\'\',
+      #directory : \'\'tests\'\',
+      #platforms : [ #squeak, #pharo, #gemstone ]
+    }
+  ],
+  #testing : {
+    #exclude : {
+      #classes : [ #SCIExcludedTests ]
+    }
+  }
+}\'.
+          smalltalkCISpec := SmalltalkCISpec
+            fromStream: stonStream contents readStream.
+          projectDirectoryPath := (shellTool resolveFilePath: arg) fullName.
+          ciResult := SmalltalkCI
+            runCIForSpec: smalltalkCISpec
+            projectDirectory: projectDirectoryPath
+            produceXMLLog: true ].
       opts
         at: \'filein\'
         ifPresent: [ :arg | 
@@ -40,8 +69,8 @@ TDScriptLeafNode{#name:'smalltalkCI',#contents:'[ :topez :objIn :tokens :command
             asTDLeafNode parent directoryEntry fullName.
           ciResult := SmalltalkCI
             runCIForSpec: smalltalkCISpec
-            projectDirectory: projectDirectoryPath 
-    produceXMLLog: false].
+            projectDirectory: projectDirectoryPath
+            produceXMLLog: false ].
       opts
         at: \'custom\'
         ifPresent: [ :arg | 
@@ -71,6 +100,8 @@ DESCRIPTION
 EXAMPLES
   ./smalltalkCI -h
 
+  /home/smalltalkCI/smalltalkCI --xml=@/sys/stone/dirs/SmalltalkCI
+
   /home/smalltalkCI/smalltalkCI --custom=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
   /home/smalltalkCI/smalltalkCI --test=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
 
@@ -80,4 +111,4 @@ EXAMPLES
   /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Gemstone.st
   /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Report.st
 \'
-        topez: topez ] ]',#creationTime:DateAndTime['2016-02-04T13:10:46.155944108963-08:00'],#modificationTime:DateAndTime['2016-02-05T10:20:45.8105928897857-08:00']}
+        topez: topez ] ]',#creationTime:DateAndTime['2016-02-04T13:10:46.155944108963-08:00'],#modificationTime:DateAndTime['2016-02-05T11:56:19.3058710098266-08:00']}
