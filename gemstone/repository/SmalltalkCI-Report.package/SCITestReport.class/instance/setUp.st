@@ -22,6 +22,7 @@ setUp
         nextPutAll: (String new: 100 withAll: $ );
         lf ].
   progressFile
+    cr;
     nextPutAll: 'running suite: ';
     nextPutAll: suite name;
     cr.
