@@ -3,7 +3,7 @@
 		"runClasses:named:" : "EstebanLorenzano 8/25/2015 16:00",
 		"runSuite:" : "fn 1/16/2016 16:55" },
 	"instance" : {
-		"beginTestCase:runBlock:" : "TravisCI 02/04/2016 17:29",
+		"beginTestCase:runBlock:" : "TravisCI 02/04/2016 18:26",
 		"endTestCase" : "TravisCI 02/04/2016 17:27",
 		"formatTime:" : "fn 1/17/2016 02:57",
 		"hasFailuresOrErrors" : "EstebanLorenzano 8/21/2015 07:29",
@@ -18,8 +18,8 @@
 		"suiteFailures" : "EstebanLorenzano 8/21/2015 07:42",
 		"suitePassing" : "EstebanLorenzano 8/21/2015 07:48",
 		"suiteTotal" : "EstebanLorenzano 8/21/2015 08:02",
-		"tearDown" : "TravisCI 02/04/2016 17:40",
+		"tearDown" : "TravisCI 02/04/2016 18:25",
 		"writeError:stack:" : "TravisCI 02/04/2016 17:11",
 		"writeException:stack:" : "TravisCI 02/04/2016 17:12",
 		"writeFailure:stack:" : "TravisCI 02/04/2016 17:12",
-		"writeUnexpectedPassFailure" : "TravisCI 02/04/2016 17:13" } }
+		"writeUnexpectedPassFailure" : "TravisCI 02/04/2016 18:15" } }
