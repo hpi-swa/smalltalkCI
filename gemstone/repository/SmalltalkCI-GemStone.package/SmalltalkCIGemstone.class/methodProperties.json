@@ -8,8 +8,8 @@
 	"instance" : {
 		"classesToTest:fromPackages:" : "dkh 02/06/2016 06:36",
 		"classesToTest:fromProjects:" : "dkh 02/06/2016 07:06",
-		"classesToTestFrom:" : "dkh 02/06/2016 06:38",
-		"explicitTestKeys" : "dkh 02/05/2016 17:07",
+		"classesToTestFrom:" : "dkh 02/06/2016 09:58",
+		"explicitTestKeys" : "dkh 02/06/2016 09:54",
 		"produceXMLLog" : "dkh 02/05/2016 09:52",
 		"produceXMLLog:" : "dkh 02/05/2016 09:52",
 		"readSTONSpec:" : "TravisCI 02/04/2016 15:45",

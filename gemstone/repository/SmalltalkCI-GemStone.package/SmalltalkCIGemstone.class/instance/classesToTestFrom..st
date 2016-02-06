@@ -3,6 +3,9 @@ classesToTestFrom: aDictionary
   | classes |
   classes := super classesToTestFrom: aDictionary.
   aDictionary
+    at: #'*'
+    ifPresent: [ :ignored | classes addAll: TestCase allSubclasses ].
+  aDictionary
     at: #'projects'
     ifPresent: [ :projectsList | self classesToTest: classes fromProjects: projectsList ].
   aDictionary

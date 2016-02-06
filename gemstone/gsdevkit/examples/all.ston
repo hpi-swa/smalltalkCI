@@ -1,0 +1,6 @@
+SmalltalkCISpec {
+  #specName : 'All',
+  #testing : {
+    #* : [ ]
+  }
+}
