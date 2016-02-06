@@ -118,13 +118,13 @@ SmalltalkCISpec {
     `#categories` it is possible to define category names or category prefixes (end with `*`),
     `#classes` expects a list of class name symbols. Both can be specified explicitly (ignore tests
     determined from LoadSpecs completely). If you only want to include or exclude tests from the
-    default, you can use `#include` or `#exclude`.
+    default or `#'*'` case , you can use `#include` or `#exclude`.
     */
     #categories : [ 'MyProject-*' ],                          // Define categories to test explicitly
     #classes : [ #MyProjectTestCase ],                        // Define classes to test explicitly
     #packages : [ 'MyProject.*' ],                            // Define packages to test (Pharo and GemStone)
     #projects : [ 'MyProject' ],                              // Define projects to test (GemStone)
-    #* : [],                                                  // Run all tests in image (GemStone)
+    #'*' : [],                                                // Run all tests in image (GemStone)
     #include : {
       #categories : [ 'AnotherProject-Tests' ],               // Include categories to test
       #classes : [ #AnotherProjectTestCase ],                 // Include classes to test
