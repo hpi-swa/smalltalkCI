@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="All" tests="1720">                                                                                                    
+	<testcase classname="Announcements.Tests.AnnouncerTest" name="testIssue253" time="0.000">
+	</testcase>
+	<testcase classname="Announcements.Tests.AnnouncerTest" name="testSubscribeBlock" time="0.000">
+	</testcase>
+	<testcase classname="Announcements.Tests.AnnouncerTest" name="testSubscribeSend" time="0.000">
+	</testcase>
+	<testcase classname="Announcements.Tests.AnnouncerTest" name="testSubscribeSet" time="0.000">
+	</testcase>
+	<testcase classname="Announcements.Tests.AnnouncerTest" name="testUnsubscribeBlock" time="0.000">
+	</testcase>
+	<testcase classname="Announcements.Tests.AnnouncerTest" name="testUnsubscribeSend" time="0.000">
+	</testcase>
+	<testcase classname="Announcements.Tests.AnnouncerTest" name="testUnsubscribeSet" time="0.000">
+	</testcase>
+	<testcase classname="Core.Tests.AssertionFailureTest" name="testAssert" time="0.000">
+	</testcase>
+	<testcase classname="Core.Tests.AssertionFailureTest" name="testAssertDescription" time="0.000">
+	</testcase>
+	<testcase classname="Core.Tests.AssertionFailureTest" name="testAssertDescriptionBlock" time="0.000">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.BreakpointTest" name="test" time="0.005">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.BreakpointTest" name="testResumeAndSignal" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.ChangeListTestCase" name="testEmbeddedCommentSelector" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.ChangeListTestCase" name="testParseBinarySelector" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.ChangeListTestCase" name="testParseSelector" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.ChangeListTestCase" name="testParseSelectorBug" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.ChangeListTestCase" name="testParseSelectorCases" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.ChangeListTestCase" name="testParseSelectorUnderbar" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.CircularTestResourceTestCase" name="testDebugTestWithResource" time="0.005">
+	</testcase>
+	<testcase classname="SUnit.Tests.CircularTestResourceTestCase" name="testResourceCollection" time="0.001">
+	</testcase>
+	<testcase classname="SUnit.Tests.CircularTestResourceTestCase" name="testRunSuiteWithResource" time="0.001">
+	</testcase>
+	<testcase classname="SUnit.Tests.CircularTestResourceTestCase" name="testRunTestWithResource" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.CircularTestResourceTestCase" name="testTearDownOrder" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.ExampleSetTest" name="testAdd" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.ExampleSetTest" name="testGrow" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.ExampleSetTest" name="testIllegal" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.ExampleSetTest" name="testIncludes" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.ExampleSetTest" name="testOccurrences" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.ExampleSetTest" name="testRemove" time="0.000">
+	</testcase>
+	<testcase classname="Squeak.Tests.ExtendedNumberParserTest" name="testFractionPartWithoutIntegerPart" time="0.000">
+	</testcase>
+	<testcase classname="Squeak.Tests.ExtendedNumberParserTest" name="testIntegerPartWithoutFraction" time="0.000">
+	</testcase>
+	<testcase classname="Squeak.Tests.ExtendedNumberParserTest" name="testInvalidExponent" time="0.000">
+	</testcase>
+	<testcase classname="Squeak.Tests.ExtendedNumberParserTest" name="testInvalidRadix" time="0.000">
+	</testcase>
+	<testcase classname="Squeak.Tests.ExtendedNumberParserTest" name="testInvalidScale" time="0.000">
+	</testcase>
+	<testcase classname="Squeak.Tests.ExtendedNumberParserTest" name="testPositive" time="0.000">
+	</testcase>
+	<testcase classname="Squeak.Tests.ExtendedNumberParserTest" name="testPositiveExponent" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.FailingTestResourceTestCase" name="testDebugTestWithResource" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.FailingTestResourceTestCase" name="testResourceCollection" time="0.001">
+	</testcase>
+	<testcase classname="SUnit.Tests.FailingTestResourceTestCase" name="testRunSuiteWithResource" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.FailingTestResourceTestCase" name="testRunTestWithResource" time="0.000">
+	</testcase>
+	<testcase classname="Core.Tests.FastUUIDTest" name="testComparison" time="0.000">
+	</testcase>
+	<testcase classname="Core.Tests.FastUUIDTest" name="testComparisonA" time="0.000">
+	</testcase>
+	<testcase classname="Core.Tests.FastUUIDTest" name="testCreation" time="0.080">
+	</testcase>
+	<testcase classname="Core.Tests.FastUUIDTest" name="testCreationEquality" time="0.073">
+	</testcase>
+	<testcase classname="Core.Tests.FastUUIDTest" name="testCreationFromString" time="0.000">
+	</testcase>
+	<testcase classname="Core.Tests.FastUUIDTest" name="testCreationFromStringNotNil" time="0.085">
+	</testcase>
+	<testcase classname="Core.Tests.FastUUIDTest" name="testCreationNil" time="0.000">
+	</testcase>
+	<testcase classname="Core.Tests.FastUUIDTest" name="testCreationNodeBased" time="0.074">
+	</testcase>
+	<testcase classname="Core.Tests.FastUUIDTest" name="testDuplicationsKinda" time="0.132">
+	</testcase>
+	<testcase classname="Core.Tests.FastUUIDTest" name="testOrder" time="0.104">
+	</testcase>
+	<testcase classname="Core.Tests.FastUUIDTest" name="testUniqueness" time="0.097">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.FileDirectoryTests" name="testBug39468" time="0.005">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.FileDirectoryTests" name="testBug39767" time="0.000">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.FileDirectoryTests" name="testDirectoryNamedWithAbsolutePath" time="0.000">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.FileDirectoryTests" name="testIssue293" time="0.006">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.FileDirectoryTests" name="testIssue58" time="0.005">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testBug40559" time="9.035">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testBug40822" time="8.990">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testDeployerBulkMigrate" time="6.663">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testDeployerRefactorBulkMigrate" time="6.942">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testExtensionMethods" time="9.202">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testExtensionMethodsBulkMigrate" time="6.685">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testGsDevKitIssue77" time="4.799">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testGsDevKitIssue83" time="3.318">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testGsDevKitIssue83CorrectPackageLoad" time="8.523">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testGsDevKitIssue83Hierarchy" time="7.531">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testGsDevKitIssue83HierarchyDoubleWhammy" time="13.807">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testGsDevKitIssue83PackageLoad" time="8.762">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testListInstancesInMemory" time="5.360">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testMonticelloAutoMigrate" time="8.921">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testMonticelloAutoMigrateRefactor" time="12.049">
+	</testcase>
+	<testcase classname="GemStone.Deployment.Tests.GsDeployerTest" name="testMonticelloNoAutoMigrate" time="5.842">
+	</testcase>
+	<testcase classname="Squeak.Tests.GsIssue157TestCase" name="testIssue157" time="0.000">
+	</testcase>
+	<testcase classname="GsSqueakCommon.Tests.GsSqueakCommonTests" name="testCull" time="0.004">
+	</testcase>
+	<testcase classname="GsSqueakCommon.Tests.GsSqueakCommonTests" name="testEncodeAndUnescapePercents" time="0.000">
+	</testcase>
+	<testcase classname="GsSqueakCommon.Tests.GsSqueakCommonTests" name="testEncodeForHTTP" time="0.000">
+	</testcase>
+	<testcase classname="GsSqueakCommon.Tests.GsSqueakCommonTests" name="testEncodeForHTTPWithTextEncoding" time="0.000">
+	</testcase>
+	<testcase classname="GsSqueakCommon.Tests.GsSqueakCommonTests" name="testLargePrimesUpTo" time="0.079">
+	</testcase>
+	<testcase classname="GsSqueakCommon.Tests.GsSqueakCommonTests" name="testPrimesUpTo" time="0.000">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testDetectEqualQuery" time="0.011">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testDetectGreaterThanOrEqualsQuery" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testDetectGreaterThanQuery" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testDetectIdentityEqualQuery" time="0.015">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testDetectIdentityNotEqualQuery" time="0.009">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testDetectLessThanOrEqualQuery" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testDetectLessThanQuery" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testDetectNotEqualQuery" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeDetectGreaterThanLessThan" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeDetectGreaterThanLessThanOrEqual" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeDetectGreaterThanOrEqualLessThan" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeDetectGreaterThanOrEqualLessThanOrEqual" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeRejectGreaterThanLessThan" time="0.008">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeRejectGreaterThanLessThanOrEqual" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeRejectGreaterThanOrEqualLessThan" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeRejectGreaterThanOrEqualLessThanOrEqual" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeSelectGreaterThanLessThan" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeSelectGreaterThanLessThanOrEqual" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeSelectGreaterThanOrEqualLessThan" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRangeSelectGreaterThanOrEqualLessThanOrEqual" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRejectEqualQuery" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRejectGreaterThanOrEqualsQuery" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRejectGreaterThanQuery" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRejectIdentityEqualQuery" time="0.009">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRejectIdentityNotEqualQuery" time="0.010">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRejectLessThanOrEqualQuery" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRejectLessThanQuery" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testRejectNotEqualQuery" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testSelectEqualQuery" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testSelectGreaterThanOrEqualsQuery" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testSelectGreaterThanQuery" time="0.004">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testSelectIdentityEqualQuery" time="0.009">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testSelectIdentityNotEqualQuery" time="0.009">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testSelectLessThanOrEqualQuery" time="0.003">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testSelectLessThanQuery" time="0.005">
+	</testcase>
+	<testcase classname="GemStone.Indexing.Extensions.IndexedQueryExtensionsTestCase" name="testSelectNotEqualQuery" time="0.003">
+	</testcase>
+	<testcase classname="Monticello.Tests.Issue257TestCase" name="testIssue257" time="0.023">
+	</testcase>
+	<testcase classname="Change.Notification.Issue285Test" name="test" time="1.215">
+	</testcase>
+	<testcase classname="Change.Notification.Issue285Test" name="testClassName" time="0.000">
+	</testcase>
+	<testcase classname="Core322x.Issue4Test" name="testByteSubclassOfByteClass" time="1.169">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.Issue60TestCase" name="testIssue60" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.ManyTestResourceTestCase" name="testDebugTestWithResource" time="0.001">
+	</testcase>
+	<testcase classname="SUnit.Tests.ManyTestResourceTestCase" name="testResourceCollection" time="0.001">
+	</testcase>
+	<testcase classname="SUnit.Tests.ManyTestResourceTestCase" name="testRunSuiteWithResource" time="0.001">
+	</testcase>
+	<testcase classname="SUnit.Tests.ManyTestResourceTestCase" name="testRunTestWithResource" time="0.000">
+	</testcase>
+	<testcase classname="SUnit.Tests.ManyTestResourceTestCase" name="testTearDownOrder" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCAncestryTest" name="testAllAncestors" time="0.021">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCAncestryTest" name="testCommonAncestors" time="0.016">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCAncestryTest" name="testDescendants" time="0.014">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCAncestryTest" name="testLinearPath" time="0.009">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCAncestryTest" name="testPathToMissingAncestor" time="0.009">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCAncestryTest" name="testWithAllAncestors" time="0.011">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCChangeNotificationTest" name="testCoreMethodModified" time="0.011">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCChangeNotificationTest" name="testExtMethodModified" time="0.126">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCChangeNotificationTest" name="testForeignMethodModified" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCClassDefinitionTest" name="testCannotLoad" time="0.016">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCClassDefinitionTest" name="testClassVarNonOrdering" time="2.281">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCClassDefinitionTest" name="testComparison" time="0.006">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCClassDefinitionTest" name="testCreation" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCClassDefinitionTest" name="testDefinitionString" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCClassDefinitionTest" name="testEquals" time="0.009">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCClassDefinitionTest" name="testEqualsSensitivity" time="0.009">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCClassDefinitionTest" name="testIssue285" time="1.185">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCClassDefinitionTest" name="testKindOfSubclass" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCClassDefinitionTest" name="testLoadAndUnload" time="1.170">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDependencySorterTest" name="testCascadingUnresolved" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDependencySorterTest" name="testCycle" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDependencySorterTest" name="testExtraProvisions" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDependencySorterTest" name="testMultiRequirementOrdering" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDependencySorterTest" name="testSimpleOrdering" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDependencySorterTest" name="testSimpleUnresolved" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDependencySorterTest" name="testUnusedAlternateProvider" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDictionaryRepositoryTest" name="testAddAndLoad" time="0.009">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDictionaryRepositoryTest" name="testIncludesName" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDictionaryRepositoryTest" name="testLoadMissingNode" time="0.005">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDictionaryRepositoryTest" name="testStoreAndLoad" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDirectoryRepositoryTest" name="testAddAndLoad" time="0.041">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDirectoryRepositoryTest" name="testIncludesName" time="0.017">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDirectoryRepositoryTest" name="testLoadMissingNode" time="0.014">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCDirectoryRepositoryTest" name="testStoreAndLoad" time="0.021">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCFileInTest" name="testStWriter" time="19.035">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.MCGsClassModificationTestCase" name="test1" time="14.051">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.MCGsClassModificationTestCase" name="test2" time="5.941">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.MCGsClassModificationTestCase" name="testIssue247a" time="17.066">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.MCGsClassModificationTestCase" name="testIssue247b" time="3.381">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.MCGsClassModificationTestCase" name="testIssue247c" time="13.283">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.MCGsClassModificationTestCase" name="testIssue247d" time="0.113">
+	</testcase>
+	<testcase classname="Monticello.Tests.Gemstone.MCGsClassModificationTestCase" name="testIssue343" time="1.146">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCHttpRepositoryTest" name="testBug38412" time="0.674">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMergingTest" name="testAdditiveConflictlessMerge" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMergingTest" name="testComplexConflictlessMerge" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMergingTest" name="testIdenticalModification" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMergingTest" name="testLocalModifyRemoteRemove" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMergingTest" name="testLocalRemoveRemoteModify" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMergingTest" name="testMultipleConflicts" time="0.006">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMergingTest" name="testSimultaneousModification" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMergingTest" name="testSimultaneousRemove" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMergingTest" name="testSubtractiveConflictlessMerge" time="0.005">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMethodDefinitionTest" name="testCannotLoad" time="0.178">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMethodDefinitionTest" name="testComparison" time="0.102">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMethodDefinitionTest" name="testLoadAndUnload" time="0.128">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMethodDefinitionTest" name="testPartiallyRevertOverrideMethod" time="0.103">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMethodDefinitionTest" name="testRevertOldMethod" time="0.102">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCMethodDefinitionTest" name="testRevertOverrideMethod" time="0.109">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCOrganizationTest" name="testReordering" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCOrganizationTest" name="testReorderingWithNoCategoriesInVersion" time="0.005">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCOrganizationTest" name="testReorderingWithRemovals" time="0.006">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCPackageTest" name="testUnload" time="17.912">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCPatchTest" name="testPatchContents" time="0.314">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCRepositoryGroupTest" name="testBug38413" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCScannerTest" name="test1" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCScannerTest" name="test2" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCScannerTest" name="test3" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCScannerTest" name="test4" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCScannerTest" name="test5" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCScannerTest" name="test6" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCSerializationTest" name="testMcdSerialization" time="0.142">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCSerializationTest" name="testMczSerialization" time="0.167">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCSerializationTest" name="testStSerialization" time="0.153">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCSnapshotTest" name="testCreation" time="0.006">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCSnapshotTest" name="testInstanceReuse" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCSortingTest" name="testConsistentSorting" time="0.105">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCSortingTest" name="testSortOrder" time="0.000">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCStReaderTest" name="testCommentWithoutStyle" time="0.021">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCStReaderTest" name="testCommentWithStyle" time="0.016">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCStReaderTest" name="testMethodWithStyle" time="0.018">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCStWriterTest" name="testClassDefinitionA" time="0.011">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCStWriterTest" name="testClassDefinitionB" time="0.013">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCStWriterTest" name="testClassMethodDefinition" time="0.009">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCStWriterTest" name="testInitializerDefinition" time="0.019">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCStWriterTest" name="testMethodDefinition" time="0.009">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCStWriterTest" name="testMethodDefinitionWithBangs" time="0.012">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCStWriterTest" name="testOrganizationDefinition" time="0.009">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCTraitDefinitionTest" name="testCannotLoad" time="0.013">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCTraitDefinitionTest" name="testCannotLoadClass" time="1.226">
+		<failure type="TestFailure" message="Assertion failed">
+1 SCITestReport >> stackTraceString:of: @2 line 2  [GsNMethod 206855937]
+2 [] in  ExecBlock1 (SCITestReport) >> runCase: @3 line 10  [GsNMethod 206597889]
+3 TestFailure (AbstractException) >> _executeHandler: @3 line 8  [GsNMethod 4147457]
+4 TestFailure (AbstractException) >> _signalWith: @1 line 1  [GsNMethod 4109057]
+5 TestFailure (AbstractException) >> signal: @3 line 7  [GsNMethod 4092673]
+6 TestFailure class (AbstractException class) >> signal: @3 line 4  [GsNMethod 4063489]
+7 MCTraitDefinitionTest (TestAsserter) >> assert: @5 line 4  [GsNMethod 19078145]
+8 MCTraitDefinitionTest (TestCase) >> should:raise: @10 line 9  [GsNMethod 152062977]
+9 MCTraitDefinitionTest >> testCannotLoadClass @4 line 4  [GsNMethod 154662657]
+10 MCTraitDefinitionTest (TestCase) >> performTest @3 line 2  [GsNMethod 19142145]
+11 [] in  ExecBlock0 (TestCase) >> runCase @3 line 5  [GsNMethod 19153921]
+12 ExecBlock0 (ExecBlock) >> ensure: @2 line 12  [GsNMethod 4201729]
+13 MCTraitDefinitionTest (TestCase) >> runCase @4 line 6  [GsNMethod 19152897]
+14 [] in  ExecBlock0 (SCITestReport) >> runCase: @2 line 6  [GsNMethod 206598145]
+15 ExecBlock0 (ExecBlock) >> on:do: @3 line 42  [GsNMethod 4231169]
+16 [] in  ExecBlock0 (SCITestReport) >> runCase: @4 line 7  [GsNMethod 206663681]
+17 Time class >> secondsElapsedTime: @5 line 11  [GsNMethod 12355585]
+18 Time class >> millisecondsElapsedTime: @2 line 6  [GsNMethod 12359425]
+19 Time class >> millisecondsToRun: @2 line 3  [GsNMethod 44198913]
+20 ExecBlock0 (BlockClosure) >> timeToRun @2 line 3  [GsNMethod 44264705]
+21 SCITestReport >> beginTestCase:runBlock: @10 line 9  [GsNMethod 206854913]
+22 SCITestReport >> runCase: @2 line 4  [GsNMethod 206854401]
+23 MCTraitDefinitionTest (TestCase) >> run: @2 line 2  [GsNMethod 19151361]
+24 [] in  ExecBlock1 (SCITestReport) >> runAll @2 line 2  [GsNMethod 206665217]
+25 OrderedCollection (Collection) >> do: @5 line 10  [GsNMethod 2478849]
+26 SCITestReport >> runAll @3 line 2  [GsNMethod 206855681]
+27 [] in  ExecBlock0 (SCITestReport) >> run @2 line 2  [GsNMethod 206597633]
+28 Time class >> secondsElapsedTime: @5 line 11  [GsNMethod 12355585]
+29 Time class >> millisecondsElapsedTime: @2 line 6  [GsNMethod 12359425]
+30 Time class >> millisecondsToRun: @2 line 3  [GsNMethod 44198913]
+31 ExecBlock0 (BlockClosure) >> timeToRun @2 line 3  [GsNMethod 44264705]
+32 [] in  ExecBlock0 (SCITestReport) >> run @3 line 2  [GsNMethod 206661889]
+33 ExecBlock0 (ExecBlock) >> ensure: @2 line 12  [GsNMethod 4201729]
+34 SCITestReport >> run @2 line 2  [GsNMethod 206852865]
+35 SCITestReport class >> runSuite:produceXMLLog: @5 line 5  [GsNMethod 206858753]
+36 SCITestReport class >> runClasses:named:produceXMLLog: @11 line 10  [GsNMethod 206858497]
+37 SmalltalkCIGemstone >> runTests @6 line 3  [GsNMethod 207146497]
+38 SmalltalkCIGemstone (SmalltalkCI) >> runCI @4 line 4  [GsNMethod 206874881]
+39 SmalltalkCIGemstone >> runCI @2 line 2  [GsNMethod 206863873]
+40 SmalltalkCIGemstone (SmalltalkCI) >> runCIFor: @3 line 3  [GsNMethod 206871041]
+41 SmalltalkCI class >> runCIFor: @5 line 4  [GsNMethod 206886657]
+42 Executed Code  @2 line 1  [GsNMethod 216150273]
+43 &lt;Reenter marker>
+</failure>
+	</testcase>
+	<testcase classname="Monticello.Tests.MCTraitDefinitionTest" name="testComparison" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCTraitDefinitionTest" name="testComparisonClass" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCTraitDefinitionTest" name="testEquals" time="0.008">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCTraitDefinitionTest" name="testEqualsClass" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCTraitDefinitionTest" name="testEqualsSensitivity" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCTraitDefinitionTest" name="testEqualsSensitivityClass" time="0.012">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCVersionTest" name="testAllAvailablePostOrder" time="0.011">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCVersionTest" name="testAllMissing" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCVersionTest" name="testAllUnresolved" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCVersionTest" name="testDependencyOrder" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCVersionTest" name="testPostOrder" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCVersionTest" name="testWithAll" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCVersionTest" name="testWithAllMissing" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCVersionTest" name="testWithAllUnresolved" time="0.010">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testAncestorMerge" time="0.462">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testBackport" time="0.467">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testCyclicRequiredPackages" time="0.426">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testDoubleRepeatedMerge" time="1.105">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testMergeIntoImageWithNoChanges" time="0.580">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testMergeIntoUnmodifiedImage" time="0.418">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testNaming" time="0.863">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testRedundantMerge" time="0.271">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testRepeatedMerge" time="0.649">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testRepositoryFallback" time="0.173">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testSelectiveBackport" time="0.370">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testSimpleMerge" time="0.494">
+	</testcase>
+	<testcase classname="Monticello.Tests.MCWorkingCopyTest" name="testSnapshotAndLoad" time="0.262">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.MethodPragmaTest" name="testAllNamedFromTo" time="0.086">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.MethodPragmaTest" name="testAllNamedFromToSortedByArgument" time="0.102">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.MethodPragmaTest" name="testAllNamedFromToSortedUsing" time="0.081">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.MethodPragmaTest" name="testAllNamedIn" time="0.082">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.MethodPragmaTest" name="testAllNamedInSortedByArgument" time="0.075">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.MethodPragmaTest" name="testAllNamedInSortedUsing" time="0.078">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.MethodPragmaTest" name="testArguments" time="0.000">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.MethodPragmaTest" name="testCompileArray" time="0.007">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.MethodPragmaTest" name="testCompileBinary" time="0.010">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.MethodPragmaTest" name="testCompileCharacter" time="0.003">
+	</testcase>
+	<testcase classname="Bootstrap.Tests.MethodPragmaTest" name="testCompileEmpty" time="0.002">
