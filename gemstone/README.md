@@ -9,7 +9,6 @@ createStone smalltalkCI 3.2.12
 
 ## download and install smalltalkCI
 installSmalltalkCI smalltalkCI
-EOF
 
 ## install and run SmalltalkCI Tests
 runSmalltalkCI smalltalkCI $GS_HOME/shared/repos/smalltalkCI/.smalltalk.ston
