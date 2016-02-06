@@ -4,7 +4,7 @@ TDObjectGatewayLeafNode{#name:'SmalltalkCI',#contents:'^ TDProjectSpecEntryDefin
       loads: #(\'Core\');
     installScript:
         \'project clone --https --stone SmalltalkCI
-         mount @/sys/sonte/dirs/SmalltalkCI/gemstone/gsdevkit/tode /home smalltalkCI\';
+         mount @/sys/stone/dirs/SmalltalkCI/gemstone/gsdevkit/tode /home smalltalkCI\';
     gitCheckout: \'master\';
     status: #(#\'inactive\');
     locked: false;

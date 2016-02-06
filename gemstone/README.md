@@ -11,6 +11,9 @@ createStone smalltalkCI 3.2.12
 installSmalltalkCI smalltalkCI
 EOF
 
+## install and run SmalltalkCI Tests
+runSmalltalkCI smalltalkCI $GS_HOME/shared/repos/smalltalkCI/.smalltalk.ston
+
 ## install and run Metacello Tests
 runSmalltalkCI smalltalkCI $GS_HOME/shared/repos/smalltalkCI/gemstone/gsdevkit/examples/metacello.ston
 

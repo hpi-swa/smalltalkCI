@@ -4,12 +4,9 @@ TDScriptLeafNode{#name:'testSmalltalkCI',#contents:'[ :topez :objIn :tokens :com
   command
     getOptsMixedLongShort:
       {#(\'help\' $h #\'none\').
-      #(\'filein\' nil #\'required\').
-      #(\'test\' nil #\'required\').
-      #(\'xml\' nil #\'required\').
-      #(\'ston\' nil #\'required\').
-      #(\'custom\' nil #\'required\').
-      #(\'loadTests\' nil #\'required\')}
+      #(\'break\' nil #\'none\').
+      #(\'loadTests\' nil #\'required\').
+      #(\'ston\' nil #\'required\')}
     optionsAndArguments: [ :options :operands | 
       opts := options.
       args := operands ].
@@ -22,39 +19,21 @@ TDScriptLeafNode{#name:'testSmalltalkCI',#contents:'[ :topez :objIn :tokens :com
         at: \'ston\'
         ifPresent: [ :arg | SmalltalkCI runCIFor: arg produceXMLLog: false ].
       opts
-        at: \'xml\'
-        ifPresent: [ :arg | 
-          | smalltalkCISpec projectDirectoryPath ciResult stonStream |
-          stonStream := WriteStream on: String new.
-          stonStream
-            nextPutAll:
-              \'SmalltalkCISpec {
-  #loading : [
-    SCIMetacelloLoadSpec {
-      #baseline : \'\'SmalltalkCITests\'\',
-      #directory : \'\'tests\'\',
-      #platforms : [ #squeak, #pharo, #gemstone ]
-    }
-  ],
-  #testing : {
-    #exclude : {
-      #classes : [ #SCIExcludedTests ]
-    }
-  }
-}\'.
-          smalltalkCISpec := SmalltalkCISpec
-            fromStream: stonStream contents readStream.
-          projectDirectoryPath := (shellTool resolveFilePath: arg) fullName.
-          ciResult := SmalltalkCI
-            runCIForSpec: smalltalkCISpec
-            projectDirectory: projectDirectoryPath
-            produceXMLLog: true ].
-      opts
-        at: \'filein\'
-        ifPresent: [ :arg | 
-          | chunkFileEntry |
-          chunkFileEntry := shellTool resolveFilePath: arg.
-          (BinaryOrTextFile openReadOnServer: chunkFileEntry fullName) fileIn ].
+        at: \'break\'
+        ifPresent: [ :ignored | 
+          | breakTool methodDefs |
+          breakTool := topez toolInstanceFor: \'break\'.
+          methodDefs := {{\'SCITestReport>>runCase:\'. 29}.
+          {\'SCITestReport>>writeUnexpectedPassFailure\'. 1}}
+            collect: [ :ar | 
+              | methSpec |
+              methSpec := ar at: 1.
+              {(breakTool methodFromMethodSpec: methSpec).
+              (ar at: 2)} ].
+          methodDefs
+            do: [ :ar | 
+              | methodDef |
+              breakTool breakSet: (ar at: 1) step: (ar at: 2) ] ].
       opts
         at: \'loadTests\'
         ifPresent: [ :arg | 
@@ -63,39 +42,15 @@ TDScriptLeafNode{#name:'testSmalltalkCI',#contents:'[ :topez :objIn :tokens :com
           Metacello new
             baseline: \'SmalltalkCITests\';
             repository: \'filetree://\' , reposFileEntry fullName;
-            load ].
-      opts
-        at: \'test\'
-        ifPresent: [ :arg | 
-          | smalltalkCISpec projectDirectoryPath ciResult |
-          smalltalkCISpec := shellTool resolveAtPathReference: arg.
-          projectDirectoryPath := (shellTool resolveAtPathNodeReference: arg)
-            asTDLeafNode parent directoryEntry fullName.
-          ciResult := SmalltalkCI
-            runCIForSpec: smalltalkCISpec
-            projectDirectory: projectDirectoryPath
-            produceXMLLog: false ].
-      opts
-        at: \'custom\'
-        ifPresent: [ :arg | 
-          | smalltalkCISpec projectDirectoryPath ciResult |
-          smalltalkCISpec := shellTool resolveAtPathReference: arg.
-          true
-            ifTrue: [ 
-              projectDirectoryPath := (shellTool resolveAtPathNodeReference: arg) asTDLeafNode
-                parent directoryEntry fullName.
-              smalltalkCISpec testing removeKey: #\'exclude\' ifAbsent: [  ].
-              ciResult := SmalltalkCI
-                runCIForSpec: smalltalkCISpec
-                projectDirectory: projectDirectoryPath ] ] ]
+            load ] ]
     ifPresent: [ :ignored | 
       TDManPage
         viewManPage:
           \'NAME
   testSmalltalkCI - testSmalltalkCI script utility template
 SYNOPSIS
-  testSmalltalkCI [-h|--help] [--filein=<file-path] [--loadTests=<test-repo-path>] \\
-              [--test=<smalltalk.ston-file-path>] [--custom=<smalltalk.ston-file-path>]
+  testSmalltalkCI [-h|--help] [--loadTests=<test-repo-path>] \\
+                  [--ston=<smalltalk.ston-file-path>] [--break]
 DESCRIPTION
   This script lets you run various SmalltalkCI runs from within a tODE dev environment for debugging issues 
   that show up travis-ci test runs.
@@ -103,17 +58,12 @@ DESCRIPTION
 EXAMPLES
   ./testSmalltalkCI -h
 
+  /home/smalltalkCI/testSmalltalkCI --break
+
+  /home/smalltalkCI/testSmalltalkCI --ston=/opt/git/smalltalkCI/gemstone/gsdevkit/examples/metacello.ston
   /home/smalltalkCI/testSmalltalkCI --ston=/opt/git/smalltalkCI/gemstone/gsdevkit/examples/announcements.ston
-
-  /home/smalltalkCI/testSmalltalkCI --xml=@/sys/stone/dirs/SmalltalkCI
-
-  /home/smalltalkCI/testSmalltalkCI --custom=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
-  /home/smalltalkCI/testSmalltalkCI --test=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
+  /home/smalltalkCI/testSmalltalkCI --ston=/opt/git/smalltalkCI/.smalltalk.ston
 
   /home/smalltalkCI/testSmalltalkCI --loadTests=@/sys/stone/dirs/SmalltalkCI/tests
-
-  /home/smalltalkCI/testSmalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Core.st
-  /home/smalltalkCI/testSmalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Gemstone.st
-  /home/smalltalkCI/testSmalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Report.st
 \'
-        topez: topez ] ]',#creationTime:DateAndTime['2016-02-05T15:27:21.5106348991394-08:00'],#modificationTime:DateAndTime['2016-02-05T17:11:32.3601250648498-08:00']}
+        topez: topez ] ]',#creationTime:DateAndTime['2016-02-05T15:27:21.5106348991394-08:00'],#modificationTime:DateAndTime['2016-02-05T19:19:57.9409480094909-08:00']}
