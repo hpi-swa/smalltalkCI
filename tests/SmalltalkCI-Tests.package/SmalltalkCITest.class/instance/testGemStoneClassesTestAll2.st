@@ -1,5 +1,5 @@
 testing
-testGemStoneClassesTestAll1
+testGemStoneClassesTestAll2
   | classes |
   SmalltalkCI platformSymbol = #'gemstone'
     ifFalse: [ ^ self ].
@@ -12,11 +12,17 @@ testGemStoneClassesTestAll1
     testing:
       (Dictionary new
         add: #'*' -> #();
+        add:
+            #'exclude'
+                ->
+                  (Dictionary new
+                    add: #'projects' -> #('Tode');
+                    yourself);
         yourself).
   classes := self ci classesToTest.
   self assert: (classes includes: (Smalltalk at: #'BreakpointTest')).
   self
-    assert: (classes includes: (Smalltalk at: #'TDShellFsToFsMvCpCommandTests')).
+    deny: (classes includes: (Smalltalk at: #'TDShellFsToFsMvCpCommandTests')).
   self deny: (classes includes: SystemChangeAnnouncement).
   self assert: (classes includes: SCIAbstractLoadSpecTest).
   self assert: (classes includes: SmalltalkCISpecTest).
