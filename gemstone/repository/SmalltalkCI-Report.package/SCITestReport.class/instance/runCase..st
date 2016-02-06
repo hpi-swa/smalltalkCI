@@ -14,7 +14,12 @@ runCase: aTestCase
   (error notNil or: [ aTestCase shouldPass not ])
     ifTrue: [ 
       (error isKindOf: TestFailure)
-        ifTrue: [ self writeFailure: error stack: stack ]
+        ifTrue: [ 
+          aTestCase shouldPass
+            ifTrue: [ self writeFailure: error stack: stack ]
+            ifFalse: [ 
+              "expected failure"
+               ] ]
         ifFalse: [ 
           aTestCase shouldPass
             ifTrue: [ self writeError: error stack: stack ]
