@@ -20,11 +20,7 @@ TDScriptLeafNode{#name:'testSmalltalkCI',#contents:'[ :topez :objIn :tokens :com
       shellTool := topez toolInstanceFor: \'mount\'.
       opts
         at: \'ston\'
-        ifPresent: [ :arg | 
-          |  |
-          SmalltalkCI
-            runCIFor: arg
-            produceXMLLog: false ].
+        ifPresent: [ :arg | SmalltalkCI runCIFor: arg produceXMLLog: false ].
       opts
         at: \'xml\'
         ifPresent: [ :arg | 
@@ -101,9 +97,8 @@ SYNOPSIS
   testSmalltalkCI [-h|--help] [--filein=<file-path] [--loadTests=<test-repo-path>] \\
               [--test=<smalltalk.ston-file-path>] [--custom=<smalltalk.ston-file-path>]
 DESCRIPTION
-  First off, you should `mount` the gemstone/tode directory in the SmalltalkCI project:
-
-    mount @/sys/stone/dirs/SmalltalkCI/gemstone/gsdevkit/tode/ /home smalltalkCI
+  This script lets you run various SmalltalkCI runs from within a tODE dev environment for debugging issues 
+  that show up travis-ci test runs.
 
 EXAMPLES
   ./testSmalltalkCI -h
@@ -121,4 +116,4 @@ EXAMPLES
   /home/smalltalkCI/testSmalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Gemstone.st
   /home/smalltalkCI/testSmalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Report.st
 \'
-        topez: topez ] ]',#creationTime:DateAndTime['2016-02-05T15:27:21.5106348991394-08:00'],#modificationTime:DateAndTime['2016-02-05T16:56:24.2090530395507-08:00']}
+        topez: topez ] ]',#creationTime:DateAndTime['2016-02-05T15:27:21.5106348991394-08:00'],#modificationTime:DateAndTime['2016-02-05T17:11:32.3601250648498-08:00']}
