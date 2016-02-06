@@ -3,7 +3,7 @@ writeUnexpectedPassFailure
   suiteFailures := suiteFailures + 1.
   self produceXMLLog
     ifTrue: [ 
-      stream
+      self stream
         tab;
         tab;
         nextPutAll:

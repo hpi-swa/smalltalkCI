@@ -5,7 +5,7 @@ endTestCase
     cr.
   self produceXMLLog
     ifTrue: [ 
-      stream
+      self stream
         tab;
         nextPutAll: '</testcase>';
         lf ]

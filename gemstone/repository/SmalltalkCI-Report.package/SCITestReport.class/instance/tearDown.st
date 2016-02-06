@@ -4,17 +4,15 @@ tearDown
   self produceXMLLog
     ifTrue: [ 
       | xmlFilePath xmlFile |
-      stream
+      self stream
         tab;
         nextPutAll: '<system-out><![CDATA[]]></system-out>';
-        lf.
-      stream
+        lf;
         tab;
         nextPutAll: '<system-err><![CDATA[]]></system-err>';
-        lf.
-      stream nextPutAll: '</testsuite>'.
-      stream position: suitePosition.
-      stream
+        lf;
+        nextPutAll: '</testsuite>';
+        position: suitePosition;
         nextPutAll: ' failures="';
         print: suiteFailures;
         nextPutAll: '" errors="';
@@ -22,7 +20,8 @@ tearDown
         nextPutAll: '" time="';
         nextPutAll: ((self formatTime: suiteTime) printShowingDecimalPlaces: 3);
         nextPutAll: '">'.
-      stream close.
+      self stream close.
+      stream := nil.
       progressFile
         nextPutAll: self printString;
         cr;

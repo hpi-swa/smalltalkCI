@@ -10,7 +10,7 @@ beginTestCase: aTestCase runBlock: aBlock
   time := self formatTime: aBlock timeToRun.
   self produceXMLLog
     ifTrue: [ 
-      stream
+      self stream
         tab;
         nextPutAll: '<testcase classname="';
         nextPutAll:

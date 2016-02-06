@@ -2,7 +2,7 @@ private
 writeException: error stack: stack
   self produceXMLLog
     ifTrue: [ 
-      stream
+      self stream
         nextPutAll: (self encode: error class name);
         nextPutAll: '" message="';
         nextPutAll:
