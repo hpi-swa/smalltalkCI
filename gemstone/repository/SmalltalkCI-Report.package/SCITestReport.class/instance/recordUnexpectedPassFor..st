@@ -1,8 +1,7 @@
 private
 recordUnexpectedPassFor: aTestCase
   (ObjectLogEntry
-    error:
-      'UNEXPECTED PASS: ' , self spec specName , ': ' , aTestCase printString
+    error: 'UNEXPECTED PASS: ' , suite suiteName , ': ' , aTestCase printString
     object:
       {'unexpected pass'.
       aTestCase}) addToLog.
