@@ -26,7 +26,7 @@ setUp
     nextPutAll: 'running suite: ';
     nextPutAll: suite name;
     nextPutAll: ' with: ';
-    nextPutAll: suite size printString , ' tests';
+    nextPutAll: suite tests size printString , ' tests';
     cr.
   suite resources
     do: [ :each | 
