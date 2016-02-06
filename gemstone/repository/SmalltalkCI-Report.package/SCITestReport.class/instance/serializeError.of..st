@@ -1,7 +1,7 @@
 private
 serializeError: error of: aTestCase
   (DebuggerLogEntry
-    error: self spec specName , ': ' , aTestCase printString
+    error: 'ERROR: ' , self spec specName , ': ' , aTestCase printString
     object:
       {error.
       aTestCase})
