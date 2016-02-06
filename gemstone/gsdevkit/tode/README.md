@@ -1,4 +1,4 @@
-# SmalltalkCI and GsDevLKit_home
+# SmalltalkCI and GsDevKit_home
 
 ## Running tests using SmalltalkCI
 
@@ -7,13 +7,11 @@
 export PATH=$GS_HOME/shared/repos/smalltalkCI/gemstone/gsdevkit/bin:$PATH
 createStone smalltalkCI 3.2.12
 
-## install smalltalkCI
-devKitCommandLine todeIt smalltalkCI << EOF
-project install --url=http://gsdevkit.github.io/GsDevKit_home/SmalltalkCI.ston
-project load SmalltalkCI
+## download and install smalltalkCI
+installSmalltalkCI smalltalkCI
 EOF
 
-## install Metacello Tests and run tests
+## install and run Metacello Tests
 runSmalltalkCI smalltalkCI $GS_HOME/shared/repos/smalltalkCI/gemstone/gsdevkit/examples/metacello.ston
 
 ## run tests in Announcements package
