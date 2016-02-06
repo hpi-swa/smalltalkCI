@@ -8,6 +8,8 @@ runCase: aTestCase
         on: Halt , Error , TestFailure
         do: [ :err | 
           error := err.
+          aTestCase shouldPass
+            ifTrue: [ self serializeError: error of: aTestCase ].
           stack := self stackTraceString: err of: aTestCase ] ].
   (error notNil or: [ aTestCase shouldPass not ])
     ifTrue: [ 
@@ -18,5 +20,7 @@ runCase: aTestCase
             ifTrue: [ self writeError: error stack: stack ]
             ifFalse: [ 
               error isNil
-                ifTrue: [ self writeUnexpectedPassFailure ] ] ] ].
+                ifTrue: [ 
+                  self recordUnexpectedPassFor: aTestCase.
+                  self writeUnexpectedPassFailure ] ] ] ].
   self endTestCase
