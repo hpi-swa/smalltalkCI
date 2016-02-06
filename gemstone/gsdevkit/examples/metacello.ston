@@ -1,0 +1,9 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'Metacello',
+      #repository : 'github://dalehenrich/metacello-work:master/repository',
+      #load : [ 'Tests' ]
+   }
+  ]
+}

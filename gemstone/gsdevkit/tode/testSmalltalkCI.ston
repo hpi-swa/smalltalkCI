@@ -1,6 +1,6 @@
-TDScriptLeafNode{#name:'smalltalkCI',#contents:'[ :topez :objIn :tokens :command :commandNode | 
+TDScriptLeafNode{#name:'testSmalltalkCI',#contents:'[ :topez :objIn :tokens :command :commandNode | 
   | opts args |
-  \"for help: ./smalltalkCI -h\"
+  \"for help: ./testSmalltalkCI -h\"
   command
     getOptsMixedLongShort:
       {#(\'help\' $h #\'none\').
@@ -88,27 +88,27 @@ TDScriptLeafNode{#name:'smalltalkCI',#contents:'[ :topez :objIn :tokens :command
       TDManPage
         viewManPage:
           \'NAME
-  smalltalkCI - smalltalkCI script utility template
+  testSmalltalkCI - testSmalltalkCI script utility template
 SYNOPSIS
-  smalltalkCI [-h|--help] [--filein=<file-path] [--loadTests=<test-repo-path>] \\
+  testSmalltalkCI [-h|--help] [--filein=<file-path] [--loadTests=<test-repo-path>] \\
               [--test=<smalltalk.ston-file-path>] [--custom=<smalltalk.ston-file-path>]
 DESCRIPTION
   First off, you should `mount` the gemstone/tode directory in the SmalltalkCI project:
 
-    mount @/sys/stone/dirs/SmalltalkCI/gemstone/tode/ /home smalltalkCI
+    mount @/sys/stone/dirs/SmalltalkCI/gemstone/gsdevkit/tode/ /home smalltalkCI
 
 EXAMPLES
-  ./smalltalkCI -h
+  ./testSmalltalkCI -h
 
-  /home/smalltalkCI/smalltalkCI --xml=@/sys/stone/dirs/SmalltalkCI
+  /home/smalltalkCI/testSmalltalkCI --xml=@/sys/stone/dirs/SmalltalkCI
 
-  /home/smalltalkCI/smalltalkCI --custom=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
-  /home/smalltalkCI/smalltalkCI --test=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
+  /home/smalltalkCI/testSmalltalkCI --custom=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
+  /home/smalltalkCI/testSmalltalkCI --test=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
 
-  /home/smalltalkCI/smalltalkCI --loadTests=@/sys/stone/dirs/SmalltalkCI/tests
+  /home/smalltalkCI/testSmalltalkCI --loadTests=@/sys/stone/dirs/SmalltalkCI/tests
 
-  /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Core.st
-  /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Gemstone.st
-  /home/smalltalkCI/smalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Report.st
+  /home/smalltalkCI/testSmalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Core.st
+  /home/smalltalkCI/testSmalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Gemstone.st
+  /home/smalltalkCI/testSmalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Report.st
 \'
-        topez: topez ] ]',#creationTime:DateAndTime['2016-02-04T13:10:46.155944108963-08:00'],#modificationTime:DateAndTime['2016-02-05T11:56:19.3058710098266-08:00']}
+        topez: topez ] ]',#creationTime:DateAndTime['2016-02-05T15:27:21.5106348991394-08:00'],#modificationTime:DateAndTime['2016-02-05T15:28:37.1039159297943-08:00']}

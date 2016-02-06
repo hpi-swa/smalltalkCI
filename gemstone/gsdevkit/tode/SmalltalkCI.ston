@@ -1,0 +1,11 @@
+TDObjectGatewayLeafNode{#name:'SmalltalkCI',#contents:'^ TDProjectSpecEntryDefinition new
+    baseline: \'SmalltalkCI\'
+      repository: \'github://hpi-swa-smalltalkCI/gemstone/repository\'
+      loads: #(\'Core\');
+    installScript:
+        \'project clone --https --stone SmalltalkCI
+         mount @/sys/sonte/dirs/SmalltalkCI/gemstone/gsdevkit/tode /home smalltalkCI\';
+    gitCheckout: \'master\';
+    status: #(#\'inactive\');
+    locked: false;
+    yourself'}
