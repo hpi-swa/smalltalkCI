@@ -19,3 +19,5 @@ runSmalltalkCI smalltalkCI $GS_HOME/shared/repos/smalltalkCI/gemstone/gsdevkit/e
 ## run tests in Announcements package
 runSmalltalkCI smalltalkCI $GS_HOME/shared/repos/smalltalkCI/gemstone/gsdevkit/examples/announcements.ston
 ```
+
+

@@ -156,7 +156,7 @@ repository: aRepository
 testClasses
 	self baseline ifNotNil: [ :b |
 		^ self getTestClassesForMetacelloProjectRegistration: b ].
-	self category ifNotNil: [ :c |
+	self configuration ifNotNil: [ :c |
 		^ self getTestClassesForMetacelloProjectRegistration: c ].
 	^ #()! !
 

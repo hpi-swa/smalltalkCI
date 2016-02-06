@@ -1,4 +1,4 @@
-TDScriptLeafNode{#name:'testSmalltalkCI',#contents:'[ :topez :objIn :tokens :command :commandNode | 
+TDScriptLeafNode{#name:'ci.bak',#contents:'[ :topez :objIn :tokens :command :commandNode | 
   | opts args |
   \"for help: ./testSmalltalkCI -h\"
   command

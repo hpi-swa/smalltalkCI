@@ -106,6 +106,7 @@ SmalltalkCISpec {
       #configuration : 'MyProject',                           // Alternatively, define MC Configuration
       #directory : 'tests',                                   // Path to packages if FileTree is used
       #repository : 'http://ss3.gemtalksystems.com/ss/...',   // Alternatively, define MC repository
+      #onWarningLog : true,                                   // Handle Warnings and log message to Transcript (GemStone)
       #load : [ 'default' ],                                  // Define MC load attributes
       #platforms : [ #squeak, #pharo, #gemstone ]             // Define compatible platforms
     }
@@ -121,16 +122,20 @@ SmalltalkCISpec {
     */
     #categories : [ 'MyProject-*' ],                          // Define categories to test explicitly
     #classes : [ #MyProjectTestCase ],                        // Define classes to test explicitly
-    #packages : [ 'MyProject.*' ]                             // Define Pharo packages to test
+    #packages : [ 'MyProject.*' ],                            // Define packages to test (Pharo and GemStone)
+    #projects : [ 'MyProject' ],                              // Define projects to test (GemStone)
+    #* : [],                                                  // Run all tests in image (GemStone)
     #include : {
       #categories : [ 'AnotherProject-Tests' ],               // Include categories to test
       #classes : [ #AnotherProjectTestCase ],                 // Include classes to test
-      #packages : [ 'AnotherProject.*' ]                      // Include Pharo packages to test
+      #packages : [ 'AnotherProject.*' ],                     // Include packages to test (Pharo and GemStone)
+      #projects : [ 'MyProject' ],                            // Include projects to test (GemStone)
     },
     #exclude : {
       #categories : [ 'AnotherProject-Tests' ],               // Exclude categories from testing
       #classes : [ #AnotherProjectTestCase ],                 // Exclude classes from testing
-      #packages : [ 'AnotherProject.*' ]                      // Exclude Pharo packages from testing
+      #packages : [ 'AnotherProject.*' ],                     // Exclude packages from testing (Pharo and GemStone)
+      #projects : [ 'MyProject' ]                             // Exclude projects from testing (GemStone)
     }
   }
 }

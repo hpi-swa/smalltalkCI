@@ -1,6 +1,6 @@
-TDScriptLeafNode{#name:'testSmalltalkCI',#contents:'[ :topez :objIn :tokens :command :commandNode | 
+TDScriptLeafNode{#name:'ci',#contents:'[ :topez :objIn :tokens :command :commandNode | 
   | opts args |
-  \"for help: ./testSmalltalkCI -h\"
+  \"for help: ./ci -h\"
   command
     getOptsMixedLongShort:
       {#(\'help\' $h #\'none\').
@@ -17,14 +17,19 @@ TDScriptLeafNode{#name:'testSmalltalkCI',#contents:'[ :topez :objIn :tokens :com
       shellTool := topez toolInstanceFor: \'mount\'.
       opts
         at: \'ston\'
-        ifPresent: [ :arg | SmalltalkCI runCIFor: arg produceXMLLog: false ].
+        ifPresent: [ :arg | 
+          | filePath |
+          filePath := shellTool resolveFilePath: arg.
+          SmalltalkCI runCIFor: filePath produceXMLLog: false ].
       opts
         at: \'break\'
         ifPresent: [ :ignored | 
           | breakTool methodDefs |
           breakTool := topez toolInstanceFor: \'break\'.
-          methodDefs := {{\'SCITestReport>>runCase:\'. 29}.
-          {\'SCITestReport>>writeUnexpectedPassFailure\'. 1}}
+          methodDefs := {{\'SCITestReport>>runCase:\'.
+          29}.
+          {\'SCITestReport>>writeUnexpectedPassFailure\'.
+          1}}
             collect: [ :ar | 
               | methSpec |
               methSpec := ar at: 1.
@@ -47,23 +52,25 @@ TDScriptLeafNode{#name:'testSmalltalkCI',#contents:'[ :topez :objIn :tokens :com
       TDManPage
         viewManPage:
           \'NAME
-  testSmalltalkCI - testSmalltalkCI script utility template
+  ci - SmalltalkCI scriptsupport scripts
 SYNOPSIS
-  testSmalltalkCI [-h|--help] [--loadTests=<test-repo-path>] \\
+  ci [-h|--help] [--loadTests=<test-repo-path>] \\
                   [--ston=<smalltalk.ston-file-path>] [--break]
 DESCRIPTION
   This script lets you run various SmalltalkCI runs from within a tODE dev environment for debugging issues 
   that show up travis-ci test runs.
 
 EXAMPLES
-  ./testSmalltalkCI -h
+  ./ci -h
 
-  /home/smalltalkCI/testSmalltalkCI --break
+  /home/smalltalkCI/ci --break
 
-  /home/smalltalkCI/testSmalltalkCI --ston=/opt/git/smalltalkCI/gemstone/gsdevkit/examples/metacello.ston
-  /home/smalltalkCI/testSmalltalkCI --ston=/opt/git/smalltalkCI/gemstone/gsdevkit/examples/announcements.ston
-  /home/smalltalkCI/testSmalltalkCI --ston=/opt/git/smalltalkCI/.smalltalk.ston
+  /home/smalltalkCI/ci --ston=@/sys/stone/SmalltalkCI/gemstone/gsdevkit/examples/metacello.ston
+  /home/smalltalkCI/ci --ston=/@/sys/stone/SmalltalkCI/gemstone/gsdevkit/examples/announcements.ston
 
-  /home/smalltalkCI/testSmalltalkCI --loadTests=@/sys/stone/dirs/SmalltalkCI/tests
+  /home/smalltalkCI/ci --ston=/opt/git/smalltalkCI/.smalltalk.ston
+  /home/smalltalkCI/ci --ston=@/sys/stone/SmalltalkCI/.smalltalk.ston
+
+  /home/smalltalkCI/ci --loadTests=@/sys/stone/dirs/SmalltalkCI/tests
 \'
-        topez: topez ] ]',#creationTime:DateAndTime['2016-02-05T15:27:21.5106348991394-08:00'],#modificationTime:DateAndTime['2016-02-05T19:19:57.9409480094909-08:00']}
+        topez: topez ] ]',#creationTime:DateAndTime['2016-02-05T15:27:21.5106348991394-08:00'],#modificationTime:DateAndTime['2016-02-06T06:14:33.1272869110107-08:00']}
