@@ -1,6 +1,6 @@
 private
 serializeError: error of: aTestCase
   (DebuggerLogEntry
-    createContinuationLabeled: self spec specName , ': ' , aTestCase printString)
+    createContinuationLabeled: suite name , ': ' , aTestCase printString)
     addToLog.
   System commit
