@@ -4,8 +4,8 @@ setUp
   self produceXMLLog
     ifTrue: [ 
       | xmlFilePath |
-      xmlFilePath := (System gemEnvironmentVariable: 'SMALLTALK_CI_HOME')
-        ifNotNil: [ :smalltalk_ci_home | 'smalltalk_ci_home' , '/' , suite name , '.xml' ]
+      xmlFilePath := (System gemEnvironmentVariable: 'SMALLTALK_CI_BUILD')
+        ifNotNil: [ :smalltalk_ci_build | smalltalk_ci_build , '/' , suite name , '.xml' ]
         ifNil: [ suite name , '.xml' ].
       stream := BinaryOrTextFile openWrite: xmlFilePath.
       stream

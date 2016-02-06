@@ -1,0 +1,6 @@
+SmalltalkCISpec {
+  #specName : 'Announcements',
+  #testing : {
+    #packages : [ 'Announcements' ]
+  }
+}

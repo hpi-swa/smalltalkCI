@@ -7,6 +7,7 @@ TDScriptLeafNode{#name:'testSmalltalkCI',#contents:'[ :topez :objIn :tokens :com
       #(\'filein\' nil #\'required\').
       #(\'test\' nil #\'required\').
       #(\'xml\' nil #\'required\').
+      #(\'ston\' nil #\'required\').
       #(\'custom\' nil #\'required\').
       #(\'loadTests\' nil #\'required\')}
     optionsAndArguments: [ :options :operands | 
@@ -17,6 +18,13 @@ TDScriptLeafNode{#name:'testSmalltalkCI',#contents:'[ :topez :objIn :tokens :com
     ifAbsent: [ 
       | shellTool |
       shellTool := topez toolInstanceFor: \'mount\'.
+      opts
+        at: \'ston\'
+        ifPresent: [ :arg | 
+          |  |
+          SmalltalkCI
+            runCIFor: arg
+            produceXMLLog: false ].
       opts
         at: \'xml\'
         ifPresent: [ :arg | 
@@ -100,6 +108,8 @@ DESCRIPTION
 EXAMPLES
   ./testSmalltalkCI -h
 
+  /home/smalltalkCI/testSmalltalkCI --ston=/opt/git/smalltalkCI/gemstone/gsdevkit/examples/announcements.ston
+
   /home/smalltalkCI/testSmalltalkCI --xml=@/sys/stone/dirs/SmalltalkCI
 
   /home/smalltalkCI/testSmalltalkCI --custom=@/sys/stone/dirs/SmalltalkCI/.smalltalk.ston
@@ -111,4 +121,4 @@ EXAMPLES
   /home/smalltalkCI/testSmalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Gemstone.st
   /home/smalltalkCI/testSmalltalkCI --filein=@/sys/stone/dirs/SmalltalkCI/src/SmalltalkCI-Report.st
 \'
-        topez: topez ] ]',#creationTime:DateAndTime['2016-02-05T15:27:21.5106348991394-08:00'],#modificationTime:DateAndTime['2016-02-05T15:28:37.1039159297943-08:00']}
+        topez: topez ] ]',#creationTime:DateAndTime['2016-02-05T15:27:21.5106348991394-08:00'],#modificationTime:DateAndTime['2016-02-05T16:56:24.2090530395507-08:00']}

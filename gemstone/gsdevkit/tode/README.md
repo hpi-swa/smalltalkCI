@@ -13,6 +13,9 @@ project install --url=http://gsdevkit.github.io/GsDevKit_home/SmalltalkCI.ston
 project load SmalltalkCI
 EOF
 
-## install/run Metacello tests
+## install Metacello Tests and run tests
 runSmalltalkCI smalltalkCI $GS_HOME/shared/repos/smalltalkCI/gemstone/gsdevkit/examples/metacello.ston
+
+## run tests in Announcements package
+runSmalltalkCI smalltalkCI $GS_HOME/shared/repos/smalltalkCI/gemstone/gsdevkit/examples/announcements.ston
 ```
