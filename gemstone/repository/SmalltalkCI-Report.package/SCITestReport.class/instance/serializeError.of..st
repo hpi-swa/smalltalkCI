@@ -1,7 +1,7 @@
 private
 serializeError: error of: aTestCase
   (DebuggerLogEntry
-    error: 'ERROR: ' , suite suiteName , ': ' , aTestCase printString
+    error: 'ERROR: ' , suite name , ': ' , aTestCase printString
     object:
       {error.
       aTestCase})
