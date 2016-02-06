@@ -2,5 +2,5 @@ executing
 runTests
   testReport := SCITestReport
     runClasses: self classesToTest
-    named: 'SmalltalkCI'
+    named: self spec specName
     produceXMLLog: self produceXMLLog

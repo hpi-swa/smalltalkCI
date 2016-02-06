@@ -6,6 +6,7 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
+		"specName",
 		"loading",
 		"testing" ],
 	"name" : "SmalltalkCISpec",
