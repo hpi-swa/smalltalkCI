@@ -21,9 +21,10 @@
 	"instance" : {
 		"classesInCategory:" : "EatebanLorenzano 1/27/2016 13:06",
 		"classesInCategoryPrefix:" : "EatebanLorenzano 1/27/2016 13:06",
-		"classesToTest" : "dkh 02/05/2016 12:06",
+		"classesToTest" : "dkh 02/05/2016 17:06",
 		"classesToTestFrom:" : "travisCI 1/27/2016 16:27",
 		"compatibleSpecs" : "EatebanLorenzano 1/27/2016 13:53",
+		"explicitTestKeys" : "dkh 02/05/2016 17:05",
 		"finishUpAfterCI" : "fn 1/31/2016 19:03",
 		"initialize" : "fn 1/31/2016 22:08",
 		"loadProjects" : "EatebanLorenzano 1/27/2016 14:31",

@@ -7,6 +7,7 @@
 		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:36" },
 	"instance" : {
 		"classesToTestFrom:" : "TravisCI 02/04/2016 20:11",
+		"explicitTestKeys" : "dkh 02/05/2016 17:07",
 		"produceXMLLog" : "dkh 02/05/2016 09:52",
 		"produceXMLLog:" : "dkh 02/05/2016 09:52",
 		"readSTONSpec:" : "TravisCI 02/04/2016 15:45",
