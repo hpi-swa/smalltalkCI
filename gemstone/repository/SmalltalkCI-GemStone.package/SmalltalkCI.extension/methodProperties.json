@@ -1,5 +1,6 @@
 {
 	"class" : {
+		"runCIFor:produceXMLLog:" : "dkh 02/05/2016 16:06",
 		"runCIForSpec:projectDirectory:produceXMLLog:" : "dkh 02/05/2016 10:19" },
 	"instance" : {
 		 } }
