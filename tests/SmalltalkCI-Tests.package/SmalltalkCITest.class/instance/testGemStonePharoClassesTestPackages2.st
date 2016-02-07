@@ -1,6 +1,6 @@
 testing
 testGemStonePharoClassesTestPackages2
-  "ensure GemStone and Pharo match package patterns the same way"
+  "SmalltalkCI-* fails for Pharo, passes for GemStone"
 
   | classes |
   (SmalltalkCI platformSymbol = #'pharo'
@@ -10,7 +10,7 @@ testGemStonePharoClassesTestPackages2
     testing:
       (Dictionary new
         add: #'classes' -> #('Object');
-        add: #'packages' -> #('SmalltalkCI.*');
+        add: #'packages' -> #('SmalltalkCI-*');
         yourself).
   classes := self ci classesToTest.
   self assert: (classes includes: SmalltalkCISpecTest).

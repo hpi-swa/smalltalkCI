@@ -1,6 +1,6 @@
 testing
 testGemStonePharoClassesTestPackages3
-  "ensure GemStone and Pharo match package patterns the same way"
+  "SmalltalkCI-* fails for GemStone, passes for Pharo"
 
   | classes |
   (SmalltalkCI platformSymbol = #'pharo'
