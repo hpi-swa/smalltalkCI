@@ -2,10 +2,18 @@
 
 usage() {
   cat <<HELP
-USAGE: $(basename $0) [-h] <stone-name> <path-to-SmalltalkCISpec-ston-file>
+USAGE: $(basename $0) [-h] [-s <snapshot-file-path>] <stone-name> <path-to-SmalltalkCISpec-ston-file>
+
+OPTIONS
+  -h
+     display help
+  -s <snapshot-file-path> 
+     Path to snapshot file. $GS_HOME/bin/newExtent used to install the desired extent before
+     running tests.
 
 EXAMPLES
    $(basename $0) -h
+   $(basename $0) -s extent.tode.dbf smalltalkCI $GS_HOME/shared/repos/smalltalkCI/gemstone/gsdevkit/examples/metacello.ston
    $(basename $0) smalltalkCI $GS_HOME/shared/repos/smalltalkCI/gemstone/gsdevkit/examples/metacello.ston
 
 HELP
@@ -13,9 +21,11 @@ HELP
 
 set -ex
 
-while getopts "h" OPT ; do
+snapshotFileArg=""
+while getopts "hs:" OPT ; do
   case "$OPT" in
     h) usage; exit 0 ;;
+    s) snapshotFileArg="-s ${OPTARG}" ;;
     *) usage; exit 1;;
   esac
 done
@@ -31,6 +41,10 @@ fi
 
 stoneName="$1"
 stonPath="$2"
+
+if [ "${snapshotFileArg}x" != "x" ] ; then
+  newExtent $snapshotFileArg $stoneName
+fi
 
 $GS_HOME/bin/devKitCommandLine serverDoIt $stoneName << EOF
 SmalltalkCI runCIFor: '$stonPath'.

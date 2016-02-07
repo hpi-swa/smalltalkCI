@@ -13,6 +13,9 @@ installSmalltalkCI smalltalkCI
 ## install and run SmalltalkCI Tests
 runSmalltalkCI smalltalkCI $GS_HOME/shared/repos/smalltalkCI/.smalltalk.ston
 
+## install and run SmalltalkCI Tests in a fresh extent (SmalltalkCI should be installed in the snapshot)
+runSmalltalkCI -s extent0.smalltalkCI.dbf smalltalkCI $GS_HOME/shared/repos/smalltalkCI/.smalltalk.ston 
+
 ## install and run Metacello Tests
 runSmalltalkCI smalltalkCI $GS_HOME/shared/repos/smalltalkCI/gemstone/gsdevkit/examples/metacello.ston
 
