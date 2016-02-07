@@ -13,7 +13,7 @@ testPharoClassesTestPackages2
   self spec
     testing:
       (Dictionary new
-        add: #'packages' -> #('SmalltalkCI.*' 'Kernel-Objects');
+        add: #'packages' -> #('SmalltalkCI-*' 'Kernel-Objects');
         yourself).
   classes := self ci classesToTest.
   self assert: (classes includes: SmalltalkCISpecTest).

@@ -20,7 +20,7 @@ testClassesTest1
             #'include'
                 ->
                   (Dictionary new
-                    add: #'classes' -> #(#'Announcements');
+                    add: #'classes' -> #(#'Announcement');
                     add:
                         #'categories' -> (#('BaselineOfSmalltalkCITests') , kernelCategories);
                     yourself);
@@ -35,7 +35,7 @@ testClassesTest1
   classes := self ci classesToTest.
   self assert: (classes includes: Dictionary).
   self assert: (classes includes: BaselineOfSmalltalkCITests) not.
-  self assert: (classes includes: Announcements) not.
+  self assert: (classes includes: Announcement) not.
   self assert: (classes includes: SmalltalkCISpec).
   self assert: (classes includes: SmalltalkCISpecTest) not.
   self assert: (classes includes: Object)
