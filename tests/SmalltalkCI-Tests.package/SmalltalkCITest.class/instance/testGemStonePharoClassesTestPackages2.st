@@ -10,7 +10,7 @@ testGemStonePharoClassesTestPackages2
     testing:
       (Dictionary new
         add: #'classes' -> #('Object');
-        add: #'packages' -> #('SmalltalkCI-*');
+        add: #'packages' -> #('SmalltalkCI.*');
         yourself).
   classes := self ci classesToTest.
   self assert: (classes includes: SmalltalkCISpecTest).
