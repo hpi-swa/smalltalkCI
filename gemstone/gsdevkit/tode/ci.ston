@@ -18,9 +18,12 @@ TDScriptLeafNode{#name:'ci',#contents:'[ :topez :objIn :tokens :command :command
       opts
         at: \'ston\'
         ifPresent: [ :arg | 
-          | filePath |
-          filePath := shellTool resolveFilePath: arg.
-          SmalltalkCI runCIFor: filePath produceXMLLog: false ].
+          (arg beginsWith: \'@\') ifTrue: [| ciSpec |
+
+          ciSpec := shellTool resolveAtPathReference: arg.
+SmalltalkCI runCIForSpec: ciSpec produceXMLLog: false]
+ifFalse: [ 
+          SmalltalkCI runCIFor: arg produceXMLLog: false ]].
       opts
         at: \'break\'
         ifPresent: [ :ignored | 
@@ -65,12 +68,12 @@ EXAMPLES
 
   /home/smalltalkCI/ci --break
 
-  /home/smalltalkCI/ci --ston=@/sys/stone/SmalltalkCI/gemstone/gsdevkit/examples/metacello.ston
-  /home/smalltalkCI/ci --ston=/@/sys/stone/SmalltalkCI/gemstone/gsdevkit/examples/announcements.ston
+  /home/smalltalkCI/ci --ston=@/sys/stone/dirs/SmalltalkCI/gemstone/gsdevkit/examples/metacello.ston
+  /home/smalltalkCI/ci --ston=@/sys/stone/dirs/SmalltalkCI/gemstone/gsdevkit/examples/announcements.ston
 
   /home/smalltalkCI/ci --ston=/opt/git/smalltalkCI/.smalltalk.ston
   /home/smalltalkCI/ci --ston=@/sys/stone/SmalltalkCI/.smalltalk.ston
 
   /home/smalltalkCI/ci --loadTests=@/sys/stone/dirs/SmalltalkCI/tests
 \'
-        topez: topez ] ]',#creationTime:DateAndTime['2016-02-05T15:27:21.5106348991394-08:00'],#modificationTime:DateAndTime['2016-02-06T06:14:33.1272869110107-08:00']}
+        topez: topez ] ] ',#creationTime:DateAndTime['2016-02-05T15:27:21.5106348991394-08:00'],#modificationTime:DateAndTime['2016-02-07T07:00:56.3268609046936-08:00']}

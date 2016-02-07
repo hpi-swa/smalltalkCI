@@ -29,6 +29,8 @@ tearDown
         nextPutAll: suite name ]
     ifFalse: [ 
       progressFile
+        nextPutAll: '***********************************';
+        cr;
         nextPutAll: ' failures=';
         nextPutAll: suiteFailures printString;
         nextPutAll: ' errors=';
@@ -37,6 +39,16 @@ tearDown
         nextPutAll: ' time=';
         nextPutAll: ((self formatTime: suiteTime) printShowingDecimalPlaces: 3);
         nextPutAll: ' seconds elapsed.';
+        cr;
+        nextPutAll: '***********************************';
+        cr.
+      self testCaseDefectsSummary: testCaseFailures label: 'Failures:'.
+      self testCaseDefectsSummary: testCaseErrors label: 'Errors:'.
+      self
+        testCaseDefectsSummary: testCaseUnexpectedPasses
+        label: 'UnexpectedPasses:'.
+      progressFile
+        nextPutAll: '***********************************';
         cr;
         nextPutAll: 'finished running suite: ';
         nextPutAll: suite name ]

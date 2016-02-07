@@ -16,16 +16,21 @@ runCase: aTestCase
       (error isKindOf: TestFailure)
         ifTrue: [ 
           aTestCase shouldPass
-            ifTrue: [ self writeFailure: error stack: stack ]
+            ifTrue: [ 
+              self writeFailure: error stack: stack.
+              testCaseFailures add: aTestCase ]
             ifFalse: [ 
               "expected failure"
                ] ]
         ifFalse: [ 
           aTestCase shouldPass
-            ifTrue: [ self writeError: error stack: stack ]
+            ifTrue: [ 
+              self writeError: error stack: stack.
+              testCaseErrors add: aTestCase ]
             ifFalse: [ 
               error isNil
                 ifTrue: [ 
                   self recordUnexpectedPassFor: aTestCase.
-                  self writeUnexpectedPassFailure ] ] ] ].
+                  self writeUnexpectedPassFailure.
+                  testCaseUnexpectedPasses add: aTestCase ] ] ] ].
   self endTestCase
