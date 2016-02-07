@@ -1,6 +1,6 @@
 testing
 testPharoClassesTestPackages2
-  "packages ignored, if no class or category ... but I think this is wrong"
+  "packages ignored, if no class or category ... but I think this is wrong see testGemStonePharoClassesTestPackages1"
 
   | classes |
   SmalltalkCI platformSymbol = #'pharo'
