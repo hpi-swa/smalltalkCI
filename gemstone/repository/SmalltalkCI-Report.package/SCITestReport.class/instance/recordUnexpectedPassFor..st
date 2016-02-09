@@ -5,4 +5,8 @@ recordUnexpectedPassFor: aTestCase
     object:
       {'unexpected pass'.
       aTestCase}) addToLog.
-  System commit
+  System commitTransaction
+    ifFalse: [ 
+      Transcript
+        cr;
+        show: 'Commit failed attempting to log unexpected pass' ]
