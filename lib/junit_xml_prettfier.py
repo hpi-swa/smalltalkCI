@@ -128,6 +128,7 @@ def prettify_class_name(suite, class_name):
                     ERRORS += 1
                 elif child.tag == 'failure':
                     FAILURES += 1
+            body = '\n'.join(body)
 
             if is_error:
                 title = get_error(testcase.attrib['name'],
@@ -138,9 +139,9 @@ def prettify_class_name(suite, class_name):
                                  testcase.attrib['time'])
                 ex_id = 'failure%s' % FAILURES
 
-            testcase_tuple = (ex_id, title, '\n'.join(body))
-            print_exception(*testcase_tuple)
-            EXCEPTIONS.setdefault(class_name, []).append(testcase_tuple)
+            print_exception(ex_id, title, body)
+            EXCEPTIONS.setdefault(class_name, []).append(
+                ('summary_%s' % ex_id, title, body))
         else:
             print_success(testcase.attrib['name'], testcase.attrib['time'])
         TESTS += 1
