@@ -41,7 +41,7 @@ def get_fail(title, time):
 
 
 def get_exception_title(ex_type, ex_msg):
-    return '%s  > %s: %s%s' % (ANSI_GRAY_BOLD, ex_type, ex_msg, ANSI_RESET)
+    return '%s%s: %s%s' % (ANSI_GRAY_BOLD, ex_type, ex_msg, ANSI_RESET)
 
 
 def get_exception_body(body):
