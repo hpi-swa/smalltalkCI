@@ -97,7 +97,7 @@ def build_failed():
 
 def travis_fold(name, start_or_end):
     if IS_TRAVIS_BUILD:
-        print 'travis_fold:%s:%s%s' % (name, start_or_end, ANSI_CLEAR)
+        print 'travis_fold:%s:%s%s' % (start_or_end, name, ANSI_CLEAR)
 
 
 def print_exception(name, title, body):
