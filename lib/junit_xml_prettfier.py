@@ -95,10 +95,6 @@ def build_failed():
     return ERRORS + FAILURES > 0
 
 
-def slugify(string):
-    return string.lower().replace(' ', '_')
-
-
 def travis_fold(name, start_or_end):
     if IS_TRAVIS_BUILD:
         print 'travis_fold:%s:%s%s' % (name, start_or_end, ANSI_CLEAR)
@@ -136,11 +132,13 @@ def prettify_class_name(suite, class_name):
             if is_error:
                 title = get_error(testcase.attrib['name'],
                                   testcase.attrib['time'])
+                ex_id = 'error%s' % ERRORS
             else:
                 title = get_fail(testcase.attrib['name'],
                                  testcase.attrib['time'])
+                ex_id = 'failure%s' % FAILURES
 
-            testcase_tuple = (slugify(class_name), title, '\n'.join(body))
+            testcase_tuple = (ex_id, title, '\n'.join(body))
             print_exception(*testcase_tuple)
             EXCEPTIONS.setdefault(class_name, []).append(testcase_tuple)
         else:
