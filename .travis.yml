@@ -13,6 +13,7 @@ smalltalk:
   - Pharo-4.0
   - Pharo-3.0
 
+  - GemStone-3.3.0
   - GemStone-3.2.12
   - GemStone-3.1.0.6
 
@@ -107,6 +108,7 @@ matrix:
     #   group: legacy
     #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
   allow_failures:
+    - smalltalk: GemStone-3.3.0
     - smalltalk: GemStone-3.2.12
     - smalltalk: GemStone-3.1.0.6
 

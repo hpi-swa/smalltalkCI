@@ -37,6 +37,8 @@ gemstone::prepare_stone() {
   # Operating system setup already performed
   touch $GS_HOME/bin/.gsdevkitSysSetup
 
+  export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
+
   travis_fold start install_server "Installing server..."
     timer_start
 
