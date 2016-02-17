@@ -8,7 +8,7 @@ readonly GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
 # Clone the GsDevKit_home project.
 ################################################################################
 gemstone::prepare_gsdevkit_home() {
-  local devkit_branch="dev"
+  local devkit_branch="master"
 
   travis_fold start clone_gsdevkit "Cloning GsDevKit..."
     timer_start
@@ -98,8 +98,9 @@ run_build() {
   local exit_status=0
 
   echo "Are the host names set up correctly for GemStone?"
-  host
+  hostname
   cat /etc/hosts
+  echo "Well?"
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${stone_name}" "${config_smalltalk}"
   gemstone::load_and_test_project "${stone_name}" || exit_status=$?
