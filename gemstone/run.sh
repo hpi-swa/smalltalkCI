@@ -54,6 +54,10 @@ gemstone::prepare_stone() {
 
     timer_finish
   travis_fold end create_stone
+
+  # logging for https://github.com/hpi-swa/smalltalkCI/pull/51
+  echo "session description"
+  cat $GS_HOME/sys/local/sessions/$stone_name
 }
 
 ################################################################################
