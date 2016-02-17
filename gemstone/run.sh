@@ -97,6 +97,9 @@ run_build() {
   local stone_name="travis"
   local exit_status=0
 
+  echo "Are the host names set up correctly for GemStone?"
+  host
+  cat /etc/hosts
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${stone_name}" "${config_smalltalk}"
   gemstone::load_and_test_project "${stone_name}" || exit_status=$?
