@@ -8,7 +8,7 @@ readonly GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
 # Clone the GsDevKit_home project.
 ################################################################################
 gemstone::prepare_gsdevkit_home() {
-  local devkit_branch="master"
+  local devkit_branch="dev"
 
   travis_fold start clone_gsdevkit "Cloning GsDevKit..."
     timer_start
