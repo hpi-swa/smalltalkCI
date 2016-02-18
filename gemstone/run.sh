@@ -79,9 +79,10 @@ gemstone::load_and_test_project() {
     timer_start
 
     $GS_HOME/bin/devKitCommandLine serverDoIt ${stone_name} << EOF || status=$?
-      (BinaryOrTextFile openReadOnServer: '${SMALLTALK_CI_HOME}/src/SmalltalkCI-Core.st')
-        fileIn;
-        close.
+      Metacello new
+        baseline: 'SmalltalkCI';
+	repository: 'filetree://${SMALLTALK_CI_HOME}/gemstone/gsdevkit/repository';
+	load: 'Core'.
       (Smalltalk at: \#SmalltalkCI) runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
       System commitTransaction.
 EOF
