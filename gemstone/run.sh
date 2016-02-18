@@ -54,6 +54,8 @@ set -e
 
     $GS_HOME/bin/createStone $stone_name $gemstone_version
 
+echo "createStone error status: $?"
+
     timer_finish
   travis_fold end create_stone
 
