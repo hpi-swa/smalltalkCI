@@ -50,6 +50,8 @@ gemstone::prepare_stone() {
   travis_fold start create_stone "Creating stone..."
     timer_start
 
+set -e
+
     $GS_HOME/bin/createStone $stone_name $gemstone_version
 
     timer_finish
