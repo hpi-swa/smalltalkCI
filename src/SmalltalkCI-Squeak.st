@@ -291,7 +291,7 @@ runCase: aTestCase
 
 	error notNil
 		ifTrue: [
-			aTestCase shouldPass	ifTrue: [
+			aTestCase shouldPass ifTrue: [
 				(error isKindOf: TestFailure)
 					ifTrue: [ self writeFailure: error stack: stack ]
 					ifFalse: [ self writeError: error stack: stack ] ] ]
