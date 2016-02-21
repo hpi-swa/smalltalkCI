@@ -254,17 +254,15 @@ writeException: error stack: stack.
     nextPutAll: '">';
     nextPutAll: (self encode: stack).! !
 
-!SCITestReport methodsFor: 'private' stamp: 'TravisCI 2/20/2016 21:18'!
+!SCITestReport methodsFor: 'private' stamp: 'CamilloBruni 11/4/2013 08:27'!
 writeFailure: error stack: stack
-self halt.
   suiteFailures := suiteFailures + 1.
   stream tab; tab; nextPutAll: '<failure type="'.
   self writeException: error stack: stack.
   stream  nextPutAll: '</failure>'; lf! !
 
-!SCITestReport methodsFor: 'private' stamp: 'TravisCI 2/20/2016 21:18'!
+!SCITestReport methodsFor: 'private' stamp: 'fn 1/23/2016 19:34'!
 writeUnexpectedPassFailure
-self halt.
   suiteFailures := suiteFailures + 1.
   stream tab; tab;
 	nextPutAll: '<failure type="UnexpectedTestPass" message="Test passed unexpectedly."></failure>'; lf! !
