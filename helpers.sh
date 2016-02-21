@@ -70,7 +70,7 @@ print_steps_to_reproduce_locally() {
   echo "     To reproduce the failed build locally, download smalltalkCI"
   echo "     and try to run something like:"
   printf "\n"
-  print_notice "      ./run.sh -o -s \"${config_smalltalk}\" /path/to/project"
+  print_notice "      ./run.sh --headfull -s \"${config_smalltalk}\" /path/to/project"
   printf "\n"
 }
 
