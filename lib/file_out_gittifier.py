@@ -31,6 +31,6 @@ if __name__ == '__main__':
                     f.write(line.rstrip(b'\f') + b'\n')
 
     if testing:
-        print 'Tested %s file(s).' % len(filenames)
+        print 'Tested %s file(s) for git compatibility.' % len(filenames)
     else:
         print 'Converted %s file(s).' % len(filenames)
