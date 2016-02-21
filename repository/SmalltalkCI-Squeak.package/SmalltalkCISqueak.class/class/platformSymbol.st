@@ -1,0 +1,3 @@
+compatibility
+platformSymbol
+	^ #squeak

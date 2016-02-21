@@ -1,0 +1,3 @@
+executing
+runTests
+	self subclassResponsibility

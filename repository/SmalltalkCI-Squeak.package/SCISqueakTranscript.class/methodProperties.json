@@ -1,0 +1,14 @@
+{
+	"class" : {
+		"install" : "fn 1/31/2016 18:47",
+		"instancesExist" : "fn 1/31/2016 20:40",
+		"uninstall" : "fn 1/31/2016 18:46" },
+	"instance" : {
+		"cr" : "FabN 7/22/2015 18:10",
+		"crlf" : "FabN 7/22/2015 18:10",
+		"install" : "fn 1/31/2016 18:47",
+		"originalTranscript" : "fn 1/31/2016 18:32",
+		"originalTranscript:" : "fn 1/31/2016 18:32",
+		"show:" : "FabN 7/22/2015 18:06",
+		"showln:" : "FabN 7/22/2015 18:10",
+		"uninstall" : "fn 1/31/2016 18:46" } }
