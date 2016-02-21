@@ -41,7 +41,7 @@ def get_fail(title, time):
 
 
 def get_exception_title(ex_type, ex_msg):
-    return '%s  > %s: %s%s' % (ANSI_GRAY_BOLD, ex_type, ex_msg, ANSI_RESET)
+    return '%s%s: %s%s' % (ANSI_GRAY_BOLD, ex_type, ex_msg, ANSI_RESET)
 
 
 def get_exception_body(body):
@@ -97,7 +97,7 @@ def build_failed():
 
 def travis_fold(name, start_or_end):
     if IS_TRAVIS_BUILD:
-        print 'travis_fold:%s:%s%s' % (name, start_or_end, ANSI_CLEAR)
+        print '%stravis_fold:%s:%s' % (ANSI_CLEAR, start_or_end, name)
 
 
 def print_exception(name, title, body):
@@ -128,6 +128,7 @@ def prettify_class_name(suite, class_name):
                     ERRORS += 1
                 elif child.tag == 'failure':
                     FAILURES += 1
+            body = '\n'.join(body)
 
             if is_error:
                 title = get_error(testcase.attrib['name'],
@@ -138,9 +139,9 @@ def prettify_class_name(suite, class_name):
                                  testcase.attrib['time'])
                 ex_id = 'failure%s' % FAILURES
 
-            testcase_tuple = (ex_id, title, '\n'.join(body))
-            print_exception(*testcase_tuple)
-            EXCEPTIONS.setdefault(class_name, []).append(testcase_tuple)
+            print_exception(ex_id, title, body)
+            EXCEPTIONS.setdefault(class_name, []).append(
+                ('summary_%s' % ex_id, title, body))
         else:
             print_success(testcase.attrib['name'], testcase.attrib['time'])
         TESTS += 1

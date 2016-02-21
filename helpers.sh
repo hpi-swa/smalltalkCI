@@ -45,11 +45,11 @@ print_results() {
   local build_dir=$1
   local status=0
   local junit_xml_file
-  junit_xml_file="${build_dir}/smalltalkCI.xml"
+  junit_xml_file=${build_dir}/*.xml
 
-  if is_travis_build && is_file "${junit_xml_file}"; then
+  if is_travis_build && [[ $(ls ${junit_xml_file} 2> /dev/null) ]]; then
     travis_fold start junit_xml "JUnit XML Output"
-      cat "${junit_xml_file}"
+      cat ${junit_xml_file}
     travis_fold end junit_xml
   fi
 
