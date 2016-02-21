@@ -1,0 +1,3 @@
+bootstrapping
+installSTON
+	self installSTONWithMetacello

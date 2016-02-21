@@ -1,0 +1,3 @@
+initialization
+initialize
+	SmalltalkCI platformClass requireSTON
