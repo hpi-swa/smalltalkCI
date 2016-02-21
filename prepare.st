@@ -1,18 +1,40 @@
-| basePath disableUpdate exportName fileDirectoryClass fileInBlock |
+| basePath disableUpdate exportName |
 
 basePath := FileDirectory on: (Smalltalk argumentAt: 1).
 basePath exists ifFalse: [
   Transcript show: 'Scripts path does not exist.'.
   ^ false ].
 
-fileInBlock := [ :fileName |
-    basePath readOnlyFileNamed: fileName
-      do: [ :fileStream | fileStream fileIn ] ].
+"# Install Metacello/FileTree ================================================="
 
-fileInBlock value: 'smalltalkCI-dev/src/SmalltalkCI-Core.st'.
-fileInBlock value: 'smalltalkCI-dev/src/SmalltalkCI-Squeak.st'.
-SmalltalkCISqueak installMetacello.
-SCIMetacelloLoadSpec setAuthor: 'TravisCI'.
+"Get the Metacello configuration (for Squeak users)"
+Installer gemsource
+    project: 'metacello';
+    addPackage: 'ConfigurationOfMetacello';
+    install.
+
+"Bootstrap Metacello Preview, using mcz files (#'previewBootstrap' symbolic version"
+((Smalltalk at: #ConfigurationOfMetacello) project 
+  version: #'previewBootstrap') load.
+
+"Load the Preview version of Metacello from GitHub"
+(Smalltalk at: #Metacello) new
+  configuration: 'MetacelloPreview';
+  version: #stable;
+  repository: 'github://dalehenrich/metacello-work:configuration';
+  load.
+
+"Now load latest version of Metacello"
+(Smalltalk at: #Metacello) new
+  baseline: 'Metacello';
+  repository: 'github://dalehenrich/metacello-work:master/repository';
+  get.
+(Smalltalk at: #Metacello) new
+  baseline: 'Metacello';
+  repository: 'github://dalehenrich/metacello-work:master/repository';
+  load.
+
+"=============================================================================="
 
 disableUpdate := Smalltalk argumentAt: 2.
 disableUpdate = 'true' ifFalse: [
