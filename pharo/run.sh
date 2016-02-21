@@ -177,8 +177,10 @@ pharo::load_and_test_project() {
     timer_start
 
     "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
-		#('Core' 'Pharo') do: [ :each | 
-			('${SMALLTALK_CI_HOME}/src/SmalltalkCI-', each, '.st') asFileReference fileIn ].
+      Metacello new
+        baseline: 'SmalltalkCI';
+        repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
+        load.
       (Smalltalk at: #SmalltalkCI) runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
     " || status=$?
 
