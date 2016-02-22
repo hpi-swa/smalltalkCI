@@ -177,10 +177,11 @@ pharo::load_and_test_project() {
     timer_start
 
     "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
-      Metacello new
-        baseline: 'SmalltalkCI';
-        repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
-        load.
+      [ Metacello new
+          baseline: 'SmalltalkCI';
+          repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
+          onConflict: [:ex | ex pass];
+          load ] on: Warning do: [:w | w resume ].
       (Smalltalk at: #SmalltalkCI) runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
     " || status=$?
 
