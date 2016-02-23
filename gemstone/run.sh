@@ -89,7 +89,7 @@ gemstone::load_and_test_project() {
         baseline: 'SmalltalkCI';
 	repository: 'filetree://${SMALLTALK_CI_HOME}/gemstone/repository';
 	load: 'Core'.
-      (Smalltalk at: #SmalltalkCI) runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'.
+      (Smalltalk at: #SmalltalkCI) runCIFor: '${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'.
       System commitTransaction.
 EOF
 
