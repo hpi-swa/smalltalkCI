@@ -43,6 +43,9 @@ gemstone::prepare_stone() {
     timer_start
 
     $GS_HOME/bin/installServer
+    if [[ ! $? -eq 0 ]]; then
+        print_error_and_exit "installServer failed."
+    fi
 
     timer_finish
   travis_fold end install_server
@@ -50,11 +53,10 @@ gemstone::prepare_stone() {
   travis_fold start create_stone "Creating stone..."
     timer_start
 
-set -e
-
     $GS_HOME/bin/createStone $stone_name $gemstone_version
-
-echo "createStone error status: $?"
+    if [[ ! $? -eq 0 ]]; then
+        print_error_and_exit "createStone failed."
+    fi
 
     timer_finish
   travis_fold end create_stone
