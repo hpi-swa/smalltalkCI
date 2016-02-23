@@ -62,16 +62,21 @@ def print_summary():
         color = ANSI_RED
     else:
         color = ANSI_GREEN
-    travis_fold('result_summary', 'start')
+
+    if EXCEPTIONS:
+        travis_fold('result_summary', 'start')
+
     print '%s%s     Executed %s tests, with %s failures and %s errors in' \
           ' %s seconds.%s' % (
             ANSI_BOLD, color, TESTS, FAILURES, ERRORS, TIME,
             ANSI_RESET)
-    print ''
-    for class_name, exceptions in EXCEPTIONS.iteritems():
-        print_bold(class_name)
-        [print_exception(*f) for f in exceptions]
-    travis_fold('result_summary', 'end')
+
+    if EXCEPTIONS:
+        print ''
+        for class_name, exceptions in EXCEPTIONS.iteritems():
+            print_bold(class_name)
+            [print_exception(*f) for f in exceptions]
+        travis_fold('result_summary', 'end')
 
 
 def print_separator(color):
