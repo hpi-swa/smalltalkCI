@@ -18,6 +18,14 @@ gemstone::prepare_gsdevkit_home() {
     git checkout "${devkit_branch}"
     export GS_HOME="$(pwd)"
 
+    # arrange to skip backups
+    cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts
+
+    # Operating system setup already performed
+    touch $GS_HOME/bin/.gsdevkitSysSetup
+
+    export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
+
     timer_finish
   travis_fold end clone_gsdevkit
 }
@@ -34,10 +42,6 @@ gemstone::prepare_stone() {
 
   gemstone_version="$(echo $2 | cut -f2 -d-)"
 
-  # Operating system setup already performed
-  touch $GS_HOME/bin/.gsdevkitSysSetup
-
-  export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
 
   travis_fold start install_server "Installing server..."
     timer_start
