@@ -1,3 +1,0 @@
-executing
-basicLoadProjectOn: aSmalltalkCI
-	self subclassResponsibility

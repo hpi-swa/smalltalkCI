@@ -1,3 +1,0 @@
-testing
-isComplete
-	^ false
