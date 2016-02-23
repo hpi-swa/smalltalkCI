@@ -20,7 +20,7 @@ fi
 
 print_info "Starting second pass to check that smalltalkCI can fail..."
 exit_status=0
-$SMALLTALK_CI_HOME/run.sh --debug $SMALLTALK_CI_HOME/.smalltalk_fail.ston || exit_status=$?
+$SMALLTALK_CI_HOME/run.sh --verbose --debug $SMALLTALK_CI_HOME/.smalltalk_fail.ston || exit_status=$?
 
 if [[ "${exit_status}" -eq 0 ]]; then
   print_error_and_exit "smalltalkCI passed unexpectedly."
