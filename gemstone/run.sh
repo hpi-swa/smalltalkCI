@@ -13,13 +13,13 @@ gemstone::prepare_gsdevkit_home() {
   travis_fold start clone_gsdevkit "Cloning GsDevKit..."
     timer_start
 
-    git clone "${GS_DEVKIT_DOWNLOAD}"
-    cd "GsDevKit_home"
-    git checkout "${devkit_branch}"
+    git clone "${GS_DEVKIT_DOWNLOAD}" || exit 1
+    cd "GsDevKit_home" || exit 1
+    git checkout "${devkit_branch}" || exit 1
     export GS_HOME="$(pwd)"
 
     # arrange to skip backups
-    cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts
+    cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts || exit 1
 
     # Operating system setup already performed
     touch $GS_HOME/bin/.gsdevkitSysSetup
@@ -46,10 +46,7 @@ gemstone::prepare_stone() {
   travis_fold start install_server "Installing server..."
     timer_start
 
-    $GS_HOME/bin/installServer
-    if [[ ! $? -eq 0 ]]; then
-        print_error_and_exit "installServer failed."
-    fi
+    $GS_HOME/bin/installServer || print_error_and_exit "installServer failed."
 
     timer_finish
   travis_fold end install_server
@@ -57,10 +54,7 @@ gemstone::prepare_stone() {
   travis_fold start create_stone "Creating stone..."
     timer_start
 
-    $GS_HOME/bin/createStone $stone_name $gemstone_version
-    if [[ ! $? -eq 0 ]]; then
-        print_error_and_exit "createStone failed."
-    fi
+    $GS_HOME/bin/createStone $stone_name $gemstone_version || print_error_and_exit "createStone failed."
 
     timer_finish
   travis_fold end create_stone
