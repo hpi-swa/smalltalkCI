@@ -18,6 +18,8 @@ gemstone::prepare_gsdevkit_home() {
     git checkout "${devkit_branch}" || exit 1
     export GS_HOME="$(pwd)"
 
+    # pre-clone /sys/local, so that travis can skip backups
+    $GS_HOME/bin/private/clone_sys_local || exit 1
     # arrange to skip backups
     cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts || exit 1
 
