@@ -1,18 +1,49 @@
 baseline
 baseline: spec
-    <baseline>
-
-    spec for: #'common' do: [
-        spec
-            package: 'STON-Core';
-            package: 'SmalltalkCI-Core'
-                with: [ spec requires: #('STON-Core') ].
-        spec group: 'default' with: #('SmalltalkCI-Core') ].
-   
-     spec for: #'squeak' do: [
-        spec package: 'SmalltalkCI-Squeak'.
-        spec group: 'default' with: #('SmalltalkCI-Squeak') ].
-   
-     spec for: #'pharo' do: [
-        spec package: 'SmalltalkCI-Pharo'.
-        spec group: 'default' with: #('SmalltalkCI-Pharo') ]
+  <baseline>
+  spec
+    for: #'common'
+    do: [ 
+      spec
+        package: 'SmalltalkCI-Core';
+        yourself.
+      spec
+        group: 'default' with: #('Core');
+        group: 'Core' with: #('SmalltalkCI-Core');
+        yourself ].
+  spec
+    for: #'squeakCommon'
+    do: [ 
+      spec
+        package: 'STON-Core';
+        package: 'SmalltalkCI-Core' with: [ spec requires: #('STON-Core') ] ].
+  spec
+    for: #'squeak'
+    do: [ 
+      spec
+        package: 'SmalltalkCI-Core'
+          with: [ spec includes: #('SmalltalkCI-Squeak') ];
+        package: 'SmalltalkCI-Squeak'
+          with: [ spec requires: #('SmalltalkCI-Core') ] ].
+  spec
+    for: #'pharo'
+    do: [ 
+      spec
+        package: 'SmalltalkCI-Core'
+          with: [ spec includes: #('SmalltalkCI-Pharo') ];
+        package: 'SmalltalkCI-Pharo'
+          with: [ spec requires: #('SmalltalkCI-Core') ] ].
+  spec
+    for: #'gemstone'
+    do: [ 
+      spec
+        package: 'SmalltalkCI-Core'
+          with: [ spec includes: #('SmalltalkCI-GemStone') ];
+        package: 'SmalltalkCI-GemStone'
+          with: [ spec requires: #('SmalltalkCI-Core') ];
+        package: 'SmalltalkCI-Report'
+          with: [ spec requires: #('SmalltalkCI-Core') ];
+        yourself.
+      spec
+        group: 'Core' with: #('SmalltalkCI-Report');
+        yourself ]
