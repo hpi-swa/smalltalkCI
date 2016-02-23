@@ -23,7 +23,7 @@ print_error_and_exit() {
 
 print_help() {
   cat <<EOF
-  USAGE: run.sh [options] /path/to/project
+  USAGE: run.sh [options] /path/to/project/your_smalltalk.ston
 
   This program prepares Smalltalk images/vms, loads projects and runs tests.
 
@@ -36,7 +36,7 @@ print_help() {
     -s | --smalltalk        Overwrite Smalltalk image selection.
     -v | --verbose          Enable 'set -x'.
 
-  EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/project
+  EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
 
 EOF
 }
