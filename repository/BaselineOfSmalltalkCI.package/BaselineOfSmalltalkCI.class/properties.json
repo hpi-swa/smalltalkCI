@@ -1,0 +1,14 @@
+{
+	"category" : "BaselineOfSmalltalkCI",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "BaselineOfSmalltalkCI",
+	"pools" : [
+		 ],
+	"super" : "BaselineOf",
+	"type" : "normal" }

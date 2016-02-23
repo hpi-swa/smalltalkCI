@@ -31,7 +31,7 @@ squeak::get_image_filename() {
       echo "Squeak-4.5.tar.gz"
       ;;
     *)
-      print_error_and_exit "Unsupported Squeak version '${smalltalk_name}'."
+      echo ""
       ;;
   esac
 }
@@ -55,6 +55,10 @@ squeak::prepare_image() {
   image_filename=$(squeak::get_image_filename "${smalltalk_name}")
   download_url="${IMAGE_DOWNLOAD}/${image_filename}"
   target="${SMALLTALK_CI_CACHE}/${image_filename}"
+
+  if is_empty "${image_filename}"; then
+    print_error_and_exit "Unsupported Squeak version '${smalltalk_name}'."
+  fi
 
   if ! is_file "${target}"; then
     travis_fold start download_image "Downloading ${smalltalk_name} testing image..."
@@ -203,6 +207,11 @@ squeak::load_and_test_project() {
     fi
 
     cat >$SMALLTALK_CI_BUILD/run.st <<EOL
+  [ Metacello new
+    baseline: 'SmalltalkCI';
+    repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
+    onConflict: [:ex | ex pass];
+    load ] on: Warning do: [:w | w resume ].
   SmalltalkCI runCIFor: '${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
 EOL
 

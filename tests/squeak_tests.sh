@@ -19,13 +19,15 @@ test_get_image_filename() {
   filename="$(squeak::get_image_filename "Squeak-4.5")"
   assertEquals "Squeak-4.5.tar.gz" "${filename}"
 
+  filename="$(squeak::get_image_filename "")"
+  assertEquals "" "${filename}"
+
+  filename="$(squeak::get_image_filename "Pharo")"
+  assertEquals "" "${filename}"
+
   set +e
   $(filename="$(squeak::get_image_filename "Squeak-trunk" 2>/dev/null)") \
       || fail "Should be successful."
-  $(filename="$(squeak::get_image_filename "" 2>/dev/null)") \
-      && fail "Should not be successful."
-  $(filename="$(squeak::get_image_filename "Pharo" 2>/dev/null)") \
-      && fail "Should not be successful."
   set -e
 }
 
