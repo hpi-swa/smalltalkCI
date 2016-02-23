@@ -176,9 +176,12 @@ pharo::load_and_test_project() {
   travis_fold start load_and_test "Loading and testing project..."
     timer_start
 
-    "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval "
-		#('Core' 'Pharo') do: [ :each | 
-			('${SMALLTALK_CI_HOME}/src/SmalltalkCI-', each, '.st') asFileReference fileIn ].
+    "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
+      [ Metacello new
+          baseline: 'SmalltalkCI';
+          repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
+          onConflict: [:ex | ex pass];
+          load ] on: Warning do: [:w | w resume ].
       (Smalltalk at: #SmalltalkCI) runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
     " || status=$?
 

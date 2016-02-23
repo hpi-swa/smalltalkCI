@@ -107,7 +107,9 @@ SmalltalkCISpec {
       #directory : 'tests',                                   // Path to packages if FileTree is used
       #repository : 'http://ss3.gemtalksystems.com/ss/...',   // Alternatively, define MC repository
       #load : [ 'default' ],                                  // Define MC load attributes
-      #platforms : [ #squeak, #pharo, #gemstone ]             // Define compatible platforms
+      #platforms : [ #squeak, #pharo, #gemstone ],            // Define compatible platforms
+      #version : '1.0.0'                                      // Define MC version (for MC
+                                                              // Configurations only)
     }
   ],
   #testing : {

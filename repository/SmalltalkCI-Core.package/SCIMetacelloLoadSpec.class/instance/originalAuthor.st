@@ -1,0 +1,3 @@
+accessing
+originalAuthor
+	^ originalAuthor
