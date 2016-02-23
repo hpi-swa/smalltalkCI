@@ -1,1 +1,1 @@
-SystemOrganization addCategory: #BaselineOfSmalltalkCITests!
+SystemOrganization addCategory: #'BaselineOfSmalltalkCITests'!
