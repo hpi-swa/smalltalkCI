@@ -20,15 +20,11 @@ os:
   - linux
   - osx
 
-cache:
-  directories:
-  - _builds/travis/github-cache
-
 install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
 
 script:
-  - $SMALLTALK_CI_HOME/run.sh --debug && bash $SMALLTALK_CI_HOME/tests/fail_test.sh
+  - $SMALLTALK_CI_HOME/run.sh --debug && $SMALLTALK_CI_HOME/tests/fail_test.sh
 
 matrix:
   include:
