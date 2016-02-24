@@ -10,7 +10,6 @@ It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy 
 - Runs on Travis' [container-based infrastructure][cbi] ([*"Builds start in seconds"*][bsis])
 - Supports Linux and OS X and can be run locally for debug purposes
 - Exports test results in the JUnit XML format as part of the Travis build log
-- builderCI fallback for builds that are not yet supported
 
 
 ## How To Use
@@ -145,19 +144,7 @@ SmalltalkCISpec {
 
 
 ## Further Configuration
-
-### builderCI Fallback
-If you want to use the builderCI fallback, make sure that there is a
-`tests/travisCI.st` in your repository and add the following lines to your `.travis.yml`:
-
-```yml
-sudo: true
-...
-script: $SMALLTALK_CI_HOME/run.sh --builder-ci
-```
-
-### Other Options
-smalltalkCI supports a couple of other options that can be useful for debugging
+smalltalkCI supports a couple of options that can be useful for debugging
 purposes or when used locally:
 
 ```
