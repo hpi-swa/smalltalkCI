@@ -14,7 +14,7 @@ gemstone::prepare_gsdevkit_home() {
     timer_start
 
     pushd $SMALLTALK_CI_BUILD || exit 1
-      git clone "${GS_DEVKIT_DOWNLOAD}" $SMALLTALK_CI_BUILD || exit 1
+      git clone "${GS_DEVKIT_DOWNLOAD}" || exit 1
       cd "GsDevKit_home" || exit 1
       git checkout "${devkit_branch}" || exit 1
       export GS_HOME="$(pwd)"
