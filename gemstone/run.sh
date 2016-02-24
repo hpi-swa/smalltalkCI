@@ -71,6 +71,7 @@ gemstone::prepare_stone() {
 #   stone_name
 # Locals:
 #   config_project_home
+#   config_ston
 # Globals:
 #   SMALLTALK_CI_HOME
 # Returns:
@@ -88,7 +89,7 @@ gemstone::load_and_test_project() {
         baseline: 'SmalltalkCI';
 	repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
 	load: 'Core'.
-      (Smalltalk at: #SmalltalkCI) runCIFor: '${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'.
+      (Smalltalk at: #SmalltalkCI) runCIFor: '${config_project_home}/${config_ston}'.
       System commitTransaction.
 EOF
 
