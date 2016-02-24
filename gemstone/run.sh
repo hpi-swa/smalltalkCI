@@ -13,18 +13,20 @@ gemstone::prepare_gsdevkit_home() {
   travis_fold start clone_gsdevkit "Cloning GsDevKit..."
     timer_start
 
-    git clone "${GS_DEVKIT_DOWNLOAD}" || exit 1
-    cd "GsDevKit_home" || exit 1
-    git checkout "${devkit_branch}" || exit 1
-    export GS_HOME="$(pwd)"
+    pushd $SMALLTALK_CI_BUILD || exit 1
+      git clone "${GS_DEVKIT_DOWNLOAD}" $SMALLTALK_CI_BUILD || exit 1
+      cd "GsDevKit_home" || exit 1
+      git checkout "${devkit_branch}" || exit 1
+      export GS_HOME="$(pwd)"
 
-    # pre-clone /sys/local, so that travis can skip backups
-    $GS_HOME/bin/private/clone_sys_local || exit 1
-    # arrange to skip backups
-    cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts || exit 1
+      # pre-clone /sys/local, so that travis can skip backups
+      $GS_HOME/bin/private/clone_sys_local || exit 1
+      # arrange to skip backups
+      cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts || exit 1
 
-    # Operating system setup already performed
-    touch $GS_HOME/bin/.gsdevkitSysSetup
+      # Operating system setup already performed
+      touch $GS_HOME/bin/.gsdevkitSysSetup || exit 1
+    popd || exit 1
 
     export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
 
@@ -61,9 +63,6 @@ gemstone::prepare_stone() {
     timer_finish
   travis_fold end create_stone
 
-  # logging for https://github.com/hpi-swa/smalltalkCI/pull/51
-  echo "session description"
-  cat $GS_HOME/sys/local/sessions/$stone_name
 }
 
 ################################################################################
@@ -108,10 +107,6 @@ run_build() {
   local stone_name="travis"
   local exit_status=0
 
-  echo "Are the host names set up correctly for GemStone?"
-  hostname
-  cat /etc/hosts
-  echo "Well?"
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${stone_name}" "${config_smalltalk}"
   gemstone::load_and_test_project "${stone_name}" || exit_status=$?
