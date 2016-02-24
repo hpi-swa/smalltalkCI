@@ -12,11 +12,13 @@ test_determine_project_home() {
   assertEquals "${BASE}" "${config_project_home}"
   assertEquals ".smalltalk.ston" "${config_ston}"
 
-  [[ -z "${travis}" ]] && export TRAVIS="true" && export TRAVIS_BUILD_DIR="/tmp"
+  [[ -z "${travis}" ]] && export TRAVIS="true" && export TRAVIS_BUILD_DIR="${BASE}"
   determine_project ""
-  assertEquals "/tmp" "${config_project_home}"
+  assertEquals "${TRAVIS_BUILD_DIR}" "${config_project_home}"
+  assertEquals ".smalltalk.ston" "${config_ston}"
   determine_project
   assertEquals "${TRAVIS_BUILD_DIR}" "${config_project_home}"
+  assertEquals ".smalltalk.ston" "${config_ston}"
   [[ -z "${travis}" ]] && unset TRAVIS_BUILD_DIR && unset TRAVIS
 
   return 0

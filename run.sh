@@ -36,7 +36,7 @@ check_os() {
 determine_project() {
   local custom_ston=$1
 
-  if is_file "${custom_ston}"; then
+  if ! is_empty "${custom_ston}" && is_file "${custom_ston}"; then
     config_ston=$(basename "${custom_ston}")
     config_project_home="$(dirname "${custom_ston}")"
   elif is_travis_build; then
@@ -111,7 +111,12 @@ parse_args() {
     exit 0
   fi
 
-  determine_project "${!#}" # Use last argument for custom STON
+  if [[ $# -eq 0 ]]; then
+    determine_project
+  else
+    # Use last argument for custom STON
+    determine_project "${!#}"
+  fi
 
   # Handle all arguments and flags
   while :
