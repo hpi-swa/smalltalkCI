@@ -15,20 +15,17 @@ smalltalk:
 
   - GemStone-3.3.0
   - GemStone-3.2.12
-  - GemStone-3.1.0.6
+  # - GemStone-3.1.0.6
 
 os:
   - linux
   - osx
 
-cache:
-  directories:
-  - _builds/travis/github-cache
-
 install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
 
-script: $SMALLTALK_CI_HOME/run.sh --debug
+script:
+  - $SMALLTALK_CI_HOME/run.sh --debug && $SMALLTALK_CI_HOME/tests/fail_test.sh
 
 matrix:
   include:

@@ -23,6 +23,7 @@ ERRORS = 0
 FAILURES = 0
 EXCEPTIONS = {}
 IS_TRAVIS_BUILD = os.environ.get('TRAVIS') == 'true'
+TRAVIS_FOLD_PREFIX = os.environ.get('SMALLTALK_CI_TRAVIS_FOLD_PREFIX', '')
 
 
 def get_title(suite, tests, failures, errors, time):
@@ -62,16 +63,21 @@ def print_summary():
         color = ANSI_RED
     else:
         color = ANSI_GREEN
-    travis_fold('result_summary', 'start')
+
+    if EXCEPTIONS:
+        travis_fold('result_summary', 'start')
+
     print '%s%s     Executed %s tests, with %s failures and %s errors in' \
           ' %s seconds.%s' % (
             ANSI_BOLD, color, TESTS, FAILURES, ERRORS, TIME,
             ANSI_RESET)
-    print ''
-    for class_name, exceptions in EXCEPTIONS.iteritems():
-        print_bold(class_name)
-        [print_exception(*f) for f in exceptions]
-    travis_fold('result_summary', 'end')
+
+    if EXCEPTIONS:
+        print ''
+        for class_name, exceptions in EXCEPTIONS.iteritems():
+            print_bold(class_name)
+            [print_exception(*f) for f in exceptions]
+        travis_fold('result_summary', 'end')
 
 
 def print_separator(color):
@@ -88,7 +94,7 @@ def print_bold(string):
 
 def print_success(title, time):
     print '  %s%s%s %s (%s)' % (
-      ANSI_GREEN, SUCCESS, ANSI_RESET, title, get_time(time))
+        ANSI_GREEN, SUCCESS, ANSI_RESET, title, get_time(time))
 
 
 def build_failed():
@@ -97,7 +103,8 @@ def build_failed():
 
 def travis_fold(name, start_or_end):
     if IS_TRAVIS_BUILD:
-        print '%stravis_fold:%s:%s' % (ANSI_CLEAR, start_or_end, name)
+        print '%stravis_fold:%s:%s%s' % (
+            ANSI_CLEAR, start_or_end, TRAVIS_FOLD_PREFIX, name)
 
 
 def print_exception(name, title, body):

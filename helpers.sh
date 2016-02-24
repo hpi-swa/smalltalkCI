@@ -23,7 +23,7 @@ print_error_and_exit() {
 
 print_help() {
   cat <<EOF
-  USAGE: run.sh [options] /path/to/project
+  USAGE: run.sh [options] /path/to/project/your_smalltalk.ston
 
   This program prepares Smalltalk images/vms, loads projects and runs tests.
 
@@ -36,7 +36,7 @@ print_help() {
     -s | --smalltalk        Overwrite Smalltalk image selection.
     -v | --verbose          Enable 'set -x'.
 
-  EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/project
+  EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
 
 EOF
 }
@@ -70,7 +70,7 @@ print_steps_to_reproduce_locally() {
   echo "     To reproduce the failed build locally, download smalltalkCI"
   echo "     and try to run something like:"
   printf "\n"
-  print_notice "      ./run.sh --headfull -s \"${config_smalltalk}\" /path/to/project"
+  print_notice "      ./run.sh --headfull -s \"${config_smalltalk}\" /path/to/project/.smalltalk.ston"
   printf "\n"
 }
 
@@ -200,9 +200,10 @@ travis_fold() {
   local action=$1
   local name=$2
   local title=$3
+  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX}"
 
   if is_travis_build; then
-    echo -en "travis_fold:${action}:${name}\r\033[0K"
+    echo -en "travis_fold:${action}:${prefix}${name}\r\033[0K"
   fi
   if is_not_empty "${title}"; then
     echo -e "\033[34;1m${title}\033[0m"

@@ -5,18 +5,17 @@ source "${BASE}/run.sh"
 
 test_determine_project_home() {
   local config_project_home
+  local config_ston
   local travis="${TRAVIS}"
 
-  determine_project_home "/tmp"
-  assertEquals "/tmp" "${config_project_home}"
-
-  determine_project_home "../"
-  assertEquals "/" "${config_project_home:0:1}"
+  determine_project "${BASE}/.smalltalk.ston"
+  assertEquals "${BASE}" "${config_project_home}"
+  assertEquals ".smalltalk.ston" "${config_ston}"
 
   [[ -z "${travis}" ]] && export TRAVIS="true" && export TRAVIS_BUILD_DIR="/tmp"
-  determine_project_home "/usr"
-  assertEquals "/usr" "${config_project_home}"
-  determine_project_home
+  determine_project ""
+  assertEquals "/tmp" "${config_project_home}"
+  determine_project
   assertEquals "${TRAVIS_BUILD_DIR}" "${config_project_home}"
   [[ -z "${travis}" ]] && unset TRAVIS_BUILD_DIR && unset TRAVIS
 
