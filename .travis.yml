@@ -37,39 +37,39 @@ matrix:
       sudo: false
       script: bash $SMALLTALK_CI_HOME/tests/all_tests.sh
 
-#    # Legacy Squeak builds using builderCI
-#    - smalltalk: Squeak-4.4
-#      os: linux
-#      sudo: required
-#      group: legacy
-#      script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
-#    # - smalltalk: Squeak-4.3
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
-#
-#    # Legacy Pharo builds using builderCI
-#    - smalltalk: Pharo-2.0
-#      os: linux
-#      sudo: required
-#      group: legacy
-#      script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
-#    # - smalltalk: Pharo-1.4
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
-#    # - smalltalk: PharoCore-1.2
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
-#    # - smalltalk: PharoCore-1.1
-#    #   os: linux
-#    #   sudo: required
-#    #   group: legacy
-#    #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
+ #    # Legacy Squeak builds using builderCI
+ #    - smalltalk: Squeak-4.4
+ #      os: linux
+ #      sudo: required
+ #      group: legacy
+ #      script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
+ #    # - smalltalk: Squeak-4.3
+ #    #   os: linux
+ #    #   sudo: required
+ #    #   group: legacy
+ #    #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
+ #
+ #    # Legacy Pharo builds using builderCI
+ #    - smalltalk: Pharo-2.0
+ #      os: linux
+ #      sudo: required
+ #      group: legacy
+ #      script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
+ #    # - smalltalk: Pharo-1.4
+ #    #   os: linux
+ #    #   sudo: required
+ #    #   group: legacy
+ #    #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
+ #    # - smalltalk: PharoCore-1.2
+ #    #   os: linux
+ #    #   sudo: required
+ #    #   group: legacy
+ #    #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
+ #    # - smalltalk: PharoCore-1.1
+ #    #   os: linux
+ #    #   sudo: required
+ #    #   group: legacy
+ #    #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
 
    allow_failures:
     - smalltalk: Squeak-4.4
