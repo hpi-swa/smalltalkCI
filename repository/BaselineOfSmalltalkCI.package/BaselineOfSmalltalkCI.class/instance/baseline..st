@@ -41,9 +41,4 @@ baseline: spec
           with: [ spec includes: #('SmalltalkCI-GemStone') ];
         package: 'SmalltalkCI-GemStone'
           with: [ spec requires: #('SmalltalkCI-Core') ];
-        package: 'SmalltalkCI-Report'
-          with: [ spec requires: #('SmalltalkCI-Core') ];
-        yourself.
-      spec
-        group: 'Core' with: #('SmalltalkCI-Report');
         yourself ]
