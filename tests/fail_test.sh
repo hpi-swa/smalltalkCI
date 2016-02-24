@@ -15,6 +15,7 @@ fi
 
 if is_dir "${SMALLTALK_CI_BUILD}"; then
   print_info "Removing old build folder at ${SMALLTALK_CI_BUILD} ..."
+  chmod -R +w "${SMALLTALK_CI_BUILD}"
   rm -rf "${SMALLTALK_CI_BUILD}"
 fi
 
