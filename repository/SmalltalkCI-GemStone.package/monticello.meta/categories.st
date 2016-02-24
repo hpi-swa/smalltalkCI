@@ -1,1 +1,2 @@
-SystemOrganization addCategory: #'SmalltalkCI-Gemstone'!
+SystemOrganization addCategory: #'SmalltalkCI-GemStone'!
+SystemOrganization addCategory: #'SmalltalkCI-GemStone-Report'!
