@@ -29,7 +29,8 @@ script:
 matrix:
   include:
     # Bash tests
-    - language: generic
+    - language: bash
+      smalltalk:
       sudo: false
       script: bash $SMALLTALK_CI_HOME/tests/all_tests.sh
 
