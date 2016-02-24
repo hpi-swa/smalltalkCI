@@ -22,13 +22,13 @@ It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy 
 
 <a name="images"/>
 ## List Of Supported Images
-| Squeak          | Pharo            | GemStone                 |
-| --------------- | ---------------- | ------------------------ |
-| `Squeak-trunk`  | `Pharo-alpha`    | *[Work in progress][gs]* |
-| `Squeak-5.0`    | `Pharo-stable`   |                          |
-| `Squeak-4.6`    | `Pharo-5.0`      |                          |
-| `Squeak-4.5`    | `Pharo-4.0`      |                          |
-|                 | `Pharo-3.0`      |                          |
+| Squeak          | Pharo            | GemStone             |
+| --------------- | ---------------- | -------------------- |
+| `Squeak-trunk`  | `Pharo-alpha`    | `GemStone-3.3.0`     |
+| `Squeak-5.0`    | `Pharo-stable`   | `GemStone-3.2.12`    |
+| `Squeak-4.6`    | `Pharo-5.0`      | `GemStone-3.1.0.6`   |
+| `Squeak-4.5`    | `Pharo-4.0`      |                      |
+|                 | `Pharo-3.0`      |                      |
 
 
 <a name="load_formats"/>
@@ -64,6 +64,10 @@ smalltalk:
   - Pharo-5.0
   - Pharo-4.0
   - Pharo-3.0
+
+  - GemStone-3.3.0
+  - GemStone-3.2.12
+  - GemStone-3.1.0.6
 ```
 
 ### Minimal `.smalltalk.ston` Template
