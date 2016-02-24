@@ -1,0 +1,22 @@
+{
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"baseline",
+		"configuration",
+		"directory",
+		"load",
+		"onWarningLog",
+		"platforms",
+		"repository",
+		"originalAuthor",
+		"version" ],
+	"name" : "SCIMetacelloLoadSpec",
+	"pools" : [
+		 ],
+	"super" : "SCIAbstractLoadSpec",
+	"type" : "normal" }

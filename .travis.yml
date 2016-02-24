@@ -2,16 +2,16 @@ language: smalltalk
 sudo: false
 
 smalltalk:
-#  - Squeak-trunk
-#  - Squeak-5.0
-#  - Squeak-4.6
-#  - Squeak-4.5
-#
-#  - Pharo-alpha
-#  - Pharo-stable
-#  - Pharo-5.0
-#  - Pharo-4.0
-#  - Pharo-3.0
+  - Squeak-trunk
+  - Squeak-5.0
+  - Squeak-4.6
+  - Squeak-4.5
+
+  - Pharo-alpha
+  - Pharo-stable
+  - Pharo-5.0
+  - Pharo-4.0
+  - Pharo-3.0
 
   - GemStone-3.3.0
   - GemStone-3.2.12
@@ -38,11 +38,11 @@ matrix:
       script: bash $SMALLTALK_CI_HOME/tests/all_tests.sh
 
     # Legacy Squeak builds using builderCI
-    - smalltalk: Squeak-4.4
-      os: linux
-      sudo: required
-      group: legacy
-      script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
+    # - smalltalk: Squeak-4.4
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
     # - smalltalk: Squeak-4.3
     #   os: linux
     #   sudo: required
@@ -50,11 +50,11 @@ matrix:
     #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
 
     # Legacy Pharo builds using builderCI
-    - smalltalk: Pharo-2.0
-      os: linux
-      sudo: required
-      group: legacy
-      script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
+    # - smalltalk: Pharo-2.0
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
     # - smalltalk: Pharo-1.4
     #   os: linux
     #   sudo: required
@@ -72,11 +72,11 @@ matrix:
     #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
 
     # Legacy GemStone builds using builderCI
-    - smalltalk: GemStone-3.2.7
-      os: linux
-      sudo: required
-      group: legacy
-      script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
+    # - smalltalk: GemStone-3.2.7
+    #   os: linux
+    #   sudo: required
+    #   group: legacy
+    #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
     # - smalltalk: GemStone-3.2.0
     #   os: linux
     #   sudo: required
@@ -108,10 +108,6 @@ matrix:
     #   group: legacy
     #   script: $SMALLTALK_CI_HOME/run.sh --debug --builder-ci
   allow_failures:
-    - smalltalk: GemStone-3.3.0
-    - smalltalk: GemStone-3.2.12
-    - smalltalk: GemStone-3.1.0.6
-
     - smalltalk: Squeak-4.4
     - smalltalk: Squeak-4.3
 
@@ -120,13 +116,13 @@ matrix:
     - smalltalk: PharoCore-1.2
     - smalltalk: PharoCore-1.1
 
-    - smalltalk: GemStone-3.2.7
-    - smalltalk: GemStone-3.2.0
-    - smalltalk: GemStone-3.1.0.2
-    - smalltalk: GemStone-3.0.1
-    - smalltalk: GemStone-2.4.6
-    - smalltalk: GemStone-2.4.5
-    - smalltalk: GemStone-2.4.4.1
+    - smalltalk: GemStone-3.3.0
+      os: osx
+    - smalltalk: GemStone-3.2.12
+      os: osx
+    - smalltalk: GemStone-3.1.0.6
+      os: osx
+
   fast_finish: true
 
 branches:

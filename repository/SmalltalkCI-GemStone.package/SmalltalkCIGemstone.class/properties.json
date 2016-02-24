@@ -1,0 +1,15 @@
+{
+	"category" : "SmalltalkCI-GemStone",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"produceXMLLog",
+		"testReport" ],
+	"name" : "SmalltalkCIGemstone",
+	"pools" : [
+		 ],
+	"super" : "SmalltalkCI",
+	"type" : "normal" }

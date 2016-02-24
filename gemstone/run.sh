@@ -13,10 +13,22 @@ gemstone::prepare_gsdevkit_home() {
   travis_fold start clone_gsdevkit "Cloning GsDevKit..."
     timer_start
 
-    git clone "${GS_DEVKIT_DOWNLOAD}"
-    cd "GsDevKit_home"
-    git checkout "${devkit_branch}"
-    export GS_HOME="$(pwd)"
+    pushd $SMALLTALK_CI_BUILD || exit 1
+      git clone "${GS_DEVKIT_DOWNLOAD}" || exit 1
+      cd "GsDevKit_home" || exit 1
+      git checkout "${devkit_branch}" || exit 1
+      export GS_HOME="$(pwd)"
+
+      # pre-clone /sys/local, so that travis can skip backups
+      $GS_HOME/bin/private/clone_sys_local || exit 1
+      # arrange to skip backups
+      cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts || exit 1
+
+      # Operating system setup already performed
+      touch $GS_HOME/bin/.gsdevkitSysSetup || exit 1
+    popd || exit 1
+
+    export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
 
     timer_finish
   travis_fold end clone_gsdevkit
@@ -34,15 +46,11 @@ gemstone::prepare_stone() {
 
   gemstone_version="$(echo $2 | cut -f2 -d-)"
 
-  # Operating system setup already performed
-  touch $GS_HOME/bin/.gsdevkitSysSetup
-
-  export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
 
   travis_fold start install_server "Installing server..."
     timer_start
 
-    $GS_HOME/bin/installServer
+    $GS_HOME/bin/installServer || print_error_and_exit "installServer failed."
 
     timer_finish
   travis_fold end install_server
@@ -50,18 +58,11 @@ gemstone::prepare_stone() {
   travis_fold start create_stone "Creating stone..."
     timer_start
 
-set -e
-
-    $GS_HOME/bin/createStone $stone_name $gemstone_version
-
-echo "createStone error status: $?"
+    $GS_HOME/bin/createStone $stone_name $gemstone_version || print_error_and_exit "createStone failed."
 
     timer_finish
   travis_fold end create_stone
 
-  # logging for https://github.com/hpi-swa/smalltalkCI/pull/51
-  echo "session description"
-  cat $GS_HOME/sys/local/sessions/$stone_name
 }
 
 ################################################################################
@@ -85,9 +86,9 @@ gemstone::load_and_test_project() {
     $GS_HOME/bin/devKitCommandLine serverDoIt ${stone_name} << EOF || status=$?
       Metacello new
         baseline: 'SmalltalkCI';
-	repository: 'filetree://${SMALLTALK_CI_HOME}/gemstone/repository';
+	repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
 	load: 'Core'.
-      (Smalltalk at: #SmalltalkCI) runCIFor: '${project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'
+      (Smalltalk at: #SmalltalkCI) runCIFor: '${config_project_home}/${SMALLTALK_CI_DEFAULT_CONFIG}'.
       System commitTransaction.
 EOF
 
@@ -106,10 +107,6 @@ run_build() {
   local stone_name="travis"
   local exit_status=0
 
-  echo "Are the host names set up correctly for GemStone?"
-  hostname
-  cat /etc/hosts
-  echo "Well?"
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${stone_name}" "${config_smalltalk}"
   gemstone::load_and_test_project "${stone_name}" || exit_status=$?

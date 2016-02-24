@@ -108,7 +108,9 @@ SmalltalkCISpec {
       #repository : 'http://ss3.gemtalksystems.com/ss/...',   // Alternatively, define MC repository
       #onWarningLog : true,                                   // Handle Warnings and log message to Transcript (GemStone)
       #load : [ 'default' ],                                  // Define MC load attributes
-      #platforms : [ #squeak, #pharo, #gemstone ]             // Define compatible platforms
+      #platforms : [ #squeak, #pharo, #gemstone ],            // Define compatible platforms
+      #version : '1.0.0'                                      // Define MC version (for MC
+                                                              // Configurations only)
     }
   ],
   #testing : {
