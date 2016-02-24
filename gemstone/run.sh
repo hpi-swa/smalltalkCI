@@ -93,6 +93,8 @@ gemstone::load_and_test_project() {
       System commitTransaction.
 EOF
 
+    $GS_HOME/bin/stopStone -b $stone_name || print_error_and_exit "stopStone failed."
+
     timer_finish
   travis_fold end load_and_test
 
