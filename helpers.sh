@@ -200,9 +200,10 @@ travis_fold() {
   local action=$1
   local name=$2
   local title=$3
+  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX}"
 
   if is_travis_build; then
-    echo -en "travis_fold:${action}:${name}\r\033[0K"
+    echo -en "travis_fold:${prefix}${action}:${name}\r\033[0K"
   fi
   if is_not_empty "${title}"; then
     echo -e "\033[34;1m${title}\033[0m"
