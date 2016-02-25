@@ -157,7 +157,6 @@ USAGE: run.sh [options] /path/to/project
 This program prepares Smalltalk images/vms, loads projects and runs tests.
 
 OPTIONS:
-  --builder-ci            Use builderCI (default 'false').
   --clean                 Clear cache and delete builds.
   -d | --debug            Enable debug mode.
   -h | --help             Show this help text.
@@ -175,7 +174,6 @@ Please feel free to [open issues][issues] or to [send pull requests][pullRequest
 
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
 [builderCI]: https://github.com/dalehenrich/builderCI
-[builderCIHowTo]: https://github.com/dalehenrich/builderCI#using-builderci
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 [filetree]: https://github.com/dalehenrich/filetree
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28

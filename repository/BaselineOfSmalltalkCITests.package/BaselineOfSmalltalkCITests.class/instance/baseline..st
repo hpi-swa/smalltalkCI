@@ -9,11 +9,9 @@ baseline: spec
         package: 'SmalltalkCI-Excluded-Tests'.
       spec
         group: 'default'
-        with: #('SmalltalkCI-Tests' 'SmalltalkCI-Excluded-Tests').
-      spec group: 'builderCI' with: #('SmalltalkCI-Tests') ].
+        with: #('SmalltalkCI-Tests' 'SmalltalkCI-Excluded-Tests') ].
   spec
     for: #'squeakCommon'
     do: [ 
       spec package: 'STON-Tests'.
-      spec group: 'default' with: #('STON-Tests').
-      spec group: 'builderCI' with: #('SmalltalkCI-Tests') ]
+      spec group: 'default' with: #('STON-Tests') ]

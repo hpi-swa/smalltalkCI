@@ -28,7 +28,6 @@ print_help() {
   This program prepares Smalltalk images/vms, loads projects and runs tests.
 
   OPTIONS:
-    --builder-ci            Use builderCI (default 'false').
     --clean                 Clear cache and delete builds.
     -d | --debug            Enable debug mode.
     -h | --help             Show this help text.

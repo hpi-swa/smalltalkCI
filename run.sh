@@ -5,8 +5,6 @@ set -e
 readonly SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_PATH}/helpers.sh"
 
-readonly BUILDER_CI_REPO_URL="https://github.com/dalehenrich/builderCI"
-readonly BUILDER_CI_DOWNLOAD_URL="${BUILDER_CI_REPO_URL}/archive/master.zip"
 readonly DEFAULT_STON_CONFIG='smalltalk.ston'
 
 ################################################################################
@@ -100,7 +98,6 @@ check_and_set_paths() {
 # Load options from project's '.travis.yml', global environment variables and
 # user's parameters.
 # Locals:
-#   config_builder_ci_fallback
 #   config_smalltalk
 # Arguments:
 #   All positional parameters
@@ -122,10 +119,6 @@ parse_args() {
   while :
   do
     case "$1" in
-    --builder-ci)
-      config_builder_ci_fallback="true"
-      shift
-      ;;
     --clean)
       config_clean="true"
       shift
@@ -164,49 +157,6 @@ parse_args() {
   done
 
   validate_configuration
-}
-
-is_fallback_enabled() {
-  [[ "${config_builder_ci_fallback}" = "true" ]]
-}
-
-################################################################################
-# Initiate builderCI fallback build.
-# Locals:
-#   config_smalltalk
-#   config_project_home
-# Globals:
-#   BUILDER_CI_DOWNLOAD_URL
-# Returns:
-#   builderCI status code
-################################################################################
-builder_ci_fallback() {
-  # Make sure the script runs on Linux
-  if [[ "$(uname -s)" != "Linux" ]]; then
-    print_error_and_exit "builderCI only supports Linux builds."
-  fi
-  if is_travis_build; then
-    # Make sure the script runs on standard infrastructure
-    sudo -n true
-    if [[ "$?" != 0 ]]; then
-      print_error_and_exit "sudo is not available."
-    fi
-  fi
-
-  print_info "Starting legacy build using builderCI..."
-  export ST="${config_smalltalk}"
-  export PROJECT_HOME="${config_project_home}"
-  cd "${HOME}"
-  wget -q -O builderCI.zip "${BUILDER_CI_DOWNLOAD_URL}"
-  unzip -q builderCI.zip
-  cd builderCI-*
-  source build_env_vars
-  ln -s "${PROJECT_HOME}" "${GIT_PATH}"
-  print_info "builderCI: Build image..."
-  ./build_image.sh
-  print_info "builderCI: Run tests..."
-  "$BUILDER_CI_HOME/testTravisCI.sh" -verbose
-  return $?
 }
 
 ################################################################################
@@ -337,15 +287,11 @@ main() {
   check_and_set_paths
   check_clean_up
 
-  if is_fallback_enabled; then
-    builder_ci_fallback || exit_status=$?
-  else
-    prepare_folders
-    run || exit_status=$?
-    if [[ "${exit_status}" -ne 0 ]]; then
-      print_error "Failed to load and test project."
-      exit ${exit_status}
-    fi
+  prepare_folders
+  run || exit_status=$?
+  if [[ "${exit_status}" -ne 0 ]]; then
+    print_error "Failed to load and test project."
+    exit ${exit_status}
   fi
 
   print_results "${SMALLTALK_CI_BUILD}" || exit_status=$?
