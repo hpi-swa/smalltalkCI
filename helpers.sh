@@ -50,6 +50,7 @@ print_results() {
   if is_travis_build && [[ $(ls ${junit_xml_file} 2> /dev/null) ]]; then
     travis_fold start junit_xml "JUnit XML Output"
       cat ${junit_xml_file}
+      printf "\n"
     travis_fold end junit_xml
   fi
 
