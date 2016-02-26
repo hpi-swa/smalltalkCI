@@ -10,7 +10,7 @@ export GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
 # Clone the GsDevKit_home project.
 ################################################################################
 gemstone::prepare_gsdevkit_home() {
-  local devkit_branch="dev"
+  local devkit_branch="master"
 
   travis_fold start clone_gsdevkit "Cloning GsDevKit..."
     timer_start
