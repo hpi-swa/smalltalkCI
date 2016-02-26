@@ -1,11 +1,8 @@
 testing
-testGemStonePharoClassesTestPackages3
+testClassesTestPackages3
   "SmalltalkCI-* fails for GemStone, passes for Pharo"
 
   | classes |
-  (SmalltalkCI platformSymbol = #'pharo'
-    or: [ SmalltalkCI platformSymbol = #'gemstone' ])
-    ifFalse: [ ^ self ].
   self spec
     testing:
       (Dictionary new

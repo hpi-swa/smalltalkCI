@@ -1,10 +1,8 @@
-testing
-testPharoClassesTestPackages2
-  "packages ignored, if no class or category ... but I think this is wrong see testGemStonePharoClassesTestPackages1"
+*smalltalkci-package-gemstone-tests
+testGemStoneClassesTestPackages3
+  "if #packages present, then the loaded project is ignored"
 
   | classes |
-  SmalltalkCI platformSymbol = #'pharo'
-    ifFalse: [ ^ self ].
   self spec
     addLoadSpec:
       (SCIMetacelloLoadSpec new
@@ -13,10 +11,11 @@ testPharoClassesTestPackages2
   self spec
     testing:
       (Dictionary new
-        add: #'packages' -> #('SmalltalkCI-*' 'Kernel-Objects');
+        add: #'packages' -> #('Bootstrap');
         yourself).
   classes := self ci classesToTest.
-  self assert: (classes includes: SmalltalkCISpecTest).
+  self assert: (classes includes: (Smalltalk at: #'BreakpointTest')).
+  self deny: (classes includes: SmalltalkCISpecTest).
   self deny: (classes includes: SmalltalkCISpec).
   self deny: (classes includes: Object).
   self deny: (classes includes: Error)

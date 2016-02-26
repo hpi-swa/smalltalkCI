@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-AllCases-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "dkh 02/26/2016 15:11",
+	"instvars" : [
+		 ],
+	"name" : "SmalltalkCIAllCasesTest",
+	"pools" : [
+		 ],
+	"super" : "SmalltalkCIAbstractTest",
+	"type" : "normal" }

@@ -1,13 +1,10 @@
 testing
-testGemStonePharoClassesTestPackages1
+testClassesTestPackages1
   "if no classes or categories, packages ignored in Pharo and the default tests used.
    In GemStone, #packages, #projects, and #* are treated like classes and categories.
    I think GemStone behavior is correct"
 
   | classes kernelPackages |
-  (SmalltalkCI platformSymbol = #'pharo'
-    or: [ SmalltalkCI platformSymbol = #'gemstone' ])
-    ifFalse: [ ^ self ].
   kernelPackages := SmalltalkCI platformSymbol = #'gemstone'
     ifTrue: [ #('Bootstrap') ]
     ifFalse: [ #('Kernel-Objects') ].

@@ -1,0 +1,1 @@
+(name 'SmalltalkCI-Package-GemStone-Tests-dkh.1' message 'Issue #75: split out tests into functional packages (category, all, and package) and stow platform-specific methods in platform-speicifc packages ... take 1' id 'e8465cd2-a02d-4e1d-9b4b-4a8e51d06cc0' date '02/26/2016' time '15:24:58' author 'dkh' ancestors () stepChildren ())

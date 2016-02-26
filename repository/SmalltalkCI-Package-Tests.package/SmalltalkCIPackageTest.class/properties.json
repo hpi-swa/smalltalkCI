@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Package-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "dkh 02/26/2016 14:52",
+	"instvars" : [
+		 ],
+	"name" : "SmalltalkCIPackageTest",
+	"pools" : [
+		 ],
+	"super" : "SmalltalkCIAbstractTest",
+	"type" : "normal" }

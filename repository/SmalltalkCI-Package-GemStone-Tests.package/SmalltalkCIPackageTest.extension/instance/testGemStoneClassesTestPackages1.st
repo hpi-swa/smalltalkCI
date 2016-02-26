@@ -1,8 +1,6 @@
-testing
-testGemStoneClassesTestProjects1
+*smalltalkci-package-gemstone-tests
+testGemStoneClassesTestPackages1
   | classes |
-  SmalltalkCI platformSymbol = #'gemstone'
-    ifFalse: [ ^ self ].
   self spec
     addLoadSpec:
       (SCIMetacelloLoadSpec new
@@ -11,8 +9,8 @@ testGemStoneClassesTestProjects1
   self spec
     testing:
       (Dictionary new
-        add: #'packages' -> #('SmalltalkCI-Tests');
-        add: #'projects' -> #('GLASS1');
+        add: #'classes' -> #(#'BreakpointTest');
+        add: #'packages' -> #('SmalltalkCI-Tests' 'Bootstrap');
         yourself).
   classes := self ci classesToTest.
   self assert: (classes includes: (Smalltalk at: #'BreakpointTest')).

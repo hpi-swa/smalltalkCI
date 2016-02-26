@@ -4,10 +4,10 @@
 		 ],
 	"classvars" : [
 		 ],
-	"commentStamp" : "",
+	"commentStamp" : "dkh 02/26/2016 14:51",
 	"instvars" : [
 		"ci" ],
-	"name" : "SmalltalkCITest",
+	"name" : "SmalltalkCIAbstractTest",
 	"pools" : [
 		 ],
 	"super" : "TestCase",

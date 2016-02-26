@@ -1,8 +1,6 @@
-testing
+*smalltalkci-package-gemstone-tests
 testGemStoneClassesTestPackages2
   | classes |
-  SmalltalkCI platformSymbol = #'gemstone'
-    ifFalse: [ ^ self ].
   self spec
     addLoadSpec:
       (SCIMetacelloLoadSpec new
