@@ -172,15 +172,58 @@ EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/projects
 Please feel free to [open issues][issues] or to [send pull requests][pullRequests] if you'd like to discuss an idea or a problem.
 
 
+## Projects using smalltalkCI
+
+- [@dalehenrich](https://github.com/dalehenrich):
+    [obex](https://github.com/dalehenrich/obex),
+    [tode](https://github.com/dalehenrich/tode).
+- [@dynacase](https://github.com/dynacase/):
+    [borm-editor](https://github.com/dynacase/borm-editor),
+    [borm-model](https://github.com/dynacase/borm-model),
+    [borm-persistence](https://github.com/dynacase/borm-persistence),
+    [class-editor](https://github.com/dynacase/class-editor),
+    [demo-editor](https://github.com/dynacase/demo-editor),
+    [dynacase](https://github.com/dynacase/dynacase),
+    [dynacase-model](https://github.com/dynacase/dynacase-model),
+    [fsm-editor](https://github.com/dynacase/fsm-editor).
+- [@HPI-BP2015H](https://github.com/HPI-BP2015H):
+    [squeak-parable](https://github.com/HPI-BP2015H/squeak-parable).
+- [@HPI-SWA-Teaching](https://github.com/HPI-SWA-Teaching):
+    [Algernon-Launcher](https://github.com/HPI-SWA-Teaching/Algernon-Launcher).
+- [@hpi-swa](https://github.com/hpi-swa):
+    [animations](https://github.com/hpi-swa/animations),
+    [Ohm-S](https://github.com/hpi-swa/Ohm-S),
+    [vivide](https://github.com/hpi-swa/vivide).
+- [@pharo-project](https://github.com/pharo-project):
+    [pharo-project-proposals](https://github.com/pharo-project/pharo-project-proposals).
+- [@SeasideSt](https://github.com/SeasideSt):
+    [Grease](https://github.com/SeasideSt/Grease).
+- [@SergeStinckwich](https://github.com/SergeStinckwich):
+    [PlayerST](https://github.com/SergeStinckwich/PlayerST).
+- [@theseion](https://github.com/theseion):
+    [Fuel](https://github.com/theseion/Fuel).
+- [@Uko](https://github.com/Uko):
+    [GitHubcello](https://github.com/Uko/GitHubcello),
+    [QualityAssistant](https://github.com/Uko/QualityAssistant),
+    [Renraku](https://github.com/Uko/Renraku).
+- [@zecke](https://github.com/zecke):
+    [osmo-smsc](https://github.com/zecke/osmo-smsc).
+- [More Projects...][more_projects]
+
+*Feel free to [send a PR][pullRequests] to add your Smalltalk project to the list. Please add [`[ci skip]`][ci_skip] to your commit message.*
+
+
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
 [builderCI]: https://github.com/dalehenrich/builderCI
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
+[ci_skip]: https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build
 [filetree]: https://github.com/dalehenrich/filetree
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
 [issues]: https://github.com/hpi-swa/smalltalkCI/issues
 [mc_baseline]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-baseline
 [mc_configuration]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-configuration
 [metacello]: https://github.com/dalehenrich/metacello-work
+[more_projects]: https://github.com/search?l=STON&q=SmalltalkCISpec&ref=advsearch&type=Code
 [pullRequests]: https://help.github.com/articles/using-pull-requests/
 [ston]: https://github.com/svenvc/ston/blob/master/ston-paper.md#smalltalk-object-notation-ston
 [templates]:https://github.com/hpi-swa/smalltalkCI/wiki#templates
