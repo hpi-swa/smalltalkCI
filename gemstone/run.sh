@@ -102,6 +102,13 @@ EOF
 run_build() {
   local exit_status=0
 
+  # Temporary fix for https://github.com/hpi-swa/smalltalkCI/issues/68
+  case "$(uname -s)" in
+    "Darwin")
+      sudo sysctl -w kern.sysv.shmall=524288
+      ;;
+  esac
+
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${config_smalltalk}"
   gemstone::load_and_test_project || exit_status=$?
