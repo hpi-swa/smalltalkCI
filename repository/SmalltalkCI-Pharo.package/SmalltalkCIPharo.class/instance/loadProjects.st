@@ -1,4 +1,4 @@
-as yet unclassified
+executing
 loadProjects
 	"Force loading of packages during merge warnings"
 	[ super loadProjects ]
