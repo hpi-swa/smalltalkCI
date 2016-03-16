@@ -4,21 +4,20 @@ set -e
 
 readonly GS_STONE_NAME="travis"
 readonly GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
+readonly GS_DEVKIT_BRANCH="master"
 export GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
 
 ################################################################################
 # Clone the GsDevKit_home project.
 ################################################################################
 gemstone::prepare_gsdevkit_home() {
-  local devkit_branch="master"
-
   travis_fold start clone_gsdevkit "Cloning GsDevKit..."
     timer_start
 
     pushd "${SMALLTALK_CI_BUILD}" || exit 1
       git clone "${GS_DEVKIT_DOWNLOAD}" || exit 1
       cd "${GS_HOME}" || exit 1
-      git checkout "${devkit_branch}" || exit 1
+      git checkout "${GS_DEVKIT_BRANCH}" || exit 1
 
       # pre-clone /sys/local, so that travis can skip backups
       $GS_HOME/bin/private/clone_sys_local || exit 1
@@ -102,6 +101,13 @@ EOF
 ################################################################################
 run_build() {
   local exit_status=0
+
+  # Temporary fix for https://github.com/hpi-swa/smalltalkCI/issues/68
+  case "$(uname -s)" in
+    "Darwin")
+      sudo sysctl -w kern.sysv.shmall=524288
+      ;;
+  esac
 
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${config_smalltalk}"
