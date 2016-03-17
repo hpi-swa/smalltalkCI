@@ -56,10 +56,29 @@ gemstone::prepare_stone() {
     timer_finish
   travis_fold end install_server
 
-  travis_fold start create_stone "Creating stone..."
+  travis_fold start prepare_cache "Preparing travis caches..."
     timer_start
+    if ! is_dir "${SMALLTALK_CI_VMS}/Pharo-3.0"; then
+      mkdir "${SMALLTALK_CI_VMS}/Pharo-3.0"
+      echo "Downloading Pharo-3.0 vm to cache" 
+      pushd "${SMALLTALK_CI_VMS}/Pharo-3.0" > /dev/null
+        pharo_zeroconf="$(download_file "get.pharo.org/vm30")" || print_error_and_exit "Pharo-3.0 vm download failed."
+	bash -c "${pharo_zeroconf}"  || print_error_and_exit "Pharo-3.0 vm download failed."
+      popd > /dev/null
+    fi
+
+    if ! is_file "${SMALLTALK_CI_CACHE}/Pharo-3.0.image"; then
+      echo "Downloading Pharo-3.0 image to cache" 
+      pushd ${SMALLTALK_CI_CACHE} > /dev/null
+        pharo_zeroconf="$(download_file "get.pharo.org/30")" || print_error_and_exit "Pharo-3.0 image download failed."
+	bash -c "${pharo_zeroconf}"  || print_error_and_exit "Pharo-3.0 image download failed."
+	mv "Pharo.image" "Pharo-3.0.image"
+        mv "Pharo.changes" "Pharo-3.0.changes"
+      popd > /dev/null
+    fi
 
     if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone"; then
+      echo "Creating GemStone extent cache" 
       mkdir "${SMALLTALK_CI_CACHE}/gemstone"
       if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/extents"; then
         mkdir "${SMALLTALK_CI_CACHE}/gemstone/extents"
@@ -71,16 +90,22 @@ gemstone::prepare_stone() {
 
     if is_file "${SMALLTALK_CI_CACHE}/${pharo_image_file}"; then
       if is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
+        echo "Utilizing cached gsDevKitCommandLine image" 
         cp "${SMALLTALK_CI_CACHE}/${pharo_image_file}" $GS_HOME/shared/pharo/Pharo.image
         cp "${SMALLTALK_CI_CACHE}/${pharo_changes_file}" $GS_HOME/shared/pharo/Pharo.changes
-        ln -s "${SMALLTALK_CI_CACHE}/vms/Pharo-3.0/pharo" $GS_HOME/shared/pharo/pharo
-        ln - s"${SMALLTALK_CI_CACHE}/vms/Pharo-3.0/pharo-ui" $GS_HOME/shared/pharo/pharo-ui
-        ln -s "${SMALLTALK_CI_CACHE}/vms/Pharo-3.0/pharo-vm" $GS_HOME/shared/pharo/pharo-vm
+        ln -s "${SMALLTALK_CI_VMS}/Pharo-3.0/pharo" $GS_HOME/shared/pharo/pharo
+        ln -s "${SMALLTALK_CI_VMS}/Pharo-3.0/pharo-ui" $GS_HOME/shared/pharo/pharo-ui
+        ln -s "${SMALLTALK_CI_VMS}/Pharo-3.0/pharo-vm" $GS_HOME/shared/pharo/pharo-vm
         cp "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image" $GS_HOME/shared/pharo/
         cp "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.changes" $GS_HOME/shared/pharo/
       fi
     fi
 
+    timer_finish
+  travis_fold end prepare_cache
+
+  travis_fold start create_stone "Creating stone..."
+    timer_start
 
     if ! is_file "$gemstone_cached_extent_file"; then
       $GS_HOME/bin/createStone "$GS_STONE_NAME" $gemstone_version || print_error_and_exit "createStone failed."
