@@ -41,7 +41,12 @@ gemstone::prepare_gsdevkit_home() {
 ################################################################################
 gemstone::prepare_stone() {
   local gemstone_version
+
   gemstone_version="$(echo $1 | cut -f2 -d-)"
+
+  local gemstone_cached_extent_file="${SMALLTALK_CI_CACHE}/gemstone/extents/${gemstone_version}_extent0.tode.dbf"
+  local pharo_image_file="Pharo-3.0.image"
+  local pharo_changes_file="Pharo-3.0.changes"
 
   travis_fold start install_server "Installing server..."
     timer_start
@@ -54,7 +59,39 @@ gemstone::prepare_stone() {
   travis_fold start create_stone "Creating stone..."
     timer_start
 
-    $GS_HOME/bin/createStone "$GS_STONE_NAME" $gemstone_version || print_error_and_exit "createStone failed."
+    if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone"; then
+      mkdir "${SMALLTALK_CI_CACHE}/gemstone"
+      if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/extents"; then
+        mkdir "${SMALLTALK_CI_CACHE}/gemstone/extents"
+      fi
+      if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/pharo"; then
+        mkdir "${SMALLTALK_CI_CACHE}/gemstone/pharo"
+      fi
+    fi
+
+    if is_file "${SMALLTALK_CI_CACHE}/${pharo_image_file}"; then
+      if is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
+        cp "${SMALLTALK_CI_CACHE}/${pharo_image_file}" $GS_HOME/shared/pharo/Pharo.image
+        cp "${SMALLTALK_CI_CACHE}/${pharo_changes_file}" $GS_HOME/shared/pharo/Pharo.changes
+        ln -s "${SMALLTALK_CI_CACHE}/vms/Pharo-3.0/pharo" $GS_HOME/shared/pharo/pharo
+        ln - s"${SMALLTALK_CI_CACHE}/vms/Pharo-3.0/pharo-ui" $GS_HOME/shared/pharo/pharo-ui
+        ln -s "${SMALLTALK_CI_CACHE}/vms/Pharo-3.0/pharo-vm" $GS_HOME/shared/pharo/pharo-vm
+        cp "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image" $GS_HOME/shared/pharo/
+        cp "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.changes" $GS_HOME/shared/pharo/
+      fi
+    fi
+
+
+    if ! is_file "$gemstone_cached_extent_file"; then
+      $GS_HOME/bin/createStone "$GS_STONE_NAME" $gemstone_version || print_error_and_exit "createStone failed."
+      cp "$GS_HOME/server/stones/$GS_STONE_NAME/snapshots/extent0.tode.dbf" "$gemstone_cached_extent_file"
+    else
+      $GS_HOME/bin/createStone -t "$gemstone_cached_extent_file" "$GS_STONE_NAME" $gemstone_version || print_error_and_exit "createStone failed."
+    fi
+
+    if ! is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
+      cp $GS_HOME/shared/pharo/gsDevKitCommandLine.* "${SMALLTALK_CI_CACHE}/gemstone/pharo/"
+    fi
 
     timer_finish
   travis_fold end create_stone
