@@ -37,7 +37,7 @@ matrix:
 
   fast_finish: true
 
-cache:
-  directories:
-    - $TRAVIS_BUILD_DIR/_cache
-
+# Fully cached build for all supported platforms - 314MB cache
+#cache:
+#  directories:
+#    - $TRAVIS_BUILD_DIR/_cache
