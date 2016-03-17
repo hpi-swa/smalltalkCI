@@ -39,4 +39,4 @@ matrix:
 
 cache:
   directories:
-    - $HOME/_cache
+    - $SMALLTALK_CI_HOME/_cache
