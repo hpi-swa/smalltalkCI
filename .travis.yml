@@ -41,4 +41,4 @@ matrix:
 
 cache:
   directories:
-    - $SMALLTALK_CI_HOME/_cache
+    - /home/travis/build/dalehenrich/smalltalkCI/_cache
