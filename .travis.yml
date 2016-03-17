@@ -2,16 +2,16 @@ language: smalltalk
 sudo: false
 
 smalltalk:
-#  - Squeak-trunk
-#  - Squeak-5.0
-#  - Squeak-4.6
-#  - Squeak-4.5
-#
-#  - Pharo-alpha
-#  - Pharo-stable
-#  - Pharo-5.0
-#  - Pharo-4.0
-#  - Pharo-3.0
+  - Squeak-trunk
+  - Squeak-5.0
+  - Squeak-4.6
+  - Squeak-4.5
+
+  - Pharo-alpha
+  - Pharo-stable
+  - Pharo-5.0
+  - Pharo-4.0
+  - Pharo-3.0
 
   - GemStone-3.3.0
   - GemStone-3.2.12
@@ -35,9 +35,21 @@ matrix:
       sudo: false
       script: bash $SMALLTALK_CI_HOME/tests/all_tests.sh
 
+  allow_failures:    
+    - smalltalk: GemStone-3.3.0
+      os: osx
+    - smalltalk: GemStone-3.2.12
+      os: osx
+    - smalltalk: GemStone-3.1.0.6
+      os: osx
+
   fast_finish: true
 
-# Uncomment to enable dependency caching in build - especially useful for GemStone builds
-cache:
-  directories:
-          - $TRAVIS_BUILD_DIR/_cache
+# Uncomment to enable dependency caching - especially useful for GemStone builds (3x faster)
+#   See https://docs.travis-ci.com/user/caching/#Arbitrary-directories for more information
+#   and https://docs.travis-ci.com/user/caching/#Clearing-Caches for managing caches in your
+#   own travis buils
+
+#cache:
+#  directories:
+#          - $TRAVIS_BUILD_DIR/_cache
