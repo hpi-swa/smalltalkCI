@@ -14,8 +14,8 @@ smalltalk:
 #  - Pharo-3.0
 
   - GemStone-3.3.0
-  - GemStone-3.2.12
-  - GemStone-3.1.0.6
+    #  - GemStone-3.2.12
+    #  - GemStone-3.1.0.6
 
 os:
   - linux
@@ -25,9 +25,7 @@ install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
 
 script:
-  - echo $SMALLTALK_CI_HOME
-  - echo $HOME
-  - echo $TRAVIS_BUILD_DIR
+  - echo "Caching? $CASHER_DIR"
   - $SMALLTALK_CI_HOME/run.sh --debug && $SMALLTALK_CI_HOME/tests/fail_test.sh
 
 matrix:
@@ -42,4 +40,4 @@ matrix:
 
 cache:
   directories:
-    - /home/travis/build/dalehenrich/smalltalkCI/_cache
+    - $TRAVIS_BUILD_DIR/_cache
