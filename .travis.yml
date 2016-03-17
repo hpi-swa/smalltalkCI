@@ -2,16 +2,16 @@ language: smalltalk
 sudo: false
 
 smalltalk:
-  - Squeak-trunk
-  - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
-
-  - Pharo-alpha
-  - Pharo-stable
-  - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
+#  - Squeak-trunk
+#  - Squeak-5.0
+#  - Squeak-4.6
+#  - Squeak-4.5
+#
+#  - Pharo-alpha
+#  - Pharo-stable
+#  - Pharo-5.0
+#  - Pharo-4.0
+#  - Pharo-3.0
 
   - GemStone-3.3.0
   - GemStone-3.2.12
@@ -36,3 +36,7 @@ matrix:
       script: bash $SMALLTALK_CI_HOME/tests/all_tests.sh
 
   fast_finish: true
+
+cache:
+  directories:
+    - $HOME/_cache
