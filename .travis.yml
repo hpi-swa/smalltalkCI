@@ -37,7 +37,7 @@ matrix:
 
   fast_finish: true
 
-# Fully cached build for all supported platforms - 314MB cache
+# Uncomment to enable dependency caching in build - especially useful for GemStone builds
 cache:
   directories:
           - $TRAVIS_BUILD_DIR/_cache
