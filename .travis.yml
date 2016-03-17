@@ -25,6 +25,8 @@ install:
   - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
 
 script:
+  - echo $SMALLTALK_CI_HOME
+  - echo $HOME
   - $SMALLTALK_CI_HOME/run.sh --debug && $SMALLTALK_CI_HOME/tests/fail_test.sh
 
 matrix:
