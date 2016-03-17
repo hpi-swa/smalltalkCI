@@ -6,7 +6,6 @@ readonly GS_STONE_NAME="travis"
 readonly GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
 readonly GS_DEVKIT_BRANCH="master"
 export GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
-readonly GS_TRAVIS_CACHE_ENABLED="$CASHER_DIR"
 
 ################################################################################
 # Clone the GsDevKit_home project.
@@ -57,7 +56,7 @@ gemstone::prepare_stone() {
     timer_finish
   travis_fold end install_server
 
-  if [ "${GS_TRAVIS_CACHE_ENABLED}x" = "x" ] ; then
+  if [ "${GS_TRAVIS_CACHE_ENABLED}" = "false" ] ; then
     echo "Travis dependency cache not being used"
   else
     travis_fold start prepare_cache "Preparing travis caches..."
@@ -112,7 +111,7 @@ gemstone::prepare_stone() {
   travis_fold start create_stone "Creating stone..."
     timer_start
 
-    if [ "${GS_TRAVIS_CACHE_ENABLED}x" = "x" ] ; then
+    if [ "${GS_TRAVIS_CACHE_ENABLED}" = "false" ] ; then
       $GS_HOME/bin/createStone "$GS_STONE_NAME" $gemstone_version || print_error_and_exit "createStone failed."
     else
       if ! is_file "$gemstone_cached_extent_file"; then
@@ -180,6 +179,18 @@ run_build() {
       ;;
   esac
 
+  # To bypass cached behavior for local build, set GS_TRAVIS_CACHE_ENABLED
+  #   before calling run.sh
+  if [ " ${GS_TRAVIS_CACHE_ENABLED}x" = "x" ]; then
+    GS_TRAVIS_CACHE_ENABLED="true"
+    if [ "${CASHER_DIR}x" = "x" ] ; then
+      if [ "$TRAVIS" = "true" ] ; then
+        GS_TRAVIS_CACHE_ENABLED="false"
+      fi
+    fi
+    export GS_TRAVIS_CACHE_ENABLED
+  fi
+   
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${config_smalltalk}"
   gemstone::load_and_test_project || exit_status=$?
