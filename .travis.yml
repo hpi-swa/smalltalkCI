@@ -38,7 +38,6 @@ matrix:
 
   fast_finish: true
 
-cache: false
-cache:
-  directories:
-    - $TRAVIS_BUILD_DIR/_cache
+#cache:
+#  directories:
+#    - $TRAVIS_BUILD_DIR/_cache
