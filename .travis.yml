@@ -36,17 +36,17 @@ matrix:
       os: linux
       cache:
         directories:
-          - $SMALLTALK_CI_HOME/_cache
+          - $TRAVIS_BUILD_DIR/_cache
     - smalltalk: GemStone-3.2.12
       os: linux
       cache:
         directories:
-          - $SMALLTALK_CI_HOME/_cache
+          - $TRAVIS_BUILD_DIR/_cache
     - smalltalk: GemStone-3.1.0.6
       os: linux
       cache:
         directories:
-          - $SMALLTALK_CI_HOME/_cache
+          - $TRAVIS_BUILD_DIR/_cache
     # GemStone OS X builds
     - smalltalk: GemStone-3.3.0
       os: osx
