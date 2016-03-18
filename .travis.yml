@@ -31,16 +31,26 @@ matrix:
       smalltalk:
       sudo: false
       script: bash $SMALLTALK_CI_HOME/tests/all_tests.sh
-    # GemStone builds
+    # GemStone Linux builds
     - smalltalk: GemStone-3.3.0
+      os: linux
       cache:
         directories:
           - $SMALLTALK_CI_HOME/_cache
     - smalltalk: GemStone-3.2.12
+      os: linux
       cache:
         directories:
           - $SMALLTALK_CI_HOME/_cache
     - smalltalk: GemStone-3.1.0.6
+      os: linux
       cache:
         directories:
           - $SMALLTALK_CI_HOME/_cache
+    # GemStone OS X builds
+    - smalltalk: GemStone-3.3.0
+      os: osx
+    - smalltalk: GemStone-3.2.12
+      os: osx
+    - smalltalk: GemStone-3.1.0.6
+      os: osx
