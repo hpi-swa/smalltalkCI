@@ -179,17 +179,21 @@ run_build() {
       ;;
   esac
 
-  # To bypass cached behavior for local build, set GS_TRAVIS_CACHE_ENABLED
+  # To bypass cached behavior for local build, export GS_TRAVIS_CACHE_ENABLED
   #   before calling run.sh
-  if [ " ${GS_TRAVIS_CACHE_ENABLED}x" = "x" ]; then
+  if [ "${GS_TRAVIS_CACHE_ENABLED}x" = "x" ]; then
     GS_TRAVIS_CACHE_ENABLED="true"
     if [ "${CASHER_DIR}x" = "x" ] ; then
       if [ "$TRAVIS" = "true" ] ; then
         GS_TRAVIS_CACHE_ENABLED="false"
       fi
     fi
-    export GS_TRAVIS_CACHE_ENABLED
   fi
+  export GS_TRAVIS_CACHE_ENABLED
+
+  echo "TRAVIS --> ${TRAVIS}"
+  echo "CASHER_DIR--> ${CASHER_DIR}"
+  echo "GS_TRAVIS_CACHE_ENABLED --> ${GS_TRAVIS_CACHE_ENABLED}"
    
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${config_smalltalk}"
