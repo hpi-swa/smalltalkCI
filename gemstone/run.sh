@@ -6,6 +6,8 @@ readonly GS_STONE_NAME="travis"
 readonly GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
 readonly GS_DEVKIT_BRANCH="master"
 export GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
+local PHARO_IMAGE_FILE="Pharo-3.0.image"
+local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 
 ################################################################################
 # Clone the GsDevKit_home project.
@@ -45,8 +47,6 @@ gemstone::prepare_stone() {
   gemstone_version="$(echo $1 | cut -f2 -d-)"
 
   local gemstone_cached_extent_file="${SMALLTALK_CI_CACHE}/gemstone/extents/${gemstone_version}_extent0.tode.dbf"
-  local pharo_image_file="Pharo-3.0.image"
-  local pharo_changes_file="Pharo-3.0.changes"
 
   travis_fold start install_server "Installing server..."
     timer_start
@@ -57,31 +57,31 @@ gemstone::prepare_stone() {
   travis_fold end install_server
 
   if [ "${GS_TRAVIS_CACHE_ENABLED}" = "false" ] ; then
-    echo "Travis dependency cache not being used"
+    print_info "Travis dependency cache not being used"
   else
-    travis_fold start prepare_cache "Preparing travis caches..."
+    travis_fold start prepare_cache "Preparing Travis caches..."
       timer_start
       if ! is_dir "${SMALLTALK_CI_VMS}/Pharo-3.0"; then
         mkdir "${SMALLTALK_CI_VMS}/Pharo-3.0"
-        echo "Downloading Pharo-3.0 vm to cache" 
+        print_info "Downloading Pharo-3.0 vm to cache" 
         pushd "${SMALLTALK_CI_VMS}/Pharo-3.0" > /dev/null
           pharo_zeroconf="$(download_file "get.pharo.org/vm30")" || print_error_and_exit "Pharo-3.0 vm download failed."
-  	bash -c "${pharo_zeroconf}"  || print_error_and_exit "Pharo-3.0 vm download failed."
+          bash -c "${pharo_zeroconf}"  || print_error_and_exit "Pharo-3.0 vm download failed."
         popd > /dev/null
       fi
   
-      if ! is_file "${SMALLTALK_CI_CACHE}/Pharo-3.0.image"; then
-        echo "Downloading Pharo-3.0 image to cache" 
+      if ! is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}"; then
+        print_info "Downloading Pharo-3.0 image to cache..." 
         pushd ${SMALLTALK_CI_CACHE} > /dev/null
           pharo_zeroconf="$(download_file "get.pharo.org/30")" || print_error_and_exit "Pharo-3.0 image download failed."
-  	bash -c "${pharo_zeroconf}"  || print_error_and_exit "Pharo-3.0 image download failed."
-  	mv "Pharo.image" "Pharo-3.0.image"
-          mv "Pharo.changes" "Pharo-3.0.changes"
+          bash -c "${pharo_zeroconf}"  || print_error_and_exit "Pharo-3.0 image download failed."
+          mv "Pharo.image" "${PHARO_IMAGE_FILE}"
+          mv "Pharo.changes" "${PHARO_CHANGES_FILE}"
         popd > /dev/null
       fi
   
       if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone"; then
-        echo "Creating GemStone extent cache" 
+        print_info "Creating GemStone extent cache..." 
         mkdir "${SMALLTALK_CI_CACHE}/gemstone"
         if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/extents"; then
           mkdir "${SMALLTALK_CI_CACHE}/gemstone/extents"
@@ -91,11 +91,11 @@ gemstone::prepare_stone() {
         fi
       fi
   
-      if is_file "${SMALLTALK_CI_CACHE}/${pharo_image_file}"; then
+      if is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}"; then
         if is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
-          echo "Utilizing cached gsDevKitCommandLine image" 
-          cp "${SMALLTALK_CI_CACHE}/${pharo_image_file}" $GS_HOME/shared/pharo/Pharo.image
-          cp "${SMALLTALK_CI_CACHE}/${pharo_changes_file}" $GS_HOME/shared/pharo/Pharo.changes
+          print_info "Utilizing cached gsDevKitCommandLine image..." 
+          cp "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}" $GS_HOME/shared/pharo/Pharo.image
+          cp "${SMALLTALK_CI_CACHE}/${PHARO_CHANGES_FILE}" $GS_HOME/shared/pharo/Pharo.changes
           ln -s "${SMALLTALK_CI_VMS}/Pharo-3.0/pharo" $GS_HOME/shared/pharo/pharo
           ln -s "${SMALLTALK_CI_VMS}/Pharo-3.0/pharo-ui" $GS_HOME/shared/pharo/pharo-ui
           ln -s "${SMALLTALK_CI_VMS}/Pharo-3.0/pharo-vm" $GS_HOME/shared/pharo/pharo-vm
@@ -112,13 +112,13 @@ gemstone::prepare_stone() {
     timer_start
 
     if [ "${GS_TRAVIS_CACHE_ENABLED}" = "false" ] ; then
-      $GS_HOME/bin/createStone "$GS_STONE_NAME" $gemstone_version || print_error_and_exit "createStone failed."
+      $GS_HOME/bin/createStone "${GS_STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
     else
       if ! is_file "$gemstone_cached_extent_file"; then
-        $GS_HOME/bin/createStone "$GS_STONE_NAME" $gemstone_version || print_error_and_exit "createStone failed."
-        cp "$GS_HOME/server/stones/$GS_STONE_NAME/snapshots/extent0.tode.dbf" "$gemstone_cached_extent_file"
+        $GS_HOME/bin/createStone "${GS_STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
+        cp "$GS_HOME/server/stones/${GS_STONE_NAME}/snapshots/extent0.tode.dbf" "$gemstone_cached_extent_file"
       else
-        $GS_HOME/bin/createStone -t "$gemstone_cached_extent_file" "$GS_STONE_NAME" $gemstone_version || print_error_and_exit "createStone failed."
+        $GS_HOME/bin/createStone -t "$gemstone_cached_extent_file" "${GS_STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
       fi
   
       if ! is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
@@ -150,8 +150,8 @@ gemstone::load_and_test_project() {
     $GS_HOME/bin/devKitCommandLine serverDoIt "${GS_STONE_NAME}" << EOF || status=$?
       Metacello new
         baseline: 'SmalltalkCI';
-	repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
-	load: 'Core'.
+        repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
+        load: 'Core'.
       (Smalltalk at: #SmalltalkCI) runCIFor: '${config_project_home}/${config_ston}'.
       System commitTransaction.
 EOF
@@ -180,7 +180,7 @@ run_build() {
   esac
 
   # To bypass cached behavior for local build, export GS_TRAVIS_CACHE_ENABLED
-  #   before calling run.sh
+  # before calling run.sh
   if [ "${GS_TRAVIS_CACHE_ENABLED}x" = "x" ]; then
     GS_TRAVIS_CACHE_ENABLED="true"
     if [ "${CASHER_DIR}x" = "x" ] ; then
