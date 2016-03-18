@@ -68,6 +68,11 @@ smalltalk:
   - GemStone-3.3.0
   - GemStone-3.2.12
   - GemStone-3.1.0.6
+
+# Uncomment to enable dependency caching - especially useful for GemStone builds (3x faster)
+#cache:
+#  directories:
+#          - $SMALLTALK_CI_HOME/_cache
 ```
 
 ### Minimal `.smalltalk.ston` Template
