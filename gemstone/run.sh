@@ -191,10 +191,6 @@ run_build() {
   fi
   export GS_TRAVIS_CACHE_ENABLED
 
-  echo "TRAVIS --> ${TRAVIS}"
-  echo "CASHER_DIR--> ${CASHER_DIR}"
-  echo "GS_TRAVIS_CACHE_ENABLED --> ${GS_TRAVIS_CACHE_ENABLED}"
-   
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${config_smalltalk}"
   gemstone::load_and_test_project || exit_status=$?
