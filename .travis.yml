@@ -50,6 +50,6 @@ matrix:
 #   and https://docs.travis-ci.com/user/caching/#Clearing-Caches for managing caches in your
 #   own travis buils
 
-#cache:
-#  directories:
-#          - $TRAVIS_BUILD_DIR/_cache
+cache:
+  directories:
+          - $TRAVIS_BUILD_DIR/_cache
