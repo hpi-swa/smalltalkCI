@@ -72,7 +72,7 @@ smalltalk:
 # Uncomment to enable dependency caching - especially useful for GemStone builds (3x faster)
 #cache:
 #  directories:
-#          - $SMALLTALK_CI_HOME/_cache
+#    - $SMALLTALK_CI_CACHE
 ```
 
 ### Minimal `.smalltalk.ston` Template
