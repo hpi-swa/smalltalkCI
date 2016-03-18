@@ -18,8 +18,10 @@ os:
   - osx
 
 install:
-  # make sure to use smalltalkCI from this branch
-  - if [[ -n "${SMALLTALK_CI_HOME}" ]]; then mv $SMALLTALK_CI_HOME/_cache "$(pwd)" && rm -rf $SMALLTALK_CI_HOME && ln -s "$(pwd)" $SMALLTALK_CI_HOME; fi
+  # Move cache directory if it exists
+  - if [[ -d "${SMALLTALK_CI_CACHE}" ]]; then mv $SMALLTALK_CI_CACHE "$(pwd)"; fi
+  # Make sure to use smalltalkCI from this branch
+  - if [[ -n "${SMALLTALK_CI_HOME}" ]]; then rm -rf $SMALLTALK_CI_HOME && ln -s "$(pwd)" $SMALLTALK_CI_HOME; fi
 
 script:
   - $SMALLTALK_CI_HOME/run.sh --debug && $SMALLTALK_CI_HOME/tests/fail_test.sh
@@ -36,17 +38,17 @@ matrix:
       os: linux
       cache:
         directories:
-          - $SMALLTALK_CI_HOME/_cache
+          - $SMALLTALK_CI_CACHE
     - smalltalk: GemStone-3.2.12
       os: linux
       cache:
         directories:
-          - $SMALLTALK_CI_HOME/_cache
+          - $SMALLTALK_CI_CACHE
     - smalltalk: GemStone-3.1.0.6
       os: linux
       cache:
         directories:
-          - $SMALLTALK_CI_HOME/_cache
+          - $SMALLTALK_CI_CACHE
     # GemStone OS X builds
     - smalltalk: GemStone-3.3.0
       os: osx
