@@ -13,16 +13,13 @@ smalltalk:
   - Pharo-4.0
   - Pharo-3.0
 
-  - GemStone-3.3.0
-  - GemStone-3.2.12
-  - GemStone-3.1.0.6
-
 os:
   - linux
   - osx
 
 install:
-  - unset SMALLTALK_CI_HOME && source env_vars # make sure to use smalltalkCI from this branch
+  # make sure to use smalltalkCI from this branch
+  - unset SMALLTALK_CI_HOME && source env_vars
 
 script:
   - $SMALLTALK_CI_HOME/run.sh --debug && $SMALLTALK_CI_HOME/tests/fail_test.sh
@@ -34,13 +31,26 @@ matrix:
       smalltalk:
       sudo: false
       script: bash $SMALLTALK_CI_HOME/tests/all_tests.sh
-
-  allow_failures:
+    # GemStone Linux builds
+    - smalltalk: GemStone-3.3.0
+      os: linux
+      cache:
+        directories:
+          - $SMALLTALK_CI_HOME/_cache
+    - smalltalk: GemStone-3.2.12
+      os: linux
+      cache:
+        directories:
+          - $SMALLTALK_CI_HOME/_cache
+    - smalltalk: GemStone-3.1.0.6
+      os: linux
+      cache:
+        directories:
+          - $SMALLTALK_CI_HOME/_cache
+    # GemStone OS X builds
     - smalltalk: GemStone-3.3.0
       os: osx
     - smalltalk: GemStone-3.2.12
       os: osx
     - smalltalk: GemStone-3.1.0.6
       os: osx
-
-  fast_finish: true
