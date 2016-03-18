@@ -1,36 +1,36 @@
 language: smalltalk
 sudo: false
 
-smalltalk:
-  - Squeak-trunk
-  - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
+# smalltalk:
+#   - Squeak-trunk
+#   - Squeak-5.0
+#   - Squeak-4.6
+#   - Squeak-4.5
 
-  - Pharo-alpha
-  - Pharo-stable
-  - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
+#   - Pharo-alpha
+#   - Pharo-stable
+#   - Pharo-5.0
+#   - Pharo-4.0
+#   - Pharo-3.0
 
-os:
-  - linux
-  - osx
+# os:
+#   - linux
+#   - osx
 
 install:
   # make sure to use smalltalkCI from this branch
-  - if [[ -n "${SMALLTALK_CI_HOME}" ]]; then rm -rf $SMALLTALK_CI_HOME && ln -s "$(pwd)" $SMALLTALK_CI_HOME; fi
+  - if [[ -n "${SMALLTALK_CI_HOME}" ]]; then mv $SMALLTALK_CI_HOME/_cache "$(pwd)" && rm -rf $SMALLTALK_CI_HOME && ln -s "$(pwd)" $SMALLTALK_CI_HOME; fi
 
 script:
   - $SMALLTALK_CI_HOME/run.sh --debug && $SMALLTALK_CI_HOME/tests/fail_test.sh
 
 matrix:
   include:
-    # Bash tests
-    - language: bash
-      smalltalk:
-      sudo: false
-      script: bash tests/all_tests.sh
+    # # Bash tests
+    # - language: bash
+    #   smalltalk:
+    #   sudo: false
+    #   script: bash tests/all_tests.sh
     # GemStone Linux builds
     - smalltalk: GemStone-3.3.0
       os: linux
@@ -47,10 +47,10 @@ matrix:
       cache:
         directories:
           - $SMALLTALK_CI_HOME/_cache
-    # GemStone OS X builds
-    - smalltalk: GemStone-3.3.0
-      os: osx
-    - smalltalk: GemStone-3.2.12
-      os: osx
-    - smalltalk: GemStone-3.1.0.6
-      os: osx
+    # # GemStone OS X builds
+    # - smalltalk: GemStone-3.3.0
+    #   os: osx
+    # - smalltalk: GemStone-3.2.12
+    #   os: osx
+    # - smalltalk: GemStone-3.1.0.6
+    #   os: osx
