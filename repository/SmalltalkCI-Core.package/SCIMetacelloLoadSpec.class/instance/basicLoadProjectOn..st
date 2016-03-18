@@ -9,5 +9,6 @@ basicLoadProjectOn: aSmalltalkCI
     repository: (self loadRepositoryFor: aSmalltalkCI);
     baseline: self baseline;
     configuration: self configuration;
-    version: self version;
-    load: self load
+    version: self version.
+  metacello copy get.	"compensate for older versions of Metacello"
+  metacello load: self load
