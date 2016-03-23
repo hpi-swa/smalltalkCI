@@ -172,6 +172,19 @@ OPTIONS:
 EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/projects
 ```
 
+## Running locally
+
+If you need to run smalltalkCI locally you can follow these steps:
+
+1. clone your repository
+  * a) from github: `git clone https://github.com/your/project.git`, or
+  * b) clone your local repo: `git clone /wherever/is/your/project`, or
+  * c) use your local repo directly
+2. cd into the cloned directory `cd project`
+3. download smalltalkCI: `wget -O smalltalkCI.zip https://github.com/hpi-swa/smalltalkCI/archive/master.zip`
+4. unzip it: `unzip -o smalltalkCI.zip`
+5. run smalltalkCI, provide dialect you want to test and your local config: `smalltalkCI-master/run.sh --headfull -s "Pharo-5.0" .smalltalk.ston`
+
 
 ## Contributing
 Please feel free to [open issues][issues] or to [send pull requests][pullRequests] if you'd like to discuss an idea or a problem.
