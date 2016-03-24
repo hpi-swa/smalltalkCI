@@ -152,6 +152,24 @@ SmalltalkCISpec {
 ```
 
 
+## Running smalltalkCI locally
+
+You can use smalltalkCI to run your project's tests locally. Just [clone][clone]
+or [download][download] smalltalkCI and then you are able to initiate a local
+build like this:
+
+```bash
+/path/to/smalltalkCI/run.sh --headfull -s IMAGE /path/to/your/projects/.smalltalk.ston
+```
+
+`IMAGE` can be one of the [supported images](#images). You may also want to
+have a look at [all supported options](#further-configuration).
+
+*Please note: All builds will be stored in `_builds` within smalltalkCI's
+directory. You may want to delete single or all builds if you don't need them as
+they can take up a lot of space on your drive.*
+
+
 ## Further Configuration
 smalltalkCI supports a couple of options that can be useful for debugging
 purposes or when used locally:
@@ -171,19 +189,6 @@ OPTIONS:
 
 EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/projects
 ```
-
-## Running locally
-
-If you need to run smalltalkCI locally you can follow these steps:
-
-1. clone your repository
-  * a) from github: `git clone https://github.com/your/project.git`, or
-  * b) clone your local repo: `git clone /wherever/is/your/project`, or
-  * c) use your local repo directly
-2. cd into the cloned directory `cd project`
-3. download smalltalkCI: `wget -O smalltalkCI.zip https://github.com/hpi-swa/smalltalkCI/archive/master.zip`
-4. unzip it: `unzip -o smalltalkCI.zip`
-5. run smalltalkCI, provide dialect you want to test and your local config: `smalltalkCI-master/run.sh --headfull -s "Pharo-5.0" .smalltalk.ston`
 
 
 ## Contributing
@@ -235,6 +240,8 @@ Please feel free to [open issues][issues] or to [send pull requests][pullRequest
 [builderCI]: https://github.com/dalehenrich/builderCI
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 [ci_skip]: https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build
+[clone]: https://help.github.com/articles/cloning-a-repository/
+[download]: https://github.com/hpi-swa/smalltalkCI/archive/master.zip
 [filetree]: https://github.com/dalehenrich/filetree
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
 [issues]: https://github.com/hpi-swa/smalltalkCI/issues
