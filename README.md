@@ -1,10 +1,27 @@
 # smalltalkCI [![Build Status](https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master)](https://travis-ci.org/hpi-swa/smalltalkCI)
-Community-supported framework for building Smalltalk projects on [Travis CI][travisCI] (continuous integration) infrastructure.
 
-It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy way to load and test Smalltalk projects on GitHub.
+Community-supported framework for testing Smalltalk projects on Linux & OS X and
+on [Travis CI][travisCI].
+
+It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy
+way to load and test Smalltalk projects.
+
+
+## Table of contents
+
+- [Features](#features)
+- [How to enable Travis CI for your Smalltalk project](#how-to-travis)
+- [How to test your Smalltalk project locally](#how-to-local)
+- [List Of Supported Images](#images)
+- [Compatible Project Loading Formats](#load-formats)
+- [Templates](#templates)
+- [Further Configuration](#further-configuration)
+- [Contributing](#contributing)
+- [Projects using smalltalkCI](#projects-using-smalltalkci)
 
 
 ## Features
+
 - Simple configuration via `.travis.yml` and `.smalltalk.ston` ([see below for templates](#templates))
 - Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
 - Runs on Travis' [container-based infrastructure][cbi] ([*"Builds start in seconds"*][bsis])
@@ -12,16 +29,38 @@ It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy 
 - Exports test results in the JUnit XML format as part of the Travis build log
 
 
-## How To Use
-1. Export your project in a [compatible format](#load_formats).
+<a name="how-to-travis"/>
+## How to enable Travis CI for your Smalltalk project
+
+1. Export your project in a [compatible format](#load-formats).
 2. [Enable Travis CI for your repository][travisHowTo].
 3. Create a `.travis.yml` and specifiy the [Smalltalk image(s)](#images) you want your project to be tested against.
 4. Create a `.smalltalk.ston` ([see below for templates](#templates)) and specify how to load and test your project.
 5. Push all of this to GitHub and enjoy your fast Smalltalk builds!
 
 
+<a name="how-to-local"/>
+## How to test your Smalltalk project locally
+
+You can use smalltalkCI to run your project's tests locally. Just [clone][clone]
+or [download][download] smalltalkCI and then you are able to initiate a local
+build like this:
+
+```bash
+/path/to/smalltalkCI/run.sh --headfull -s IMAGE /path/to/your/projects/.smalltalk.ston
+```
+
+`IMAGE` can be one of the [supported images](#images). You may also want to
+have a look at [all supported options](#further-configuration).
+
+*Please note: All builds will be stored in `_builds` within smalltalkCI's
+directory. You may want to delete single or all builds if you don't need them as
+they can take up a lot of space on your drive.*
+
+
 <a name="images"/>
 ## List Of Supported Images
+
 | Squeak          | Pharo            | GemStone             |
 | --------------- | ---------------- | -------------------- |
 | `Squeak-trunk`  | `Pharo-alpha`    | `GemStone-3.3.0`     |
@@ -31,7 +70,7 @@ It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy 
 |                 | `Pharo-3.0`      |                      |
 
 
-<a name="load_formats"/>
+<a name="load-formats"/>
 ## Compatible Project Loading Formats
 
 - [FileTree][filetree]/[Metacello][metacello] [Baseline][mc_baseline] or [Configuration][mc_configuration] (*Git-compatible*)
@@ -152,25 +191,8 @@ SmalltalkCISpec {
 ```
 
 
-## Running smalltalkCI locally
-
-You can use smalltalkCI to run your project's tests locally. Just [clone][clone]
-or [download][download] smalltalkCI and then you are able to initiate a local
-build like this:
-
-```bash
-/path/to/smalltalkCI/run.sh --headfull -s IMAGE /path/to/your/projects/.smalltalk.ston
-```
-
-`IMAGE` can be one of the [supported images](#images). You may also want to
-have a look at [all supported options](#further-configuration).
-
-*Please note: All builds will be stored in `_builds` within smalltalkCI's
-directory. You may want to delete single or all builds if you don't need them as
-they can take up a lot of space on your drive.*
-
-
 ## Further Configuration
+
 smalltalkCI supports a couple of options that can be useful for debugging
 purposes or when used locally:
 
@@ -192,7 +214,10 @@ EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/projects
 
 
 ## Contributing
-Please feel free to [open issues][issues] or to [send pull requests][pullRequests] if you'd like to discuss an idea or a problem.
+
+Please feel free to [open issues][issues] or to
+[send pull requests][pullRequests] if you'd like to discuss an idea or a
+problem.
 
 
 ## Projects using smalltalkCI
@@ -233,7 +258,8 @@ Please feel free to [open issues][issues] or to [send pull requests][pullRequest
     [osmo-smsc](https://github.com/zecke/osmo-smsc).
 - [More Projects...][more_projects]
 
-*Feel free to [send a PR][pullRequests] to add your Smalltalk project to the list. Please add [`[ci skip]`][ci_skip] to your commit message.*
+*Feel free to [send a PR][pullRequests] to add your Smalltalk project to the
+list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 
 
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
