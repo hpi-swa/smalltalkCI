@@ -67,7 +67,8 @@ locate_ston_config() {
     if is_file "${config_project_home}/.${DEFAULT_STON_CONFIG}"; then
       config_ston=".${DEFAULT_STON_CONFIG}"
     else
-      print_error_and_exit "STON cannot be found."
+      print_error_and_exit "No STON file named '${DEFAULT_STON_CONFIG}'' found
+                            in ${config_project_home}."
     fi
   fi
 }
