@@ -34,7 +34,8 @@ check_os() {
 determine_project() {
   local custom_ston=$1
 
-  if ! is_empty "${custom_ston}" && is_file "${custom_ston}"; then
+  if ! is_empty "${custom_ston}" && is_file "${custom_ston}" && \
+      [[ ${custom_ston: -5} == ".ston" ]]; then
     config_ston=$(basename "${custom_ston}")
     config_project_home="$(dirname "${custom_ston}")"
   elif is_travis_build; then
@@ -106,13 +107,6 @@ parse_args() {
   if ! is_travis_build && [[ $# -eq 0 ]]; then
     print_help
     exit 0
-  fi
-
-  if [[ $# -eq 0 ]]; then
-    determine_project
-  else
-    # Use last argument for custom STON
-    determine_project "${!#}"
   fi
 
   # Handle all arguments and flags
@@ -215,7 +209,7 @@ check_clean_up() {
 ################################################################################
 clean_up() {
   if is_dir "${SMALLTALK_CI_CACHE}" || \
-        ! is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+      ! is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
     print_info "Cleaning up..."
     print_info "Removing the following directories:"
     print_info "  ${SMALLTALK_CI_CACHE}"
@@ -284,6 +278,7 @@ main() {
   check_os
   parse_args "$@"
   [[ "${config_verbose}" = "true" ]] && set -x
+  determine_project "${!#}"  # Use last argument for custom STON
   check_and_set_paths
   check_clean_up
 
