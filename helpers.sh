@@ -23,19 +23,20 @@ print_error_and_exit() {
 
 print_help() {
   cat <<EOF
-  USAGE: run.sh [options] /path/to/project/your_smalltalk.ston
+  USAGE: $(basename -- $0) [options] /path/to/project/your_smalltalk.ston
 
   This program prepares Smalltalk images/vms, loads projects and runs tests.
 
   OPTIONS:
-    --clean                 Clear cache and delete builds.
-    -d | --debug            Enable debug mode.
-    -h | --help             Show this help text.
-    --headfull              Open vm in headfull mode and do not close image.
-    -s | --smalltalk        Overwrite Smalltalk image selection.
-    -v | --verbose          Enable 'set -x'.
+    --clean             Clear cache and delete builds.
+    -d | --debug        Enable debug mode.
+    -h | --help         Show this help text.
+    --headfull          Open vm in headfull mode and do not close image.
+    -s | --smalltalk    Overwrite Smalltalk image selection.
+    -v | --verbose      Enable 'set -x'.
 
-  EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
+  EXAMPLE:
+    $(basename -- $0) -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
 
 EOF
 }
