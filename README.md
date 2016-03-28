@@ -222,6 +222,8 @@ problem.
 
 ## Projects using smalltalkCI
 
+*In alphabetical order:*
+
 - [@dalehenrich](https://github.com/dalehenrich):
     [obex](https://github.com/dalehenrich/obex),
     [tode](https://github.com/dalehenrich/tode).
@@ -254,10 +256,10 @@ problem.
     [GitHubcello](https://github.com/Uko/GitHubcello),
     [QualityAssistant](https://github.com/Uko/QualityAssistant),
     [Renraku](https://github.com/Uko/Renraku).
+- [@UMMISCO](https://github.com/UMMISCO/):
+    [Kendrick](https://github.com/UMMISCO/kendrick).
 - [@zecke](https://github.com/zecke):
     [osmo-smsc](https://github.com/zecke/osmo-smsc).
-- [@UMMISCO](https://github.com/UMMISCO/):
--   [Kendrick](https://github.com/UMMISCO/kendrick).
 - [More Projects...][more_projects]
 
 *Feel free to [send a PR][pullRequests] to add your Smalltalk project to the
