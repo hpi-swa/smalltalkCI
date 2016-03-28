@@ -32,7 +32,9 @@ print_help() {
     -d | --debug        Enable debug mode.
     -h | --help         Show this help text.
     --headfull          Open vm in headfull mode and do not close image.
+    --install           Install symlink to this smalltalkCI instance.
     -s | --smalltalk    Overwrite Smalltalk image selection.
+    --uninstall         Remove symlink to any smalltalkCI instance.
     -v | --verbose      Enable 'set -x'.
 
   EXAMPLE:

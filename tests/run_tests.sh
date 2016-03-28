@@ -2,6 +2,8 @@
 
 readonly BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "${BASE}/run.sh"
+# Initialize smalltalkCI
+initialize
 
 test_determine_project_home() {
   local config_project_home
