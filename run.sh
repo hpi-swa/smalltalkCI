@@ -2,23 +2,37 @@
 
 set -e
 
-readonly SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_PATH}/helpers.sh"
-
 readonly DEFAULT_STON_CONFIG='smalltalk.ston'
 
 ################################################################################
-# Check OS to be Linux or OS X, otherwise exit with '1'.
+# Determine $SCRIPT_PATH and load helpers.
 ################################################################################
-check_os() {
-  local os_name=$(uname -s)
-  case "${os_name}" in
-    "Linux"|"Darwin")
+initialize() {
+  local base_path="${BASH_SOURCE[0]}"
+
+  # Resolve symlink if necessary and fail if OS is not supported
+  case "$(uname -s)" in
+    "Linux")
+      base_path="$(readlink -f "${base_path}")" || true
+      ;;
+    "Darwin")
+      base_path="$(readlink "${base_path}")" || true
       ;;
     *)
-      print_error_and_exit "Unsupported platform '${os_name}'."
+      echo "Unsupported platform '${os_name}'." 1>&2
+      exit 1
       ;;
   esac
+
+  readonly SCRIPT_PATH="$(cd "$(dirname "${base_path}")" && pwd)"
+
+  if [[ ! -f "${SCRIPT_PATH}/helpers.sh" ]]; then
+    echo "smalltalkCI could not be initialized." 1>&2
+    exit 1
+  fi
+
+  # Load helpers
+  source "${SCRIPT_PATH}/helpers.sh"
 }
 
 ################################################################################
@@ -276,7 +290,7 @@ main() {
   local config_verbose="false"
   local exit_status=0
 
-  check_os
+  initialize
   parse_args "$@"
   [[ "${config_verbose}" = "true" ]] && set -x
   determine_project "${!#}"  # Use last argument for custom STON
@@ -294,6 +308,4 @@ main() {
   exit ${exit_status}
 }
 
-if [[ "$(basename -- "$0")" = "run.sh" ]]; then
-  main "$@"
-fi
+main "$@"
