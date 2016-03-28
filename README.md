@@ -256,6 +256,8 @@ problem.
     [Renraku](https://github.com/Uko/Renraku).
 - [@zecke](https://github.com/zecke):
     [osmo-smsc](https://github.com/zecke/osmo-smsc).
+- [@UMMISCO](https://github.com/UMMISCO/):
+-   [Kendrick](https://github.com/UMMISCO/kendrick).
 - [More Projects...][more_projects]
 
 *Feel free to [send a PR][pullRequests] to add your Smalltalk project to the
