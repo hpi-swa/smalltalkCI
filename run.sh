@@ -139,6 +139,10 @@ parse_options() {
       config_debug="true"
       shift
       ;;
+    --gs-*)
+      # Reserved namespace for GemStone options
+      shift
+      ;;
     -h | --help)
       print_help
       exit 0
@@ -322,7 +326,7 @@ run() {
       ;;
     GemStone*)
       print_info "Starting GemStone build..."
-      source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
+      source "${SMALLTALK_CI_HOME}/gemstone/run.sh" "$@"
       ;;
     *)
       print_error_and_exit "Unknown Smalltalk version '${config_smalltalk}'."
@@ -337,7 +341,7 @@ run() {
     travis_fold end display_config
   fi
 
-  run_build
+  run_build "$@"
   return $?
 }
 
@@ -358,14 +362,14 @@ main() {
   local exit_status=0
 
   initialize
-  parse_args "$@"
+  parse_options "$@"
   [[ "${config_verbose}" = "true" ]] && set -x
   determine_project "${!#}"  # Use last argument for custom STON
   check_and_set_paths
   check_clean_up
 
   prepare_folders
-  run || exit_status=$?
+  run "$@" || exit_status=$?
   if [[ "${exit_status}" -ne 0 ]]; then
     print_error "Failed to load and test project."
     exit ${exit_status}

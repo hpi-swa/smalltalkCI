@@ -2,12 +2,44 @@
 
 set -e
 
-readonly GS_STONE_NAME="travis"
-readonly GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
-readonly GS_DEVKIT_BRANCH="master"
 export GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
+local GS_STONE_NAME="travis"
+local GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
+local GS_DEVKIT_BRANCH="master"
 local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local PHARO_CHANGES_FILE="Pharo-3.0.changes"
+
+################################################################################
+# Handle GemStone-specific options.
+################################################################################
+gemstone::parse_options() {
+  while :
+  do
+    case "$1" in
+      --gs-branch)
+        GS_DEVKIT_BRANCH="$2"
+        shift 2
+        ;;
+      --gs-repository)
+        GS_DEVKIT_DOWNLOAD="$2"
+        shift 2
+        ;;
+      --gs-stone)
+        GS_STONE_NAME="$2"
+        shift 2
+        ;;
+      --gs-*)
+        print_error_and_exit "Unknown GemStone-specific option: $1"
+        ;;
+      "")
+        break
+        ;;
+      *)
+        shift
+        ;;
+    esac
+  done
+}
 
 ################################################################################
 # Clone the GsDevKit_home project.
@@ -171,6 +203,8 @@ EOF
 ################################################################################
 run_build() {
   local exit_status=0
+
+  gemstone::parse_options "$@"
 
   # Temporary fix for https://github.com/hpi-swa/smalltalkCI/issues/68
   case "$(uname -s)" in
