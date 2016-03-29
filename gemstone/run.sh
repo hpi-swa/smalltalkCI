@@ -89,7 +89,7 @@ gemstone::prepare_stone() {
     timer_finish
   travis_fold end install_server
 
-  if [ "${GS_TRAVIS_CACHE_ENABLED}" = "false" ] ; then
+  if [ "${GS_TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
     print_info "Travis dependency cache not being used"
   else
     travis_fold start prepare_cache "Preparing Travis caches..."
@@ -144,7 +144,7 @@ gemstone::prepare_stone() {
   travis_fold start create_stone "Creating stone..."
     timer_start
 
-    if [ "${GS_TRAVIS_CACHE_ENABLED}" = "false" ] ; then
+    if [ "${GS_TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
       $GS_HOME/bin/createStone "${GS_STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
     else
       if ! is_file "$gemstone_cached_extent_file"; then
@@ -216,10 +216,10 @@ run_build() {
 
   # To bypass cached behavior for local build, export GS_TRAVIS_CACHE_ENABLED
   # before calling run.sh
-  if [ "${GS_TRAVIS_CACHE_ENABLED}x" = "x" ]; then
+  if is_empty "${GS_TRAVIS_CACHE_ENABLED:-}"; then
     GS_TRAVIS_CACHE_ENABLED="true"
-    if [ "${CASHER_DIR}x" = "x" ] ; then
-      if [ "$TRAVIS" = "true" ] ; then
+    if is_empty "${CASHER_DIR}"; then
+      if is_travis_build; then
         GS_TRAVIS_CACHE_ENABLED="false"
       fi
     fi
