@@ -132,7 +132,7 @@ parse_options() {
 
   while :
   do
-    case "$1" in
+    case "${1:-}" in
     --clean)
       config_clean="true"
       shift
