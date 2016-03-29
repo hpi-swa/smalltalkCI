@@ -13,6 +13,8 @@ readonly INSTALL_TARGET_OSX="/usr/local/bin"
 initialize() {
   local base_path="${BASH_SOURCE[0]}"
 
+  trap interrupted INT
+
   # Resolve symlink if necessary and fail if OS is not supported
   case "$(uname -s)" in
     "Linux")
@@ -36,6 +38,13 @@ initialize() {
 
   # Load helpers
   source "${SCRIPT_PATH}/helpers.sh"
+}
+
+################################################################################
+# Print notice on interrupt.
+################################################################################
+interrupted() {
+  print_notice "smalltalkCI has been interrupted. Exiting..."
 }
 
 ################################################################################
