@@ -158,7 +158,7 @@ parse_options() {
       exit 0
       ;;
     -s | --smalltalk)
-      config_smalltalk="$2"
+      config_smalltalk="${2:-}"
       shift 2
       ;;
     --uninstall)

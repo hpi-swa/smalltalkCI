@@ -16,17 +16,17 @@ local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 gemstone::parse_options() {
   while :
   do
-    case "$1" in
+    case "${1:-}" in
       --gs-branch)
-        GS_DEVKIT_BRANCH="$2"
+        GS_DEVKIT_BRANCH="${2:-}"
         shift 2
         ;;
       --gs-repository)
-        GS_DEVKIT_DOWNLOAD="$2"
+        GS_DEVKIT_DOWNLOAD="${2:-}"
         shift 2
         ;;
       --gs-stone)
-        GS_STONE_NAME="$2"
+        GS_STONE_NAME="${2:-}"
         shift 2
         ;;
       --gs-*)
