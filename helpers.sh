@@ -3,20 +3,27 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
+ANSI_RED="\033[31;1m"
+ANSI_GREEN="\033[32;1m"
+ANSI_YELLOW="\033[33;1m"
+ANSI_BLUE="\033[34;1m"
+ANSI_RESET="\033[0m"
+ANSI_CLEAR="\033[0K"
+
 print_info() {
-  printf "\e[1;34m%s\e[0m\n" "$1"
+  printf "${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
 }
 
 print_notice() {
-  printf "\e[1;33m%s\e[0m\n" "$1"
+  printf "${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
 }
 
 print_success() {
-  printf "\e[1;32m%s\e[0m\n" "$1"
+  printf "${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
 }
 
 print_error() {
-  printf "\e[1;31m%s\e[0m\n" "$1" 1>&2
+  printf "${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
 }
 
 print_error_and_exit() {
@@ -184,7 +191,7 @@ timer_finish() {
     echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
   else
     duration=$(echo "scale=3;${duration}/1000000000" | bc)
-    printf "\e[0;34m > Time to run: %ss \e[0m\n" "${duration}"
+    printf "\e[0;34m > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
   fi
 }
 
@@ -209,9 +216,9 @@ travis_fold() {
   local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
 
   if is_travis_build; then
-    echo -en "travis_fold:${action}:${prefix}${name}\r\033[0K"
+    echo -en "travis_fold:${action}:${prefix}${name}\r${ANSI_CLEAR}"
   fi
   if is_not_empty "${title}"; then
-    echo -e "\033[34;1m${title}\033[0m"
+    echo -e "${ANSI_BLUE}${title}${ANSI_RESET}"
   fi
 }
