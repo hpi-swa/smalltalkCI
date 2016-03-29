@@ -1,6 +1,7 @@
-#!/bin/bash
-
-set -e
+################################################################################
+# This file provides GemStone support for smalltalkCI. It is used in the context
+# of a smalltalkCI build and it is not meant to be executed by itself.
+################################################################################ 
 
 export GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
 local GS_STONE_NAME="travis"

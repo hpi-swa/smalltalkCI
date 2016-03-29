@@ -1,6 +1,7 @@
-#!/bin/bash
-
-set -e
+################################################################################
+# This file provides Squeak support for smalltalkCI. It is used in the context
+# of a smalltalkCI build and it is not meant to be executed by itself.
+################################################################################
 
 readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/\
 smalltalkci"

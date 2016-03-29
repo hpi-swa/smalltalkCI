@@ -1,4 +1,7 @@
-#!/bin/bash
+################################################################################
+# This file provides helper functions for smalltalkCI. It is used in the context
+# of a smalltalkCI build and it is not meant to be executed by itself.
+################################################################################
 
 print_info() {
   printf "\e[1;34m%s\e[0m\n" "$1"
@@ -108,7 +111,7 @@ program_exists() {
 }
 
 is_travis_build() {
-  [[ "${TRAVIS}" = "true" ]]
+  [[ "${TRAVIS:-}" = "true" ]]
 }
 
 is_spur_image() {
@@ -192,7 +195,7 @@ function timer_nanoseconds() {
 
   if hash gdate > /dev/null 2>&1; then
     cmd="gdate" # use gdate if available
-  elif [[ "$os" = Darwin ]]; then
+  elif [[ "${os}" = Darwin ]]; then
     format="+%s000000000" # fallback to second precision on darwin (does not support %N)
   fi
 
@@ -202,8 +205,8 @@ function timer_nanoseconds() {
 travis_fold() {
   local action=$1
   local name=$2
-  local title=$3
-  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX}"
+  local title="${3:-}"
+  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
 
   if is_travis_build; then
     echo -en "travis_fold:${action}:${prefix}${name}\r\033[0K"

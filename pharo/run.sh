@@ -1,6 +1,7 @@
-#!/bin/bash
-
-set -e
+################################################################################
+# This file provides Pharo support for smalltalkCI. It is used in the context
+# of a smalltalkCI build and it is not meant to be executed by itself.
+################################################################################
 
 ################################################################################
 # Select Pharo image download url. Exit if smalltalk_name is unsupported.

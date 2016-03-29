@@ -8,7 +8,7 @@ initialize
 test_determine_project_home() {
   local config_project_home
   local config_ston
-  local travis="${TRAVIS}"
+  local travis="${TRAVIS:-}"
 
   determine_project "${BASE}/.smalltalk.ston"
   assertEquals "${BASE}" "${config_project_home}"

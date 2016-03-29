@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -o errexit
+set -o pipefail
+set -o nounset
 
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
 readonly INSTALL_TARGET_OSX="/usr/local/bin"
@@ -47,7 +49,7 @@ initialize() {
 #   Custom project home path
 ################################################################################
 determine_project() {
-  local custom_ston=$1
+  local custom_ston="${1:-}"
 
   if ! is_empty "${custom_ston}" && is_file "${custom_ston}" && \
       [[ ${custom_ston: -5} == ".ston" ]]; then
@@ -105,7 +107,7 @@ validate_configuration() {
 #   SMALLTALK_CI_HOME
 ################################################################################
 check_and_set_paths() {
-  if is_empty "${SMALLTALK_CI_HOME}" && ! is_travis_build; then
+  if is_empty "${SMALLTALK_CI_HOME:-}" && ! is_travis_build; then
     export SMALLTALK_CI_HOME="${SCRIPT_PATH}"
     source "${SMALLTALK_CI_HOME}/env_vars"
   fi
@@ -351,7 +353,7 @@ run() {
 #   All positional parameters
 ################################################################################
 main() {
-  local config_smalltalk="${TRAVIS_SMALLTALK_VERSION}"
+  local config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-}"
   local config_ston="${DEFAULT_STON_CONFIG}"
   local config_project_home
   local config_builder_ci_fallback="false"
@@ -363,7 +365,7 @@ main() {
 
   initialize
   parse_options "$@"
-  [[ "${config_verbose}" = "true" ]] && set -x
+  [[ "${config_verbose}" = "true" ]] && set -o xtrace
   determine_project "${!#}"  # Use last argument for custom STON
   check_and_set_paths
   check_clean_up
