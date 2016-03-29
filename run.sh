@@ -250,7 +250,7 @@ check_clean_up() {
 ################################################################################
 clean_up() {
   if is_dir "${SMALLTALK_CI_CACHE}" || \
-      ! is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+      is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
     print_info "Cleaning up..."
     print_info "Removing the following directories:"
     print_info "  ${SMALLTALK_CI_CACHE}"
