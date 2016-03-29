@@ -218,7 +218,7 @@ run_build() {
   # before calling run.sh
   if is_empty "${GS_TRAVIS_CACHE_ENABLED:-}"; then
     GS_TRAVIS_CACHE_ENABLED="true"
-    if is_empty "${CASHER_DIR}"; then
+    if is_empty "${CASHER_DIR:-}"; then
       if is_travis_build; then
         GS_TRAVIS_CACHE_ENABLED="false"
       fi
