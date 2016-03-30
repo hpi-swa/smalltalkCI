@@ -68,7 +68,7 @@ determine_project() {
     config_project_home="${TRAVIS_BUILD_DIR}"
     locate_ston_config
   else
-    print_error_and_exit "No valid STON provided and not running on Travis."
+    return 0
   fi
 
   # Convert to absolute path if necessary
@@ -107,6 +107,17 @@ locate_ston_config() {
 validate_configuration() {
   if is_empty "${config_smalltalk}"; then
     print_error_and_exit "Smalltalk image is not defined."
+  fi
+  if is_empty "${config_ston}"; then
+    print_error_and_exit "No STON file found."
+  elif ! is_file "${config_ston}"; then
+    print_error_and_exit "STON file at '${config_ston}' does not exist."
+  fi
+  if is_empty "${config_project_home}"; then
+    print_error_and_exit "Project home not defined."
+  elif ! is_dir "${config_project_home}"; then
+    print_error_and_exit "Project home at '${config_project_home}' does not
+                          exist."
   fi
 }
 
@@ -190,8 +201,6 @@ parse_options() {
       ;;
     esac
   done
-
-  validate_configuration
 }
 
 ################################################################################
@@ -230,8 +239,10 @@ prepare_folders() {
 check_clean_up() {
   local user_input
   local question1="Are you sure you want to clear builds and cache? (y/N): "
-  local question2="Continue with build? (y/N): "
+  local question2="Continue with build progress? (y/N): "
   if [[ "${config_clean}" = "true" ]]; then
+    print_info "builds at '${SMALLTALK_CI_CACHE}'."
+    print_info "cache at '${SMALLTALK_CI_BUILD_BASE}'."
     read -p "${question1}" user_input
     if [[ "${user_input}" = "y" ]]; then
       clean_up
@@ -253,9 +264,14 @@ clean_up() {
       is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
     print_info "Cleaning up..."
     print_info "Removing the following directories:"
-    print_info "  ${SMALLTALK_CI_CACHE}"
-    print_info "  ${SMALLTALK_CI_BUILD_BASE}"
-    rm -rf "${SMALLTALK_CI_CACHE}" "${SMALLTALK_CI_BUILD_BASE}"
+    if is_dir "${SMALLTALK_CI_CACHE}"; then
+      print_info "  ${SMALLTALK_CI_CACHE}"
+      rm -rf "${SMALLTALK_CI_CACHE}"
+    fi
+    if is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+      print_info "  ${SMALLTALK_CI_BUILD_BASE}"
+      rm -rf "${SMALLTALK_CI_BUILD_BASE}"
+    fi
     print_info "Done."
   else
     print_notice "Nothing to clean up."
@@ -277,7 +293,9 @@ install_script() {
     "Darwin")
       target="${INSTALL_TARGET_OSX}"
       if ! is_dir "${target}"; then
-        read -p "'${target}' does not exist. Do you want to create it? (y/N): " user_input
+        local message = "'${target}' does not exist. Do you want to create it?
+                         (y/N): "
+        read -p "${message}" user_input
         if [[ "${user_input}" = "y" ]]; then
           sudo mkdir "target"
         else
@@ -310,7 +328,8 @@ uninstall_script() {
       target="${INSTALL_TARGET_OSX}"
       if is_file "${target}/smalltalkCI"; then
         rm -f "${target}/smalltalkCI"
-        print_info "The command 'smalltalkCI' has been uninstalled successfully."
+        print_info "The command 'smalltalkCI' has been uninstalled
+                    successfully."
       else
         print_error_and_exit "'${target}/smalltalkCI' does not exists."
       fi
@@ -378,6 +397,7 @@ main() {
   determine_project "${!#}"  # Use last argument for custom STON
   check_and_set_paths
   check_clean_up
+  validate_configuration
 
   prepare_folders
   run "$@" || exit_status=$?
