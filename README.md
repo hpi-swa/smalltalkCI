@@ -224,6 +224,8 @@ problem.
 
 *In alphabetical order:*
 
+- [@Cormas](https://github.com/cormas):
+    [Cormas](https://github.com/cormas/cormas).
 - [@dalehenrich](https://github.com/dalehenrich):
     [obex](https://github.com/dalehenrich/obex),
     [tode](https://github.com/dalehenrich/tode).
@@ -246,6 +248,8 @@ problem.
     [vivide](https://github.com/hpi-swa/vivide).
 - [@pharo-project](https://github.com/pharo-project):
     [pharo-project-proposals](https://github.com/pharo-project/pharo-project-proposals).
+- [@PolyMathOrg](https://github.com/PolyMathOrg):
+-   [PolyMath](https://github.com/PolyMathOrg/PolyMath).
 - [@SeasideSt](https://github.com/SeasideSt):
     [Grease](https://github.com/SeasideSt/Grease).
 - [@SergeStinckwich](https://github.com/SergeStinckwich):
