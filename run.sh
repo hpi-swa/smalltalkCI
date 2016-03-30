@@ -243,8 +243,8 @@ check_clean_up() {
   local question1="Are you sure you want to clear builds and cache? (y/N): "
   local question2="Continue with build progress? (y/N): "
   if [[ "${config_clean}" = "true" ]]; then
-    print_info "builds at '${SMALLTALK_CI_CACHE}'."
-    print_info "cache at '${SMALLTALK_CI_BUILD_BASE}'."
+    print_info "cache at '${SMALLTALK_CI_CACHE}'."
+    print_info "builds at '${SMALLTALK_CI_BUILD_BASE}'."
     read -p "${question1}" user_input
     if [[ "${user_input}" = "y" ]]; then
       clean_up
