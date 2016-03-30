@@ -110,6 +110,8 @@ parse_args() {
     exit 0
   fi
 
+  SCRIPT_ARGS=( "$*" )
+
   # Handle all arguments and flags
   while :
   do
@@ -120,6 +122,10 @@ parse_args() {
       ;;
     -d | --debug)
       config_debug="true"
+      shift
+      ;;
+    --gs-*)
+      # Reserved namespace for GemStone options
       shift
       ;;
     -h | --help)
@@ -215,6 +221,7 @@ clean_up() {
     print_info "Removing the following directories:"
     print_info "  ${SMALLTALK_CI_CACHE}"
     print_info "  ${SMALLTALK_CI_BUILD_BASE}"
+    chmod -fR +w  "${SMALLTALK_CI_CACHE}" "${SMALLTALK_CI_BUILD_BASE}"
     rm -rf "${SMALLTALK_CI_CACHE}" "${SMALLTALK_CI_BUILD_BASE}"
     print_info "Done."
   else
@@ -241,7 +248,7 @@ run() {
       ;;
     GemStone*)
       print_info "Starting GemStone build..."
-      source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
+      source "${SMALLTALK_CI_HOME}/gemstone/run.sh" $SCRIPT_ARGS
       ;;
     *)
       print_error_and_exit "Unknown Smalltalk version '${config_smalltalk}'."
@@ -256,7 +263,7 @@ run() {
     travis_fold end display_config
   fi
 
-  run_build
+  run_build $SCRIPT_ARGS
   return $?
 }
 

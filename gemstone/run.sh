@@ -10,6 +10,26 @@ local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 
 ################################################################################
+# Handle GemStone-specific options.
+################################################################################
+gemstone::parse_options() {
+  while :
+  do
+    case "$1" in
+      --gs-*)
+        print_error_and_exit "Unknown GemStone-specific option: $1"
+        ;;
+      "")
+        break
+        ;;
+      *)
+        shift
+        ;;
+    esac
+  done
+}
+
+################################################################################
 # Clone the GsDevKit_home project.
 ################################################################################
 gemstone::prepare_gsdevkit_home() {
@@ -171,6 +191,8 @@ EOF
 ################################################################################
 run_build() {
   local exit_status=0
+
+  gemstone::parse_options "$@"
 
   # Temporary fix for https://github.com/hpi-swa/smalltalkCI/issues/68
   case "$(uname -s)" in
