@@ -225,7 +225,7 @@ problem.
 *In alphabetical order:*
 
 - [@Cormas](https://github.com/cormas):
--   [Cormas](https://github.com/cormas/cormas).
+    [Cormas](https://github.com/cormas/cormas).
 - [@dalehenrich](https://github.com/dalehenrich):
     [obex](https://github.com/dalehenrich/obex),
     [tode](https://github.com/dalehenrich/tode).
