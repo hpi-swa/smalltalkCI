@@ -1,24 +1,50 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -o errexit
+set -o pipefail
+set -o nounset
 
-readonly SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_PATH}/helpers.sh"
-
-readonly DEFAULT_STON_CONFIG='smalltalk.ston'
+readonly DEFAULT_STON_CONFIG="smalltalk.ston"
+readonly INSTALL_TARGET_OSX="/usr/local/bin"
 
 ################################################################################
-# Check OS to be Linux or OS X, otherwise exit with '1'.
+# Determine $SCRIPT_PATH and load helpers.
 ################################################################################
-check_os() {
-  local os_name=$(uname -s)
-  case "${os_name}" in
-    "Linux"|"Darwin")
+initialize() {
+  local base_path="${BASH_SOURCE[0]}"
+
+  trap interrupted INT
+
+  # Resolve symlink if necessary and fail if OS is not supported
+  case "$(uname -s)" in
+    "Linux")
+      base_path="$(readlink -f "${base_path}")" || true
+      ;;
+    "Darwin")
+      base_path="$(readlink "${base_path}")" || true
       ;;
     *)
-      print_error_and_exit "Unsupported platform '${os_name}'."
+      echo "Unsupported platform '${os_name}'." 1>&2
+      exit 1
       ;;
   esac
+
+  readonly SCRIPT_PATH="$(cd "$(dirname "${base_path}")" && pwd)"
+
+  if [[ ! -f "${SCRIPT_PATH}/run.sh" ]]; then
+    echo "smalltalkCI could not be initialized." 1>&2
+    exit 1
+  fi
+
+  # Load helpers
+  source "${SCRIPT_PATH}/helpers.sh"
+}
+
+################################################################################
+# Print notice on interrupt.
+################################################################################
+interrupted() {
+  print_notice "smalltalkCI has been interrupted. Exiting..."
 }
 
 ################################################################################
@@ -32,7 +58,7 @@ check_os() {
 #   Custom project home path
 ################################################################################
 determine_project() {
-  local custom_ston=$1
+  local custom_ston="${1:-}"
 
   if ! is_empty "${custom_ston}" && is_file "${custom_ston}" && \
       [[ ${custom_ston: -5} == ".ston" ]]; then
@@ -42,7 +68,7 @@ determine_project() {
     config_project_home="${TRAVIS_BUILD_DIR}"
     locate_ston_config
   else
-    print_error_and_exit "No valid STON provided and not running on Travis."
+    return 0
   fi
 
   # Convert to absolute path if necessary
@@ -82,6 +108,17 @@ validate_configuration() {
   if is_empty "${config_smalltalk}"; then
     print_error_and_exit "Smalltalk image is not defined."
   fi
+  if is_empty "${config_ston}"; then
+    print_error_and_exit "No STON file found."
+  elif ! is_file "${config_ston}"; then
+    print_error_and_exit "STON file at '${config_ston}' does not exist."
+  fi
+  if is_empty "${config_project_home}"; then
+    print_error_and_exit "Project home not defined."
+  elif ! is_dir "${config_project_home}"; then
+    print_error_and_exit "Project home at '${config_project_home}' does not
+                          exist."
+  fi
 }
 
 ################################################################################
@@ -90,21 +127,24 @@ validate_configuration() {
 #   SMALLTALK_CI_HOME
 ################################################################################
 check_and_set_paths() {
-  if is_empty "${SMALLTALK_CI_HOME}" && ! is_travis_build; then
+  if is_empty "${SMALLTALK_CI_HOME:-}" && ! is_travis_build; then
     export SMALLTALK_CI_HOME="${SCRIPT_PATH}"
     source "${SMALLTALK_CI_HOME}/env_vars"
   fi
 }
 
 ################################################################################
-# Load options from project's '.travis.yml', global environment variables and
-# user's parameters.
+# Handle user-defined options.
 # Locals:
+#   config_clean
+#   config_debug
+#   config_headless
 #   config_smalltalk
+#   config_verbose
 # Arguments:
 #   All positional parameters
 ################################################################################
-parse_args() {
+parse_options() {
   if ! is_travis_build && [[ $# -eq 0 ]]; then
     print_help
     exit 0
@@ -112,10 +152,9 @@ parse_args() {
 
   SCRIPT_ARGS=( "$*" )
 
-  # Handle all arguments and flags
   while :
   do
-    case "$1" in
+    case "${1:-}" in
     --clean)
       config_clean="true"
       shift
@@ -136,9 +175,17 @@ parse_args() {
       config_headless="false"
       shift
       ;;
+    --install)
+      install_script
+      exit 0
+      ;;
     -s | --smalltalk)
-      config_smalltalk="$2"
+      config_smalltalk="${2:-}"
       shift 2
+      ;;
+    --uninstall)
+      uninstall_script
+      exit 0
       ;;
     -v | --verbose)
       config_verbose="true"
@@ -156,8 +203,6 @@ parse_args() {
       ;;
     esac
   done
-
-  validate_configuration
 }
 
 ################################################################################
@@ -196,8 +241,10 @@ prepare_folders() {
 check_clean_up() {
   local user_input
   local question1="Are you sure you want to clear builds and cache? (y/N): "
-  local question2="Continue with build? (y/N): "
+  local question2="Continue with build progress? (y/N): "
   if [[ "${config_clean}" = "true" ]]; then
+    print_info "builds at '${SMALLTALK_CI_CACHE}'."
+    print_info "cache at '${SMALLTALK_CI_BUILD_BASE}'."
     read -p "${question1}" user_input
     if [[ "${user_input}" = "y" ]]; then
       clean_up
@@ -216,17 +263,81 @@ check_clean_up() {
 ################################################################################
 clean_up() {
   if is_dir "${SMALLTALK_CI_CACHE}" || \
-      ! is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+      is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
     print_info "Cleaning up..."
     print_info "Removing the following directories:"
-    print_info "  ${SMALLTALK_CI_CACHE}"
-    print_info "  ${SMALLTALK_CI_BUILD_BASE}"
-    chmod -fR +w  "${SMALLTALK_CI_CACHE}" "${SMALLTALK_CI_BUILD_BASE}"
-    rm -rf "${SMALLTALK_CI_CACHE}" "${SMALLTALK_CI_BUILD_BASE}"
+    if is_dir "${SMALLTALK_CI_CACHE}"; then
+      print_info "  ${SMALLTALK_CI_CACHE}"
+      rm -rf "${SMALLTALK_CI_CACHE}"
+    fi
+    if is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+      print_info "  ${SMALLTALK_CI_BUILD_BASE}"
+      chmod -fR +w "${SMALLTALK_CI_BUILD_BASE}"
+      rm -rf "${SMALLTALK_CI_BUILD_BASE}"
+    fi
     print_info "Done."
   else
     print_notice "Nothing to clean up."
   fi
+}
+
+################################################################################
+# Install 'smalltalkCI' command by symlinking current instance.
+# Globals:
+#   INSTALL_TARGET_OSX
+################################################################################
+install_script() {
+  local target
+
+  case "$(uname -s)" in
+    "Linux")
+      print_notice "Not yet implemented."
+      ;;
+    "Darwin")
+      target="${INSTALL_TARGET_OSX}"
+      if ! is_dir "${target}"; then
+        local message = "'${target}' does not exist. Do you want to create it?
+                         (y/N): "
+        read -p "${message}" user_input
+        if [[ "${user_input}" = "y" ]]; then
+          sudo mkdir "target"
+        else
+          print_error_and_exit "'${target}' has not been created."
+        fi
+      fi
+      if ! is_file "${target}/smalltalkCI"; then
+        ln -s "${SCRIPT_PATH}/run.sh" "${target}/smalltalkCI"
+        print_info "The command 'smalltalkCI' has been installed successfully."
+      else
+        print_error_and_exit "'${target}/smalltalkCI' already exists."
+      fi
+      ;;
+  esac
+}
+
+################################################################################
+# Uninstall 'smalltalkCI' command by removing any symlink to smalltalkCI.
+# Globals:
+#   INSTALL_TARGET_OSX
+################################################################################
+uninstall_script() {
+  local target
+
+  case "$(uname -s)" in
+    "Linux")
+      print_notice "Not yet implemented."
+      ;;
+    "Darwin")
+      target="${INSTALL_TARGET_OSX}"
+      if is_file "${target}/smalltalkCI"; then
+        rm -f "${target}/smalltalkCI"
+        print_info "The command 'smalltalkCI' has been uninstalled
+                    successfully."
+      else
+        print_error_and_exit "'${target}/smalltalkCI' does not exists."
+      fi
+      ;;
+  esac
 }
 
 ################################################################################
@@ -273,7 +384,7 @@ run() {
 #   All positional parameters
 ################################################################################
 main() {
-  local config_smalltalk="${TRAVIS_SMALLTALK_VERSION}"
+  local config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-}"
   local config_ston="${DEFAULT_STON_CONFIG}"
   local config_project_home
   local config_builder_ci_fallback="false"
@@ -283,15 +394,16 @@ main() {
   local config_verbose="false"
   local exit_status=0
 
-  check_os
-  parse_args "$@"
-  [[ "${config_verbose}" = "true" ]] && set -x
+  initialize
+  parse_options "$@"
+  [[ "${config_verbose}" = "true" ]] && set -o xtrace
   determine_project "${!#}"  # Use last argument for custom STON
   check_and_set_paths
   check_clean_up
+  validate_configuration
 
   prepare_folders
-  run || exit_status=$?
+  run "$@" || exit_status=$?
   if [[ "${exit_status}" -ne 0 ]]; then
     print_error "Failed to load and test project."
     exit ${exit_status}
@@ -301,6 +413,7 @@ main() {
   exit ${exit_status}
 }
 
-if [[ "$(basename -- "$0")" = "run.sh" ]]; then
+# Run main if script is not being tested
+if [[ "$(basename -- "$0")" != *"test"* ]]; then
   main "$@"
 fi

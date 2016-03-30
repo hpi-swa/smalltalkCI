@@ -1,11 +1,12 @@
-#!/bin/bash
+################################################################################
+# This file provides GemStone support for smalltalkCI. It is used in the context
+# of a smalltalkCI build and it is not meant to be executed by itself.
+################################################################################ 
 
-set -e
-
-readonly GS_STONE_NAME="travis"
-readonly GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
-readonly GS_DEVKIT_BRANCH="master"
 export GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
+local GS_STONE_NAME="travis"
+local GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
+local GS_DEVKIT_BRANCH="master"
 local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 
@@ -15,7 +16,7 @@ local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 gemstone::parse_options() {
   while :
   do
-    case "$1" in
+    case "${1:-}" in
       --gs-*)
         print_error_and_exit "Unknown GemStone-specific option: $1"
         ;;
@@ -76,7 +77,7 @@ gemstone::prepare_stone() {
     timer_finish
   travis_fold end install_server
 
-  if [ "${GS_TRAVIS_CACHE_ENABLED}" = "false" ] ; then
+  if [ "${GS_TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
     print_info "Travis dependency cache not being used"
   else
     travis_fold start prepare_cache "Preparing Travis caches..."
@@ -131,7 +132,7 @@ gemstone::prepare_stone() {
   travis_fold start create_stone "Creating stone..."
     timer_start
 
-    if [ "${GS_TRAVIS_CACHE_ENABLED}" = "false" ] ; then
+    if [ "${GS_TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
       $GS_HOME/bin/createStone "${GS_STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
     else
       if ! is_file "$gemstone_cached_extent_file"; then
@@ -203,10 +204,10 @@ run_build() {
 
   # To bypass cached behavior for local build, export GS_TRAVIS_CACHE_ENABLED
   # before calling run.sh
-  if [ "${GS_TRAVIS_CACHE_ENABLED}x" = "x" ]; then
+  if is_empty "${GS_TRAVIS_CACHE_ENABLED:-}"; then
     GS_TRAVIS_CACHE_ENABLED="true"
-    if [ "${CASHER_DIR}x" = "x" ] ; then
-      if [ "$TRAVIS" = "true" ] ; then
+    if is_empty "${CASHER_DIR:-}"; then
+      if is_travis_build; then
         GS_TRAVIS_CACHE_ENABLED="false"
       fi
     fi
