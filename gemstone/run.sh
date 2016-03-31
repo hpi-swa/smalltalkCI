@@ -17,18 +17,6 @@ gemstone::parse_options() {
   while :
   do
     case "${1:-}" in
-      --gs-branch)
-        GS_DEVKIT_BRANCH="${2:-}"
-        shift 2
-        ;;
-      --gs-repository)
-        GS_DEVKIT_DOWNLOAD="${2:-}"
-        shift 2
-        ;;
-      --gs-stone)
-        GS_STONE_NAME="${2:-}"
-        shift 2
-        ;;
       --gs-*)
         print_error_and_exit "Unknown GemStone-specific option: $1"
         ;;

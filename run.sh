@@ -241,11 +241,14 @@ check_clean_up() {
   local question1="Are you sure you want to clear builds and cache? (y/N): "
   local question2="Continue with build progress? (y/N): "
   if [[ "${config_clean}" = "true" ]]; then
-    print_info "builds at '${SMALLTALK_CI_CACHE}'."
-    print_info "cache at '${SMALLTALK_CI_BUILD_BASE}'."
+    print_info "cache at '${SMALLTALK_CI_CACHE}'."
+    print_info "builds at '${SMALLTALK_CI_BUILD_BASE}'."
     read -p "${question1}" user_input
     if [[ "${user_input}" = "y" ]]; then
       clean_up
+    fi
+    if is_empty "${config_smalltalk}" || is_empty "${config_ston}"; then
+      exit  # User did not supply enough arguments to continue
     fi
     read -p "${question2}" user_input
     [[ "${user_input}" != "y" ]] && exit 0
@@ -270,6 +273,8 @@ clean_up() {
     fi
     if is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
       print_info "  ${SMALLTALK_CI_BUILD_BASE}"
+      # Make sure read-only files (e.g. some GemStone files) can be removed
+      chmod -fR +w "${SMALLTALK_CI_BUILD_BASE}"
       rm -rf "${SMALLTALK_CI_BUILD_BASE}"
     fi
     print_info "Done."
@@ -356,7 +361,7 @@ run() {
       ;;
     GemStone*)
       print_info "Starting GemStone build..."
-      source "${SMALLTALK_CI_HOME}/gemstone/run.sh" "$@"
+      source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
       ;;
     *)
       print_error_and_exit "Unknown Smalltalk version '${config_smalltalk}'."
