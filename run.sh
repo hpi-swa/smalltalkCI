@@ -273,6 +273,7 @@ clean_up() {
     fi
     if is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
       print_info "  ${SMALLTALK_CI_BUILD_BASE}"
+      # Make sure read-only files (e.g. some GemStone files) can be removed
       chmod -fR +w "${SMALLTALK_CI_BUILD_BASE}"
       rm -rf "${SMALLTALK_CI_BUILD_BASE}"
     fi
