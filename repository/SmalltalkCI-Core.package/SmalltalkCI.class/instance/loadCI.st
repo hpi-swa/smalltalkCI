@@ -1,6 +1,5 @@
 executing
-runCI
+loadCI
   self prepareForCI.
   self loadProjects.
-  self runTests.
   self finishUpAfterCI
