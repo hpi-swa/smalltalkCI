@@ -150,8 +150,6 @@ parse_options() {
     exit 0
   fi
 
-  SCRIPT_ARGS=( "$*" )
-
   while :
   do
     case "${1:-}" in
@@ -359,7 +357,7 @@ run() {
       ;;
     GemStone*)
       print_info "Starting GemStone build..."
-      source "${SMALLTALK_CI_HOME}/gemstone/run.sh" $SCRIPT_ARGS
+      source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
       ;;
     *)
       print_error_and_exit "Unknown Smalltalk version '${config_smalltalk}'."
@@ -374,7 +372,7 @@ run() {
     travis_fold end display_config
   fi
 
-  run_build $SCRIPT_ARGS
+  run_build "$@"
   return $?
 }
 
