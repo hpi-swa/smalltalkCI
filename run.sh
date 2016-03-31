@@ -247,6 +247,9 @@ check_clean_up() {
     if [[ "${user_input}" = "y" ]]; then
       clean_up
     fi
+    if is_empty "${config_smalltalk}" || is_empty "${config_ston}"; then
+      exit  # User did not supply enough arguments to continue
+    fi
     read -p "${question2}" user_input
     [[ "${user_input}" != "y" ]] && exit 0
   fi
