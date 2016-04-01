@@ -54,5 +54,5 @@ matrix:
 #      os: osx
 #    - smalltalk: GemStone-3.2.12
 #      os: osx
-    - smalltalk: GemStone-3.1.0.6
-      os: osx
+#    - smalltalk: GemStone-3.1.0.6
+#      os: osx
