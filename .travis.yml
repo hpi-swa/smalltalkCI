@@ -2,20 +2,20 @@ language: smalltalk
 sudo: false
 
 smalltalk:
-  - Squeak-trunk
+#  - Squeak-trunk
   - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
-
-  - Pharo-alpha
-  - Pharo-stable
+#  - Squeak-4.6
+#  - Squeak-4.5
+#
+#  - Pharo-alpha
+#  - Pharo-stable
   - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
+#  - Pharo-4.0
+#  - Pharo-3.0
 
 os:
   - linux
-  - osx
+#  - osx
 
 install:
   # Move cache directory if it exists
@@ -39,20 +39,20 @@ matrix:
       cache:
         directories:
           - $SMALLTALK_CI_CACHE
-    - smalltalk: GemStone-3.2.12
-      os: linux
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE
-    - smalltalk: GemStone-3.1.0.6
-      os: linux
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE
-    # GemStone OS X builds
-    - smalltalk: GemStone-3.3.0
-      os: osx
-    - smalltalk: GemStone-3.2.12
-      os: osx
+#    - smalltalk: GemStone-3.2.12
+#      os: linux
+#      cache:
+#        directories:
+#          - $SMALLTALK_CI_CACHE
+#    - smalltalk: GemStone-3.1.0.6
+#      os: linux
+#      cache:
+#        directories:
+#          - $SMALLTALK_CI_CACHE
+#    # GemStone OS X builds
+#    - smalltalk: GemStone-3.3.0
+#      os: osx
+#    - smalltalk: GemStone-3.2.12
+#      os: osx
     - smalltalk: GemStone-3.1.0.6
       os: osx
