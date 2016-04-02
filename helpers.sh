@@ -51,7 +51,11 @@ print_help() {
     --gs-DEVKIT_BRANCH=<branch-name>
                         Name of GsDevKit_home branch. Default is 'master'. Be aware
                         that using a non-master branch may result in unexpected
-                        results.
+                        results. Overrides value of GSCI_DEVKIT_BRANCH if defined.
+
+                        Environment variable GSCI_DEVKIT_BRANCH may be used to 
+                        specify <branch-name> in a .travis.yml
+
     --gs-HOME=<GS_HOME-path>
                         Path to an existing GsDevKit_home clone to be used
                         instead of creating a fresh clone.

@@ -4,10 +4,11 @@
 ################################################################################ 
 
 local DEFAULT_GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
+local DEFAULT_DEVKIT_BRANCH="master"
 local USE_DEFAULT_HOME="true"
 local STONE_NAME="travis"
 local DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
-local DEVKIT_BRANCH="master"
+local DEVKIT_BRANCH
 local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 
@@ -17,6 +18,10 @@ local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 gemstone::parse_options() {
 
   GS_HOME="$DEFAULT_GS_HOME"
+
+  if [ "${GSCI_DEVKIT_BRANCH}x" = "x" ] ; then 
+    DEVKIT_BRANCH="${DEFAULT_DEVKIT_BRANCH}"
+  fi
 
   while :
   do
