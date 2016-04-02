@@ -133,13 +133,13 @@ gemstone::prepare_stone() {
     timer_start
 
     if [ "${GS_TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
-      $GS_HOME/bin/createStone "${GS_STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
+      $GS_HOME/bin/createStone "${GS_STONE_NAME}" "${gemstone_version}" "${config_project_home}/${config_ston}" || print_error_and_exit "createStone failed."
     else
       if ! is_file "$gemstone_cached_extent_file"; then
-        $GS_HOME/bin/createStone "${GS_STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
+        $GS_HOME/bin/createStone "${GS_STONE_NAME}" "${gemstone_version}" "${config_project_home}/${config_ston}" || print_error_and_exit "createStone failed."
         cp "$GS_HOME/server/stones/${GS_STONE_NAME}/snapshots/extent0.tode.dbf" "$gemstone_cached_extent_file"
       else
-        $GS_HOME/bin/createStone -t "$gemstone_cached_extent_file" "${GS_STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
+        $GS_HOME/bin/createStone -t "$gemstone_cached_extent_file" "${GS_STONE_NAME}" "${gemstone_version}" "${config_project_home}/${config_ston}" || print_error_and_exit "createStone failed."
       fi
   
       if ! is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
@@ -173,7 +173,9 @@ gemstone::load_and_test_project() {
         baseline: 'SmalltalkCI';
         repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
         load: 'Core'.
-      (Smalltalk at: #SmalltalkCI) runCIFor: '${config_project_home}/${config_ston}'.
+      (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_project_home}/${config_ston}'.
+      System commitTransaction.
+      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_project_home}/${config_ston}'.
       System commitTransaction.
 EOF
 
