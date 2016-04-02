@@ -19,8 +19,10 @@ gemstone::parse_options() {
 
   GS_HOME="$DEFAULT_GS_HOME"
 
-  if [ "${GSCI_DEVKIT_BRANCH}x" = "x" ] ; then 
+  if [ "${GSCI_DEVKIT_BRANCH-}x" = "x" ] ; then
     DEVKIT_BRANCH="${DEFAULT_DEVKIT_BRANCH}"
+  else
+    DEVKIT_BRANCH="${GSCI_DEVKIT_BRANCH}"
   fi
 
   while :
