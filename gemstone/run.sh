@@ -18,7 +18,7 @@ gemstone::parse_options() {
 
   GS_HOME="$DEFAULT_GS_HOME"
 
-  while
+  while :
   do
     case "${1:-}" in
       --gs-HOME=*)
@@ -50,7 +50,7 @@ gemstone::parse_options() {
 ################################################################################
 gemstone::prepare_gsdevkit_home() {
 
-  if [ "USE_DEFAULT_HOME" = "true" ] ; then
+  if [ "$USE_DEFAULT_HOME" = "true" ] ; then
     travis_fold start clone_gsdevkit "Cloning GsDevKit..."
       timer_start
 
@@ -93,13 +93,15 @@ gemstone::prepare_stone() {
 
   local gemstone_cached_extent_file="${SMALLTALK_CI_CACHE}/gemstone/extents/${gemstone_version}_extent0.tode.dbf"
 
-  travis_fold start install_server "Installing server..."
-    timer_start
+  if [ "$USE_DEFAULT_HOME" = "true" ] ; then
+    travis_fold start install_server "Installing server..."
+      timer_start
 
-    $GS_HOME/bin/installServer || print_error_and_exit "installServer failed."
+      $GS_HOME/bin/installServer || print_error_and_exit "installServer failed."
 
-    timer_finish
-  travis_fold end install_server
+      timer_finish
+    travis_fold end install_server
+  fi
 
   if [ "${TRAVIS_CACHE_ENABLED:-}" = "false" ] ||
        [ "$GS_HOME" != "$DEFAULT_GS_HOME" ] ; then
@@ -206,6 +208,10 @@ EOF
     timer_finish
 
   travis_fold end load_server_project
+
+  if [ $status -ne 0 ] ; then
+    return "${status}"
+  fi
 
     # this is where the client load is located ... need to do the print_reults() of stone --- probably should be in separate fold
 
