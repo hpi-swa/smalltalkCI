@@ -218,7 +218,7 @@ EOF
   travis_fold end load_server_project
 
   if [ $status -ne 0 ] ; then
-    return "${status}"
+    print_error_and_exit "Failed to load project."
   fi
 
     # this is where the client load is located ... need to do the print_reults() of stone --- probably should be in separate fold
