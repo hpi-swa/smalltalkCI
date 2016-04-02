@@ -17,6 +17,10 @@ gemstone::parse_options() {
   while :
   do
     case "${1:-}" in
+      --gs-DEVKIT_BRANCH=*)
+        GS_DEVKIT_BRANCH="${1#*=}"
+        shift
+        ;;
       --gs-*)
         print_error_and_exit "Unknown GemStone-specific option: $1"
         ;;
@@ -165,7 +169,7 @@ gemstone::prepare_stone() {
 gemstone::load_and_test_project() {
   local status=0
 
-  travis_fold start load_and_test "Loading and testing project..."
+  travis_fold start load_server_project "Loading server project..."
     timer_start
 
     $GS_HOME/bin/devKitCommandLine serverDoIt "${GS_STONE_NAME}" << EOF || status=$?
@@ -173,15 +177,35 @@ gemstone::load_and_test_project() {
         baseline: 'SmalltalkCI';
         repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
         load: 'Core'.
-      (Smalltalk at: #SmalltalkCI) runCIFor: '${config_project_home}/${config_ston}'.
+      System commitTransaction.
+      (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_project_home}/${config_ston}'.
       System commitTransaction.
 EOF
 
-    # this is where the client test is located ... neet to do the print_reults() of stone 
-    $GS_HOME/bin/stopStone -b "${GS_STONE_NAME}" || print_error_and_exit "stopStone failed."
+    timer_finish
+
+  travis_fold end load_server_project
+
+    # this is where the client load is located ... need to do the print_reults() of stone --- probably should be in separate fold
+
+  travis_fold start test_server_project "Testing server project..."
+    timer_start
+
+    $GS_HOME/bin/devKitCommandLine serverDoIt "${GS_STONE_NAME}" << EOF || status=$?
+      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_project_home}/${config_ston}'.
+      System commitTransaction.
+EOF
 
     timer_finish
-  travis_fold end load_and_test
+  travis_fold end test_server_project
+
+    # this is where the client test is located ... need to do the print_reults() of stone  --- probably should be in separate fold
+
+  travis_fold start stop_stone
+
+    $GS_HOME/bin/stopStone -b "${GS_STONE_NAME}" || print_error_and_exit "stopStone failed."
+
+  travis_fold end stop_stone
 
   return "${status}"
 }
