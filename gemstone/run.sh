@@ -3,10 +3,11 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################ 
 
-export GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
-local GS_STONE_NAME="travis"
-local GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
-local GS_DEVKIT_BRANCH="master"
+local DEFAULT_GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
+local USE_DEFAULT_HOME="true"
+local STONE_NAME="travis"
+local DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
+local DEVKIT_BRANCH="master"
 local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 
@@ -14,11 +15,19 @@ local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 # Handle GemStone-specific options.
 ################################################################################
 gemstone::parse_options() {
-  while :
+
+  GS_HOME="$DEFAULT_GS_HOME"
+
+  while
   do
     case "${1:-}" in
+      --gs-HOME=*)
+        GS_HOME="${1#*=}"
+        shift
+        USE_DEFAULT_HOME="false"
+        ;;
       --gs-DEVKIT_BRANCH=*)
-        GS_DEVKIT_BRANCH="${1#*=}"
+        DEVKIT_BRANCH="${1#*=}"
         shift
         ;;
       --gs-*)
@@ -32,33 +41,44 @@ gemstone::parse_options() {
         ;;
     esac
   done
+
+  export GS_HOME
 }
 
 ################################################################################
 # Clone the GsDevKit_home project.
 ################################################################################
 gemstone::prepare_gsdevkit_home() {
-  travis_fold start clone_gsdevkit "Cloning GsDevKit..."
-    timer_start
 
-    pushd "${SMALLTALK_CI_BUILD}" || exit 1
-      git clone "${GS_DEVKIT_DOWNLOAD}" || exit 1
-      cd "${GS_HOME}" || exit 1
-      git checkout "${GS_DEVKIT_BRANCH}" || exit 1
+  if [ "USE_DEFAULT_HOME" = "true" ] ; then
+    travis_fold start clone_gsdevkit "Cloning GsDevKit..."
+      timer_start
 
-      # pre-clone /sys/local, so that travis can skip backups
-      $GS_HOME/bin/private/clone_sys_local || exit 1
-      # arrange to skip backups
-      cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts || exit 1
+      pushd "${SMALLTALK_CI_BUILD}" || exit 1
+        git clone "${DEVKIT_DOWNLOAD}" || exit 1
+        cd "${GS_HOME}" || exit 1
+        git checkout "${DEVKIT_BRANCH}" || exit 1
 
-      # Operating system setup already performed
-      touch $GS_HOME/bin/.gsdevkitSysSetup || exit 1
-    popd || exit 1
+        # pre-clone /sys/local, so that travis can skip backups
+        $GS_HOME/bin/private/clone_sys_local || exit 1
+        # arrange to skip backups
+        cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts || exit 1
+
+        # Operating system setup already performed
+        touch $GS_HOME/bin/.gsdevkitSysSetup || exit 1
+      popd || exit 1
+
+      timer_finish
+    travis_fold end clone_gsdevkit
 
     export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
 
-    timer_finish
-  travis_fold end clone_gsdevkit
+  else
+
+    print_info "Using existing GsDevKit_home clone: \$GS_HOME=$GS_HOME"
+
+  fi
+
 }
 
 ################################################################################
@@ -81,7 +101,8 @@ gemstone::prepare_stone() {
     timer_finish
   travis_fold end install_server
 
-  if [ "${GS_TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
+  if [ "${TRAVIS_CACHE_ENABLED:-}" = "false" ] ||
+       [ "$GS_HOME" != "$DEFAULT_GS_HOME" ] ; then
     print_info "Travis dependency cache not being used"
   else
     travis_fold start prepare_cache "Preparing Travis caches..."
@@ -136,14 +157,14 @@ gemstone::prepare_stone() {
   travis_fold start create_stone "Creating stone..."
     timer_start
 
-    if [ "${GS_TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
-      $GS_HOME/bin/createStone "${GS_STONE_NAME}" "${gemstone_version}" "${config_project_home}/${config_ston}" || print_error_and_exit "createStone failed."
+    if [ "${TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
+      $GS_HOME/bin/createStone "${STONE_NAME}" "${gemstone_version}" "${config_project_home}/${config_ston}" || print_error_and_exit "createStone failed."
     else
       if ! is_file "$gemstone_cached_extent_file"; then
-        $GS_HOME/bin/createStone "${GS_STONE_NAME}" "${gemstone_version}" "${config_project_home}/${config_ston}" || print_error_and_exit "createStone failed."
-        cp "$GS_HOME/server/stones/${GS_STONE_NAME}/snapshots/extent0.tode.dbf" "$gemstone_cached_extent_file"
+        $GS_HOME/bin/createStone "${STONE_NAME}" "${gemstone_version}" "${config_project_home}/${config_ston}" || print_error_and_exit "createStone failed."
+        cp "$GS_HOME/server/stones/${STONE_NAME}/snapshots/extent0.tode.dbf" "$gemstone_cached_extent_file"
       else
-        $GS_HOME/bin/createStone -t "$gemstone_cached_extent_file" "${GS_STONE_NAME}" "${gemstone_version}" "${config_project_home}/${config_ston}" || print_error_and_exit "createStone failed."
+        $GS_HOME/bin/createStone -t "$gemstone_cached_extent_file" "${STONE_NAME}" "${gemstone_version}" "${config_project_home}/${config_ston}" || print_error_and_exit "createStone failed."
       fi
   
       if ! is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
@@ -172,7 +193,7 @@ gemstone::load_and_test_project() {
   travis_fold start load_server_project "Loading server project..."
     timer_start
 
-    $GS_HOME/bin/devKitCommandLine serverDoIt "${GS_STONE_NAME}" << EOF || status=$?
+    $GS_HOME/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
       Metacello new
         baseline: 'SmalltalkCI';
         repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
@@ -191,7 +212,7 @@ EOF
   travis_fold start test_server_project "Testing server project..."
     timer_start
 
-    $GS_HOME/bin/devKitCommandLine serverDoIt "${GS_STONE_NAME}" << EOF || status=$?
+    $GS_HOME/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
       (Smalltalk at: #SmalltalkCI) testCIFor: '${config_project_home}/${config_ston}'.
       System commitTransaction.
 EOF
@@ -203,7 +224,7 @@ EOF
 
   travis_fold start stop_stone
 
-    $GS_HOME/bin/stopStone -b "${GS_STONE_NAME}" || print_error_and_exit "stopStone failed."
+    $GS_HOME/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
 
   travis_fold end stop_stone
 
@@ -227,17 +248,17 @@ run_build() {
       ;;
   esac
 
-  # To bypass cached behavior for local build, export GS_TRAVIS_CACHE_ENABLED
+  # To bypass cached behavior for local build, export TRAVIS_CACHE_ENABLED
   # before calling run.sh
-  if is_empty "${GS_TRAVIS_CACHE_ENABLED:-}"; then
-    GS_TRAVIS_CACHE_ENABLED="true"
+  if is_empty "${TRAVIS_CACHE_ENABLED:-}"; then
+    TRAVIS_CACHE_ENABLED="true"
     if is_empty "${CASHER_DIR:-}"; then
       if is_travis_build; then
-        GS_TRAVIS_CACHE_ENABLED="false"
+        TRAVIS_CACHE_ENABLED="false"
       fi
     fi
   fi
-  export GS_TRAVIS_CACHE_ENABLED
+  export TRAVIS_CACHE_ENABLED
 
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${config_smalltalk}"

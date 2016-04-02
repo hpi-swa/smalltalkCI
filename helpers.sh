@@ -52,6 +52,9 @@ print_help() {
                         Name of GsDevKit_home branch. Default is 'master'. Be aware
                         that using a non-master branch may result in unexpected
                         results.
+    --gs-HOME=<GS_HOME-path>
+                        Path to an existing GsDevKit_home clone to be used
+                        instead of creating a fresh clone.
 
   EXAMPLE:
     $(basename -- $0) -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
