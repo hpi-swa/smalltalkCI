@@ -110,6 +110,18 @@ gemstone::prepare_stone() {
     travis_fold end install_server
   fi
 
+  if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone"; then
+    print_info "Creating GemStone extent cache..." 
+    mkdir "${SMALLTALK_CI_CACHE}/gemstone"
+    if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/extents"; then
+      mkdir "${SMALLTALK_CI_CACHE}/gemstone/extents"
+    fi
+    if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/pharo"; then
+      mkdir "${SMALLTALK_CI_CACHE}/gemstone/pharo"
+    fi
+  fi
+  
+
   if [ "${TRAVIS_CACHE_ENABLED:-}" = "false" ] ||
        [ "$GS_HOME" != "$DEFAULT_GS_HOME" ] ; then
     print_info "Travis dependency cache not being used"
@@ -133,17 +145,6 @@ gemstone::prepare_stone() {
           mv "Pharo.image" "${PHARO_IMAGE_FILE}"
           mv "Pharo.changes" "${PHARO_CHANGES_FILE}"
         popd > /dev/null
-      fi
-  
-      if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone"; then
-        print_info "Creating GemStone extent cache..." 
-        mkdir "${SMALLTALK_CI_CACHE}/gemstone"
-        if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/extents"; then
-          mkdir "${SMALLTALK_CI_CACHE}/gemstone/extents"
-        fi
-        if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/pharo"; then
-          mkdir "${SMALLTALK_CI_CACHE}/gemstone/pharo"
-        fi
       fi
   
       if is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}"; then
@@ -171,13 +172,13 @@ gemstone::prepare_stone() {
     else
       if ! is_file "$gemstone_cached_extent_file"; then
         $GS_HOME/bin/createStone "${STONE_NAME}" "${gemstone_version}" "${config_project_home}/${config_ston}" || print_error_and_exit "createStone failed."
-        cp "$GS_HOME/server/stones/${STONE_NAME}/snapshots/extent0.tode.dbf" "$gemstone_cached_extent_file"
+        cp "$GS_HOME/server/stones/${STONE_NAME}/snapshots/extent0.tode.dbf" "$gemstone_cached_extent_file" || print_error_and_exit "copy extent0.tode.dbf to travis cache failed."
       else
         $GS_HOME/bin/createStone -t "$gemstone_cached_extent_file" "${STONE_NAME}" "${gemstone_version}" "${config_project_home}/${config_ston}" || print_error_and_exit "createStone failed."
       fi
   
       if ! is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
-        cp $GS_HOME/shared/pharo/gsDevKitCommandLine.* "${SMALLTALK_CI_CACHE}/gemstone/pharo/"
+        cp $GS_HOME/shared/pharo/gsDevKitCommandLine.* "${SMALLTALK_CI_CACHE}/gemstone/pharo/" || print_error_and_exit "copy gsDevKitCommandLine.image to travis cache failed."
       fi
     fi
 
