@@ -173,12 +173,11 @@ gemstone::load_and_test_project() {
         baseline: 'SmalltalkCI';
         repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
         load: 'Core'.
-      (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_project_home}/${config_ston}'.
-      System commitTransaction.
-      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_project_home}/${config_ston}'.
+      (Smalltalk at: #SmalltalkCI) runCIFor: '${config_project_home}/${config_ston}'.
       System commitTransaction.
 EOF
 
+    # this is where the client test is located ... neet to do the print_reults() of stone 
     $GS_HOME/bin/stopStone -b "${GS_STONE_NAME}" || print_error_and_exit "stopStone failed."
 
     timer_finish
