@@ -169,17 +169,17 @@ gemstone::prepare_stone() {
 
     if [ -e "$GS_HOME/bin/.smalltalkCI_create_arg_supported" ] ; then
       # intentionally left unbound 
-      local config_stone_create_arg="${config_project_home}/${config_ston}"
+      config_stone_create_arg="${config_project_home}/${config_ston}"
     fi
 
     if [ "${TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
-      $GS_HOME/bin/createStone "${STONE_NAME}" "${gemstone_version}" "${config_stone_create_arg}" || print_error_and_exit "createStone failed."
+      $GS_HOME/bin/createStone "${STONE_NAME}" "${gemstone_version}" $config_stone_create_arg || print_error_and_exit "createStone failed."
     else
       if ! is_file "$gemstone_cached_extent_file"; then
-        $GS_HOME/bin/createStone "${STONE_NAME}" "${gemstone_version}" "${config_stone_create_arg}" || print_error_and_exit "createStone failed."
-        cp "$GS_HOME/server/stones/${STONE_NAME}/snapshots/extent0.tode.dbf" "$gemstone_cached_extent_file" || print_error_and_exit "copy extent0.tode.dbf to travis cache failed."
+        $GS_HOME/bin/createStone "${STONE_NAME}" "${gemstone_version}" $config_stone_create_arg || print_error_and_exit "createStone failed."
+        cp "$GS_HOME/server/stones/${STONE_NAME}/snapshots/extent0.tode.dbf" $gemstone_cached_extent_file || print_error_and_exit "copy extent0.tode.dbf to travis cache failed."
       else
-        $GS_HOME/bin/createStone -t "$gemstone_cached_extent_file" "${STONE_NAME}" "${gemstone_version}" "${config_stone_create_arg}" || print_error_and_exit "createStone failed."
+        $GS_HOME/bin/createStone -t "$gemstone_cached_extent_file" "${STONE_NAME}" "${gemstone_version}" $config_stone_create_arg || print_error_and_exit "createStone failed."
       fi
   
       if ! is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
