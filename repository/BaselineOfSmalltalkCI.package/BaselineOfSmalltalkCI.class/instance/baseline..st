@@ -31,7 +31,7 @@ baseline: spec
         with: [ 
           spec
             version: #'stable';
-            loads: 'Core';
+            loads: #('Core');
             repository:
                 'http://smalltalkhub.com/mc/SvenVanCaekenberghe/STON/main' ].
       spec
