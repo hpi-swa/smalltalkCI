@@ -168,7 +168,7 @@ gemstone::prepare_stone() {
     timer_start
 
     if [ -e "$GS_HOME/bin/.smalltalkCI_create_arg_supported" ] ; then
-      config_stone_create_arg="${config_project_home}/${config_ston}"
+      config_stone_create_arg="-z ${config_project_home}/${config_ston}"
     fi
 
     if [ "${TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
