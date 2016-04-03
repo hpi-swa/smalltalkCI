@@ -167,9 +167,9 @@ gemstone::prepare_stone() {
   travis_fold start create_stone "Creating stone..."
     timer_start
 
-    local config_stone_create_arg=""
     if [ -e "$GS_HOME/bin/.smalltalkCI_create_arg_supported" ] ; then
-      config_stone_create_arg="${config_project_home}/${config_ston}"
+      # intentionally left unbound 
+      local config_stone_create_arg="${config_project_home}/${config_ston}"
     fi
 
     if [ "${TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
