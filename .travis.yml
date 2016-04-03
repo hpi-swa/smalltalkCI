@@ -37,6 +37,9 @@ matrix:
     - smalltalk: GemStone-3.3.0
       os: linux
       env: GSCI_DEVKIT_BRANCH=dev # only use for development
+    - smalltalk: GemStone-3.3.0
+      os: linux
+      env: GSCI_DEVKIT_BRANCH=master # uncover any issues using new SmalltalkCI with old GsDevKit_home
 #      cache:
 #        directories:
 #          - $SMALLTALK_CI_CACHE
