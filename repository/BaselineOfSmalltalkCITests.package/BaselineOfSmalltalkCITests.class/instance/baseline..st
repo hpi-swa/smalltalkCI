@@ -18,7 +18,7 @@ baseline: spec
         group: 'AllCases' with: #('SmalltalkCI-AllCases-Tests');
         yourself ].
   spec
-    for: #'squeakCommon'
+    for: #'squeak'
     do: [ 
       spec package: 'STON-Tests'.
       spec group: 'default' with: #('STON-Tests') ].
