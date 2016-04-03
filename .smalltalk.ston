@@ -8,8 +8,7 @@ SmalltalkCISpec {
   ],
   #testing : {
     #exclude : {
-      #classes : [ #SCIExcludedTests ],
-      #categories : [ #STON-Tests ]
+      #classes : [ #SCIExcludedTests ]
     }
   }
 }
