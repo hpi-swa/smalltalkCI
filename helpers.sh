@@ -47,6 +47,19 @@ print_help() {
     --uninstall         Remove symlink to any smalltalkCI instance.
     -v | --verbose      Enable 'set -x'.
 
+  GEMSTONE OPTIONS:
+    --gs-DEVKIT_BRANCH=<branch-name>
+                        Name of GsDevKit_home branch. Default is 'master'. Be aware
+                        that using a non-master branch may result in unexpected
+                        results. Overrides value of GSCI_DEVKIT_BRANCH if defined.
+
+                        Environment variable GSCI_DEVKIT_BRANCH may be used to 
+                        specify <branch-name> in a .travis.yml
+
+    --gs-HOME=<GS_HOME-path>
+                        Path to an existing GsDevKit_home clone to be used
+                        instead of creating a fresh clone.
+
   EXAMPLE:
     $(basename -- $0) -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
 

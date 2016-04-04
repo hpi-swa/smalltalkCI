@@ -1,0 +1,4 @@
+accessing
+gemConfPath
+
+   ^gemConfPath
