@@ -4,7 +4,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-readonly DEFAULT_STON_CONFIG="smalltalk.ston"
+readonly DEFAULT_STON_CONFIG="${TRAVIS_SMALLTALK_CONFIG}"
 readonly INSTALL_TARGET_OSX="/usr/local/bin"
 
 ################################################################################
