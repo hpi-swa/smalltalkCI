@@ -77,8 +77,6 @@ gemstone::prepare_gsdevkit_home() {
 	# Make sure the GsDevKit_home is using $SMALLTALK_CI_HOME in $GS_HOME/shared/repos
 	ln -s ${SMALLTALK_CI_HOME} $GS_HOME/shared/repos/smalltalkCI || print_error_and_exit "ln -s failed."
 
-	ls -altr  $GS_HOME/shared/repos
-
       popd || print_error_and_exit "popd failed."
 
       timer_finish
