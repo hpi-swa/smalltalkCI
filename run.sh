@@ -47,7 +47,8 @@ initialize() {
 # Print notice on interrupt.
 ################################################################################
 interrupted() {
-  print_notice "smalltalkCI has been interrupted. Exiting..."
+  print_notice $'\nsmalltalkCI has been interrupted. Exiting...'
+  exit 1
 }
 
 ################################################################################
