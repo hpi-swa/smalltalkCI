@@ -27,7 +27,7 @@ initialize() {
           base_path="$(readlink "${base_path}")" || true
           ;;
         *)
-          echo "Unsupported platform '${os_name}'." 1>&2
+          echo "Unsupported platform '$(uname -s)'." 1>&2
           exit 1
           ;;
       esac
