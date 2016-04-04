@@ -89,15 +89,14 @@ determine_project() {
 # Allow STON config filename to start with a dot.
 # Locals:
 #   config_project_home
-# Globals:
-#   DEFAULT_STON_CONFIG
+#   config_ston
 ################################################################################
 locate_ston_config() {
-  if ! is_file "${config_project_home}/${DEFAULT_STON_CONFIG}"; then
-    if is_file "${config_project_home}/.${DEFAULT_STON_CONFIG}"; then
-      config_ston=".${DEFAULT_STON_CONFIG}"
+  if ! is_file "${config_project_home}/${config_ston}"; then
+    if is_file "${config_project_home}/.${config_ston}"; then
+      config_ston=".${config_ston}"
     else
-      print_error_and_exit "No STON file named '${DEFAULT_STON_CONFIG}'' found
+      print_error_and_exit "No STON file named '${config_ston}' found
                             in ${config_project_home}."
     fi
   fi
@@ -379,7 +378,7 @@ run() {
 ################################################################################
 main() {
   local config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-}"
-  local config_ston="${DEFAULT_STON_CONFIG}"
+  local config_ston="${TRAVIS_SMALLTALK_CONFIG:-$DEFAULT_STON_CONFIG}"
   local config_project_home
   local config_builder_ci_fallback="false"
   local config_clean="false"
