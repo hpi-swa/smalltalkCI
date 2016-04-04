@@ -15,9 +15,7 @@ initialize() {
 
   trap interrupted INT
 
-  if [[ -n "${SMALLTALK_CI_HOME:-}" ]]; then
-    readonly SCRIPT_PATH="${SMALLTALK_CI_HOME}"
-  else
+  if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
     # Resolve symlink if necessary and fail if OS is not supported
       case "$(uname -s)" in
         "Linux")
@@ -32,16 +30,17 @@ initialize() {
           ;;
       esac
 
-      readonly SCRIPT_PATH="$(cd "$(dirname "${base_path}")" && pwd)"
+      readonly SMALLTALK_CI_HOME="$(cd "$(dirname "${base_path}")" && pwd)"
+      source "${SMALLTALK_CI_HOME}/env_vars"
   fi
 
-  if [[ ! -f "${SCRIPT_PATH}/run.sh" ]]; then
+  if [[ ! -f "${SMALLTALK_CI_HOME}/run.sh" ]]; then
     echo "smalltalkCI could not be initialized." 1>&2
     exit 1
   fi
 
   # Load helpers
-  source "${SCRIPT_PATH}/helpers.sh"
+  source "${SMALLTALK_CI_HOME}/helpers.sh"
 }
 
 ################################################################################
@@ -122,18 +121,6 @@ validate_configuration() {
   elif ! is_dir "${config_project_home}"; then
     print_error_and_exit "Project home at '${config_project_home}' does not
                           exist."
-  fi
-}
-
-################################################################################
-# Make sure global path variables are set for local builds.
-# Globals:
-#   SMALLTALK_CI_HOME
-################################################################################
-check_and_set_paths() {
-  if is_empty "${SMALLTALK_CI_HOME:-}" && ! is_travis_build; then
-    export SMALLTALK_CI_HOME="${SCRIPT_PATH}"
-    source "${SMALLTALK_CI_HOME}/env_vars"
   fi
 }
 
@@ -404,7 +391,6 @@ main() {
   parse_options "$@"
   [[ "${config_verbose}" = "true" ]] && set -o xtrace
   determine_project "${!#}"  # Use last argument for custom STON
-  check_and_set_paths
   check_clean_up
   validate_configuration
 
