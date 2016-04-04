@@ -73,6 +73,10 @@ gemstone::prepare_gsdevkit_home() {
 
         # Operating system setup already performed
         touch $GS_HOME/bin/.gsdevkitSysSetup || exit 1
+
+	# Make sure the GsDevKit_home is using $SMALLTALK_CI_HOME in $GS_HOME/shared/repos
+	ln -s ${SMALLTALK_CI_HOME} $GS_HOME/shared/repos || exit 1
+
       popd || exit 1
 
       timer_finish
