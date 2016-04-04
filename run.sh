@@ -15,21 +15,25 @@ initialize() {
 
   trap interrupted INT
 
-  # Resolve symlink if necessary and fail if OS is not supported
-  case "$(uname -s)" in
-    "Linux")
-      base_path="$(readlink -f "${base_path}")" || true
-      ;;
-    "Darwin")
-      base_path="$(readlink "${base_path}")" || true
-      ;;
-    *)
-      echo "Unsupported platform '${os_name}'." 1>&2
-      exit 1
-      ;;
-  esac
+  if [[ -n "${SMALLTALK_CI_HOME:-}" ]]; then
+    readonly SCRIPT_PATH="${SMALLTALK_CI_HOME}"
+  else
+    # Resolve symlink if necessary and fail if OS is not supported
+      case "$(uname -s)" in
+        "Linux")
+          base_path="$(readlink -f "${base_path}")" || true
+          ;;
+        "Darwin")
+          base_path="$(readlink "${base_path}")" || true
+          ;;
+        *)
+          echo "Unsupported platform '${os_name}'." 1>&2
+          exit 1
+          ;;
+      esac
 
-  readonly SCRIPT_PATH="$(cd "$(dirname "${base_path}")" && pwd)"
+      readonly SCRIPT_PATH="$(cd "$(dirname "${base_path}")" && pwd)"
+  fi
 
   if [[ ! -f "${SCRIPT_PATH}/run.sh" ]]; then
     echo "smalltalkCI could not be initialized." 1>&2
