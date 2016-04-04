@@ -175,12 +175,17 @@ pharo::prepare_image() {
 pharo::load_and_test_project() {
   local project_home=$1
   local project_ston=$2
+  local vm_flags="--save"
   local status=0
 
   travis_fold start load_and_test "Loading and testing project..."
     timer_start
 
-    "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save "
+    if ! is_travis_build && [[ "${config_headless}" != "true" ]]; then
+      vm_flags="${vm_flags} --no-quit"
+    fi
+
+    "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval ${vm_flags} "
       [ Metacello new
           baseline: 'SmalltalkCI';
           repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
