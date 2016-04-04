@@ -22,7 +22,7 @@
 		"classesToTest" : "dkh 02/05/2016 17:06",
 		"classesToTestFrom:" : "travisCI 1/27/2016 16:27",
 		"clientConfigurations" : "dkh 04/02/2016 12:19",
-		"compatibleConfigurations" : "dkh 04/03/2016 07:03",
+		"compatibleConfigurationsFor:" : "dkh 04/04/2016 06:25",
 		"compatibleSpecs" : "EatebanLorenzano 1/27/2016 13:53",
 		"explicitTestKeys" : "dkh 02/05/2016 17:05",
 		"finishUpAfterCI" : "fn 1/31/2016 19:03",
