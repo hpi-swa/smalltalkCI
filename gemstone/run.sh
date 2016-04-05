@@ -7,8 +7,10 @@ local DEFAULT_GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
 local DEFAULT_DEVKIT_BRANCH="master"
 local USE_DEFAULT_HOME="true"
 local STONE_NAME="travis"
+local CLIENT_NAME="travisClient"
 local DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
 local DEVKIT_BRANCH
+local DEVKIT_CLIENT
 local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 
@@ -25,6 +27,10 @@ gemstone::parse_options() {
     DEVKIT_BRANCH="${GSCI_DEVKIT_BRANCH}"
   fi
 
+  if [ "${GSCI_CLIENT-}x" != "x" ] ; then
+    DEVKIT_CLIENT="${GSCI_CLIENT}"
+  fi
+
   while :
   do
     case "${1:-}" in
@@ -37,6 +43,10 @@ gemstone::parse_options() {
         DEVKIT_BRANCH="${1#*=}"
         shift
         ;;
+      --gs-CLIENT=*)
+        DEVKIT_CLIENT="${1#*=}"
+	shift
+	;;
       --gs-*)
         print_error_and_exit "Unknown GemStone-specific option: $1"
         ;;
@@ -196,6 +206,43 @@ gemstone::prepare_stone() {
 }
 
 ################################################################################
+# Optionally create a GemStone client.
+# Arguments:
+#   config_smalltalk
+################################################################################
+gemstone::prepare_optional_client() {
+  local client_version
+
+  if [ "${DEVKIT_CLIENT:-}x" = "x" ] ; then
+    return
+  fi
+
+  travis_fold start create_client "Creating client..."
+    timer_start
+
+    case "${DEVKIT_CLIENT}" in
+      "Pharo-5.0")
+        client_version="Pharo5.0"
+	;;
+      "Pharo-4.0")
+        client_version="Pharo4.0"
+	;;
+      "Pharo-3.0")
+        client_version="Pharo3.0"
+	;;
+      *)
+        print_error_and_exit "Unsupported client version '${DEVKIT_CLIENT}'."
+	;;
+    esac
+
+    $GS_HOME/bin/createClient -t pharo ${CLIENT_NAME} -v ${client_version} -z "${config_project_home}/${config_ston}" || print_error_and_exit "createClient failed."
+
+    timer_finish
+  travis_fold end create_client
+
+}
+
+################################################################################
 # Load project into GemStone stone and run tests.
 # Locals:
 #   config_project_home
@@ -284,6 +331,7 @@ run_build() {
 
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${config_smalltalk}"
+  gemstone::prepare_optional_client "${config_smalltalk}"
   gemstone::load_and_test_project || exit_status=$?
 
   return "${exit_status}"

@@ -52,13 +52,24 @@ print_help() {
                         Name of GsDevKit_home branch, SHA or tag. Default is 'master'.
 
                         Environment variable GSCI_DEVKIT_BRANCH may be used to 
-                        specify <branch-SHA-tag> in a .travis.yml.
+                        specify <branch-SHA-tag>. Command line option overrides 
+			value of environment variable.
 
     --gs-HOME=<GS_HOME-path>
                         Path to an existing GsDevKit_home clone to be used
                         instead of creating a fresh clone.
 
 			--gs-DEVKIT_BRANCH option is ignored.
+
+    --gs-CLIENT=<smalltalk-platform>
+                        Name of Smalltalk client version to use as a GemStone client.
+
+                        Environment variable GSCI_CLIENT may be used to 
+                        specify <smalltalk-platform>. Command line option overrides 
+			value of environment variable.
+
+			If a client is specified, tests are run for both the client 
+			and server based using the project .smalltalk.ston file.
 
   EXAMPLE:
     $(basename -- $0) -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
