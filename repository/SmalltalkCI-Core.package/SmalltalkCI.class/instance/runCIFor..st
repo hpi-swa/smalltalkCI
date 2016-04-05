@@ -1,4 +1,5 @@
 executing
 runCIFor: aFilename
-  self readSTONSpec: aFilename.
-  ^ self runCI
+	self reportImage.
+	self readSTONSpec: aFilename.
+	^ self runCI
