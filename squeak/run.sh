@@ -194,7 +194,7 @@ squeak::prepare_vm() {
 #   Status code of build
 ################################################################################
 squeak::load_and_test_project() {
-  local cog_vm_flags=()
+  local cog_vm_flags
   local status=0
 
   travis_fold start load_and_test "Loading and testing project..."
@@ -203,10 +203,10 @@ squeak::load_and_test_project() {
     if is_travis_build || [[ "${config_headless}" = "true" ]]; then
       case "$(uname -s)" in
         "Linux")
-          cog_vm_flags=(-nosound -nodisplay)
+          cog_vm_flags="-nosound -nodisplay"
           ;;
         "Darwin")
-          cog_vm_flags=(-headless)
+          cog_vm_flags="-headless"
           ;;
       esac
     fi
@@ -220,7 +220,7 @@ squeak::load_and_test_project() {
   SmalltalkCI runCIFor: '${config_project_home}/${config_ston}'
 EOL
 
-    "${SMALLTALK_CI_VM}" "${cog_vm_flags[@]}" "${SMALLTALK_CI_IMAGE}" \
+    "${SMALLTALK_CI_VM}" ${cog_vm_flags} "${SMALLTALK_CI_IMAGE}" \
         "${SMALLTALK_CI_BUILD}/run.st" || status=$?
 
     printf "\n" # Squeak exit msg is missing a linebreak
