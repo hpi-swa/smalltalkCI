@@ -106,6 +106,13 @@ gemstone::prepare_stone() {
 
       $GS_HOME/bin/installServer || print_error_and_exit "installServer failed."
 
+      # Temporary fix for https://github.com/hpi-swa/smalltalkCI/issues/68
+      case "$(uname -s)" in
+        "Darwin")
+          sudo sysctl -w kern.sysv.shmall=524288
+          ;;
+      esac
+
       timer_finish
     travis_fold end install_server
   fi
@@ -258,13 +265,6 @@ run_build() {
   local exit_status=0
 
   gemstone::parse_options "$@"
-
-  # Temporary fix for https://github.com/hpi-swa/smalltalkCI/issues/68
-  case "$(uname -s)" in
-    "Darwin")
-      sudo sysctl -w kern.sysv.shmall=524288
-      ;;
-  esac
 
   # To bypass cached behavior for local build, export TRAVIS_CACHE_ENABLED
   # before calling run.sh
