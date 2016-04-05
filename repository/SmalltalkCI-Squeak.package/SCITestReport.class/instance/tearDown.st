@@ -16,5 +16,5 @@ tearDown
   stream close.
 
   progressFile
-    nextPutAll: 'finished running suite: ';
+    nextPutAll: ' finished running suite: ';
     nextPutAll: suite name
