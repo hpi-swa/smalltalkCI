@@ -1,18 +1,6 @@
 language: smalltalk
 sudo: false
 
-smalltalk:
-  - Squeak-trunk
-  - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
-
-  - Pharo-alpha
-  - Pharo-stable
-  - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
-
 os:
   - linux
   - osx
@@ -28,11 +16,6 @@ script:
 
 matrix:
   include:
-    # Bash tests
-    - language: bash
-      smalltalk:
-      sudo: false
-      script: bash tests/all_tests.sh
     # GemStone Linux builds
     - smalltalk: GemStone-3.3.0
       os: linux

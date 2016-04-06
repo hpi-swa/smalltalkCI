@@ -5,8 +5,8 @@
 
 export GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
 local GS_STONE_NAME="travis"
-local GS_DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
-local GS_DEVKIT_BRANCH="master"
+local GS_DEVKIT_DOWNLOAD="https://github.com/fniephaus/GsDevKit_home.git"
+local GS_DEVKIT_BRANCH="patch-1"
 local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 
