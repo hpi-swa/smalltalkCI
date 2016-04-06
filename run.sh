@@ -15,9 +15,7 @@ initialize() {
 
   trap interrupted INT
 
-  if [[ -n "${SMALLTALK_CI_HOME:-}" ]]; then
-    readonly SCRIPT_PATH="${SMALLTALK_CI_HOME}"
-  else
+  if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
     # Resolve symlink if necessary and fail if OS is not supported
       case "$(uname -s)" in
         "Linux")
@@ -27,28 +25,30 @@ initialize() {
           base_path="$(readlink "${base_path}")" || true
           ;;
         *)
-          echo "Unsupported platform '${os_name}'." 1>&2
+          echo "Unsupported platform '$(uname -s)'." 1>&2
           exit 1
           ;;
       esac
 
-      readonly SCRIPT_PATH="$(cd "$(dirname "${base_path}")" && pwd)"
+      readonly SMALLTALK_CI_HOME="$(cd "$(dirname "${base_path}")" && pwd)"
+      source "${SMALLTALK_CI_HOME}/env_vars"
   fi
 
-  if [[ ! -f "${SCRIPT_PATH}/run.sh" ]]; then
+  if [[ ! -f "${SMALLTALK_CI_HOME}/run.sh" ]]; then
     echo "smalltalkCI could not be initialized." 1>&2
     exit 1
   fi
 
   # Load helpers
-  source "${SCRIPT_PATH}/helpers.sh"
+  source "${SMALLTALK_CI_HOME}/helpers.sh"
 }
 
 ################################################################################
 # Print notice on interrupt.
 ################################################################################
 interrupted() {
-  print_notice "smalltalkCI has been interrupted. Exiting..."
+  print_notice $'\nsmalltalkCI has been interrupted. Exiting...'
+  exit 1
 }
 
 ################################################################################
@@ -89,15 +89,14 @@ determine_project() {
 # Allow STON config filename to start with a dot.
 # Locals:
 #   config_project_home
-# Globals:
-#   DEFAULT_STON_CONFIG
+#   config_ston
 ################################################################################
 locate_ston_config() {
-  if ! is_file "${config_project_home}/${DEFAULT_STON_CONFIG}"; then
-    if is_file "${config_project_home}/.${DEFAULT_STON_CONFIG}"; then
-      config_ston=".${DEFAULT_STON_CONFIG}"
+  if ! is_file "${config_project_home}/${config_ston}"; then
+    if is_file "${config_project_home}/.${config_ston}"; then
+      config_ston=".${config_ston}"
     else
-      print_error_and_exit "No STON file named '${DEFAULT_STON_CONFIG}'' found
+      print_error_and_exit "No STON file named '${config_ston}' found
                             in ${config_project_home}."
     fi
   fi
@@ -122,18 +121,6 @@ validate_configuration() {
   elif ! is_dir "${config_project_home}"; then
     print_error_and_exit "Project home at '${config_project_home}' does not
                           exist."
-  fi
-}
-
-################################################################################
-# Make sure global path variables are set for local builds.
-# Globals:
-#   SMALLTALK_CI_HOME
-################################################################################
-check_and_set_paths() {
-  if is_empty "${SMALLTALK_CI_HOME:-}" && ! is_travis_build; then
-    export SMALLTALK_CI_HOME="${SCRIPT_PATH}"
-    source "${SMALLTALK_CI_HOME}/env_vars"
   fi
 }
 
@@ -391,7 +378,7 @@ run() {
 ################################################################################
 main() {
   local config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-}"
-  local config_ston="${DEFAULT_STON_CONFIG}"
+  local config_ston="${TRAVIS_SMALLTALK_CONFIG:-$DEFAULT_STON_CONFIG}"
   local config_project_home
   local config_builder_ci_fallback="false"
   local config_clean="false"
@@ -404,7 +391,6 @@ main() {
   parse_options "$@"
   [[ "${config_verbose}" = "true" ]] && set -o xtrace
   determine_project "${!#}"  # Use last argument for custom STON
-  check_and_set_paths
   check_clean_up
   validate_configuration
 
