@@ -242,7 +242,7 @@ gemstone::prepare_optional_client() {
 	;;
     esac
 
-    $GS_HOME/bin/createClient -t pharo ${CLIENT_NAME} -v ${client_version} -z "${config_project_home}/${config_ston}" || print_error_and_exit "createClient failed."
+    $GS_HOME/bin/createClient -t pharo ${CLIENT_NAME} -v ${client_version} -s "${STONE_NAME}" -z "${config_project_home}/${config_ston}" || print_error_and_exit "createClient failed."
 
     timer_finish
   travis_fold end create_client
