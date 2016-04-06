@@ -296,7 +296,15 @@ EOF
     timer_finish
   travis_fold end test_server_project
 
-    # this is where the client test is located ... need to do the print_reults() of stone  --- probably should be in separate fold
+  if [ "${DEVKIT_CLIENT:-}x" != "x" ] ; then
+    travis_fold start test_client_project "Testing client project..."
+      timer_start
+    
+      $GS_HOME/bin/startClient ${CLIENT_NAME} -t -s ${STONE_NAME} -z "${config_project_home}/${config_ston}"
+
+      timer_finish
+    travis_fold end test_client_project
+  fi
 
   travis_fold start stop_stone
 
