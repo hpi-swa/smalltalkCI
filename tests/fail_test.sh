@@ -12,7 +12,7 @@ fi
 case "${TRAVIS_SMALLTALK_VERSION}" in
   GemStone*)
 	if [[ "$(uname -s)" = "Darwin" ]]; then
-	  print_notice "Not running for GemStone on OS X."
+	  print_notice "Not running fail test for GemStone on OS X."
 	  exit 0
 	fi
     ;;
