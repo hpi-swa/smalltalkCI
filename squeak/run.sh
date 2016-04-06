@@ -211,7 +211,7 @@ squeak::load_and_test_project() {
       esac
     fi
 
-    cat >$SMALLTALK_CI_BUILD/run.st <<EOL
+    cat >"${SMALLTALK_CI_BUILD}/run.st" <<EOL
   [ Metacello new
     baseline: 'SmalltalkCI';
     repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
