@@ -1,3 +1,3 @@
 accessing
 defaultSessionName
-	^ DefaultSessionName ifNil: [ DefaultSessionName := 'Travis' ]
+	^ DefaultSessionName ifNil: [ DefaultSessionName := 'travis' ]
