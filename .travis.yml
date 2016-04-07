@@ -24,6 +24,7 @@ install:
   - if [[ -n "${SMALLTALK_CI_HOME}" ]]; then rm -rf $SMALLTALK_CI_HOME && ln -s "$(pwd)" $SMALLTALK_CI_HOME; fi
 
 script:
+  - bash printenv
   - $SMALLTALK_CI_HOME/run.sh --debug && $SMALLTALK_CI_HOME/tests/fail_test.sh
 
 matrix:
