@@ -23,13 +23,13 @@ tearDown
       self stream close.
       stream := nil.
       progressFile
+        cr;
         nextPutAll: self printString;
         cr;
         nextPutAll: 'finished running suite: ';
         nextPutAll: suite name ]
     ifFalse: [ 
       progressFile
-        cr;
         nextPutAll: '***********************************';
         cr;
         nextPutAll: ' failures=';
