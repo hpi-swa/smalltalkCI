@@ -115,7 +115,7 @@ def print_exception(name, title, body):
     travis_fold(name, 'end')
 
 
-def prettify_class_name(suite, class_name):
+def prettify_class_name(suite, class_name, index):
     global TESTS, ERRORS, FAILURES
 
     for testcase in suite.findall('testcase[@classname="%s"]' % class_name):
@@ -148,14 +148,14 @@ def prettify_class_name(suite, class_name):
 
             print_exception(ex_id, title, body)
             EXCEPTIONS.setdefault(class_name, []).append(
-                ('summary_%s' % ex_id, title, body))
+                ('summary%s_%s' % (index, ex_id), title, body))
         else:
             print_success(testcase.attrib['name'], testcase.attrib['time'])
         TESTS += 1
 
 
 def prettify(directory):
-    global TIME
+    global EXCEPTIONS, TIME
 
     for index, file_path in enumerate(glob.glob('%s/*.xml' % directory)):
         print ''
@@ -185,10 +185,11 @@ def prettify(directory):
             print ''
             if class_name != '':
                 print_bold(class_name)
-            prettify_class_name(suite, class_name)
+            prettify_class_name(suite, class_name, index + 1)
 
         print ''
         print_summary(index + 1)
+        EXCEPTIONS = {}  # Reset for next file
         print ''
     if build_failed():
         sys.exit(1)
