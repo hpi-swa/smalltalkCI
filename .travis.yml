@@ -3,13 +3,13 @@ sudo: false
 
 smalltalk:
 #  - Squeak-trunk
-  - Squeak-5.0
+#  - Squeak-5.0
 #  - Squeak-4.6
 #  - Squeak-4.5
 #
 #  - Pharo-alpha
 #  - Pharo-stable
-  - Pharo-5.0
+#  - Pharo-5.0
 #  - Pharo-4.0
 #  - Pharo-3.0
 
@@ -36,10 +36,13 @@ matrix:
     # GemStone Linux builds
     - smalltalk: GemStone-3.3.0
       os: linux
-      env: GSCI_DEVKIT_BRANCH=dev # only use for development
-    - smalltalk: GemStone-3.3.0
-      os: linux
-      env: GSCI_DEVKIT_BRANCH=master # uncover any issues using new SmalltalkCI with old GsDevKit_home
+      env: GSCI_CLIENT=Pharo-50 GSCI_DEVKIT_BRANCH=dev
+#    - smalltalk: GemStone-3.3.0
+#      os: linux
+#      env: GSCI_DEVKIT_BRANCH=dev # only use for development
+#     - smalltalk: GemStone-3.3.0
+#      os: linux
+#      env: GSCI_DEVKIT_BRANCH=master # uncover any issues using new SmalltalkCI with old GsDevKit_home
 #      cache:
 #        directories:
 #          - $SMALLTALK_CI_CACHE

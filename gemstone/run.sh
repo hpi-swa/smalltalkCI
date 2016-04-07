@@ -81,6 +81,9 @@ gemstone::prepare_gsdevkit_home() {
         # arrange to skip backups
         cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts || print_error_and_exit "cp failed."
 
+	cp $GS_HOME/tests/sys/local/gsdevkit_bin/* $GS_HOME/sys/local/gsdevkit_bin || print_error_and_exit "cp failed."
+
+
         # Operating system setup already performed
         touch $GS_HOME/bin/.gsdevkitSysSetup || print_error_and_exit "touch failed."
 
@@ -266,13 +269,14 @@ gemstone::load_and_test_project() {
     timer_start
 
     $GS_HOME/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
-      Metacello new
-        baseline: 'SmalltalkCI';
-        repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
-        load: 'Core'.
-      System commitTransaction.
-      (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_project_home}/${config_ston}'.
-      System commitTransaction.
+      GsDeployer bulkMigrate: [
+        Metacello new
+          baseline: 'SmalltalkCI';
+          repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
+          load: 'Core'.
+        System commitTransaction.
+        (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_project_home}/${config_ston}'.
+      ].
 EOF
 
     timer_finish
