@@ -195,8 +195,6 @@ gemstone::prepare_stone() {
       config_stone_create_arg="-z ${config_project_home}/${config_ston}"
     fi
 
-    print_info "SMALLTALK_CI_BUILD: ${SMALLTALK_CI_BUILD}"
-
     if [ "${TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
       $GS_HOME/bin/createStone ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
     else
@@ -309,8 +307,6 @@ EOF
 
   travis_fold start test_server_project "Testing server project..."
     timer_start
-
-    print_info "SMALLTALK_CI_BUILD: ${SMALLTALK_CI_BUILD}"
 
     $GS_HOME/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
       (Smalltalk at: #SmalltalkCI) testCIFor: '${config_project_home}/${config_ston}'.

@@ -27,14 +27,6 @@ tearDown
       xmlFilePath := (System gemEnvironmentVariable: 'SMALLTALK_CI_BUILD')
         ifNotNil: [ :smalltalk_ci_build | smalltalk_ci_build , '/' , suite name , '.xml' ]
         ifNil: [ suite name , '.xml' ].
-      Transcript
-        cr;
-        show:
-            'Build path in GemStone: '
-                ,
-                  (System gemEnvironmentVariable: 'SMALLTALK_CI_BUILD') printString
-                , '---' , xmlFilePath printString , '---'
-                , (System gemEnvironmentVariable: 'GS_HOME') printString.
       xmlFile := BinaryOrTextFile openWrite: xmlFilePath.
       xmlFile nextPutAll: stream contents.
       xmlFile close.
