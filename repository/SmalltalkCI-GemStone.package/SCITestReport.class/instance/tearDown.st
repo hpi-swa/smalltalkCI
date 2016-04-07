@@ -25,7 +25,7 @@ tearDown
         ifNil: [ suite name , '.xml' ].
       xmlFile := BinaryOrTextFile openWrite: xmlFilePath.
       xmlFile nextPutAll: stream contents.
-      xmlFile xlose.
+      xmlFile close.
       stream := nil.
       progressFile
         cr;
