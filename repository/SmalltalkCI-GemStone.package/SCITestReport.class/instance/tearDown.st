@@ -29,6 +29,7 @@ tearDown
         nextPutAll: suite name ]
     ifFalse: [ 
       progressFile
+        cr;
         nextPutAll: '***********************************';
         cr;
         nextPutAll: ' failures=';
