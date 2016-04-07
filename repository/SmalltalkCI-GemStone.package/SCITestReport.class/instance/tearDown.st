@@ -3,7 +3,7 @@ tearDown
   suite resources do: [ :each | each reset ].
   self produceXMLLog
     ifTrue: [ 
-      | xmlFilePath xmlFile |
+      | xmlFilePath xmlFile lastPosition |
       self stream
         tab;
         nextPutAll: '<system-out><![CDATA[]]></system-out>';
@@ -12,6 +12,9 @@ tearDown
         nextPutAll: '<system-err><![CDATA[]]></system-err>';
         lf;
         nextPutAll: '</testsuite>';
+        lf.
+      lastPosition := stream position.
+      self stream
         position: suitePosition;
         nextPutAll: ' failures="';
         print: suiteFailures;
@@ -20,6 +23,7 @@ tearDown
         nextPutAll: '" time="';
         nextPutAll: ((self formatTime: suiteTime) printShowingDecimalPlaces: 3);
         nextPutAll: '">'.
+      stream position: lastPosition.
       xmlFilePath := (System gemEnvironmentVariable: 'SMALLTALK_CI_BUILD')
         ifNotNil: [ :smalltalk_ci_build | smalltalk_ci_build , '/' , suite name , '.xml' ]
         ifNil: [ suite name , '.xml' ].
