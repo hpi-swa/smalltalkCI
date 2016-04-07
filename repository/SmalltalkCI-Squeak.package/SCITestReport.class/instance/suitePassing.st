@@ -1,3 +1,3 @@
 accessing
 suitePassing
-  ^ self suiteTotal - self suiteFailures - self suiteErrors
+	^ self suiteTotal - self suiteFailures - self suiteErrors

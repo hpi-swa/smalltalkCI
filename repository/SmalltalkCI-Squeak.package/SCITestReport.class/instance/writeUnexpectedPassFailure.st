@@ -1,5 +1,7 @@
-private
+reporting
 writeUnexpectedPassFailure
-  suiteFailures := suiteFailures + 1.
-  stream tab; tab;
-	nextPutAll: '<failure type="UnexpectedTestPass" message="Test passed unexpectedly."></failure>'; lf
+	suiteFailures := suiteFailures + 1.
+	self
+		writeTab; writeTab;
+		write: '<failure type="UnexpectedTestPass" message="Test passed unexpectedly."></failure>';
+		writeLf

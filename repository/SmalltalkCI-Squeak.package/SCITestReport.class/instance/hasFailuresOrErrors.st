@@ -1,3 +1,3 @@
 testing
 hasFailuresOrErrors
-  ^ suiteFailures ~= 0 or: [ suiteErrors ~= 0 ]
+	^ suiteFailures ~= 0 or: [ suiteErrors ~= 0 ]
