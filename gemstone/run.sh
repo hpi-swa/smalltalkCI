@@ -195,6 +195,8 @@ gemstone::prepare_stone() {
       config_stone_create_arg="-z ${config_project_home}/${config_ston}"
     fi
 
+    print_info "SMALLTALK_CI_BUILD: ${SMALLTALK_CI_BUILD}"
+
     if [ "${TRAVIS_CACHE_ENABLED:-}" = "false" ] ; then
       $GS_HOME/bin/createStone ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
     else
