@@ -33,7 +33,8 @@ tearDown
             'Build path in GemStone: '
                 ,
                   (System gemEnvironmentVariable: 'SMALLTALK_CI_BUILD') printString
-                , '---' , xmlFilePath printString.
+                , '---' , xmlFilePath printString , '---'
+                , (System gemEnvironmentVariable: 'GS_HOME') printString.
       xmlFile := BinaryOrTextFile openWrite: xmlFilePath.
       xmlFile nextPutAll: stream contents.
       xmlFile close.
