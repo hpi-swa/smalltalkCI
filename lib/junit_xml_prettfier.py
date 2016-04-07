@@ -58,14 +58,14 @@ def get_time(time):
     return '%.3f seconds' % time
 
 
-def print_summary():
+def print_summary(index):
     if build_failed():
         color = ANSI_RED
     else:
         color = ANSI_GREEN
 
     if EXCEPTIONS:
-        travis_fold('result_summary', 'start')
+        travis_fold('result_summary%s' % index, 'start')
 
     print '%s%s     Executed %s tests, with %s failures and %s errors in' \
           ' %s seconds.%s' % (
@@ -77,7 +77,7 @@ def print_summary():
         for class_name, exceptions in EXCEPTIONS.iteritems():
             print_bold(class_name)
             [print_exception(*f) for f in exceptions]
-        travis_fold('result_summary', 'end')
+        travis_fold('result_summary%s' % index, 'end')
 
 
 def print_separator(color):
@@ -157,7 +157,7 @@ def prettify_class_name(suite, class_name):
 def prettify(directory):
     global TIME
 
-    for file_path in glob.glob('%s/*.xml' % directory):
+    for index, file_path in enumerate(glob.glob('%s/*.xml' % directory)):
         print ''
 
         try:
@@ -188,7 +188,7 @@ def prettify(directory):
             prettify_class_name(suite, class_name)
 
         print ''
-        print_summary()
+        print_summary(index + 1)
         print ''
     if build_failed():
         sys.exit(1)
