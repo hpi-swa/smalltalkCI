@@ -72,23 +72,21 @@ gemstone::prepare_gsdevkit_home() {
       timer_start
 
       pushd "${SMALLTALK_CI_BUILD}" || print_error_and_exit "pushd failed."
-        git clone "${DEVKIT_DOWNLOAD}" || print_error_and_exit "git clone failed."
+        git clone -b "${DEVKIT_BRANCH}" --depth 1 "${DEVKIT_DOWNLOAD}" || print_error_and_exit "git clone failed."
         cd "${GS_HOME}" || print_error_and_exit "cd failed."
-        git checkout "${DEVKIT_BRANCH}" || print_error_and_exit "git checkout failed."
 
         # pre-clone /sys/local, so that travis can skip backups
         $GS_HOME/bin/private/clone_sys_local || print_error_and_exit "clone_sys_local failed."
         # arrange to skip backups
         cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts || print_error_and_exit "cp failed."
 
-	cp $GS_HOME/tests/sys/local/gsdevkit_bin/* $GS_HOME/sys/local/gsdevkit_bin || print_error_and_exit "cp failed."
-
+        cp $GS_HOME/tests/sys/local/gsdevkit_bin/* $GS_HOME/sys/local/gsdevkit_bin || print_error_and_exit "cp failed."
 
         # Operating system setup already performed
         touch $GS_HOME/bin/.gsdevkitSysSetup || print_error_and_exit "touch failed."
 
-	# Make sure the GsDevKit_home is using $SMALLTALK_CI_HOME in $GS_HOME/shared/repos
-	ln -s ${SMALLTALK_CI_HOME} $GS_HOME/shared/repos/smalltalkCI || print_error_and_exit "ln -s failed."
+        # Make sure the GsDevKit_home is using $SMALLTALK_CI_HOME in $GS_HOME/shared/repos
+        ln -s ${SMALLTALK_CI_HOME} $GS_HOME/shared/repos/smalltalkCI || print_error_and_exit "ln -s failed."
 
       popd || print_error_and_exit "popd failed."
 
@@ -98,11 +96,8 @@ gemstone::prepare_gsdevkit_home() {
     export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
 
   else
-
     print_info "Using existing GsDevKit_home clone: \$GS_HOME=$GS_HOME"
-
   fi
-
 }
 
 ################################################################################
