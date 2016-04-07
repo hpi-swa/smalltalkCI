@@ -1,9 +1,9 @@
 private
 beginTestCase: aTestCase runBlock: aBlock
   | time |
-  progressFile nextPutAll: '-'.
-  false
-    ifTrue: [ 
+  self produceXMLLog
+    ifTrue: [ progressFile nextPutAll: '-' ]
+    ifFalse: [ 
       progressFile
         nextPutAll: 'starting testcase: ';
         nextPutAll: aTestCase class name;
@@ -27,10 +27,7 @@ beginTestCase: aTestCase runBlock: aBlock
         nextPutAll: '">';
         lf ]
     ifFalse: [ 
-      progressFile nextPutAll: '>'.
-      false
-        ifTrue: [ 
-          progressFile
-            nextPutAll: '" time="';
-            nextPutAll: (time printShowingDecimalPlaces: 3);
-            nextPutAll: ' ... ' ] ]
+      progressFile
+        nextPutAll: '" time="';
+        nextPutAll: (time printShowingDecimalPlaces: 3);
+        nextPutAll: ' ... ' ]

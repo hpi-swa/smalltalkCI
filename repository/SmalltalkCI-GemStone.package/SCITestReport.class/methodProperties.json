@@ -3,8 +3,8 @@
 		"runClasses:named:produceXMLLog:" : "dkh 04/04/2016 16:28",
 		"runSuite:produceXMLLog:" : "dkh 02/05/2016 09:54" },
 	"instance" : {
-		"beginTestCase:runBlock:" : "dkh 04/06/2016 21:06",
-		"endTestCase" : "dkh 02/06/2016 11:25",
+		"beginTestCase:runBlock:" : "dkh 04/06/2016 21:11",
+		"endTestCase" : "dkh 04/06/2016 21:12",
 		"formatTime:" : "fn 1/17/2016 02:57",
 		"hasFailuresOrErrors" : "EstebanLorenzano 8/21/2015 07:29",
 		"initialize" : "dkh 02/07/2016 06:43",
