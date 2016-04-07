@@ -11,6 +11,7 @@ local CLIENT_NAME="travisClient"
 local DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
 local DEVKIT_BRANCH="${DEFAULT_DEVKIT_BRANCH}"
 local DEVKIT_CLIENT
+local DEVKIT_CLIENT_NAMES
 local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 
@@ -18,6 +19,7 @@ local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 # Handle GemStone-specific options.
 ################################################################################
 gemstone::parse_options() {
+  local dev_kit_client_arg
 
   GS_HOME="$DEFAULT_GS_HOME"
 
@@ -26,7 +28,7 @@ gemstone::parse_options() {
   fi
 
   if is_not_empty "${GSCI_CLIENT:-}"; then
-    DEVKIT_CLIENT="${GSCI_CLIENT}"
+    dev_kit_client_arg="${GSCI_CLIENT}"
   fi
 
   while :
@@ -37,12 +39,12 @@ gemstone::parse_options() {
         shift
         USE_DEFAULT_HOME="false"
         ;;
-      --gs-DEVKIT_BRANCH=*)
+      --gs-BRANCH=*)
         DEVKIT_BRANCH="${1#*=}"
         shift
         ;;
       --gs-CLIENT=*)
-        DEVKIT_CLIENT="${1#*=}"
+        dev_kit_client_arg="${1#*=}"
         shift
         ;;
       --gs-*)
@@ -56,6 +58,12 @@ gemstone::parse_options() {
         ;;
     esac
   done
+
+  if ! is_array "dev_kit_client_arg"; then
+    DEVKIT_CLIENT=( "${dev_kit_client_arg}" )
+  else
+    DEVKIT_CLIENT=( "${dev_kit_client_arg[@]}" )
+  fi
 
   export GS_HOME
 }
@@ -100,8 +108,7 @@ gemstone::prepare_gsdevkit_home() {
 
 ################################################################################
 # Create a GemStone stone.
-# Arguments:
-#   config_smalltalk
+#
 ################################################################################
 gemstone::prepare_stone() {
   local gemstone_version
@@ -209,39 +216,58 @@ gemstone::prepare_stone() {
 }
 
 ################################################################################
-# Optionally create a GemStone client.
-# Arguments:
-#   config_smalltalk
+# Optionally create GemStone clients.
+# 
 ################################################################################
-gemstone::prepare_optional_client() {
+gemstone::prepare_optional_clients() {
   local client_version
+  local client_extension
+  local client_name
 
   if is_empty "${DEVKIT_CLIENT:-}"; then
     return
   fi
 
-  travis_fold start create_client "Creating client..."
-    timer_start
-
-    case "${DEVKIT_CLIENT}" in
+  DEVKIT_CLIENT_NAMES=()
+  for version in "${DEVKIT_CLIENT[@]}"
+  do
+    case "$version" in
       "Pharo-5.0")
         client_version="Pharo5.0"
+	client_extension="Ph5"
         ;;
       "Pharo-4.0")
         client_version="Pharo4.0"
+	client_extension="Ph4"
         ;;
       "Pharo-3.0")
         client_version="Pharo3.0"
+	client_extension="Ph3"
         ;;
       *)
         print_error_and_exit "Unsupported client version '${DEVKIT_CLIENT}'."
         ;;
     esac
 
-    $GS_HOME/bin/createClient -t pharo ${CLIENT_NAME} -v ${client_version} -s "${STONE_NAME}" -z "${config_project_home}/${config_ston}" || print_error_and_exit "createClient failed."
+    client_name="${CLIENT_NAME}_${client_extension}"
+    DEVKIT_CLIENT_NAMES=( "$DEVKIT_CLIENT[@]" "$client_name" )
+
+    gemstone::prepare_client $client_version $client_name
+  done
+
+}
+
+gemstone::prepare_client() {
+  local client_version="$1"
+  local client_name="$2"
+
+ travis_fold start "create_${client_name}" "Creating client ${client_name}..."
+    timer_start
+
+    $GS_HOME/bin/createClient -t pharo "$client_name" -v ${client_version} -s "${STONE_NAME}" -z "${config_project_home}/${config_ston}" || print_error_and_exit "createClient ${client_name} failed."
 
     timer_finish
-  travis_fold end create_client
+  travis_fold end "create_${client_name}"
 }
 
 ################################################################################
@@ -279,8 +305,6 @@ EOF
     print_error_and_exit "Failed to load project."
   fi
 
-    # this is where the client load is located ... need to do the print_reults() of stone --- probably should be in separate fold
-
   travis_fold start test_server_project "Testing server project..."
     timer_start
 
@@ -292,14 +316,19 @@ EOF
     timer_finish
   travis_fold end test_server_project
 
-  if [ "${DEVKIT_CLIENT:-}x" != "x" ] ; then
-    travis_fold start test_client_project "Testing client project..."
-      timer_start
-    
-      $GS_HOME/bin/startClient ${CLIENT_NAME} -t -s ${STONE_NAME} -z "${config_project_home}/${config_ston}"
+  if is_not_empty  "${DEVKIT_CLIENT:-}"; then
 
-      timer_finish
-    travis_fold end test_client_project
+    for client_name in "${DEVKIT_CLIENT_NAMES[@]}"
+    do
+      travis_fold start "test_${client_name}" "Testing client project ${client_name}..."
+        timer_start
+    
+        $GS_HOME/bin/startClient ${client_name} -t -s ${STONE_NAME} -z "${config_project_home}/${config_ston}"
+
+        timer_finish
+      travis_fold end "test_${client_name}"
+    done
+    
   fi
 
   travis_fold start stop_stone
@@ -335,7 +364,7 @@ run_build() {
 
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${config_smalltalk}"
-  gemstone::prepare_optional_client "${config_smalltalk}"
+  gemstone::prepare_optional_clients
   gemstone::load_and_test_project || exit_status=$?
 
   return "${exit_status}"

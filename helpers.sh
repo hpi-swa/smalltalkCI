@@ -48,7 +48,7 @@ print_help() {
     -v | --verbose      Enable 'set -x'.
 
   GEMSTONE OPTIONS:
-    --gs-DEVKIT_BRANCH=<branch-SHA-tag>
+    --gs-BRANCH=<branch-SHA-tag>
                         Name of GsDevKit_home branch, SHA or tag. Default is 'master'.
 
                         Environment variable GSCI_DEVKIT_BRANCH may be used to 
@@ -62,7 +62,9 @@ print_help() {
 			--gs-DEVKIT_BRANCH option is ignored.
 
     --gs-CLIENT=<smalltalk-platform>
-                        Name of Smalltalk client version to use as a GemStone client.
+    --gs-CLIENT=( <smalltalk-platform1> <smalltalk-platform2>... )
+                        Name of Smalltalk client version to use as a GemStone client. 
+			May be an array of client versions.
 
                         Environment variable GSCI_CLIENT may be used to 
                         specify <smalltalk-platform>. Command line option overrides 
@@ -109,6 +111,12 @@ print_steps_to_reproduce_locally() {
   printf "\n"
   print_notice "      ./run.sh --headfull -s \"${config_smalltalk}\" /path/to/project/.smalltalk.ston"
   printf "\n"
+}
+
+is_array() {
+  local variable_name=$1
+
+  [[ "$(declare -p $variable_name)" =~ "declare -a" ]]
 }
 
 is_empty() {
