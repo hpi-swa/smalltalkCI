@@ -1,13 +1,7 @@
 private
 beginTestCase: aTestCase runBlock: aBlock
   | time |
-  progressFile
-    nextPutAll: 'starting testcase: ' ;
-    nextPutAll: aTestCase class name;
-    nextPutAll:'>>';
-    nextPutAll: aTestCase selector;
-    nextPutAll: ' ... ';
-    flush.
+  progressFile nextPut: $-; flush.
 
   time := self formatTime: (aBlock timeToRun).
 

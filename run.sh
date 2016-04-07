@@ -30,7 +30,7 @@ initialize() {
           ;;
       esac
 
-      readonly SMALLTALK_CI_HOME="$(cd "$(dirname "${base_path}")" && pwd)"
+      SMALLTALK_CI_HOME="$(cd "$(dirname "${base_path}")" && pwd)"
       source "${SMALLTALK_CI_HOME}/env_vars"
   fi
 
