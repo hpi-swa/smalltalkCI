@@ -17,6 +17,10 @@ smalltalk:
 env: 
    - GSCI_CLIENT=Pharo-5.0 GSCI_DEVKIT_BRANCH=dev
 
+cache:
+  directories:
+    - $SMALLTALK_CI_CACHE
+
 os:
   - linux
 #  - osx
