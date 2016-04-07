@@ -12,6 +12,10 @@ smalltalk:
 #  - Pharo-5.0
 #  - Pharo-4.0
 #  - Pharo-3.0
+   - GemStone-3.3.0
+
+env: 
+   - GSCI_CLIENT=Pharo-5.0 GSCI_DEVKIT_BRANCH=dev
 
 os:
   - linux
@@ -35,10 +39,10 @@ matrix:
       sudo: false
       script: bash tests/all_tests.sh
     # GemStone Linux builds
-    - smalltalk: GemStone-3.3.0
-      os: linux
-      env: 
-        - GSCI_CLIENT=Pharo-5.0 GSCI_DEVKIT_BRANCH=dev
+#    - smalltalk: GemStone-3.3.0
+#      os: linux
+#      env: 
+#        - GSCI_CLIENT=Pharo-5.0 GSCI_DEVKIT_BRANCH=dev
 #    - smalltalk: GemStone-3.3.0
 #      os: linux
 #      env: GSCI_DEVKIT_BRANCH=dev # only use for development
