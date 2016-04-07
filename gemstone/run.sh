@@ -9,7 +9,7 @@ local USE_DEFAULT_HOME="true"
 local STONE_NAME="travis"
 local CLIENT_NAME="travisClient"
 local DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
-local DEVKIT_BRANCH
+local DEVKIT_BRANCH="${DEFAULT_DEVKIT_BRANCH}"
 local DEVKIT_CLIENT
 local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local PHARO_CHANGES_FILE="Pharo-3.0.changes"
@@ -21,13 +21,11 @@ gemstone::parse_options() {
 
   GS_HOME="$DEFAULT_GS_HOME"
 
-  if [ "${GSCI_DEVKIT_BRANCH-}x" = "x" ] ; then
-    DEVKIT_BRANCH="${DEFAULT_DEVKIT_BRANCH}"
-  else
+  if is_not_empty "${GSCI_DEVKIT_BRANCH:-}"; then
     DEVKIT_BRANCH="${GSCI_DEVKIT_BRANCH}"
   fi
 
-  if [ "${GSCI_CLIENT-}x" != "x" ] ; then
+  if is_not_empty "${GSCI_CLIENT:-}"; then
     DEVKIT_CLIENT="${GSCI_CLIENT}"
   fi
 
@@ -45,8 +43,8 @@ gemstone::parse_options() {
         ;;
       --gs-CLIENT=*)
         DEVKIT_CLIENT="${1#*=}"
-	shift
-	;;
+        shift
+        ;;
       --gs-*)
         print_error_and_exit "Unknown GemStone-specific option: $1"
         ;;
@@ -218,7 +216,7 @@ gemstone::prepare_stone() {
 gemstone::prepare_optional_client() {
   local client_version
 
-  if [ "${DEVKIT_CLIENT:-}x" = "x" ] ; then
+  if is_empty "${DEVKIT_CLIENT:-}"; then
     return
   fi
 
@@ -228,23 +226,22 @@ gemstone::prepare_optional_client() {
     case "${DEVKIT_CLIENT}" in
       "Pharo-5.0")
         client_version="Pharo5.0"
-	;;
+        ;;
       "Pharo-4.0")
         client_version="Pharo4.0"
-	;;
+        ;;
       "Pharo-3.0")
         client_version="Pharo3.0"
-	;;
+        ;;
       *)
         print_error_and_exit "Unsupported client version '${DEVKIT_CLIENT}'."
-	;;
+        ;;
     esac
 
     $GS_HOME/bin/createClient -t pharo ${CLIENT_NAME} -v ${client_version} -s "${STONE_NAME}" -z "${config_project_home}/${config_ston}" || print_error_and_exit "createClient failed."
 
     timer_finish
   travis_fold end create_client
-
 }
 
 ################################################################################
