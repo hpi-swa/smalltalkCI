@@ -308,6 +308,8 @@ EOF
   travis_fold start test_server_project "Testing server project..."
     timer_start
 
+    print_info "SMALLTALK_CI_BUILD: ${SMALLTALK_CI_BUILD}"
+
     $GS_HOME/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
       (Smalltalk at: #SmalltalkCI) testCIFor: '${config_project_home}/${config_ston}'.
       System commitTransaction.
