@@ -387,6 +387,7 @@ main() {
   local config_verbose="false"
   local exit_status=0
 
+  echo "${TRAVIS_SMALLTALK_VERSION:-}"
   initialize
   parse_options "$@"
   [[ "${config_verbose}" = "true" ]] && set -o xtrace

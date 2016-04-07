@@ -36,7 +36,8 @@ matrix:
     # GemStone Linux builds
     - smalltalk: GemStone-3.3.0
       os: linux
-      env: GSCI_CLIENT=Pharo-50 GSCI_DEVKIT_BRANCH=dev
+      env: 
+        - GSCI_CLIENT=Pharo-5.0 GSCI_DEVKIT_BRANCH=dev
 #    - smalltalk: GemStone-3.3.0
 #      os: linux
 #      env: GSCI_DEVKIT_BRANCH=dev # only use for development
