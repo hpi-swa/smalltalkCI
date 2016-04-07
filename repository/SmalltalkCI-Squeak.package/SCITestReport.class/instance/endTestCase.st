@@ -1,4 +1,7 @@
 private
 endTestCase
-  stream tab; nextPutAll: '</testcase>'; lf.
-  progressFile nextPutAll: 'finished'; cr; flush.
+	self
+		writeTab;
+		write: '</testcase>';
+		writeLf;
+		log: '>'

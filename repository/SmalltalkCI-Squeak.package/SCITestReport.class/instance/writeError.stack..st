@@ -1,6 +1,9 @@
-private
+reporting
 writeError: error stack: stack
-  suiteErrors := suiteErrors + 1.
-  stream tab; tab; nextPutAll: '<error type="'.
-  self writeException: error stack: stack.
-  stream nextPutAll: '</error>'; lf
+	suiteErrors := suiteErrors + 1.
+	self
+		writeTab; writeTab;
+		write: '<error type="';
+		writeException: error stack: stack;
+		write: '</error>';
+		writeLf

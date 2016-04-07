@@ -1,3 +1,3 @@
 running
 runAll
-  suite tests do: [ :each | each run: self ]
+	suite tests do: [ :each | each run: self ]
