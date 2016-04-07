@@ -2,5 +2,5 @@ executing
 runTests
   testReport := SCITestReport
     runClasses: self classesToTest
-    named: self spec specName , '_GemStone'
+    named: self suiteName
     produceXMLLog: self produceXMLLog
