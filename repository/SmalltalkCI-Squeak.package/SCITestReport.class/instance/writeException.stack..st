@@ -1,8 +1,7 @@
-private
+reporting
 writeException: error stack: stack.
-
-  stream
-    nextPutAll: (self encode: error class name);
-    nextPutAll: '" message="'; nextPutAll: (self encode: (error messageText ifNil: [ error description ]));
-    nextPutAll: '">';
-    nextPutAll: (self encode: stack).
+	self
+		write: (self encode: error class name);
+		write: '" message="'; nextPutAll: (self encode: (error messageText ifNil: [ error description ]));
+		write: '">';
+		write: (self encode: stack)

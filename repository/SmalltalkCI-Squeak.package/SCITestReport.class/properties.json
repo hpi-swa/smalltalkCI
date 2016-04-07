@@ -11,8 +11,7 @@
 		"suitePosition",
 		"suiteTime",
 		"suiteFailures",
-		"suiteErrors",
-		"progressFile" ],
+		"suiteErrors" ],
 	"name" : "SCITestReport",
 	"pools" : [
 		 ],

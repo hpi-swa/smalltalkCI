@@ -1,5 +1,5 @@
 accessing
 suiteTotal
-  ^ suite
-    ifNotNil: [ suite tests size ]
-    ifNil: [ 0 ]
+	^ suite
+		ifNotNil: [ suite tests size ]
+		ifNil: [ 0 ]
