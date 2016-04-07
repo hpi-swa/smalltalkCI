@@ -20,7 +20,12 @@ tearDown
         nextPutAll: '" time="';
         nextPutAll: ((self formatTime: suiteTime) printShowingDecimalPlaces: 3);
         nextPutAll: '">'.
-      self stream close.
+      xmlFilePath := (System gemEnvironmentVariable: 'SMALLTALK_CI_BUILD')
+        ifNotNil: [ :smalltalk_ci_build | smalltalk_ci_build , '/' , suite name , '.xml' ]
+        ifNil: [ suite name , '.xml' ].
+      xmlFile := BinaryOrTextFile openWrite: xmlFilePath.
+      xmlFile nextPutAll: stream contents.
+      xmlFile xlose.
       stream := nil.
       progressFile
         cr;

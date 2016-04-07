@@ -3,11 +3,7 @@ setUp
   progressFile := Transcript.
   self produceXMLLog
     ifTrue: [ 
-      | xmlFilePath |
-      xmlFilePath := (System gemEnvironmentVariable: 'SMALLTALK_CI_BUILD')
-        ifNotNil: [ :smalltalk_ci_build | smalltalk_ci_build , '/' , suite name , '.xml' ]
-        ifNil: [ suite name , '.xml' ].
-      stream := TransientValue value: (BinaryOrTextFile openWrite: xmlFilePath).
+      stream := AnsiWriteStream on: String new.
       self stream
         nextPutAll: '<?xml version="1.0" encoding="UTF-8"?>';
         lf.
