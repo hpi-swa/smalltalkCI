@@ -8,7 +8,7 @@ readonly DEFAULT_STON_CONFIG="smalltalk.ston"
 readonly INSTALL_TARGET_OSX="/usr/local/bin"
 
 ################################################################################
-# Determine $SCRIPT_PATH and load helpers.
+# Determine $SMALLTALK_CI_HOME and load helpers.
 ################################################################################
 initialize() {
   local base_path="${BASH_SOURCE[0]}"
@@ -324,7 +324,7 @@ install_script() {
         fi
       fi
       if ! is_file "${target}/smalltalkCI"; then
-        ln -s "${SCRIPT_PATH}/run.sh" "${target}/smalltalkCI"
+        ln -s "${SMALLTALK_CI_HOME}/run.sh" "${target}/smalltalkCI"
         print_info "The command 'smalltalkCI' has been installed successfully."
       else
         print_error_and_exit "'${target}/smalltalkCI' already exists."
