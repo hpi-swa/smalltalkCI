@@ -68,11 +68,13 @@ determine_project() {
       [[ ${custom_ston: -5} == ".ston" ]]; then
     config_ston=$(basename "${custom_ston}")
     config_project_home="$(dirname "${custom_ston}")"
-  elif is_travis_build; then
-    config_project_home="${TRAVIS_BUILD_DIR}"
-    locate_ston_config
   else
-    return 0
+    if is_travis_build; then
+      config_project_home="${TRAVIS_BUILD_DIR}"
+    else
+      config_project_home="$(pwd)"
+    fi
+    locate_ston_config
   fi
 
   # Convert to absolute path if necessary
@@ -100,6 +102,34 @@ locate_ston_config() {
                             in ${config_project_home}."
     fi
   fi
+}
+
+################################################################################
+# Select Smalltalk image interactively if not already selected.
+# Locals:
+#   config_smalltalk
+################################################################################
+select_smalltalk() {
+  local images="Squeak-trunk Squeak-5.0 Squeak-4.6 Squeak-4.5
+                Pharo-stable Pharo-alpha Pharo-5.0 Pharo-4.0 Pharo-3.0
+                GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6"
+
+  if is_not_empty "${config_smalltalk}" || is_travis_build; then
+    return
+  fi
+
+  PS3="Choose Smalltalk image: "
+  select selection in $images; do
+    case "${selection}" in
+      Squeak*|Pharo*|GemStone*)
+        config_smalltalk="${selection}"
+        break
+        ;;
+      *)
+        print_error_and_exit "No Smalltalk image selected."
+        ;;
+    esac
+  done
 }
 
 ################################################################################
@@ -136,11 +166,6 @@ validate_configuration() {
 #   All positional parameters
 ################################################################################
 parse_options() {
-  if ! is_travis_build && [[ $# -eq 0 ]]; then
-    print_help
-    exit 0
-  fi
-
   while :
   do
     case "${1:-}" in
@@ -392,6 +417,7 @@ main() {
   [[ "${config_verbose}" = "true" ]] && set -o xtrace
   determine_project "${!#}"  # Use last argument for custom STON
   check_clean_up
+  select_smalltalk
   validate_configuration
 
   prepare_folders
