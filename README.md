@@ -108,6 +108,13 @@ smalltalk:
   - GemStone-3.2.12
   - GemStone-3.1.0.6
 
+# Uncomment to specify one or more custom smalltalkCI configuration files (.smalltalk.ston by default)
+#smalltalk_config: .myconfig.ston
+#  or
+#smalltalk_config:
+#  - myconfig1.ston
+#  - myconfig2.ston
+
 # Uncomment to enable dependency caching - especially useful for GemStone builds (3x faster)
 #cache:
 #  directories:
@@ -197,19 +204,22 @@ smalltalkCI supports a couple of options that can be useful for debugging
 purposes or when used locally:
 
 ```
-USAGE: run.sh [options] /path/to/project
+USAGE: run.sh [options] /path/to/project/your_smalltalk.ston
 
 This program prepares Smalltalk images/vms, loads projects and runs tests.
 
 OPTIONS:
-  --clean                 Clear cache and delete builds.
-  -d | --debug            Enable debug mode.
-  -h | --help             Show this help text.
-  --headfull              Open vm in headfull mode and do not close image.
-  -s | --smalltalk        Overwrite Smalltalk image selection.
-  -v | --verbose          Enable 'set -x'.
+  --clean             Clear cache and delete builds.
+  -d | --debug        Enable debug mode.
+  -h | --help         Show this help text.
+  --headfull          Open vm in headfull mode and do not close image.
+  --install           Install symlink to this smalltalkCI instance.
+  -s | --smalltalk    Overwrite Smalltalk image selection.
+  --uninstall         Remove symlink to any smalltalkCI instance.
+  -v | --verbose      Enable 'set -x'.
 
-EXAMPLE: run.sh -s "Squeak-trunk" --headfull /path/to/projects
+EXAMPLE:
+  run.sh -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
 ```
 
 
