@@ -36,7 +36,7 @@ matrix:
     # GemStone Linux builds
     - smalltalk: GemStone-3.3.0
       os: linux
-      env: GSCI_CLIENTS=("Pharo-5.0" "Pharo-4.0" "Pharo-3.0") GSCI_DEVKIT_BRANCH=dev
+      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0" GSCI_DEVKIT_BRANCH=dev
       cache:
         directories:
           - $SMALLTALK_CI_CACHE

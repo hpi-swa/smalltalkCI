@@ -16,54 +16,6 @@ local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 
 ################################################################################
-# Handle GemStone-specific options.
-################################################################################
-gemstone::parse_options() {
-
-  GS_HOME="$DEFAULT_GS_HOME"
-
-  if is_not_empty "${GSCI_DEVKIT_BRANCH:-}"; then
-    DEVKIT_BRANCH="${GSCI_DEVKIT_BRANCH}"
-  fi
-
-  while :
-  do
-    case "${1:-}" in
-      --gs-HOME=*)
-        GS_HOME="${1#*=}"
-        shift
-        USE_DEFAULT_HOME="false"
-        ;;
-      --gs-BRANCH=*)
-        DEVKIT_BRANCH="${1#*=}"
-        shift
-        ;;
-      --gs-CLIENT=*)
-	arg="${1#*=}"
-	DEVKIT_CLIENTS+=("$arg")
-        shift
-        ;;
-      --gs-*)
-        print_error_and_exit "Unknown GemStone-specific option: $1"
-        ;;
-      "")
-        break
-        ;;
-      *)
-        shift
-        ;;
-    esac
-  done
-
-  if is_empty "${DEVKIT_CLIENTS:-}" && is_not_empty "${GSCI_CLIENTS:-}"; then
-    DEVKIT_CLIENTS=${GSCI_CLIENTS[@]}
-  fi
-
-  export GS_HOME
-
-}
-
-################################################################################
 # Clone the GsDevKit_home project.
 ################################################################################
 gemstone::prepare_gsdevkit_home() {
@@ -364,3 +316,54 @@ run_build() {
 
   return "${exit_status}"
 }
+
+################################################################################
+# Handle GemStone-specific options.
+################################################################################
+gemstone::parse_options() {
+  local devkit_client_args
+
+  GS_HOME="$DEFAULT_GS_HOME"
+
+  if is_not_empty "${GSCI_DEVKIT_BRANCH:-}"; then
+    DEVKIT_BRANCH="${GSCI_DEVKIT_BRANCH}"
+  fi
+
+  while :
+  do
+    case "${1:-}" in
+      --gs-HOME=*)
+        GS_HOME="${1#*=}"
+        shift
+        USE_DEFAULT_HOME="false"
+        ;;
+      --gs-BRANCH=*)
+        DEVKIT_BRANCH="${1#*=}"
+        shift
+        ;;
+      --gs-CLIENTS=*)
+	devkit_client_args="${1#*=}"
+        shift
+        ;;
+      --gs-*)
+        print_error_and_exit "Unknown GemStone-specific option: $1"
+        ;;
+      "")
+        break
+        ;;
+      *)
+        shift
+        ;;
+    esac
+  done
+
+  if is_empty "${devkit_client_args:-}" && is_not_empty "${GSCI_CLIENTS:-}"; then
+    devkit_client_args=${GSCI_CLIENTS}
+  fi
+
+  read -ra DEVKIT_CLIENTS <<< "${devkit_client_args}"
+
+  export GS_HOME
+
+}
+
