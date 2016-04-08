@@ -323,7 +323,7 @@ run_build() {
 gemstone::parse_options() {
   local devkit_client_args
 
-  export GS_HOME="$DEFAULT_GS_HOME"
+  GS_HOME="$DEFAULT_GS_HOME"
 
   if is_not_empty "${GSCI_DEVKIT_BRANCH:-}"; then
     DEVKIT_BRANCH="${GSCI_DEVKIT_BRANCH}"
@@ -361,9 +361,10 @@ gemstone::parse_options() {
     devkit_client_args=${GSCI_CLIENTS}
   fi
 
-  if is_not_empty "${devkit_client_args:-}"
-    read -ra DEVKIT_CLIENTS <<< "${devkit_client_args}"
+  if is_not_empty "${devkit_client_args:-}"; then
+    IFS=' '; read -ra DEVKIT_CLIENTS <<< "${devkit_client_args}"
   fi
 
+  export GS_HOME
 }
 
