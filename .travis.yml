@@ -13,11 +13,14 @@ smalltalk:
   - Pharo-4.0
   - Pharo-3.0
 
+smalltalk_config: .smalltalk.ston
+
 os:
   - linux
   - osx
 
 install:
+  - "echo ${TRAVIS_SMALLTALK_CONFIG}"
   # Move cache directory if it exists
   - if [[ -d "${SMALLTALK_CI_CACHE}" ]]; then mv $SMALLTALK_CI_CACHE "$(pwd)"; fi
   # Make sure to use smalltalkCI from this branch
