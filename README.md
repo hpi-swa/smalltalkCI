@@ -108,6 +108,13 @@ smalltalk:
   - GemStone-3.2.12
   - GemStone-3.1.0.6
 
+# Uncomment to specify one or more custom smalltalkCI configuration files (.smalltalk.ston by default)
+#smalltalk_config: .myconfig.ston
+#  or
+#smalltalk_config:
+#  - myconfig1.ston
+#  - myconfig2.ston
+
 # Uncomment to enable dependency caching - especially useful for GemStone builds (3x faster)
 #cache:
 #  directories:
