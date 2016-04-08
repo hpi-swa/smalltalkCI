@@ -41,4 +41,4 @@ If you see have test a failure on Travis and you can't understand the failure fr
 
 ![travis debug stack][1]
 
-[1]: ./images/travisErrorStack.png
+[1]: ./pngs/travisErrorStack.png
