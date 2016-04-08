@@ -9,8 +9,9 @@ local USE_DEFAULT_HOME="true"
 local STONE_NAME="travis"
 local CLIENT_NAME="travisClient"
 local DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
-local DEVKIT_BRANCH
-local DEVKIT_CLIENT
+local DEVKIT_BRANCH="${DEFAULT_DEVKIT_BRANCH}"
+local DEVKIT_CLIENTS=()
+local DEVKIT_CLIENT_NAMES=()
 local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 
@@ -21,14 +22,8 @@ gemstone::parse_options() {
 
   GS_HOME="$DEFAULT_GS_HOME"
 
-  if [ "${GSCI_DEVKIT_BRANCH-}x" = "x" ] ; then
-    DEVKIT_BRANCH="${DEFAULT_DEVKIT_BRANCH}"
-  else
+  if is_not_empty "${GSCI_DEVKIT_BRANCH:-}"; then
     DEVKIT_BRANCH="${GSCI_DEVKIT_BRANCH}"
-  fi
-
-  if [ "${GSCI_CLIENT-}x" != "x" ] ; then
-    DEVKIT_CLIENT="${GSCI_CLIENT}"
   fi
 
   while :
@@ -39,14 +34,15 @@ gemstone::parse_options() {
         shift
         USE_DEFAULT_HOME="false"
         ;;
-      --gs-DEVKIT_BRANCH=*)
+      --gs-BRANCH=*)
         DEVKIT_BRANCH="${1#*=}"
         shift
         ;;
       --gs-CLIENT=*)
-        DEVKIT_CLIENT="${1#*=}"
-	shift
-	;;
+	arg="${1#*=}"
+	DEVKIT_CLIENTS+=("$arg")
+        shift
+        ;;
       --gs-*)
         print_error_and_exit "Unknown GemStone-specific option: $1"
         ;;
@@ -59,7 +55,12 @@ gemstone::parse_options() {
     esac
   done
 
+  if is_empty "${DEVKIT_CLIENTS:-}" && is_not_empty "${GSCI_CLIENTS:-}"; then
+    DEVKIT_CLIENTS=${GSCI_CLIENTS[@]}
+  fi
+
   export GS_HOME
+
 }
 
 ################################################################################
@@ -72,20 +73,21 @@ gemstone::prepare_gsdevkit_home() {
       timer_start
 
       pushd "${SMALLTALK_CI_BUILD}" || print_error_and_exit "pushd failed."
-        git clone "${DEVKIT_DOWNLOAD}" || print_error_and_exit "git clone failed."
+        git clone -b "${DEVKIT_BRANCH}" --depth 1 "${DEVKIT_DOWNLOAD}" || print_error_and_exit "git clone failed."
         cd "${GS_HOME}" || print_error_and_exit "cd failed."
-        git checkout "${DEVKIT_BRANCH}" || print_error_and_exit "git checkout failed."
 
         # pre-clone /sys/local, so that travis can skip backups
         $GS_HOME/bin/private/clone_sys_local || print_error_and_exit "clone_sys_local failed."
         # arrange to skip backups
         cp $GS_HOME/tests/sys/local/client/tode-scripts/* $GS_HOME/sys/local/client/tode-scripts || print_error_and_exit "cp failed."
 
+        cp $GS_HOME/tests/sys/local/gsdevkit_bin/* $GS_HOME/sys/local/gsdevkit_bin || print_error_and_exit "cp failed."
+
         # Operating system setup already performed
         touch $GS_HOME/bin/.gsdevkitSysSetup || print_error_and_exit "touch failed."
 
-	# Make sure the GsDevKit_home is using $SMALLTALK_CI_HOME in $GS_HOME/shared/repos
-	ln -s ${SMALLTALK_CI_HOME} $GS_HOME/shared/repos/smalltalkCI || print_error_and_exit "ln -s failed."
+        # Make sure the GsDevKit_home is using $SMALLTALK_CI_HOME in $GS_HOME/shared/repos
+        ln -s ${SMALLTALK_CI_HOME} $GS_HOME/shared/repos/smalltalkCI || print_error_and_exit "ln -s failed."
 
       popd || print_error_and_exit "popd failed."
 
@@ -95,17 +97,13 @@ gemstone::prepare_gsdevkit_home() {
     export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
 
   else
-
     print_info "Using existing GsDevKit_home clone: \$GS_HOME=$GS_HOME"
-
   fi
-
 }
 
 ################################################################################
 # Create a GemStone stone.
-# Arguments:
-#   config_smalltalk
+#
 ################################################################################
 gemstone::prepare_stone() {
   local gemstone_version
@@ -213,40 +211,58 @@ gemstone::prepare_stone() {
 }
 
 ################################################################################
-# Optionally create a GemStone client.
-# Arguments:
-#   config_smalltalk
+# Optionally create GemStone clients.
+# 
 ################################################################################
-gemstone::prepare_optional_client() {
+gemstone::prepare_optional_clients() {
   local client_version
+  local client_extension
+  local client_name
 
-  if [ "${DEVKIT_CLIENT:-}x" = "x" ] ; then
+  if is_empty "${DEVKIT_CLIENTS:-}"; then
     return
   fi
 
-  travis_fold start create_client "Creating client..."
-    timer_start
-
-    case "${DEVKIT_CLIENT}" in
+  
+  for version in "${DEVKIT_CLIENTS[@]}"
+  do
+    case "$version" in
       "Pharo-5.0")
         client_version="Pharo5.0"
-	;;
+	client_extension="Pharo5.0"
+        ;;
       "Pharo-4.0")
         client_version="Pharo4.0"
-	;;
+	client_extension="Pharo4.0"
+        ;;
       "Pharo-3.0")
         client_version="Pharo3.0"
-	;;
+	client_extension="Pharo3.0"
+        ;;
       *)
-        print_error_and_exit "Unsupported client version '${DEVKIT_CLIENT}'."
-	;;
+        print_error_and_exit "Unsupported client version '${version}'."
+        ;;
     esac
 
-    $GS_HOME/bin/createClient -t pharo ${CLIENT_NAME} -v ${client_version} -z "${config_project_home}/${config_ston}" || print_error_and_exit "createClient failed."
+    client_name="${CLIENT_NAME}_${client_extension}"
+    DEVKIT_CLIENT_NAMES+=( "$client_name" )
+
+    gemstone::prepare_client $client_version $client_name
+  done
+
+}
+
+gemstone::prepare_client() {
+  local client_version="$1"
+  local client_name="$2"
+
+ travis_fold start "create_${client_name}" "Creating client ${client_name}..."
+    timer_start
+
+    $GS_HOME/bin/createClient -t pharo "$client_name" -v ${client_version} -s "${STONE_NAME}" -z "${config_project_home}/${config_ston}" || print_error_and_exit "createClient ${client_name} failed."
 
     timer_finish
-  travis_fold end create_client
-
+  travis_fold end "create_${client_name}"
 }
 
 ################################################################################
@@ -266,13 +282,14 @@ gemstone::load_and_test_project() {
     timer_start
 
     $GS_HOME/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
-      Metacello new
-        baseline: 'SmalltalkCI';
-        repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
-        load: 'Core'.
-      System commitTransaction.
-      (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_project_home}/${config_ston}'.
-      System commitTransaction.
+      GsDeployer bulkMigrate: [
+        Metacello new
+          baseline: 'SmalltalkCI';
+          repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
+          load: 'Core'.
+        System commitTransaction.
+        (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_project_home}/${config_ston}'.
+      ].
 EOF
 
     timer_finish
@@ -283,20 +300,31 @@ EOF
     print_error_and_exit "Failed to load project."
   fi
 
-    # this is where the client load is located ... need to do the print_reults() of stone --- probably should be in separate fold
-
   travis_fold start test_server_project "Testing server project..."
     timer_start
 
     $GS_HOME/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
-      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_project_home}/${config_ston}'.
+      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_project_home}/${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
       System commitTransaction.
 EOF
 
     timer_finish
   travis_fold end test_server_project
 
-    # this is where the client test is located ... need to do the print_reults() of stone  --- probably should be in separate fold
+  if is_not_empty  "${DEVKIT_CLIENT_NAMES:-}"; then
+
+    for client_name in "${DEVKIT_CLIENT_NAMES[@]}"
+    do
+      travis_fold start "test_${client_name}" "Testing client project ${client_name}..."
+        timer_start
+    
+        $GS_HOME/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_project_home}/${config_ston}"
+
+        timer_finish
+      travis_fold end "test_${client_name}"
+    done
+    
+  fi
 
   travis_fold start stop_stone
 
@@ -331,7 +359,7 @@ run_build() {
 
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${config_smalltalk}"
-  gemstone::prepare_optional_client "${config_smalltalk}"
+  gemstone::prepare_optional_clients
   gemstone::load_and_test_project || exit_status=$?
 
   return "${exit_status}"
