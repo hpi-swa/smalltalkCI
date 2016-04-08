@@ -361,7 +361,9 @@ gemstone::parse_options() {
     devkit_client_args=${GSCI_CLIENTS}
   fi
 
-  read -ra DEVKIT_CLIENTS <<< "${devkit_client_args}"
+  if is_not_empty "${devkit_client_args:-}"
+    read -ra DEVKIT_CLIENTS <<< "${devkit_client_args}"
+  fi
 
   export GS_HOME
 
