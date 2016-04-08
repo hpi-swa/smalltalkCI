@@ -1,7 +1,11 @@
 # SmalltalkCI and GsDevKit_home
 
-1. [Server only SmalltalkCI runs](#server-only-runs)
+### Table of Contents
+1. [Server only SmalltalkCI runs](#server-only-smalltalkci-runs)
    1. [Running SmalltalkCI builds on your local machine](#running-smalltalkci-builds-on-your-local-machine)
+
+---
+---
 
 # Server only SmalltalkCI runs
 Right now a good example of using SmalltalkCI for exclusive server-side testing is the [tODE project](https://github.com/dalehenrich/tode).
@@ -83,7 +87,7 @@ that looks like the following:
 
 ![ol continuation view][4]
 
-The debug menu item can be used to bring up the debugger on the continuation.
+The `debug continuation` menu item can be used to bring up the debugger on the continuation.
 
 To rerun the the tests from within a tODE session use the following command in the tODE shell:
 
