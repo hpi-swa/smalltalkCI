@@ -19,18 +19,12 @@ local PHARO_CHANGES_FILE="Pharo-3.0.changes"
 # Handle GemStone-specific options.
 ################################################################################
 gemstone::parse_options() {
-local dev_kit_client_arg
 
   GS_HOME="$DEFAULT_GS_HOME"
 
   if is_not_empty "${GSCI_DEVKIT_BRANCH:-}"; then
     DEVKIT_BRANCH="${GSCI_DEVKIT_BRANCH}"
   fi
-
-  if is_not_empty "${GSCI_CLIENT:-}"; then
-    dev_kit_client_arg=("${GSCI_CLIENT}")
-  fi
-
 
   while :
   do
@@ -61,8 +55,8 @@ local dev_kit_client_arg
     esac
   done
 
-  if is_empty "${DEVKIT_CLIENTS:-}" && is_not_empty "${dev_kit_client_arg:-}"; then
-    DEVKIT_CLIENTS=${dev_kit_client_arg[@]}
+  if is_empty "${DEVKIT_CLIENTS:-}" && is_not_empty "${GSCI_CLIENTS:-}"; then
+    DEVKIT_CLIENTS=${GSCI_CLIENTS[@]}
   fi
 
   export GS_HOME
@@ -310,7 +304,7 @@ EOF
     timer_start
 
     $GS_HOME/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
-      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_project_home}/${config_ston}' named: '${STONE_NAME}_"${config_smalltalk}'.
+      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_project_home}/${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
       System commitTransaction.
 EOF
 
