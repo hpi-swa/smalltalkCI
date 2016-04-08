@@ -6,8 +6,11 @@
 		"isPlatformCompatible" : "fn 1/31/2016 17:57",
 		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:37" },
 	"instance" : {
-		"finishUpAfterCI" : "fn 1/31/2016 19:03",
-		"prepareForCI" : "fn 1/31/2016 20:36",
+		"classesForCategories:" : "jc 4/8/2016 13:42",
+		"finishUpAfterCI" : "jc 4/8/2016 10:59",
+		"finishUpAfterCoverage" : "jc 4/8/2016 13:53",
+		"prepareCoverageForClasses:" : "jc 4/8/2016 13:46",
+		"prepareForCI" : "jc 4/8/2016 13:45",
 		"readSTONSpec:" : "dkh 2/23/2016 13:36:46",
 		"runCI" : "travisCI 1/27/2016 17:03",
 		"runTests" : "fn 1/31/2016 19:08" } }
