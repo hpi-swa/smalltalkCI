@@ -9,6 +9,15 @@ if ! is_travis_build; then
   print_error_and_exit "This test needs to run on Travis."
 fi
 
+case "${TRAVIS_SMALLTALK_VERSION}" in
+  GemStone*)
+	if [[ "$(uname -s)" = "Darwin" ]]; then
+	  print_notice "Not running fail test for GemStone on OS X."
+	  exit 0
+	fi
+    ;;
+esac
+
 if is_empty "${SMALLTALK_CI_HOME}" || is_empty "${SMALLTALK_CI_BUILD}"; then
   print_error_and_exit "SMALLTALK_CI_HOME or SMALLTALK_CI_BUILD not set."
 fi
