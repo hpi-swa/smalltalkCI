@@ -37,7 +37,7 @@ cache:
 The two things to note about this particular `.travis.yml` file is that:
 
 1. I'm only running one OSX build for GemStone 3.3.0. There are fewer OSX servers currently available on Travis, so you end up waiting longer for a server to become available - sometimes all of the linux builds finish before an osx server becomes available. A second reason is that dependency caching (see point 2 below) is not available on OSX and that can make a big difference in build times:
-  - [a recent tODE build](https://travis-ci.org/dalehenrich/tode/builds/121809026) took 13 minutes on linux (with dependency caching) and 28 minutes on OSX (with no dependency caching). 
+  - [a recent tODE build](https://travis-ci.org/dalehenrich/tode/builds/121809026) took as low as 13 minutes on linux is load dep (with dependency caching) and 27 minutes on OSX (with no dependency caching). 
 2. I'm taking advantage of [Travis Depdendency Caching](https://docs.travis-ci.com/user/caching/). Two things are cached for GemStone builds:
    - an extent0.tode.dbf file for each GemStone version.
    - the devKitCommandLine image
@@ -47,10 +47,14 @@ If you see have test a failure on Travis and you can't understand the failure fr
 
 ![travis debug stack][1]
 
-Then you can try debugging the failure locally. The obvious first step is to run the test in your development environment, you can try running the smalltalkCI process locally and then debug in that environment. The [Smalltalk CI project](https://github.com/hpi-swa/smalltalkCI) is cloned by default into the [GsDevKit_home][2] `$GS_HOME/shared/repos` directory and the following assumes that you have [GsDevKit_home][2] installed.
+Then you can try debugging the failure locally. The obvious first step is to run the test in your development environment using `test project Tode`.
+
+If you want to or need to reproduce the SmalltalkCI environment to debug the test, then you can run a smalltalkCI build locally and debug directly in that environment. 
+
+The [Smalltalk CI project](https://github.com/hpi-swa/smalltalkCI) is cloned by default into the [GsDevKit_home][2] `$GS_HOME/shared/repos` directory and the following assumes that you have [GsDevKit_home][2] installed.
 
 ## Running SmalltalkCI builds on your local machine
-The following steps assume that you are trying to debug test failures in the tODE project.
+The following steps assume that you are trying to debug test failures in the [tODE project](https://github.com/dalehenrich/tode).
 
 ```shell
 cd $GS_HOME/shared/repos/smalltalkCI
@@ -94,8 +98,6 @@ To rerun the the tests from within a tODE session use the following command in t
 ```
 eval `SmalltalkCI testCIFor: '$GS_HOME/shared/repos/tode/.smalltalk.ston'`
 ```
-
-
 
 [1]: ./pngs/travisErrorStack.png
 [2]: https://github.com/GsDevKit/GsDevKit_home
