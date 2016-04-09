@@ -47,7 +47,21 @@ SmalltalkCISpec {
 }
 ```
 
-Besides being used for Travis builds by [SmalltalkCI][9]
+Besides being used by [SmalltalkCI][9] for Travis builds, a `smalltalk.ston` file can be used for the creation of a [GsDevKit_home][2] stone:
+
+```shell
+$GS_HOME/bin/createStone -z $GS_HOME/sys/local/server/templates/myStoneConfig.ston gs_329 3.2.9
+```
+
+In the above form, only the **SCIGemStoneServerConfigSpec** is used to create the stone (i.e., the **SCIMetacelloLoadSpec** is ignored).
+However, if you specify the `-c` option:
+
+```shell
+$GS_HOME/bin/createStone -c -z $GS_HOME/sys/local/server/templates/myStoneConfig.ston gs_329 3.2.9
+```
+
+The `#gemstone` **SCIMetacelloLoadSpec**s are loaded into the stone.
+
 
 # Server only SmalltalkCI runs
 Right now a good example of using [SmalltalkCI][9] for exclusive server-side testing is the [tODE project](https://github.com/dalehenrich/tode).
