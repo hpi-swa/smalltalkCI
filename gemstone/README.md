@@ -11,34 +11,48 @@
 ---
 ---
 # SmalltalkCI SCIGemStoneServerConfigSpec
-The SCIGemStoneServerConfigSpec is used to configure the stone created for SmalltalkCI tests.
-Currently there are 4 attributes that may be specified (more will be added on demand):
+The SCIGemStoneServerConfigSpec is used to configure the stone created for [SmalltalkCI][9] tests.
+Currently there are 4 attributes that may be specified (additional attributes will be added on demand):
 
 | attribute | description |
 | --------- | ----------- |
 | **#defaultSessionName** | Default name of the session session description to be used to log into a stone by a Smalltalk client. See  [Client/Server SmalltalkCI](#clientserver-smalltalkci) for more details. |
-| **#stoneConfPath**      | Absolute or relative path to a [GemStone stone configuration file][5]. A symbolic link is created in the `$GS_HOME/server/stones/<stone-name>` directory before the stone is started. |
-| **#gemConfPath**        | Absolute or relative path to a [GemStone session configuration file][6]. A symbolic link is created in the `$GS_HOME/server/stones/<stone-name>` directory before the stone is started. |
+| **#stoneConfPath**      | Absolute or relative path to a [GemStone stone configuration file][5]. A symbolic link is created in the `$GS_HOME/server/stones/<stone-name>` directory before the stone is started. 
+**Example:** Control the [size of the shared page cache][7] used by stone for Travis builds. |
+| **#gemConfPath**        | Absolute or relative path to a [GemStone session configuration file][6]. A symbolic link is created in the `$GS_HOME/server/stones/<stone-name>` directory before the stone is started. 
+**Example:** Control the [size of the Temporary Object Cache][8] used by gems for Travis builds. |
 | **#timeZone**           | Name of the TimeZone (see `TimeZone class>>availableZones` for list of eligible TimeZone names) to be used as the default TimeZone for the stone. The default TimeZone is set immediately after the stone is started, before any bootstrap code is run. |
+
+Here's an [example .smalltalk.ston file](https://github.com/GsDevKit/GemStone-GCI/blob/master/.smalltalk.ston):
 
 ```yml
 SmalltalkCISpec {
+  #specName : 'GemStoneGCI',
   #configuring : [
     SCIGemStoneServerConfigSpec {
-     #defaultSessionName : 'smalltalkCI',
+     #defaultSessionName : 'gciTest',
      #stoneConfPath : 'gemstone/stone.conf',
      #gemConfPath : 'gemstone/gem.conf',
      #timeZone : 'UTC',
-     #platforms : [ #gemstone ] 
+     #platforms : [ #gemstone, #gemstoneClient ] 
     }
   ],
-  #loading : [ '...' ],
-  #testing : {}
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'GemStoneGCI',
+      #load : [ 'GsDevKit', 'Tests' ],
+      #directory : 'repository',
+      #platforms : [ #gemstone, #pharo ]
+    }
+  ]
+}
 }
 ```
 
+Besides being used for Travis builds by [SmalltalkCI][9]
+
 # Server only SmalltalkCI runs
-Right now a good example of using SmalltalkCI for exclusive server-side testing is the [tODE project](https://github.com/dalehenrich/tode).
+Right now a good example of using [SmalltalkCI][9] for exclusive server-side testing is the [tODE project](https://github.com/dalehenrich/tode).
 Here's a sample of the `.travis.yml` file:
 
 ```yml
@@ -153,3 +167,6 @@ SmalltalkCISpec {
 [4]: ./pngs/travisOlView.png
 [5]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/GS64-SysAdmin-3.2.htm?https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/1-Server.htm#pgfId-83703
 [6]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/2-Clients.htm#pgfId-82579
+[7]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/GS64-SysAdmin-3.2.htm?https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-437302
+[8]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-439762
+[9]:https://github.com/hpi-swa/smalltalkCI
