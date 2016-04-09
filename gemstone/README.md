@@ -1,11 +1,41 @@
 # SmalltalkCI and GsDevKit_home
 
 ### Table of Contents
-1. [Server only SmalltalkCI runs](#server-only-smalltalkci-runs)
-   1. [Running SmalltalkCI builds on your local machine](#running-smalltalkci-builds-on-your-local-machine)
+1. [SmalltalkCI SCIGemStoneServerConfigSpec](#smalltalkci-scigemstoneserverconfigspec)
+2. [Server only SmalltalkCI configuration](#server-only-smalltalkci-runs)
+3. [Running SmalltalkCI builds on your local machine](#running-smalltalkci-builds-on-your-local-machine)
+4. [Client/Server SmalltalkCI](#clientserver-smalltalkci)
+5. [Dedicated CI Stone](#dedicated-ci-stone)
+
 
 ---
 ---
+# SmalltalkCI SCIGemStoneServerConfigSpec
+The SCIGemStoneServerConfigSpec is used to configure the stone created for SmalltalkCI tests.
+Currently there are 4 attributes that may be specified (more will be added on demand):
+
+| attribute | description |
+| --------- | ----------- |
+| **#defaultSessionName** | Default name of the session session description to be used to log into a stone by a Smalltalk client. See  [Client/Server SmalltalkCI](#clientserver-smalltalkci) for more details. |
+| **#stoneConfPath**      | Absolute or relative path to a [GemStone stone configuration file][5]. A symbolic link is created in the `$GS_HOME/server/stones/<stone-name>` directory before the stone is started. |
+| **#gemConfPath**        | Absolute or relative path to a [GemStone session configuration file][6]. A symbolic link is created in the `$GS_HOME/server/stones/<stone-name>` directory before the stone is started. |
+| **#timeZone**           | Name of the TimeZone (see `TimeZone class>>availableZones` for list of eligible TimeZone names) to be used as the default TimeZone for the stone. The default TimeZone is set immediately after the stone is started, before any bootstrap code is run. |
+
+```yml
+SmalltalkCISpec {
+  #configuring : [
+    SCIGemStoneServerConfigSpec {
+     #defaultSessionName : 'smalltalkCI',
+     #stoneConfPath : 'gemstone/stone.conf',
+     #gemConfPath : 'gemstone/gem.conf',
+     #timeZone : 'UTC',
+     #platforms : [ #gemstone ] 
+    }
+  ],
+  #loading : [ '...' ],
+  #testing : {}
+}
+```
 
 # Server only SmalltalkCI runs
 Right now a good example of using SmalltalkCI for exclusive server-side testing is the [tODE project](https://github.com/dalehenrich/tode).
@@ -53,7 +83,7 @@ If you want to or need to reproduce the SmalltalkCI environment to debug the tes
 
 The [Smalltalk CI project](https://github.com/hpi-swa/smalltalkCI) is cloned by default into the [GsDevKit_home][2] `$GS_HOME/shared/repos` directory and the following assumes that you have [GsDevKit_home][2] installed.
 
-## Running SmalltalkCI builds on your local machine
+# Running SmalltalkCI builds on your local machine
 The following steps assume that you are trying to debug test failures in the [tODE project](https://github.com/dalehenrich/tode).
 
 ```shell
@@ -99,7 +129,27 @@ To rerun the the tests from within a tODE session use the following command in t
 eval `SmalltalkCI testCIFor: '$GS_HOME/shared/repos/tode/.smalltalk.ston'`
 ```
 
+# Client/Server SmalltalkCI
+
+```yml
+SmalltalkCISpec {
+  #configuring : [
+    SCIGemStoneServerConfigSpec {
+     #defaultSessionName : 'smalltalkCI',
+    #platforms : [ #gemstoneClient ] 
+    }
+  ],
+  #loading : [ '...' ],
+  #testing : {}
+}
+```
+
+
+# Dedicated CI Stone
+
 [1]: ./pngs/travisErrorStack.png
 [2]: https://github.com/GsDevKit/GsDevKit_home
 [3]: ./pngs/todeTestFailureMessage.png
 [4]: ./pngs/travisOlView.png
+[5]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/GS64-SysAdmin-3.2.htm?https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/1-Server.htm#pgfId-83703
+[6]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/2-Clients.htm#pgfId-82579
