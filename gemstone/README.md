@@ -87,21 +87,17 @@ Here's a sample `.travis.yml` file:
 ```yml
 language: smalltalk
 sudo: false
-
 os: linux
-
 smalltalk:
   - GemStone-2.4.7
   - GemStone-3.1.0.6
   - GemStone-3.2.12
   - GemStone-3.3.0
-
 # Do only one build on osx
 matrix:
   include:
     - smalltalk: GemStone-3.3.0
       os: osx
-
 cache:
   directories:
     - $SMALLTALK_CI_CACHE
@@ -195,16 +191,12 @@ Here's a sample `.travis.yml` file:
 ```yml
 language: smalltalk
 sudo: false
-
 os:
   - linux
-
 env:
   - GSCI_CLIENTS=( "Pharo-3.0" "Pharo-4.0" "Pharo-5.0")
-
 smalltalk:
   - GemStone-3.3.0
-
 cache:
   directories:
     - $SMALLTALK_CI_CACHE
