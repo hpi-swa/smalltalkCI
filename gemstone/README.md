@@ -2,10 +2,11 @@
 
 ### Table of Contents
 1. [SmalltalkCI SCIGemStoneServerConfigSpec](#smalltalkci-scigemstoneserverconfigspec)
-2. [Server only SmalltalkCI configuration](#server-only-smalltalkci-runs)
-3. [Running SmalltalkCI builds on your local machine](#running-smalltalkci-builds-on-your-local-machine)
-4. [Client/Server SmalltalkCI](#clientserver-smalltalkci)
-5. [Dedicated CI Stone](#dedicated-ci-stone)
+2. [Server SmalltalkCI builds](#server-smalltalkci-builds)
+3. [Running Server SmalltalkCI builds on your local machine](#running-server-smalltalkci-builds-on-your-local-machine)
+4. [Client/Server SmalltalkCI builds](#clientserver-smalltalkci-builds)
+5. [Running Client/Server SmalltalkCI builds on your local machine](#running-clientserver-smalltalkci-builds-on-your-local-machine)
+6. [Dedicated CI Stone](#dedicated-ci-stone)
 
 
 ---
@@ -23,7 +24,7 @@ Currently there are 4 attributes that may be specified (additional attributes wi
 
 Here's an [example .smalltalk.ston file](https://github.com/GsDevKit/GemStone-GCI/blob/master/.smalltalk.ston):
 
-```yml
+```ston
 SmalltalkCISpec {
   #specName : 'GemStoneGCI',
   #configuring : [
@@ -63,9 +64,25 @@ $GS_HOME/bin/createStone -c -z $GS_HOME/sys/local/server/templates/myStoneConfig
 The `#gemstone` **SCIMetacelloLoadSpec**s are loaded into the stone.
 
 
-# Server only SmalltalkCI runs
+# Server SmalltalkCI builds
 Right now a good example of using [SmalltalkCI][9] for exclusive server-side testing is the [tODE project](https://github.com/dalehenrich/tode).
-Here's a sample of the `.travis.yml` file:
+Here's a sample `.smalltalk.ston` file:
+
+```ston
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'Tode',
+      #load : [ 'CI' ],
+      #directory : 'repository',
+      #onWarningLog : true,
+      #platforms : [ #gemstone ]
+    }
+  ]
+}
+```
+
+Here's a sample `.travis.yml` file:
 
 ```yml
 language: smalltalk
@@ -90,7 +107,8 @@ cache:
     - $SMALLTALK_CI_CACHE
 ```
 
-The two things to note about this particular `.travis.yml` file is that:
+
+The things to note about the `.travis.yml` are:
 
 1. I'm only running one OSX build for GemStone 3.3.0. There are fewer OSX servers currently available on Travis, so you end up waiting longer for a server to become available - sometimes all of the linux builds finish before an osx server becomes available. A second reason is that dependency caching (see point 2 below) is not available on OSX and that can make a big difference in build times:
   - [a recent tODE build](https://travis-ci.org/dalehenrich/tode/builds/121809026) took as low as 13 minutes on linux is load dep (with dependency caching) and 27 minutes on OSX (with no dependency caching). 
@@ -109,7 +127,7 @@ If you want to or need to reproduce the SmalltalkCI environment to debug the tes
 
 The [Smalltalk CI project](https://github.com/hpi-swa/smalltalkCI) is cloned by default into the [GsDevKit_home][2] `$GS_HOME/shared/repos` directory and the following assumes that you have [GsDevKit_home][2] installed.
 
-# Running SmalltalkCI builds on your local machine
+# Running Server SmalltalkCI builds on your local machine
 The following steps assume that you are trying to debug test failures in the [tODE project](https://github.com/dalehenrich/tode).
 
 ```shell
@@ -155,21 +173,47 @@ To rerun the the tests from within a tODE session use the following command in t
 eval `SmalltalkCI testCIFor: '$GS_HOME/shared/repos/tode/.smalltalk.ston'`
 ```
 
-# Client/Server SmalltalkCI
+# Client/Server SmalltalkCI builds
+Right now a good example of using [SmalltalkCI][9] for client/server testing is the [GemStone-GCI project](https://github.com/GsDevKit/GemStone-GCI).
+Here's a sample `.smalltalk.ston` file:
 
-```yml
+```ston
 SmalltalkCISpec {
-  #configuring : [
-    SCIGemStoneServerConfigSpec {
-     #defaultSessionName : 'smalltalkCI',
-    #platforms : [ #gemstoneClient ] 
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'GemStoneGCI',
+      #load : [ 'Tests' ],
+      #directory : 'repository',
+      #platforms : [ #gemstone, #pharo ]
     }
-  ],
-  #loading : [ '...' ],
-  #testing : {}
+  ]
 }
 ```
 
+Here's a sample `.travis.yml` file:
+
+```yml
+language: smalltalk
+sudo: false
+
+os:
+  - linux
+
+env:
+  - GSCI_CLIENTS=( "Pharo-3.0" "Pharo-4.0" "Pharo-5.0")
+
+smalltalk:
+  - GemStone-3.3.0
+
+cache:
+  directories:
+    - $SMALLTALK_CI_CACHE
+```
+
+The thing to note about this `.travis.yml` file is the use of the `GSCI_CLIENTS` environment variable...... 
+
+
+# Running Client/Server SmalltalkCI builds on your local machine
 
 # Dedicated CI Stone
 
