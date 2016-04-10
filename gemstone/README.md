@@ -194,7 +194,7 @@ sudo: false
 os:
   - linux
 env:
-  - GSCI_CLIENTS=( "Pharo-3.0" "Pharo-4.0" "Pharo-5.0")
+  - GSCI_CLIENTS=( "Pharo-3.0" "Pharo-4.0" "Pharo-5.0" )
 smalltalk:
   - GemStone-3.3.0
 cache:
