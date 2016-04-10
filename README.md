@@ -260,7 +260,7 @@ problem.
 - [@pharo-project](https://github.com/pharo-project):
     [pharo-project-proposals](https://github.com/pharo-project/pharo-project-proposals).
 - [@PolyMathOrg](https://github.com/PolyMathOrg):
--   [PolyMath](https://github.com/PolyMathOrg/PolyMath).
+    [PolyMath](https://github.com/PolyMathOrg/PolyMath).
 - [@SeasideSt](https://github.com/SeasideSt):
     [Grease](https://github.com/SeasideSt/Grease).
 - [@SergeStinckwich](https://github.com/SergeStinckwich):
