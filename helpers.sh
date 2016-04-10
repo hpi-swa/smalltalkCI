@@ -175,7 +175,7 @@ download_file() {
   fi
 
   if program_exists "curl"; then
-    curl -s "${url}"
+    curl -f -s --retry 3 "${url}"
   elif program_exists "wget"; then
     wget -q -O - "${url}"
   else
