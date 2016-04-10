@@ -6,7 +6,8 @@
 3. [Running Server SmalltalkCI builds on your local machine](#running-server-smalltalkci-builds-on-your-local-machine)
 4. [Client/Server SmalltalkCI builds](#clientserver-smalltalkci-builds)
 5. [Running Client/Server SmalltalkCI builds on your local machine](#running-clientserver-smalltalkci-builds-on-your-local-machine)
-6. [Dedicated CI Stone](#dedicated-ci-stone)
+6. [Dedicated Server CI Stone](#dedicated-server-ci-stone)
+7. [Dedicated Client/Server CI Stone](#dedicated-clientserver-ci-stone)
 
 
 ---
@@ -207,7 +208,26 @@ The thing to note about this `.travis.yml` file is the use of the `GSCI_CLIENTS`
 
 # Running Client/Server SmalltalkCI builds on your local machine
 
-# Dedicated CI Stone
+# Dedicated Server CI Stone
+
+```
+createStone ci_329 3.2.9
+smalltalkCI -r -z $GS_HOME/shared/repos/smalltalkCI/.smalltalk.ston ci_329
+```
+
+# Dedicated Client/Server CI Stone
+
+```
+git clone https://github.com/GsDevKit/GemStone-GCI.git
+createStone ci_330 ci_330
+createClient -t pharo gci_Pharo5.0 -v Pharo5.0 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
+
+smalltalkCI -r -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston ci_330
+startClient gci_Pharo5.0 -s ci_330 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston -t gci_Pharo5.0
+
+startClient gci_Pharo5.0 -s ci_330
+```
+
 
 [1]: ./pngs/travisErrorStack.png
 [2]: https://github.com/GsDevKit/GsDevKit_home
