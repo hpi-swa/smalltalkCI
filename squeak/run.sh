@@ -104,7 +104,7 @@ squeak::get_vm_details() {
 
   case "${os_name}" in
     "Linux")
-      if [[ "$require_spur" -eq 1 ]]; then
+      if [[ "${require_spur}" -eq 1 ]]; then
         vm_filename="cogspurlinux-15.33.3427.tgz"
         vm_path="${SMALLTALK_CI_VMS}/cogspurlinux/squeak"
       else
@@ -113,7 +113,7 @@ squeak::get_vm_details() {
       fi
       ;;
     "Darwin")
-      if [[ "$require_spur" -eq 1 ]]; then
+      if [[ "${require_spur}" -eq 1 ]]; then
         vm_filename="CogSpur.app-15.33.3427.tgz"
         vm_path="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
       else
