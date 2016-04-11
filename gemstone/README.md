@@ -271,7 +271,7 @@ git clone https://github.com/GsDevKit/GemStone-GCI.git # if not already cloned
 smalltalkCI -r -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston ci_329
 ```
 
-The `smalltalkCI` script starts the run by using `$GS_HOME/server/stones/ci_329/snapshots/extent0.tode.dbf` as the initial extent and then using the `.smalltalk.ston` for the project to load the project code and run the tests. In this way, you are testing the load of the project into a base tODE image as well as running tests.
+The `smalltalkCI` script starts the run by using `$GS_HOME/server/stones/ci_329/snapshots/extent0.tode.dbf` as the initial extent and then using the `.smalltalk.ston` for the project to load the project code and run the tests. In this way, you are testing the load of the project into a base tODE image as well as running tests. The stone is left running after the `smalltalkCI` script ends, so you can connect to the stone with a tODE client.
 
 If you want to build save time, you can make a snapshot of an extent with the project already loaded:
 
@@ -289,17 +289,41 @@ smalltalkCI -r -t $GS_HOME/server/stones/ci_329/snapshots/extent0.gemstone_gci.d
 
 # Dedicated Client/Server CI Stone
 
+In addition to having a dedicated stone for running server builds, you can explicitly create clients to be used for running builds and tests against the dedicated server. Start by creating a dedicated stone:
+
 ```
 git clone https://github.com/GsDevKit/GemStone-GCI.git # if not already cloned
 createStone ci_330 ci_330
+```
+
+For the clients you will need to create a fresh client every time you want to do a fresh build from scratch:
+
+```
+deleteClient gci_Pharo5.0  # start from a fresh installation if gci_Pharo5.0 already exists
 createClient -t pharo gci_Pharo5.0 -v Pharo5.0 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
+```
 
-# run server tests
+If there are errors during the client load, you can use the `-D` option to bring an interactive image and debug the issue:
+
+```
+createClient -D -t pharo gci_Pharo5.0 -v Pharo5.0 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
+```
+
+Run the server tests:
+
+```
 smalltalkCI -r -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston ci_330
-# run client tests
-startClient gci_Pharo5.0 -s ci_330 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston -r -t gci_test
+```
 
-# interactive debugging of any tests errors revealed by previous run
+Run the client tests:
+
+```
+startClient gci_Pharo5.0 -s ci_330 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston -r -t gci_test
+```
+
+Interactive debugging of any tests errors revealed by previous run:
+
+```
 startClient gci_Pharo5.0 -s ci_330
 ```
 
