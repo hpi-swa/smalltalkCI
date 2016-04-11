@@ -329,25 +329,62 @@ startClient gci_Pharo5.0 -s ci_330
 
 # Develop in Pharo, deploy in GemStone CI
 
+The *develop in Pharo and deploy in GemStone* model is very similar to the [dedicated client/server model](#dedicated-clientserver-ci-stone). The main difference is that you will dedicate a stone and client to single project, so that a full load of the project isn't always necessary. For this example we'll use the [Seaside project](https://github.com/SeasideSt/Seaside).
+
+Start by making a local clone of the Seaside repository:
+
 ```
 cd $GS_HOME/shared/repos
 git clone https://github.com/SeasideSt/Seaside.git
 cd Seaside
 git checkout dev/3.2
-
-createStone -u http://gsdevkit.github.io/GsDevKit_home/Seaside32.ston -i Seaside3 -l Seaside3 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330 3.3.0
-todeIt seaside32_330 bu snapshot seaside32.dbf
-
-smalltalkCI -r -t $GS_HOME/server/stones/seaside32_330/snapshots/extent0.seaside32.dbf -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330
-todeIt seaside32_330 bu snapshot seaside32_ci.dbf
-
-smalltalkCI -r -t $GS_HOME/server/stones/seaside32_330/snapshots/extent0.seaside32_ci.dbf -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330
-
----TESTED TO HERE
-
-createClient -t pharo seaside_Pharo4.0 -v Pharo4.0 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston
-startClient seaside_Pharo4.0 -s seaside32_330 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston -r -t seaside_test
 ```
+
+Then create a dedicated stone for Seaside:
+
+```
+createStone -u http://gsdevkit.github.io/GsDevKit_home/Seaside32.ston -i Seaside3 -l Seaside3 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330 3.3.0
+```
+
+and make a snapshot of Seaside before the tests are loaded:
+
+```
+todeIt seaside32_330 bu snapshot seaside32.dbf
+```
+
+Then load in the CI tests as specified by the Seaside `.smalltalk.ston` file:
+
+```
+smalltalkCI -t $GS_HOME/server/stones/seaside32_330/snapshots/extent0.seaside32.dbf -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330
+```
+
+and make a snapshot with the CI tests loaded:
+
+```
+todeIt seaside32_330 bu snapshot seaside32_ci.dbf
+```
+
+Now run the server tests:
+
+```
+smalltalkCI -r -t $GS_HOME/server/stones/seaside32_330/snapshots/extent0.seaside32_ci.dbf -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330
+```
+
+The above command should be used every time you want to run the server CI tests.
+
+Create a base Pharo client with the Seaside tests loaded:
+
+```
+createClient -t pharo seaside_Pharo4.0 -v Pharo4.0 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston
+```
+
+Then run the client tests:
+
+```
+startClient seaside_Pharo4.0 -f -s seaside32_330 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston -r -t seaside_test
+```
+
+By using the -f option, the code will be loaded into the client pharo image every time run make a run, so you will pick up the latest code and tests.
 
 [1]: ./pngs/travisErrorStack.png
 [2]: https://github.com/GsDevKit/GsDevKit_home
