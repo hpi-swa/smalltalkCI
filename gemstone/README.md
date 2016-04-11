@@ -381,10 +381,22 @@ createClient -t pharo seaside_Pharo4.0 -v Pharo4.0 -z $GS_HOME/shared/repos/Seas
 Then run the client tests:
 
 ```
-startClient seaside_Pharo4.0 -f -s seaside32_330 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston -r -t seaside_test
+startClient seaside_Pharo4.0 -f -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston -r -t seaside_test
 ```
 
 By using the -f option, the code will be loaded into the client pharo image every time run make a run, so you will pick up the latest code and tests.
+
+To interactively run/debug tests:
+
+```
+startClient seaside_Pharo4.0 -f -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston
+```
+
+or simply:
+
+```
+startClient seaside_Pharo4.0
+```
 
 [1]: ./pngs/travisErrorStack.png
 [2]: https://github.com/GsDevKit/GsDevKit_home
