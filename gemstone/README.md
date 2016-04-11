@@ -126,14 +126,13 @@ If you want to or need to reproduce the SmalltalkCI environment to debug the tes
 The [Smalltalk CI project](https://github.com/hpi-swa/smalltalkCI) is cloned by default into the [GsDevKit_home][2] `$GS_HOME/shared/repos` directory and the following assumes that you have [GsDevKit_home][2] installed.
 
 # Running Server SmalltalkCI builds on your local machine
-The following steps assume that you are trying to debug test failures in the [tODE project](https://github.com/dalehenrich/tode).
+The following steps assume that you are trying to debug Travis test failures in the [tODE project](https://github.com/dalehenrich/tode).
 
 ```shell
 cd $GS_HOME/shared/repos/smalltalkCI
 #
 # Run build using GemStone-3.3.0
-#  Note that you will want to delete the travis stone when you are done.
-# Create the stone named travis in an existing GsDevKit_home checkout
+# A stone named travis is created in an existing GsDevKit_home checkout
 #  Note that you will want to delete the travis stone when you are done.
 # Run the build for the tODE using the .smalltalk.ston file for tODE
 #
@@ -208,7 +207,53 @@ The thing to note about this `.travis.yml` file is the use of the `GSCI_CLIENTS`
 
 
 # Running Client/Server SmalltalkCI builds on your local machine
+The following steps assume that you are trying to debug Travis test client failures in the [GemStone-GCI project](git clone https://github.com/GsDevKit/GsDevKit_home.git).
 
+```shell
+#
+# Create local clone of the project
+#
+cd $GS_HOME/shared/repos
+git clone https://github.com/GsDevKit/GemStone-GCI.git
+#
+cd smalltalkCI
+#
+# Run build using GemStone-3.3.0
+# A stone named travis is created in an existing GsDevKit_home checkout
+#  Note that you will want to delete the travis stone when you are done.
+# Run the build for the GemStone-GCI using the .smalltalk.ston file for GemStone-GCI
+# In addition to running the build and tests for GemStone-3.3.0, run client tests for
+#  Pharo-4.0 and Pharo-5.0 against the travis stone.
+#
+./run.sh -s GemStone-3.3.0 --gs-CLIENTS="Pharo-4.0 Pharo-5." --gs-HOME=$GS_HOME $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
+```
+
+At the end of the build, the test results for the server 2 clients is summarized:
+
+![local client server results][10]
+
+To debug server errors follow the same steps as described for [running local server builds](#running-server-smalltalkci-builds-on-your-local-machine).
+
+If you look at the client list (`$GS_HOME/bin/clients`) you will see that travis clients have been created:
+
+```
+Installed Clients:
+	travisClient_Pharo5.0
+	  travisClient_Pharo5.0.image	(client)
+	travisClient_Pharo4.0
+	  travisClient_Pharo4.0.image	(client)
+	tode
+	  todeClient.image	(client)
+```
+
+To debug test failures in one of the clients follow these steps:
+
+```shell
+startStone -b travis
+startClient travisClient_Pharo5.0
+```
+
+```
 # Dedicated Server CI Stone
 
 ```
@@ -263,3 +308,4 @@ startClient seaside_Pharo4.0 -s seaside32_330 -z $GS_HOME/shared/repos/Seaside/.
 [7]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/GS64-SysAdmin-3.2.htm?https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-437302
 [8]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-439762
 [9]: https://github.com/hpi-swa/smalltalkCI
+[10]: ./pngs/localClientServerTestResults.png
