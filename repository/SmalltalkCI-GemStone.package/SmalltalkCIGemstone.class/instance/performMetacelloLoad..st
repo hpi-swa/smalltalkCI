@@ -1,3 +1,3 @@
 loading
 performMetacelloLoad: aBlock
-  ^ GsDeployer bulkMigrate aBlock
+  ^ GsDeployer bulkMigrate: aBlock
