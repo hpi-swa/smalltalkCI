@@ -2,16 +2,16 @@ language: smalltalk
 sudo: false
 
 smalltalk:
-#  - Squeak-trunk
+  - Squeak-trunk
   - Squeak-5.0
-#  - Squeak-4.6
-#  - Squeak-4.5
-#
-#  - Pharo-alpha
-#  - Pharo-stable
+  - Squeak-4.6
+  - Squeak-4.5
+
+  - Pharo-alpha
+  - Pharo-stable
   - Pharo-5.0
-#  - Pharo-4.0
-#  - Pharo-3.0
+  - Pharo-4.0
+  - Pharo-3.0
 
 smalltalk_config: .smalltalk.ston
 
@@ -44,7 +44,7 @@ matrix:
           - $SMALLTALK_CI_CACHE
     - smalltalk: GemStone-3.3.0
       os: linux
-      env: GSCI_DEVKIT_BRANCH=dev # only use for development
+      env: GSCI_DEVKIT_BRANCH=dev # only use for development --- leave until https://github.com/GsDevKit/GsDevKit_home/issues/93 merged
       cache:
         directories:
           - $SMALLTALK_CI_CACHE
@@ -54,25 +54,25 @@ matrix:
       cache:
         directories:
           - $SMALLTALK_CI_CACHE
-#    - smalltalk: GemStone-3.2.12
-#      os: linux
-##      env: GSCI_DEVKIT_BRANCH=dev # only use for development
-#      cache:
-#        directories:
-#          - $SMALLTALK_CI_CACHE
-#    - smalltalk: GemStone-3.1.0.6
-#      os: linux
-##      env: GSCI_DEVKIT_BRANCH=dev # only use for development
-#      cache:
-#        directories:
-#          - $SMALLTALK_CI_CACHE
-#    # GemStone OS X builds
-#    - smalltalk: GemStone-3.3.0
-#      os: osx
-##      env: GSCI_DEVKIT_BRANCH=dev # only use for development
-#    - smalltalk: GemStone-3.2.12
-#      os: osx
-##      env: GSCI_DEVKIT_BRANCH=dev # only use for development
-#    - smalltalk: GemStone-3.1.0.6
-#      os: osx
-##      env: GSCI_DEVKIT_BRANCH=dev # only use for development
+    - smalltalk: GemStone-3.2.14
+      os: linux
+#      env: GSCI_DEVKIT_BRANCH=dev # only use for development
+      cache:
+        directories:
+          - $SMALLTALK_CI_CACHE
+    - smalltalk: GemStone-3.1.0.6
+      os: linux
+#      env: GSCI_DEVKIT_BRANCH=dev # only use for development
+      cache:
+        directories:
+          - $SMALLTALK_CI_CACHE
+    # GemStone OS X builds
+    - smalltalk: GemStone-3.3.0
+      os: osx
+#      env: GSCI_DEVKIT_BRANCH=dev # only use for development
+    - smalltalk: GemStone-3.2.12
+      os: osx
+#      env: GSCI_DEVKIT_BRANCH=dev # only use for development
+    - smalltalk: GemStone-3.1.0.6
+      os: osx
+#      env: GSCI_DEVKIT_BRANCH=dev # only use for development
