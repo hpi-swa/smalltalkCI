@@ -11,4 +11,4 @@ basicLoadProjectOn: aSmalltalkCI
     configuration: self configuration;
     version: self version.
   metacello copy get.	"compensate for older versions of Metacello"
-  metacello load: self load
+  aSmalltalkCI performMetacelloLoad: [ metacello load: self load ]

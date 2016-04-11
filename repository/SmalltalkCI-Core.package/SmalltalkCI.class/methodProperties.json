@@ -29,6 +29,7 @@
 		"finishUpAfterCI" : "fn 1/31/2016 19:03",
 		"loadCI" : "dkh 03/31/2016 14:28",
 		"loadProjects" : "EatebanLorenzano 1/27/2016 14:31",
+		"performMetacelloLoad:" : "dkh 04/11/2016 09:24",
 		"prepareForCI" : "EstebanLorenzano 1/26/2016 17:07",
 		"projectDirectory" : "EstebanLorenzano 1/26/2016 16:20",
 		"projectDirectory:" : "TravisCI 02/04/2016 15:47",
