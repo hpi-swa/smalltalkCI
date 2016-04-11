@@ -8,9 +8,9 @@
 	"instance" : {
 		"classesForCategories:" : "jc 4/8/2016 13:42",
 		"finishUpAfterCI" : "jc 4/8/2016 10:59",
-		"finishUpAfterCoverage" : "jc 4/8/2016 13:53",
-		"prepareCoverageForClasses:" : "jc 4/8/2016 13:46",
+		"finishUpAfterCoverage" : "jc 4/11/2016 18:18",
+		"prepareCoverageForClasses:" : "jc 4/11/2016 17:02",
 		"prepareForCI" : "jc 4/8/2016 13:45",
-		"readSTONSpec:" : "dkh 2/23/2016 13:36:46",
+		"readSTONSpec:" : "jc 4/8/2016 14:54",
 		"runCI" : "travisCI 1/27/2016 17:03",
 		"runTests" : "fn 1/31/2016 19:08" } }
