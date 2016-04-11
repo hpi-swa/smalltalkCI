@@ -253,7 +253,6 @@ startStone -b travis
 startClient travisClient_Pharo5.0
 ```
 
-```
 # Dedicated Server CI Stone
 
 ```
