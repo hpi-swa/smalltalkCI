@@ -228,13 +228,13 @@ cd smalltalkCI
 ./run.sh -s GemStone-3.3.0 --gs-CLIENTS="Pharo-4.0 Pharo-5." --gs-HOME=$GS_HOME $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
 ```
 
-At the end of the build, the test results for the server 2 clients is summarized:
+At the end of the build, the test results are summarized for the server and 2 clients:
 
 ![local client server results][10]
 
 To debug server errors follow the same steps as described for [running local server builds](#running-server-smalltalkci-builds-on-your-local-machine).
 
-If you look at the client list (`$GS_HOME/bin/clients`) you will see that travis clients have been created:
+If you look at the client list (`$GS_HOME/bin/clients`) you will see that travis clients have been created for each of the client platforms:
 
 ```
 Installed Clients:
@@ -254,16 +254,43 @@ startClient travisClient_Pharo5.0
 ```
 
 # Dedicated Server CI Stone
+You can use a stone as a dedicated CI server, by creating a basic stone:
 
 ```
 createStone ci_329 3.2.9
-smalltalkCI -r -z $GS_HOME/shared/repos/smalltalkCI/.smalltalk.ston ci_329
 ```
+
+When you want to run CI test run against a specific project, use the `$GS_HOME/bin/smalltalkCI` script:
+
+```
+# Run smalltalkCI CI tests
+smalltalkCI -r -z $GS_HOME/shared/repos/smalltalkCI/.smalltalk.ston ci_329
+
+#Run GemtStone-GCI CI tests
+git clone https://github.com/GsDevKit/GemStone-GCI.git # if not already cloned
+smalltalkCI -r -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston ci_329
+```
+
+The `smalltalkCI` script starts the run by using `$GS_HOME/server/stones/ci_329/snapshots/extent0.tode.dbf` as the initial extent and then using the `.smalltalk.ston` for the project to load the project code and run the tests. In this way, you are testing the load of the project into a base tODE image as well as running tests.
+
+If you want to build save time, you can make a snapshot of an extent with the project already loaded:
+
+```
+smalltalkCI -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston ci_329
+todeIt ci_329 bu snapshot gemstone_gci.dbf
+```
+
+and then run your CI builds using the snapshot as a starting point for builds:
+
+```
+smalltalkCI -r -t $GS_HOME/server/stones/ci_329/snapshots/extent0.gemstone_gci.dbf -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston ci_329
+```
+
 
 # Dedicated Client/Server CI Stone
 
 ```
-git clone https://github.com/GsDevKit/GemStone-GCI.git
+git clone https://github.com/GsDevKit/GemStone-GCI.git # if not already cloned
 createStone ci_330 ci_330
 createClient -t pharo gci_Pharo5.0 -v Pharo5.0 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
 
