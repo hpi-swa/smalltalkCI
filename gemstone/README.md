@@ -8,6 +8,7 @@
 5. [Running Client/Server SmalltalkCI builds on your local machine](#running-clientserver-smalltalkci-builds-on-your-local-machine)
 6. [Dedicated Server CI Stone](#dedicated-server-ci-stone)
 7. [Dedicated Client/Server CI Stone](#dedicated-clientserver-ci-stone)
+8. [Develop in Pharo, deploy in GemStone CI](#develop-in-pharo-deploy-in-gemstone-ci)
 
 
 ---
@@ -222,12 +223,36 @@ git clone https://github.com/GsDevKit/GemStone-GCI.git
 createStone ci_330 ci_330
 createClient -t pharo gci_Pharo5.0 -v Pharo5.0 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
 
+# run server tests
 smalltalkCI -r -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston ci_330
-startClient gci_Pharo5.0 -s ci_330 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston -t gci_Pharo5.0
+# run client tests
+startClient gci_Pharo5.0 -s ci_330 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston -r -t gci_test
 
+# interactive debugging of any tests errors revealed by previous run
 startClient gci_Pharo5.0 -s ci_330
 ```
 
+# Develop in Pharo, deploy in GemStone CI
+
+```
+cd $GS_HOME/shared/repos
+git clone https://github.com/SeasideSt/Seaside.git
+cd Seaside
+git checkout dev/3.2
+
+createStone -u http://gsdevkit.github.io/GsDevKit_home/Seaside32.ston -i Seaside3 -l Seaside3 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330 3.3.0
+todeIt seaside32_330 bu snapshot seaside32.dbf
+
+smalltalkCI -r -t $GS_HOME/server/stones/seaside32_330/snapshots/extent0.seaside32.dbf -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330
+todeIt seaside32_330 bu snapshot seaside32_ci.dbf
+
+smalltalkCI -r -t $GS_HOME/server/stones/seaside32_330/snapshots/extent0.seaside32_ci.dbf -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330
+
+---TESTED TO HERE
+
+createClient -t pharo seaside_Pharo4.0 -v Pharo4.0 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston
+startClient seaside_Pharo4.0 -s seaside32_330 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston -r -t seaside_test
+```
 
 [1]: ./pngs/travisErrorStack.png
 [2]: https://github.com/GsDevKit/GsDevKit_home
@@ -237,4 +262,4 @@ startClient gci_Pharo5.0 -s ci_330
 [6]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/2-Clients.htm#pgfId-82579
 [7]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/GS64-SysAdmin-3.2.htm?https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-437302
 [8]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-439762
-[9]:https://github.com/hpi-swa/smalltalkCI
+[9]: https://github.com/hpi-swa/smalltalkCI
