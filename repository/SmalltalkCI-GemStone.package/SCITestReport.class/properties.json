@@ -16,6 +16,7 @@
 		"progressFile",
 		"stream",
 		"suitePosition",
+		"xmlLogDirPath",
 		"produceXMLLog" ],
 	"name" : "SCITestReport",
 	"pools" : [

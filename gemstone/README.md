@@ -1,40 +1,112 @@
 # SmalltalkCI and GsDevKit_home
 
 ### Table of Contents
-1. [Server only SmalltalkCI runs](#server-only-smalltalkci-runs)
-   1. [Running SmalltalkCI builds on your local machine](#running-smalltalkci-builds-on-your-local-machine)
+1. [SmalltalkCI SCIGemStoneServerConfigSpec](#smalltalkci-scigemstoneserverconfigspec)
+2. [Server SmalltalkCI builds](#server-smalltalkci-builds)
+3. [Running Server SmalltalkCI builds on your local machine](#running-server-smalltalkci-builds-on-your-local-machine)
+4. [Client/Server SmalltalkCI builds](#clientserver-smalltalkci-builds)
+5. [Running Client/Server SmalltalkCI builds on your local machine](#running-clientserver-smalltalkci-builds-on-your-local-machine)
+6. [Dedicated Server CI Stone](#dedicated-server-ci-stone)
+7. [Dedicated Client/Server CI Stone](#dedicated-clientserver-ci-stone)
+8. [Develop in Pharo, deploy in GemStone CI](#develop-in-pharo-deploy-in-gemstone-ci)
+
 
 ---
 ---
+# SmalltalkCI SCIGemStoneServerConfigSpec
+The SCIGemStoneServerConfigSpec is used to configure the stone created for [SmalltalkCI][9] tests.
+Currently there are 4 attributes that may be specified (additional attributes will be added on demand):
 
-# Server only SmalltalkCI runs
-Right now a good example of using SmalltalkCI for exclusive server-side testing is the [tODE project](https://github.com/dalehenrich/tode).
-Here's a sample of the `.travis.yml` file:
+| attribute | description |
+| --------- | ----------- |
+| **#defaultSessionName** | Default name of the session session description to be used to log into a stone by a Smalltalk client. See  [Client/Server SmalltalkCI](#clientserver-smalltalkci) for more details. |
+| **#stoneConfPath**      | Absolute or relative path to a [GemStone stone configuration file][5]. A symbolic link is created in the `$GS_HOME/server/stones/<stone-name>` directory before the stone is started. **Example:** Control the [size of the shared page cache][7] used by stone for Travis builds. |
+| **#gemConfPath**        | Absolute or relative path to a [GemStone session configuration file][6]. A symbolic link is created in the `$GS_HOME/server/stones/<stone-name>` directory before the stone is started. **Example:** Control the [size of the Temporary Object Cache][8] used by gems for Travis builds. |
+| **#timeZone**           | Name of the TimeZone (see `TimeZone class>>availableZones` for list of eligible TimeZone names) to be used as the default TimeZone for the stone. The default TimeZone is set immediately after the stone is started, before any bootstrap code is run. |
+
+Here's an [example .smalltalk.ston file](https://github.com/GsDevKit/GemStone-GCI/blob/master/.smalltalk.ston):
+
+```ston
+SmalltalkCISpec {
+  #specName : 'GemStoneGCI',
+  #configuring : [
+    SCIGemStoneServerConfigSpec {
+     #defaultSessionName : 'gciTest',
+     #stoneConfPath : 'gemstone/stone.conf',
+     #gemConfPath : 'gemstone/gem.conf',
+     #timeZone : 'UTC',
+     #platforms : [ #gemstone, #gemstoneClient ] 
+    }
+  ],
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'GemStoneGCI',
+      #load : [ 'GsDevKit', 'Tests' ],
+      #directory : 'repository',
+      #platforms : [ #gemstone, #pharo ]
+    }
+  ]
+}
+}
+```
+
+Besides being used by [SmalltalkCI][9] for Travis builds, a `smalltalk.ston` file can be used for the creation of a [GsDevKit_home][2] stone:
+
+```shell
+$GS_HOME/bin/createStone -z $GS_HOME/sys/local/server/templates/myStoneConfig.ston gs_329 3.2.9
+```
+
+In the above form, only the **SCIGemStoneServerConfigSpec** is used to create the stone (i.e., the **SCIMetacelloLoadSpec** is ignored).
+However, if you specify the `-c` option:
+
+```shell
+$GS_HOME/bin/createStone -c -z $GS_HOME/sys/local/server/templates/myStoneConfig.ston gs_329 3.2.9
+```
+
+The `#gemstone` **SCIMetacelloLoadSpec**s are loaded into the stone.
+
+
+# Server SmalltalkCI builds
+Right now a good example of using [SmalltalkCI][9] for exclusive server-side testing is the [tODE project](https://github.com/dalehenrich/tode).
+Here's a sample `.smalltalk.ston` file:
+
+```ston
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'Tode',
+      #load : [ 'CI' ],
+      #directory : 'repository',
+      #onWarningLog : true,
+      #platforms : [ #gemstone ]
+    }
+  ]
+}
+```
+
+Here's a sample `.travis.yml` file:
 
 ```yml
 language: smalltalk
 sudo: false
-
 os: linux
-
 smalltalk:
   - GemStone-2.4.7
   - GemStone-3.1.0.6
   - GemStone-3.2.12
   - GemStone-3.3.0
-
 # Do only one build on osx
 matrix:
   include:
     - smalltalk: GemStone-3.3.0
       os: osx
-
 cache:
   directories:
     - $SMALLTALK_CI_CACHE
 ```
 
-The two things to note about this particular `.travis.yml` file is that:
+
+The things to note about the `.travis.yml` are:
 
 1. I'm only running one OSX build for GemStone 3.3.0. There are fewer OSX servers currently available on Travis, so you end up waiting longer for a server to become available - sometimes all of the linux builds finish before an osx server becomes available. A second reason is that dependency caching (see point 2 below) is not available on OSX and that can make a big difference in build times:
   - [a recent tODE build](https://travis-ci.org/dalehenrich/tode/builds/121809026) took as low as 13 minutes on linux is load dep (with dependency caching) and 27 minutes on OSX (with no dependency caching). 
@@ -53,7 +125,7 @@ If you want to or need to reproduce the SmalltalkCI environment to debug the tes
 
 The [Smalltalk CI project](https://github.com/hpi-swa/smalltalkCI) is cloned by default into the [GsDevKit_home][2] `$GS_HOME/shared/repos` directory and the following assumes that you have [GsDevKit_home][2] installed.
 
-## Running SmalltalkCI builds on your local machine
+# Running Server SmalltalkCI builds on your local machine
 The following steps assume that you are trying to debug test failures in the [tODE project](https://github.com/dalehenrich/tode).
 
 ```shell
@@ -99,7 +171,95 @@ To rerun the the tests from within a tODE session use the following command in t
 eval `SmalltalkCI testCIFor: '$GS_HOME/shared/repos/tode/.smalltalk.ston'`
 ```
 
+# Client/Server SmalltalkCI builds
+Right now a good example of using [SmalltalkCI][9] for client/server testing is the [GemStone-GCI project](https://github.com/GsDevKit/GemStone-GCI).
+Here's a sample `.smalltalk.ston` file:
+
+```ston
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'GemStoneGCI',
+      #load : [ 'Tests' ],
+      #directory : 'repository',
+      #platforms : [ #gemstone, #pharo ]
+    }
+  ]
+}
+```
+
+Here's a sample `.travis.yml` file:
+
+```yml
+language: smalltalk
+sudo: false
+os:
+  - linux
+env:
+  - GSCI_CLIENTS=( "Pharo-3.0" "Pharo-4.0" "Pharo-5.0" )
+smalltalk:
+  - GemStone-3.3.0
+cache:
+  directories:
+    - $SMALLTALK_CI_CACHE
+```
+
+The thing to note about this `.travis.yml` file is the use of the `GSCI_CLIENTS` environment variable...... 
+
+
+# Running Client/Server SmalltalkCI builds on your local machine
+
+# Dedicated Server CI Stone
+
+```
+createStone ci_329 3.2.9
+smalltalkCI -r -z $GS_HOME/shared/repos/smalltalkCI/.smalltalk.ston ci_329
+```
+
+# Dedicated Client/Server CI Stone
+
+```
+git clone https://github.com/GsDevKit/GemStone-GCI.git
+createStone ci_330 ci_330
+createClient -t pharo gci_Pharo5.0 -v Pharo5.0 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
+
+# run server tests
+smalltalkCI -r -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston ci_330
+# run client tests
+startClient gci_Pharo5.0 -s ci_330 -z $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston -r -t gci_test
+
+# interactive debugging of any tests errors revealed by previous run
+startClient gci_Pharo5.0 -s ci_330
+```
+
+# Develop in Pharo, deploy in GemStone CI
+
+```
+cd $GS_HOME/shared/repos
+git clone https://github.com/SeasideSt/Seaside.git
+cd Seaside
+git checkout dev/3.2
+
+createStone -u http://gsdevkit.github.io/GsDevKit_home/Seaside32.ston -i Seaside3 -l Seaside3 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330 3.3.0
+todeIt seaside32_330 bu snapshot seaside32.dbf
+
+smalltalkCI -r -t $GS_HOME/server/stones/seaside32_330/snapshots/extent0.seaside32.dbf -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330
+todeIt seaside32_330 bu snapshot seaside32_ci.dbf
+
+smalltalkCI -r -t $GS_HOME/server/stones/seaside32_330/snapshots/extent0.seaside32_ci.dbf -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston seaside32_330
+
+---TESTED TO HERE
+
+createClient -t pharo seaside_Pharo4.0 -v Pharo4.0 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston
+startClient seaside_Pharo4.0 -s seaside32_330 -z $GS_HOME/shared/repos/Seaside/.smalltalk.ston -r -t seaside_test
+```
+
 [1]: ./pngs/travisErrorStack.png
 [2]: https://github.com/GsDevKit/GsDevKit_home
 [3]: ./pngs/todeTestFailureMessage.png
 [4]: ./pngs/travisOlView.png
+[5]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/GS64-SysAdmin-3.2.htm?https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/1-Server.htm#pgfId-83703
+[6]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/2-Clients.htm#pgfId-82579
+[7]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/GS64-SysAdmin-3.2.htm?https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-437302
+[8]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-439762
+[9]: https://github.com/hpi-swa/smalltalkCI
