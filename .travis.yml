@@ -17,7 +17,7 @@ smalltalk_config: .smalltalk.ston
 
 os:
   - linux
-#  - osx
+  - osx
 
 install:
   # Move cache directory if it exists
