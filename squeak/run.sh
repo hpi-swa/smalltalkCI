@@ -243,5 +243,7 @@ run_build() {
   squeak::prepare_vm
   squeak::load_and_test_project || exit_status=$?
 
+  #python "lib/coveralls_notifer.py" ${config_project_home}
+
   return "${exit_status}"
 }
