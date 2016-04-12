@@ -3,9 +3,11 @@ import os
 import json
 import sys
 
+from subprocess import Popen, PIPE
+
 API_ENDPOINT = 'https://coveralls.io/api/v1/jobs'
 
-def git_info(self):
+def git_info():
         """ A hash of Git data that can be used to display more information to users.
             Example:
             "git": {
@@ -66,13 +68,13 @@ def gitlog(format):
 def main(directory):
     filename = '%s/.coverageReport' % directory
 
-    if not os.is_file(filename):
+    if not os.path.isfile(filename):
         print 'coverageReport file not found in "%s"' % directory
         sys.exit(1)
 
     with open(filename, 'r') as f:
         try:
-            source_files = json.loads(f)
+            source_files = json.load(f)
         except ValueError as e:
             print 'Invalid coverage JSON file: %s' & str(e)
             sys.exit(1)
@@ -84,11 +86,12 @@ def main(directory):
         }
 
         data.update(git_info())
+        print json.dumps(data)
+        r = requests.post(API_ENDPOINT, files={'json_file': json.dumps(data)})
+        print r.content
 
-        requests.post(API_ENDPOINT, files={'json_file': json.dumps(data)})
 
-
-if __name___ == '__main__':
+if __name__ == '__main__':
     if len(sys.argv) != 2:
         print 'This program expects one parameter.'
         sys.exit(1)
