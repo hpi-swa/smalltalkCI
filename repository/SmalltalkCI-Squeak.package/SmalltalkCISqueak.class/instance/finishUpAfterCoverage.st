@@ -23,4 +23,6 @@ finishUpAfterCoverage
 					dict at: 'coverage' put: (Array new: (self linesOfFile: fileName) withAll: coverageSymbol).
 					output add: dict ]
 				ifNone: [ ] ].
-	self halt.
+	(StandardFileStream fileNamed: (self projectDirectory, FileDirectory slash, '.coverageReport'))
+		truncate;
+		nextPutAll: (STON toJsonString: output asArray).
