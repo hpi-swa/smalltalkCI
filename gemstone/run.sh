@@ -27,7 +27,7 @@ gemstone::prepare_gsdevkit_home() {
       pushd "${SMALLTALK_CI_BUILD}" || print_error_and_exit "pushd failed."
         git clone -b "${DEVKIT_BRANCH}" --depth 1 "${DEVKIT_DOWNLOAD}" || print_error_and_exit "git clone failed."
         cd "${GS_HOME}" || print_error_and_exit "cd failed."
-
+git log -1
         # pre-clone /sys/local, so that travis can skip backups
         $GS_HOME/bin/private/clone_sys_local || print_error_and_exit "clone_sys_local failed."
         # arrange to skip backups
