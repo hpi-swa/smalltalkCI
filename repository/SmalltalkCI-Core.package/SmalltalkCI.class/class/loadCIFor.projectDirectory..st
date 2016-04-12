@@ -4,4 +4,4 @@ loadCIFor: aFilenameString projectDirectory: aDirectoryPathString
     initialize;
     readSTONSpec: aFilenameString;
     projectDirectory: aDirectoryPathString;
-    runCI
+    loadCI

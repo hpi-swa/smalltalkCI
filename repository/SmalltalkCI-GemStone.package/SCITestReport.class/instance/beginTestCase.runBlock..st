@@ -1,12 +1,15 @@
 private
 beginTestCase: aTestCase runBlock: aBlock
   | time |
-  progressFile
-    nextPutAll: 'starting testcase: ';
-    nextPutAll: aTestCase class name;
-    nextPutAll: '>>';
-    nextPutAll: aTestCase selector;
-    nextPutAll: ' ... '.
+  self produceXMLLog
+    ifTrue: [ progressFile nextPutAll: '-' ]
+    ifFalse: [ 
+      progressFile
+        nextPutAll: 'starting testcase: ';
+        nextPutAll: aTestCase class name;
+        nextPutAll: '>>';
+        nextPutAll: aTestCase selector;
+        nextPutAll: ' ... ' ].
   time := self formatTime: aBlock timeToRun.
   self produceXMLLog
     ifTrue: [ 

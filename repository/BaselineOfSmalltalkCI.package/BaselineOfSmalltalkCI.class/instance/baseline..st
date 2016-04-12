@@ -12,25 +12,34 @@ baseline: spec
         group: 'Core' with: #('SmalltalkCI-Core');
         yourself ].
   spec
-    for: #'squeakCommon'
-    do: [ 
-      spec
-        package: 'STON-Core';
-        package: 'SmalltalkCI-Core' with: [ spec requires: #('STON-Core') ] ].
-  spec
     for: #'squeak'
     do: [ 
       spec
+        package: 'STON-Core';
         package: 'SmalltalkCI-Core'
-          with: [ spec includes: #('SmalltalkCI-Squeak') ];
+          with: [ 
+              spec
+                requires: #('STON-Core');
+                includes: #('SmalltalkCI-Squeak') ];
         package: 'SmalltalkCI-Squeak'
           with: [ spec requires: #('SmalltalkCI-Core') ] ].
   spec
     for: #'pharo'
     do: [ 
       spec
+        configuration: 'Ston'
+        with: [ 
+          spec
+            version: #'stable';
+            loads: #('Core');
+            repository:
+                'http://smalltalkhub.com/mc/SvenVanCaekenberghe/STON/main' ].
+      spec
         package: 'SmalltalkCI-Core'
-          with: [ spec includes: #('SmalltalkCI-Pharo') ];
+          with: [ 
+              spec
+                requires: #('Ston');
+                includes: #('SmalltalkCI-Pharo' 'Ston') ];
         package: 'SmalltalkCI-Pharo'
           with: [ spec requires: #('SmalltalkCI-Core') ] ].
   spec
