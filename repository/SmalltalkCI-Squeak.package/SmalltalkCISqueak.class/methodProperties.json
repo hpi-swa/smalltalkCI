@@ -7,8 +7,11 @@
 		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:37" },
 	"instance" : {
 		"classesForCategories:" : "jc 4/8/2016 13:42",
+		"fileNameFor:in:" : "jc 4/12/2016 10:12",
 		"finishUpAfterCI" : "jc 4/8/2016 10:59",
-		"finishUpAfterCoverage" : "jc 4/11/2016 18:18",
+		"finishUpAfterCoverage" : "jc 4/12/2016 11:06",
+		"linesOfFile:" : "jc 4/12/2016 11:04",
+		"md5ForFile:" : "jc 4/12/2016 11:04",
 		"prepareCoverageForClasses:" : "jc 4/11/2016 17:02",
 		"prepareForCI" : "jc 4/8/2016 13:45",
 		"readSTONSpec:" : "jc 4/8/2016 14:54",
