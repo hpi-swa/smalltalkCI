@@ -398,13 +398,13 @@ or simply:
 startClient seaside_Pharo4.0
 ```
 
-[1]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/travisErrorStack.png
+[1]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/pngs/travisErrorStack.png
 [2]: https://github.com/GsDevKit/GsDevKit_home
-[3]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/todeTestFailureMessage.png
-[4]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/travisOlView.png
+[3]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/pngs/todeTestFailureMessage.png
+[4]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/pngs/travisOlView.png
 [5]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/GS64-SysAdmin-3.2.htm?https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/1-Server.htm#pgfId-83703
 [6]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/2-Clients.htm#pgfId-82579
 [7]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/GS64-SysAdmin-3.2.htm?https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-437302
 [8]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-439762
 [9]: https://github.com/hpi-swa/smalltalkCI
-[10]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/localClientServerTestResults.png
+[10]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/pngs/localClientServerTestResults.png
