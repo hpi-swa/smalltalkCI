@@ -35,6 +35,7 @@ matrix:
       smalltalk:
       sudo: false
       script: bash tests/all_tests.sh
+
     # GemStone Linux builds
     - smalltalk: GemStone-3.3.0
       os: linux
