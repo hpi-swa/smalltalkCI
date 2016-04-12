@@ -195,13 +195,6 @@ run_build() {
 
   gemstone::parse_options "$@"
 
-  # Temporary fix for https://github.com/hpi-swa/smalltalkCI/issues/68
-  case "$(uname -s)" in
-    "Darwin")
-      sudo sysctl -w kern.sysv.shmall=524288
-      ;;
-  esac
-
   # To bypass cached behavior for local build, export GS_TRAVIS_CACHE_ENABLED
   # before calling run.sh
   if is_empty "${GS_TRAVIS_CACHE_ENABLED:-}"; then

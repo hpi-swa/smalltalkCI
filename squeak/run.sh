@@ -68,6 +68,7 @@ squeak::prepare_image() {
       set +e
       download_file "${download_url}" > "${target}"
       if [[ ! $? -eq 0 ]]; then
+        rm -f "${target}"
         print_error_and_exit "Download failed."
       fi
       set -e
@@ -160,6 +161,7 @@ squeak::prepare_vm() {
       set +e
       download_file "${download_url}" > "${target}"
       if [[ ! $? -eq 0 ]]; then
+        rm -f "${target}"
         print_error_and_exit "Download failed."
       fi
       set -e

@@ -13,6 +13,8 @@ smalltalk:
   - Pharo-4.0
   - Pharo-3.0
 
+smalltalk_config: .smalltalk.ston
+
 os:
   - linux
   - osx
