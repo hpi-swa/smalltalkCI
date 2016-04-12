@@ -1,4 +1,4 @@
-executing
+private
 classesForCategories: anOrderedCollection
 	| classes |
 	classes := Smalltalk allClasses select: [ :class |

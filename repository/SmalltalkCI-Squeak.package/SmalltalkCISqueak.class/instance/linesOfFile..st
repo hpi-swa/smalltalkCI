@@ -1,4 +1,4 @@
-executing
+private
 linesOfFile: aString 
 	| fs loc |
 	fs := StandardFileStream fileNamed: self projectDirectory, FileDirectory slash, aString.

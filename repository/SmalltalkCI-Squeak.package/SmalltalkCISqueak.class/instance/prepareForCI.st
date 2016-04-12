@@ -8,4 +8,5 @@ prepareForCI
 	classesToBeCovered := self classesForCategories: ((self spec testing at: #coverageAgainst) at: #categories).
 	classesToBeCovered addAll: ((self spec testing at: #coverageAgainst) at: #classes).
 	self prepareCoverageForClasses: classesToBeCovered.
+	
 	super prepareForCI

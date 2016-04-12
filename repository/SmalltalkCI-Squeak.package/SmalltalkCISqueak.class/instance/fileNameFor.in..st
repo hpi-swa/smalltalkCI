@@ -1,4 +1,4 @@
-executing
+private
 fileNameFor: aCompiledMethod in: aDirectoryName 
 	"Generates the filename for the file where the method related to aCompiledMethod is specified in.
 	aDirectoryName (a String) states the subfolder in the projectDirectory where the method comes from."
