@@ -1,0 +1,17 @@
+{
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		"DefaultSessionName" ],
+	"commentStamp" : "",
+	"instvars" : [
+		"defaultSessionName",
+		"stoneConfPath",
+		"gemConfPath",
+		"timeZone" ],
+	"name" : "SCIGemStoneServerConfigSpec",
+	"pools" : [
+		 ],
+	"super" : "SCIAbstractConfig",
+	"type" : "normal" }

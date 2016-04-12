@@ -1,11 +1,13 @@
 private
 endTestCase
-  progressFile
-    nextPutAll: 'finished';
-    cr.
   self produceXMLLog
     ifTrue: [ 
+      progressFile nextPutAll: '>'.
       self stream
         tab;
         nextPutAll: '</testcase>';
         lf ]
+    ifFalse: [ 
+      progressFile
+        nextPutAll: 'finished';
+        cr ]

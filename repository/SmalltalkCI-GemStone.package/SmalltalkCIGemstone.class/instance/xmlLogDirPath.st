@@ -1,0 +1,4 @@
+accessing
+xmlLogDirPath
+
+   ^ xmlLogDirPath

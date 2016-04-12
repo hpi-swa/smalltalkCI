@@ -10,8 +10,13 @@
 		"classesToTest:fromProjects:" : "dkh 02/06/2016 07:06",
 		"classesToTestFrom:" : "dkh 02/06/2016 10:30",
 		"explicitTestKeys" : "dkh 02/06/2016 09:54",
+		"performMetacelloLoad:" : "dkh 04/11/2016 09:56",
 		"produceXMLLog" : "dkh 02/05/2016 09:52",
 		"produceXMLLog:" : "dkh 02/05/2016 09:52",
 		"readSTONSpec:" : "TravisCI 02/04/2016 15:45",
 		"runCI" : "dkh 02/05/2016 16:37",
-		"runTests" : "dkh 02/05/2016 16:37" } }
+		"runTests" : "dkh 04/10/2016 11:25",
+		"testReport" : "dkh 04/10/2016 11:22",
+		"testReport:" : "dkh 04/10/2016 11:22",
+		"xmlLogDirPath" : "dkh 04/10/2016 11:22",
+		"xmlLogDirPath:" : "dkh 04/10/2016 11:22" } }

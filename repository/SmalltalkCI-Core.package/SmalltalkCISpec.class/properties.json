@@ -8,7 +8,8 @@
 	"instvars" : [
 		"specName",
 		"loading",
-		"testing" ],
+		"testing",
+		"configuring" ],
 	"name" : "SmalltalkCISpec",
 	"pools" : [
 		 ],
