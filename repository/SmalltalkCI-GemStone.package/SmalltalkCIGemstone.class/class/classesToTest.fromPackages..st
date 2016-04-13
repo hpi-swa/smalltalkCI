@@ -1,4 +1,4 @@
-private
+private helpers
 classesToTest: classes fromPackages: packagesList
   | packages |
   packages := Set new.

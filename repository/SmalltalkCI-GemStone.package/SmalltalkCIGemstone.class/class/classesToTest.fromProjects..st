@@ -1,4 +1,4 @@
-private
+private helpers
 classesToTest: classes fromProjects: projectsList
   projectsList
     do: [ :projectName | 
