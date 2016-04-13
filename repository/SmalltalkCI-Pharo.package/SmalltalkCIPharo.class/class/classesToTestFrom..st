@@ -1,4 +1,4 @@
-accessing
+private helpers
 classesToTestFrom: aDictionary
 	| classes |
 
@@ -17,4 +17,3 @@ classesToTestFrom: aDictionary
 				classes addAll: package definedClasses ] ].
 
 	^ classes	
-	

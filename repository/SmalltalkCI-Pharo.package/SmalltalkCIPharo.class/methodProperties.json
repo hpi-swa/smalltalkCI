@@ -1,11 +1,11 @@
 {
 	"class" : {
+		"classesToTestFrom:" : "fn 4/13/2016 16:03",
 		"getAuthor" : "fn 1/31/2016 21:38",
-		"isHeadless" : "travisCI 1/27/2016 17:04",
+		"isHeadless" : "fn 1/27/2016 17:04",
 		"isPlatformCompatible" : "fn 1/31/2016 17:57",
 		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:36" },
 	"instance" : {
-		"classesToTestFrom:" : "fn 1/31/2016 19:07",
 		"loadProjects" : "MaxLeske 3/5/2016 11:35",
 		"readSTONSpec:" : "fn 1/31/2016 19:58",
 		"runTests" : "dkh 4/7/2016 15:28" } }
