@@ -86,7 +86,11 @@ def main(directory):
         try:
             source_files = json.load(f)
         except ValueError as e:
-            print 'Invalid coverage JSON file: %s' & str(e)
+            print 'Invalid coverage.json file: %s' & str(e)
+            sys.exit(1)
+
+        if not source_files:
+            print 'coverage.json file is empty' & str(e)
             sys.exit(1)
 
         data = {
