@@ -18,5 +18,5 @@
 		"prepareForCI" : "jc 4/12/2016 16:43",
 		"readSTONSpec:" : "jc 4/8/2016 14:54",
 		"runCI" : "travisCI 1/27/2016 17:03",
-		"runTests" : "jc 4/12/2016 16:44",
+		"runTests" : "jc 4/13/2016 09:47",
 		"writeCoverageReport:" : "jc 4/12/2016 12:54" } }

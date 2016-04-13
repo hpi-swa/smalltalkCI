@@ -86,9 +86,9 @@ def main(directory):
         }
 
         data.update(git_info())
-        print json.dumps(data)
+
         r = requests.post(API_ENDPOINT, files={'json_file': json.dumps(data)})
-        print r.content
+        print 'Coveralls: ' + json.loads(r.content)['message']
 
 
 if __name__ == '__main__':
