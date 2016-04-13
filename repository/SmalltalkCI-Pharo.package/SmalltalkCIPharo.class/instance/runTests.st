@@ -1,5 +1,7 @@
 executing
 runTests
-	(Smalltalk at: #HDTestReport)
-		runClasses: self classesToTest 
-		named: self suiteName
+	self prepareCoverage.
+	HDTestReport
+		runClasses: self classesToTest
+		named: self suiteName.
+	self finishUpAfterCoverage

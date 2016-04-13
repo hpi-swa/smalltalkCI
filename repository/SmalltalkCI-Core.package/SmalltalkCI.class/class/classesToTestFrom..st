@@ -1,7 +1,7 @@
 private helpers
 classesToTestFrom: aDictionary
 	| classes |
-	classes := Set new.
+	classes := OrderedCollection new.
 	aDictionary at: #classes 
 		ifPresent: [ :classList |
 			classList do: [ :eachClass |
