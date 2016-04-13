@@ -4,8 +4,8 @@ classesToTestFrom: aDictionary
   classes := super classesToTestFrom: aDictionary.
   aDictionary
     at: #'projects'
-    ifPresent: [ :projectsList | self class classesToTest: classes fromProjects: projectsList ].
+    ifPresent: [ :projectsList | self classesToTest: classes fromProjects: projectsList ].
   aDictionary
     at: #'packages'
-    ifPresent: [ :packagesList | self class classesToTest: classes fromPackages: packagesList ].
+    ifPresent: [ :packagesList | self classesToTest: classes fromPackages: packagesList ].
   ^ classes
