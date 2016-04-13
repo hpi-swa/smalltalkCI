@@ -6,8 +6,17 @@
 		"isPlatformCompatible" : "fn 1/31/2016 17:57",
 		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:37" },
 	"instance" : {
-		"finishUpAfterCI" : "fn 1/31/2016 19:03",
-		"prepareForCI" : "fn 1/31/2016 20:36",
-		"readSTONSpec:" : "dkh 2/23/2016 13:36:46",
+		"absoluteFileNameFor:in:" : "jc 4/12/2016 12:46",
+		"classesForCategories:" : "jc 4/8/2016 13:42",
+		"coverageDictFor:in:" : "jc 4/12/2016 12:42",
+		"fileNameFor:in:" : "jc 4/12/2016 10:12",
+		"finishUpAfterCI" : "jc 4/12/2016 16:44",
+		"finishUpAfterCoverage" : "jc 4/12/2016 12:55",
+		"linesOfFile:" : "jc 4/12/2016 11:04",
+		"md5ForFile:" : "jc 4/12/2016 11:04",
+		"prepareCoverageForClasses:" : "jc 4/11/2016 17:02",
+		"prepareForCI" : "jc 4/12/2016 16:43",
+		"readSTONSpec:" : "jc 4/8/2016 14:54",
 		"runCI" : "travisCI 1/27/2016 17:03",
-		"runTests" : "dkh 4/7/2016 15:40" } }
+		"runTests" : "fn 4/13/2016 12:44",
+		"writeCoverageReport:" : "jc 4/12/2016 12:54" } }

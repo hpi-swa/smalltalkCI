@@ -4,4 +4,4 @@ prepareForCI
 		ifTrue: [ SCISqueakToolSet load ].
 	SCISqueakTranscript install.
 
-	super prepareForCI
+	super prepareForCI.

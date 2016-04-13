@@ -196,7 +196,7 @@ squeak::prepare_vm() {
 #   Status code of build
 ################################################################################
 squeak::load_and_test_project() {
-  local cog_vm_flags
+  local cog_vm_flags=""
   local status=0
 
   travis_fold start load_and_test "Loading and testing project..."
@@ -244,6 +244,8 @@ run_build() {
   squeak::prepare_image "${config_smalltalk}"
   squeak::prepare_vm
   squeak::load_and_test_project || exit_status=$?
+
+  python "${SMALLTALK_CI_HOME}/lib/coveralls_notifier.py" ${config_project_home}
 
   return "${exit_status}"
 }
