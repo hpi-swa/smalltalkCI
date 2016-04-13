@@ -19,4 +19,4 @@
 		"readSTONSpec:" : "jc 4/8/2016 14:54",
 		"runCI" : "travisCI 1/27/2016 17:03",
 		"runTests" : "fn 4/13/2016 12:44",
-		"writeCoverageReport:" : "jc 4/12/2016 12:54" } }
+		"writeCoverageReport:" : "fn 4/13/2016 13:03" } }

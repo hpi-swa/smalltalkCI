@@ -1,11 +1,16 @@
-import requests
-import os
+"""
+This script sends coverage information from smalltalkCI to coveralls.io.
+
+It is based on: https://github.com/coagulant/coveralls-python.
+"""
+
 import json
+import os
+import subprocess
 import sys
 
-from subprocess import Popen, PIPE
-
 API_ENDPOINT = 'https://coveralls.io/api/v1/jobs'
+
 
 def git_info():
         """ A hash of Git data that can be used to display more information to users.
@@ -28,6 +33,7 @@ def git_info():
         """
 
         rev = run_command('git', 'rev-parse', '--abbrev-ref', 'HEAD').strip()
+        remotes = run_command('git', 'remote', '-v').splitlines()
         git_info = {'git': {
             'head': {
                 'id': gitlog('%H'),
@@ -38,18 +44,19 @@ def git_info():
                 'message': gitlog('%s'),
             },
             'branch': os.environ.get('TRAVIS_BRANCH', rev),
-            # origin	git@github.com:coagulant/coveralls-python.git (fetch)
             'remotes': [{'name': line.split()[0], 'url': line.split()[1]}
-                        for line in run_command('git', 'remote', '-v').splitlines() if '(fetch)' in line]
+                        for line in remotes if '(fetch)' in line]
         }}
         return git_info
 
 
 def run_command(*args):
-    cmd = Popen(list(args), stdout=PIPE, stderr=PIPE)
+    cmd = subprocess.Popen(
+            list(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = cmd.communicate()
     assert cmd.returncode == 0, ('command return code %d, STDOUT: "%s"\n'
-                                 'STDERR: "%s"' % (cmd.returncode, stdout, stderr))
+                                 'STDERR: "%s"' % (cmd.returncode, stdout,
+                                                   stderr))
     try:
         output = stdout.decode()
     except UnicodeDecodeError:
@@ -59,17 +66,20 @@ def run_command(*args):
 
 def gitlog(format):
     try:
-        log = str(run_command('git', '--no-pager', 'log', "-1", '--pretty=format:%s' % format))
+        log = str(run_command('git', '--no-pager', 'log', '-1',
+                              '--pretty=format:%s' % format))
     except UnicodeEncodeError:
-        log = unicode(run_command('git', '--no-pager', 'log', "-1", '--pretty=format:%s' % format))
+        log = unicode(run_command('git', '--no-pager', 'log', '-1',
+                                  '--pretty=format:%s' % format))
     return log
 
 
 def main(directory):
-    filename = '%s/.coverageReport' % directory
+    filename = '%s/coverage.json' % directory
+    coveralls_json = '%s/coveralls.json' % directory
 
     if not os.path.isfile(filename):
-        print 'coverageReport file not found in "%s"' % directory
+        print 'Not coverage.json file found in "%s"' % directory
         sys.exit(1)
 
     with open(filename, 'r') as f:
@@ -87,8 +97,13 @@ def main(directory):
 
         data.update(git_info())
 
-        r = requests.post(API_ENDPOINT, files={'json_file': json.dumps(data)})
-        print 'Coveralls: ' + json.loads(r.content)['message']
+    with open(coveralls_json, 'w') as f:
+        f.write(json.dumps(data))
+
+    post_request = run_command('curl', '-F',
+                               'json_file=@%s' % coveralls_json,
+                               API_ENDPOINT)
+    print 'Coveralls: ' + json.loads(post_request)['message']
 
 
 if __name__ == '__main__':

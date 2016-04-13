@@ -1,5 +1,5 @@
 private
 writeCoverageReport: anArray
-	(StandardFileStream fileNamed: (self projectDirectory, FileDirectory slash, '.coverageReport'))
-		truncate;
-		nextPutAll: (STON toJsonString: anArray).
+	(StandardFileStream forceNewFileNamed: 'coverage.json')
+		nextPutAll: (STON toJsonString: anArray);
+		close.
