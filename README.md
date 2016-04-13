@@ -1,4 +1,4 @@
-# smalltalkCI [![Build Status](https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master)](https://travis-ci.org/hpi-swa/smalltalkCI)
+# smalltalkCI [![Build Status](https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master)](https://travis-ci.org/hpi-swa/smalltalkCI) [![Coverage Status](https://coveralls.io/repos/github/hpi-swa/smalltalkCI/badge.svg?branch=master)](https://coveralls.io/github/hpi-swa/smalltalkCI?branch=master)
 
 Community-supported framework for testing Smalltalk projects on Linux & OS X and
 on [Travis CI][travisCI].
@@ -27,6 +27,7 @@ way to load and test Smalltalk projects.
 - Runs on Travis' [container-based infrastructure][cbi] ([*"Builds start in seconds"*][bsis])
 - Supports Linux and OS X and can be run locally for debug purposes
 - Exports test results in the JUnit XML format as part of the Travis build log
+- Supports coverage testing and publishes results to [coveralls.io][coveralls]
 
 
 <a name="how-to-travis"/>
@@ -285,6 +286,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 [ci_skip]: https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build
 [clone]: https://help.github.com/articles/cloning-a-repository/
+[coveralls]: https://coveralls.io/
 [download]: https://github.com/hpi-swa/smalltalkCI/archive/master.zip
 [filetree]: https://github.com/dalehenrich/filetree
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
