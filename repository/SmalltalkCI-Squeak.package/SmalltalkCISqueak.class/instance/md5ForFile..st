@@ -1,4 +1,4 @@
-private
+coverage
 md5ForFile: aString
 	| fs md5 |
 	fs := StandardFileStream fileNamed: self projectDirectory, FileDirectory slash, aString.

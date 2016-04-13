@@ -7,7 +7,7 @@
 	"commentStamp" : "",
 	"instvars" : [
 		"originalTranscript",
-		"wrappers" ],
+		"coverageWrappers" ],
 	"name" : "SmalltalkCISqueak",
 	"pools" : [
 		 ],

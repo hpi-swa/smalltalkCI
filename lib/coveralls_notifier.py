@@ -79,8 +79,8 @@ def main(directory):
     coveralls_json = '%s/coveralls.json' % directory
 
     if not os.path.isfile(filename):
-        print 'Not coverage.json file found in "%s"' % directory
-        sys.exit(1)
+        print 'No coverage.json file found in "%s"' % directory
+        sys.exit(0)
 
     with open(filename, 'r') as f:
         try:
@@ -91,7 +91,7 @@ def main(directory):
 
         if not source_files:
             print 'coverage.json file is empty' & str(e)
-            sys.exit(1)
+            sys.exit(0)
 
         data = {
             'service_job_id': os.environ.get('TRAVIS_JOB_ID'),

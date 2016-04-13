@@ -1,9 +1,9 @@
-executing
+coverage
 finishUpAfterCoverage
 	| output |
 	output := OrderedCollection new.
 	
-	wrappers do: [:wrapper |
+	coverageWrappers do: [:wrapper |
 		wrapper uninstall.
 		self spec loading
 			detect: [ :loadspec | 

@@ -1,11 +1,5 @@
 executing
 runTests
-	| classesToBeCovered |
-	
-	classesToBeCovered := self classesForCategories: ((self spec testing at: #coverageAgainst ifAbsent: [ Dictionary new ]) at: #categories ifAbsent: [ OrderedCollection new ]).
-	classesToBeCovered addAll: ((self spec testing at: #coverageAgainst ifAbsent: [ Dictionary new ] ) at: #classes ifAbsent: [ OrderedCollection new ]).
-	self prepareCoverageForClasses: classesToBeCovered.
-
+	self prepareCoverage.
 	SCITestReport runClasses: self classesToTest named: self suiteName.
-	
-	self finishUpAfterCoverage.
+	self finishUpAfterCoverage

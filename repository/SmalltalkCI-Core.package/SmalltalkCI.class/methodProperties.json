@@ -1,5 +1,9 @@
 {
 	"class" : {
+		"classesInCategories:" : "fn 4/13/2016 14:51",
+		"classesInCategory:" : "fn 4/13/2016 14:41",
+		"classesInCategoryPrefix:" : "fn 4/13/2016 14:41",
+		"classesToTestFrom:" : "fn 4/13/2016 15:03",
 		"getAuthor" : "fn 1/31/2016 21:35",
 		"installMetacello" : "fn 1/31/2016 19:21",
 		"isHeadless" : "travisCI 1/27/2016 17:03",
@@ -18,10 +22,7 @@
 		"testCIFor:named:" : "dkh 04/07/2016 15:32",
 		"testCIFor:projectDirectory:" : "dkh 03/31/2016 14:31" },
 	"instance" : {
-		"classesInCategory:" : "EatebanLorenzano 1/27/2016 13:06",
-		"classesInCategoryPrefix:" : "EatebanLorenzano 1/27/2016 13:06",
-		"classesToTest" : "dkh 02/05/2016 17:06",
-		"classesToTestFrom:" : "travisCI 1/27/2016 16:27",
+		"classesToTest" : "fn 4/13/2016 14:53",
 		"clientConfigurations" : "dkh 04/02/2016 12:19",
 		"compatibleConfigurationsFor:" : "dkh 04/04/2016 06:25",
 		"compatibleSpecs" : "EatebanLorenzano 1/27/2016 13:53",

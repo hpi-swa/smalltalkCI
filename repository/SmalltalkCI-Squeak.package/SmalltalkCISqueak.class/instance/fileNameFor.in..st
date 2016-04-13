@@ -1,4 +1,4 @@
-private
+coverage
 fileNameFor: aCompiledMethod in: aDirectoryName 
 	"Generates the filename for the file where the method related to aCompiledMethod is specified in.
 	aDirectoryName (a String) states the subfolder in the projectDirectory where the method comes from."
@@ -12,8 +12,8 @@ fileNameFor: aCompiledMethod in: aDirectoryName
 		ifFalse: [
 			instanceOrClass := 'instance'.
 			package := class category ].
-	^ aDirectoryName , FileDirectory slash ,
-		package , '.package' , FileDirectory slash ,
-		class name , '.class' , FileDirectory slash ,
-		instanceOrClass , FileDirectory slash ,
-		(method asString replaceAll: $: with: $.) , '.st'
+	^ aDirectoryName, FileDirectory slash,
+		package, '.package', FileDirectory slash,
+		class name, '.class', FileDirectory slash,
+		instanceOrClass, FileDirectory slash,
+		(method asString replaceAll: $: with: $.), '.st'

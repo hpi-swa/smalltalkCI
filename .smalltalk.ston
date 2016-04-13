@@ -7,6 +7,9 @@ SmalltalkCISpec {
     }
   ],
   #testing : {
+    #coverageAgainst : {
+      #categories : [ 'SmalltalkCI-*' ]
+    },
     #exclude : {
       #classes : [ #SCIExcludedTests ]
     }
