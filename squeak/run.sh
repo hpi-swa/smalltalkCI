@@ -245,10 +245,5 @@ run_build() {
   squeak::prepare_vm
   squeak::load_and_test_project || exit_status=$?
 
-  if is_travis_build; then
-    python "${SMALLTALK_CI_HOME}/lib/coveralls_notifier.py" \
-        "${SMALLTALK_CI_BUILD}"
-  fi
-
   return "${exit_status}"
 }

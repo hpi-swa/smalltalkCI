@@ -427,7 +427,13 @@ main() {
     exit ${exit_status}
   fi
 
+  if is_travis_build; then
+    python "${SMALLTALK_CI_HOME}/lib/coveralls_notifier.py" \
+        "${SMALLTALK_CI_BUILD}"
+  fi
+
   print_results "${SMALLTALK_CI_BUILD}" || exit_status=$?
+  
   exit ${exit_status}
 }
 

@@ -75,14 +75,13 @@ def gitlog(format):
 
 
 def main(directory):
-    filename = '%s/coverage.json' % directory
+    coverage_json = '%s/coverage.json' % directory
     coveralls_json = '%s/coveralls.json' % directory
 
-    if not os.path.isfile(filename):
-        print 'No coverage.json file found in "%s"' % directory
+    if not os.path.isfile(coverage_json):
         sys.exit(0)
 
-    with open(filename, 'r') as f:
+    with open(coverage_json, 'r') as f:
         try:
             source_files = json.load(f)
         except ValueError as e:
