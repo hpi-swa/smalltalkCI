@@ -12,8 +12,8 @@ fileNameFor: aCompiledMethod in: aDirectoryName
 		ifFalse: [
 			instanceOrClass := 'instance'.
 			package := class category ].
-	^ aDirectoryName, FileDirectory slash,
-		package, '.package', FileDirectory slash,
-		class name, '.class', FileDirectory slash,
-		instanceOrClass, FileDirectory slash,
+	^ aDirectoryName, self class slash,
+		package, '.package', self class slash,
+		class name, '.class', self class slash,
+		instanceOrClass, self class slash,
 		(method asString replaceAll: $: with: $.), '.st'

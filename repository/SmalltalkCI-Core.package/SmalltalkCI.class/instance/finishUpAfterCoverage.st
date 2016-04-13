@@ -7,7 +7,7 @@ finishUpAfterCoverage
 		wrapper uninstall.
 		self spec loading
 			detect: [ :loadspec | 
-				(self absoluteFileNameFor: wrapper in: loadspec directory) asFileReference exists ]
+				self class fileExists: (self absoluteFileNameFor: wrapper in: loadspec directory)]
 			ifFound: [ :loadspec |
 				output add: (self coverageDictFor: wrapper in: (loadspec directory))]
 			ifNone: [ ] ].

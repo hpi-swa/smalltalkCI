@@ -1,0 +1,3 @@
+coverage
+coverageFilename
+	^ 'coverage.json'

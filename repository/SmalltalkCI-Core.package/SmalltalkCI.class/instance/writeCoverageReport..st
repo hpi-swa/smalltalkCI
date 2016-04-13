@@ -1,5 +1,5 @@
 coverage
 writeCoverageReport: anArray
-	(StandardFileStream forceNewFileNamed: 'coverage.json')
+	(StandardFileStream forceNewFileNamed: SmalltalkCI coverageFilename)
 		nextPutAll: (STON toJsonString: anArray);
 		close.

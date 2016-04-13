@@ -8,7 +8,8 @@
 	"instvars" : [
 		"spec",
 		"projectDirectory",
-		"suiteName" ],
+		"suiteName",
+		"coverageWrappers" ],
 	"name" : "SmalltalkCI",
 	"pools" : [
 		 ],

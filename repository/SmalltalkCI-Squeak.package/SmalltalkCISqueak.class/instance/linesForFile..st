@@ -1,7 +1,7 @@
 coverage
-md5ForFile: aFilename
-	| fs md5 |
+linesForFile: aFilename 
+	| fs loc |
 	fs := StandardFileStream fileNamed: self projectDirectory, FileDirectory slash, aFilename.
-	md5 := WebUtils md5Digest: fs contentsOfEntireFile.
+	loc := fs contentsOfEntireFile lineCount.
 	fs close.
-	^ md5
+	^ loc

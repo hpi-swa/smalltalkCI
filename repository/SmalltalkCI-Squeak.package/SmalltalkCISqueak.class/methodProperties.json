@@ -1,22 +1,18 @@
 {
 	"class" : {
+		"fileExists:" : "fn 4/14/2016 00:55",
 		"getAuthor" : "fn 1/31/2016 21:37",
 		"installMetacello" : "fn 1/31/2016 19:29",
-		"isHeadless" : "travisCI 1/27/2016 17:04",
+		"isHeadless" : "fn 1/27/2016 17:04",
 		"isPlatformCompatible" : "fn 1/31/2016 17:57",
-		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:37" },
+		"methodReferenceFor:selector:" : "fn 4/14/2016 01:18",
+		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:37",
+		"slash" : "fn 4/14/2016 01:02" },
 	"instance" : {
-		"absoluteFileNameFor:in:" : "jc 4/12/2016 12:46",
-		"classesToCover" : "fn 4/13/2016 14:57",
-		"coverageDictFor:in:" : "fn 4/13/2016 15:04",
-		"fileNameFor:in:" : "fn 4/13/2016 15:04",
 		"finishUpAfterCI" : "jc 4/12/2016 16:44",
-		"finishUpAfterCoverage" : "fn 4/13/2016 15:05",
-		"linesOfFile:" : "jc 4/12/2016 11:04",
-		"md5ForFile:" : "jc 4/12/2016 11:04",
-		"prepareCoverage" : "TravisCI 4/13/2016 15:43",
+		"linesForFile:" : "fn 4/14/2016 01:06",
+		"md5ForFile:" : "fn 4/14/2016 01:05",
 		"prepareForCI" : "jc 4/12/2016 16:43",
 		"readSTONSpec:" : "jc 4/8/2016 14:54",
-		"runCI" : "travisCI 1/27/2016 17:03",
-		"runTests" : "fn 4/13/2016 14:58",
-		"writeCoverageReport:" : "fn 4/13/2016 13:03" } }
+		"runCI" : "fn 1/27/2016 17:03",
+		"runTests" : "fn 4/14/2016 00:52" } }

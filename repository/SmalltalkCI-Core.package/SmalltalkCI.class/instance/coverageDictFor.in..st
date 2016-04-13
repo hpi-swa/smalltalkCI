@@ -6,4 +6,4 @@ coverageDictFor: aCompiledMethod in: aDirectoryName
 	^ Dictionary newFrom: {
 			('name' -> fileName).
 			('source_digest' -> (self md5ForFile: fileName)).
-			('coverage' -> (Array new: (self linesOfFile: fileName) withAll: coverageSymbol))}
+			('coverage' -> (Array new: (self linesForFile: fileName) withAll: coverageSymbol))}
