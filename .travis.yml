@@ -26,8 +26,7 @@ install:
   # Make sure to use smalltalkCI from this branch
   - if [[ -n "${SMALLTALK_CI_HOME}" ]]; then rm -rf $SMALLTALK_CI_HOME && ln -s "$(pwd)" $SMALLTALK_CI_HOME; fi
 
-script:
-  - $SMALLTALK_CI_HOME/run.sh --debug && $SMALLTALK_CI_HOME/tests/fail_test.sh
+script: $SMALLTALK_CI_HOME/run.sh --debug
 
 matrix:
   include:
@@ -37,28 +36,27 @@ matrix:
       sudo: false
       script: bash tests/all_tests.sh
 
+    # Test that smalltalkCI can fail
+    - smalltalk: Squeak-5.0
+      smalltalk_config: .smalltalk_fail.ston
+      os: linux
+      script: $SMALLTALK_CI_HOME/run.sh --debug && exit 1 || exit 0
+    - smalltalk: Pharo-stable
+      smalltalk_config: .smalltalk_fail.ston
+      os: linux
+      script: $SMALLTALK_CI_HOME/run.sh --debug && exit 1 || exit 0
+
     # GemStone Linux builds
     - smalltalk: GemStone-3.3.0
       os: linux
-      env: GSCI_DEVKIT_BRANCH=master # uncover any issues using new SmalltalkCI with old GsDevKit_home
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
-    - smalltalk: GemStone-3.3.0
-      os: linux
-      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0" GSCI_DEVKIT_BRANCH=dev
-    - smalltalk: GemStone-3.3.0
-      os: linux
-      env: GSCI_DEVKIT_BRANCH=dev    # only use for development --- leave until https://github.com/GsDevKit/GsDevKit_home/issues/93 merged
+      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
     - smalltalk: GemStone-3.2.14
       os: linux
-#      env: GSCI_DEVKIT_BRANCH=dev   # only use for development
       cache:
         directories:
           - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
     - smalltalk: GemStone-3.1.0.6
       os: linux
-#      env: GSCI_DEVKIT_BRANCH=dev   # only use for development
       cache:
         directories:
           - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
@@ -75,9 +73,6 @@ matrix:
   allow_failures:
     - smalltalk: GemStone-3.3.0
       os: linux
-      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0" GSCI_DEVKIT_BRANCH=dev
-    - smalltalk: GemStone-3.3.0
-      os: linux
-      env: GSCI_DEVKIT_BRANCH=dev
+      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
 
   fast_finish: true
