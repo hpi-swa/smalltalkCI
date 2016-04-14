@@ -3,6 +3,7 @@ sudo: false
 
 smalltalk:
   - Squeak-trunk
+  - Squeak-latest
   - Squeak-5.0
   - Squeak-4.6
   - Squeak-4.5

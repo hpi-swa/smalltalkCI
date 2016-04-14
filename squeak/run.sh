@@ -6,6 +6,10 @@
 readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/\
 smalltalkci"
 readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}"
+readonly TRUNK_IMAGE_DOWNLOAD="http://build.squeak.org/job/Trunk/default/\
+lastSuccessfulBuild/artifact/target/TrunkImage.zip"
+readonly TRUNK_SOURCES_DOWNLOAD="http://ftp.squeak.org/sources_files/\
+SqueakV50.sources.gz"
 readonly VM_DOWNLOAD="${BASE_DOWNLOAD}/vms"
 
 ################################################################################
@@ -35,6 +39,57 @@ squeak::get_image_filename() {
       echo ""
       ;;
   esac
+}
+
+squeak::prepare_trunk_build() {
+  local image_target="${SMALLTALK_CI_BUILD}/trunk.zip"
+  local sources_target="${SMALLTALK_CI_BUILD}/sources.gz"
+  local vm_flags
+  local vm_status=0
+
+  travis_fold start download_image "Downloading ${config_smalltalk} image..."
+    timer_start
+
+    set +e
+    download_file "${TRUNK_IMAGE_DOWNLOAD}" > "${image_target}"
+    if [[ ! $? -eq 0 ]]; then
+      rm -f "${image_target}"
+      print_error_and_exit "Download failed."
+    fi
+    set -e
+    
+    unzip -q "${image_target}" -d "${SMALLTALK_CI_BUILD}"
+    mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_BUILD}/TravisCI.image"
+    mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_BUILD}/TravisCI.changes"
+
+    set +e
+    download_file "${TRUNK_SOURCES_DOWNLOAD}" > "${sources_target}"
+    if [[ ! $? -eq 0 ]]; then
+      rm -f "${sources_target}"
+      print_error_and_exit "Download failed."
+    fi
+    set -e
+    gunzip -c "${sources_target}" > "${SMALLTALK_CI_BUILD}/SqueakV50.sources"
+
+    timer_finish
+  travis_fold end download_image
+
+  if ! is_file "${SMALLTALK_CI_IMAGE}"; then
+    print_error_and_exit "Unable to download image at '${SMALLTALK_CI_IMAGE}'."
+  fi
+
+  squeak::prepare_vm
+
+  travis_fold start prepare_image "Preparing ${config_smalltalk} image for CI..."
+    timer_start
+
+    vm_flags="$(squeak::determine_vm_flags)"
+
+    "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
+          "${SMALLTALK_CI_HOME}/squeak/prepare.st" || vm_status=$?
+
+    timer_finish
+  travis_fold end prepare_image
 }
 
 ################################################################################
@@ -184,6 +239,24 @@ squeak::prepare_vm() {
 }
 
 ################################################################################
+# Return vm flags as string.
+################################################################################
+squeak::determine_vm_flags() {
+  local vm_flags=""
+  if is_travis_build || [[ "${config_headless}" = "true" ]]; then
+    case "$(uname -s)" in
+      "Linux")
+        vm_flags="-nosound -nodisplay"
+        ;;
+      "Darwin")
+        vm_flags="-headless"
+        ;;
+    esac
+  fi
+  echo "${vm_flags}"
+}
+
+################################################################################
 # Load project and save image.
 # Locals:
 #   config_headless
@@ -196,22 +269,13 @@ squeak::prepare_vm() {
 #   Status code of build
 ################################################################################
 squeak::load_and_test_project() {
-  local cog_vm_flags=""
-  local status=0
+  local vm_flags
+  local vm_status=0
+
+  vm_flags="$(squeak::determine_vm_flags)"
 
   travis_fold start load_and_test "Loading and testing project..."
     timer_start
-
-    if is_travis_build || [[ "${config_headless}" = "true" ]]; then
-      case "$(uname -s)" in
-        "Linux")
-          cog_vm_flags="-nosound -nodisplay"
-          ;;
-        "Darwin")
-          cog_vm_flags="-headless"
-          ;;
-      esac
-    fi
 
     cat >"${SMALLTALK_CI_BUILD}/run.st" <<EOL
   [ Metacello new
@@ -222,15 +286,15 @@ squeak::load_and_test_project() {
   SmalltalkCI runCIFor: '${config_project_home}/${config_ston}'
 EOL
 
-    "${SMALLTALK_CI_VM}" ${cog_vm_flags} "${SMALLTALK_CI_IMAGE}" \
-        "${SMALLTALK_CI_BUILD}/run.st" || status=$?
+    "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
+        "${SMALLTALK_CI_BUILD}/run.st" || vm_status=$?
 
     printf "\n" # Squeak exit msg is missing a linebreak
 
     timer_finish
   travis_fold end load_and_test
 
-  return "${status}"
+  return "${vm_status}"
 }
 
 ################################################################################
@@ -241,8 +305,12 @@ EOL
 run_build() {
   local exit_status=0
 
-  squeak::prepare_image "${config_smalltalk}"
-  squeak::prepare_vm
+  if [[ "${config_smalltalk}" = "Squeak-latest" ]]; then
+    squeak::prepare_trunk_build
+  else
+    squeak::prepare_image "${config_smalltalk}"
+    squeak::prepare_vm
+  fi
   squeak::load_and_test_project || exit_status=$?
 
   return "${exit_status}"
