@@ -20,4 +20,4 @@ runCase: aTestCase
 		ifFalse: [
 			aTestCase shouldPass ifFalse: [ self writeUnexpectedPassFailure ] ].
 
-	self endTestCase
+	self endTestCaseWith: error

@@ -1,7 +1,6 @@
 private
 beginTestCase: aTestCase runBlock: aBlock
 	self
-		log: '-';
 		writeTab;
 		write: '<testcase classname="';
 		write: (self encode: (aTestCase class category copyReplaceAll: '-' with: '.'));
@@ -9,4 +8,3 @@ beginTestCase: aTestCase runBlock: aBlock
 		write: 'name="', (self encode: aTestCase selector), '" ';
 		write: 'time="', (self formatTime: (aBlock timeToRun)), '">';
 		writeLf
-
