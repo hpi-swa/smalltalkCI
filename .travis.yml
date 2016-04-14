@@ -39,16 +39,16 @@ matrix:
     # GemStone Linux builds
     - smalltalk: GemStone-3.3.0
       os: linux
-      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0" GSCI_DEVKIT_BRANCH=dev
-    - smalltalk: GemStone-3.3.0
-      os: linux
-      env: GSCI_DEVKIT_BRANCH=dev    # only use for development --- leave until https://github.com/GsDevKit/GsDevKit_home/issues/93 merged
-    - smalltalk: GemStone-3.3.0
-      os: linux
       env: GSCI_DEVKIT_BRANCH=master # uncover any issues using new SmalltalkCI with old GsDevKit_home
       cache:
         directories:
           - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
+    - smalltalk: GemStone-3.3.0
+      os: linux
+      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0" GSCI_DEVKIT_BRANCH=dev
+    - smalltalk: GemStone-3.3.0
+      os: linux
+      env: GSCI_DEVKIT_BRANCH=dev    # only use for development --- leave until https://github.com/GsDevKit/GsDevKit_home/issues/93 merged
     - smalltalk: GemStone-3.2.14
       os: linux
 #      env: GSCI_DEVKIT_BRANCH=dev   # only use for development
@@ -71,3 +71,12 @@ matrix:
 #    - smalltalk: GemStone-3.1.0.6
 #      os: osx
 ##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
+  allow_failures:
+    - smalltalk: GemStone-3.3.0
+      os: linux
+      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0" GSCI_DEVKIT_BRANCH=dev
+    - smalltalk: GemStone-3.3.0
+      os: linux
+      env: GSCI_DEVKIT_BRANCH=dev
+
+  fast_finish: true
