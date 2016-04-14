@@ -89,7 +89,6 @@ def main(directory):
             sys.exit(1)
 
         if not source_files:
-            print 'coverage.json file is empty'
             sys.exit(0)
 
         data = {
