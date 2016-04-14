@@ -70,9 +70,4 @@ matrix:
 #    - smalltalk: GemStone-3.1.0.6
 #      os: osx
 ##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
-  allow_failures:
-    - smalltalk: GemStone-3.3.0
-      os: linux
-      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
-
   fast_finish: true
