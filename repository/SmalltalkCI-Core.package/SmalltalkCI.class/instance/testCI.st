@@ -1,5 +1,5 @@
 executing
 testCI
-  self prepareForCI.
-  self runTests.
-  self finishUpAfterCI
+	self prepareForCI.
+	self runTests.
+	self finishUpAfterCI
