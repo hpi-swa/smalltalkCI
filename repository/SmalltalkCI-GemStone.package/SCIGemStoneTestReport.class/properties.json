@@ -18,8 +18,8 @@
 		"suitePosition",
 		"xmlLogDirPath",
 		"produceXMLLog" ],
-	"name" : "SCITestReport",
+	"name" : "SCIGemStoneTestReport",
 	"pools" : [
 		 ],
-	"super" : "SCIReport",
+	"super" : "Object",
 	"type" : "normal" }

@@ -1,6 +1,6 @@
 executing
 runTests
-  testReport := SCITestReport
-    runClasses: self classesToTest
-    named: self suiteName
-    xmlLogDirPath: self xmlLogDirPath
+	testReport := SCIGemStoneTestReport
+		runClasses: self classesToTest
+		named: self suiteName
+		xmlLogDirPath: self xmlLogDirPath
