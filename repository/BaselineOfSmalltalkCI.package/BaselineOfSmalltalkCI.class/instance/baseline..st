@@ -6,23 +6,36 @@ baseline: spec
     do: [ 
       spec
         package: 'SmalltalkCI-Core';
+        package: 'SmalltalkCI-Tests';
+        package: 'SmalltalkCI-Package-Tests'
+          with: [ spec requires: 'SmalltalkCI-Tests' ];
+        package: 'SmalltalkCI-AllCases-Tests'
+          with: [ spec requires: 'SmalltalkCI-Tests' ];
+        package: 'SmalltalkCI-Excluded-Tests'
         yourself.
       spec
         group: 'default' with: #('Core');
         group: 'Core' with: #('SmalltalkCI-Core');
+        group: 'tests'
+          with: #('SmalltalkCI-Tests' 'SmalltalkCI-Excluded-Tests');
+        group: 'Packages' with: #('SmalltalkCI-Package-Tests');
+        group: 'AllCases' with: #('SmalltalkCI-AllCases-Tests');
         yourself ].
   spec
     for: #'squeak'
     do: [ 
       spec
         package: 'STON-Core';
+        package: 'STON-Tests';
         package: 'SmalltalkCI-Core'
           with: [ 
               spec
                 requires: #('STON-Core');
                 includes: #('SmalltalkCI-Squeak') ];
         package: 'SmalltalkCI-Squeak'
-          with: [ spec requires: #('SmalltalkCI-Core') ] ].
+          with: [ spec requires: #('SmalltalkCI-Core') ];
+    yourself.
+  spec group: 'tests' with: #('STON-Tests') ].
   spec
     for: #'pharo'
     do: [ 
@@ -41,7 +54,13 @@ baseline: spec
                 requires: #('Ston');
                 includes: #('SmalltalkCI-Pharo' 'Ston') ];
         package: 'SmalltalkCI-Pharo'
-          with: [ spec requires: #('SmalltalkCI-Core') ] ].
+          with: [ spec requires: #('SmalltalkCI-Core') ];
+        package: 'SmalltalkCI-Package-Tests'
+          with: [ spec includes: 'SmalltalkCI-Package-Pharo-Tests' ];
+        package: 'SmalltalkCI-Package-Pharo-Tests'
+          with: [ spec requires: 'SmalltalkCI-Package-Tests' ];
+        yourself.
+  spec group: 'tests' with: #('Packages') ].
   spec
     for: #'gemstone'
     do: [ 
@@ -50,4 +69,9 @@ baseline: spec
           with: [ spec includes: #('SmalltalkCI-GemStone') ];
         package: 'SmalltalkCI-GemStone'
           with: [ spec requires: #('SmalltalkCI-Core') ];
-        yourself ]
+        package: 'SmalltalkCI-Package-Tests'
+          with: [ spec includes: 'SmalltalkCI-Package-GemStone-Tests' ];
+        package: 'SmalltalkCI-Package-GemStone-Tests'
+          with: [ spec requires: 'SmalltalkCI-Package-Tests' ];
+        yourself.
+  spec group: 'tests' with: #('Packages' 'AllCases') ]

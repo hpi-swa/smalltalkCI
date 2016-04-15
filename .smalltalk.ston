@@ -1,8 +1,9 @@
 SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
-      #baseline : 'SmalltalkCITests',
+      #baseline : 'SmalltalkCI',
       #directory : 'repository',
+      #load : [ 'tests' ],
       #platforms : [ #squeak, #pharo, #gemstone ]
     }
   ],
