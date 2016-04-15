@@ -1,0 +1,9 @@
+{
+	"class" : {
+		 },
+	"instance" : {
+		"setUp" : "fn 4/15/2016 15:45",
+		"tearDown" : "fn 4/15/2016 15:45",
+		"testSqueakTranscript" : "fn 4/15/2016 15:50",
+		"transcript" : "fn 4/15/2016 15:42",
+		"transcript:" : "fn 4/15/2016 15:42" } }

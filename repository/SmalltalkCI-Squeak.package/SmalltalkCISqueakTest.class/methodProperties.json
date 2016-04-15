@@ -1,0 +1,9 @@
+{
+	"class" : {
+		"deleteFile:" : "fn 4/15/2016 15:57" },
+	"instance" : {
+		"sci" : "fn 4/15/2016 15:10",
+		"sci:" : "fn 4/15/2016 15:10",
+		"setUp" : "fn 4/15/2016 15:11",
+		"testCoverageHelpers" : "fn 4/15/2016 15:58",
+		"testMethodReferenceForSelector" : "fn 4/15/2016 15:37" } }

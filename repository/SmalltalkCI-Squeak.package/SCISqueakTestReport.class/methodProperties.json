@@ -1,7 +1,7 @@
 {
 	"class" : {
 		"runClasses:named:" : "EstebanLorenzano 8/25/2015 16:00",
-		"runSuite:" : "fn 1/16/2016 16:55" },
+		"runSuite:" : "fn 4/15/2016 15:51" },
 	"instance" : {
 		"beginTestCase:runBlock:" : "fn 4/14/2016 14:35",
 		"encode:" : "fn 4/15/2016 09:50",
@@ -24,7 +24,6 @@
 		"suiteTotal" : "fn 4/7/2016 14:02",
 		"tearDown" : "fn 4/7/2016 14:11",
 		"write:" : "fn 4/7/2016 13:50",
-		"writeCr" : "fn 4/7/2016 13:51",
 		"writeError:stack:" : "fn 4/7/2016 13:55",
 		"writeException:stack:" : "fn 4/7/2016 14:58",
 		"writeFailure:stack:" : "fn 4/7/2016 13:55",
