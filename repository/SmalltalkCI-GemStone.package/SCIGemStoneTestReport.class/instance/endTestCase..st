@@ -1,8 +1,11 @@
 private
-endTestCase
+endTestCase: anError
   self produceXMLLog
-    ifTrue: [ 
-      progressFile nextPutAll: '>'.
+    ifTrue: [
+	anError ifNotNil: [
+		(anError isKindOf: TestFailure)
+			ifTrue: [ progressFile nextPut: $F ]
+			ifFalse: [ progressFile nextPut: $E ] ].
       self stream
         tab;
         nextPutAll: '</testcase>';

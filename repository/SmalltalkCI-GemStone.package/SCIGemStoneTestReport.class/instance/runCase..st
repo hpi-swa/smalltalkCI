@@ -33,4 +33,4 @@ runCase: aTestCase
                   self recordUnexpectedPassFor: aTestCase.
                   self writeUnexpectedPassFailure.
                   testCaseUnexpectedPasses add: aTestCase ] ] ] ].
-  self endTestCase
+  self endTestCase: error

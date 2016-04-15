@@ -2,7 +2,6 @@ private
 beginTestCase: aTestCase runBlock: aBlock
   | time |
   self produceXMLLog
-    ifTrue: [ progressFile nextPutAll: '-' ]
     ifFalse: [ 
       progressFile
         nextPutAll: 'starting testcase: ';
