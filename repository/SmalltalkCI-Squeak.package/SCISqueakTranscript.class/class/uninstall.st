@@ -1,3 +1,5 @@
 class initialization
 uninstall
-	self allInstancesDo: [ :t | t uninstall ]
+	self isInstalled
+		ifTrue: [ Transcript uninstall ]
+		ifFalse: [ self error: 'A SCISqueakTranscript is not installed.' ]

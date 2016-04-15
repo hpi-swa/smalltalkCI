@@ -6,7 +6,7 @@ testPharoClassesTestPackages3
   self spec
     addLoadSpec:
       (SCIMetacelloLoadSpec new
-        baseline: 'SmalltalkCITests';
+        baseline: 'SmalltalkCI';
         platforms: {(SmalltalkCI platformSymbol)}).
   self spec
     testing:

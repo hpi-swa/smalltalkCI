@@ -1,5 +1,5 @@
 class initialization
 install
-	self instancesExist
+	self isInstalled
 		ifFalse: [ SCISqueakTranscript new install ]
 		ifTrue: [ self error: 'A SCISqueakTranscript already exists.' ]

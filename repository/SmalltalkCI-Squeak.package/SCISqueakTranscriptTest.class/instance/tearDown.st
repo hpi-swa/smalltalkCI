@@ -1,3 +1,5 @@
 setup
 tearDown
-	Smalltalk at: #Transcript put: self transcript
+	self originalTranscript isNil
+		ifTrue: [ SCISqueakTranscript install ]
+		ifFalse: [ Smalltalk at: #Transcript put: self originalTranscript ]

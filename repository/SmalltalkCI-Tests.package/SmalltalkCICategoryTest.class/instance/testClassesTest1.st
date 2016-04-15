@@ -9,7 +9,7 @@ testClassesTest1
   self spec
     addLoadSpec:
       (SCIMetacelloLoadSpec new
-        baseline: 'SmalltalkCITests';
+        baseline: 'SmalltalkCI';
         platforms: {(SmalltalkCI platformSymbol)}).
   self spec
     testing:
@@ -22,7 +22,7 @@ testClassesTest1
                   (Dictionary new
                     add: #'classes' -> #(#'Announcement');
                     add:
-                        #'categories' -> (#('BaselineOfSmalltalkCITests') , kernelCategories);
+                        #'categories' -> (#('BaselineOfSmalltalkCI') , kernelCategories);
                     yourself);
         add:
             #'exclude'
@@ -34,7 +34,7 @@ testClassesTest1
         yourself).
   classes := self ci classesToTest.
   self assert: (classes includes: Dictionary).
-  self assert: (classes includes: BaselineOfSmalltalkCITests) not.
+  self assert: (classes includes: BaselineOfSmalltalkCI) not.
   self assert: (classes includes: Announcement) not.
   self assert: (classes includes: SmalltalkCISpec).
   self assert: (classes includes: SmalltalkCISpecTest) not.

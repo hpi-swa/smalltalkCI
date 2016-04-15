@@ -2,8 +2,8 @@
 	"class" : {
 		 },
 	"instance" : {
-		"setUp" : "fn 4/15/2016 15:45",
-		"tearDown" : "fn 4/15/2016 15:45",
-		"testSqueakTranscript" : "fn 4/15/2016 15:50",
-		"transcript" : "fn 4/15/2016 15:42",
-		"transcript:" : "fn 4/15/2016 15:42" } }
+		"originalTranscript" : "fn 4/15/2016 22:55",
+		"originalTranscript:" : "fn 4/15/2016 22:55",
+		"setUp" : "fn 4/15/2016 22:55",
+		"tearDown" : "fn 4/15/2016 22:55",
+		"testSqueakTranscript" : "fn 4/15/2016 22:57" } }

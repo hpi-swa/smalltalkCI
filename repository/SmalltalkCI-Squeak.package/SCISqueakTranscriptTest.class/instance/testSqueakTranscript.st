@@ -1,12 +1,13 @@
 testing
 testSqueakTranscript
+	| transcript |
+	transcript := Transcript.
 	self assert: (Transcript isKindOf: SCISqueakTranscript) equals: false.
 	SCISqueakTranscript install.
-	Transcript cr; show: 'foo'; crlf; showln: 'bar'.
+	Transcript cr; show: '.'; crlf; showln: '.'.
 	self assert: (Transcript isKindOf: SCISqueakTranscript) equals: true.
-	self assert: SCISqueakTranscript allInstances size equals: 1.
-	self assert: (SCISqueakTranscript allInstances first originalTranscript) equals: self transcript.
 	self should: [ SCISqueakTranscript install ] raise: Error.
 	SCISqueakTranscript uninstall.
 	self assert: (Transcript isKindOf: SCISqueakTranscript) equals: false.
-	self assert: Transcript equals: self transcript.
+	self should: [ SCISqueakTranscript uninstall ] raise: Error.
+	self assert: Transcript equals: transcript

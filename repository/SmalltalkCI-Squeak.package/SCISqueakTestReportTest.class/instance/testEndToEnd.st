@@ -1,9 +1,12 @@
 testing
 testEndToEnd
-	| expectedFilename testStream difference result |
-	expectedFilename := 'excluded_tests.xml'.
-	self assert: false equals: (SmalltalkCISqueak fileExists: expectedFilename).
-	result := SCISqueakTestReport runClasses: {SCIExcludedTests} named: 'excluded_tests'.
+	| testStream contents result isUsingSCISqueakTranscript |
+	self assert: false equals: (SmalltalkCISqueak fileExists: self class expectedFileName).
+	
+	isUsingSCISqueakTranscript := (Transcript isKindOf: SCISqueakTranscript).
+	isUsingSCISqueakTranscript ifTrue: [ SCISqueakTranscript uninstall ].
+	result := SCISqueakTestReport runClasses: {SCIExcludedTests} named: self class suiteName.
+	isUsingSCISqueakTranscript ifTrue: [ SCISqueakTranscript install ].
 
 	self assert: 2 equals: result suiteFailures.
 	self assert: 1 equals: result suiteErrors.
@@ -11,11 +14,12 @@ testEndToEnd
 	self assert: 5 equals: result suiteTotal.
 	self assert: result hasFailuresOrErrors equals: true.
 	
-	testStream := StandardFileStream fileNamed: expectedFilename.
+	testStream := StandardFileStream fileNamed: self class expectedFileName.
 	testStream := MultiByteFileStream newFrom: testStream.
-	difference := testStream contents difference: self class expectedExcludedTestResult.
-	self assert: difference withBlanksTrimmed size equals: 0.
+	contents := testStream contents.
 	testStream close.
 	
-	self assert: true equals: (SmalltalkCISqueak fileExists: expectedFilename).
-	SmalltalkCISqueakTest deleteFile: expectedFilename
+	self class expectedSubStrings do: [ :subString |
+		self assert: (contents includesSubString: subString) ].
+	
+	self assert: true equals: (SmalltalkCISqueak fileExists: self class expectedFileName).
