@@ -1,14 +1,14 @@
 {
-	"category" : "SmalltalkCI-Squeak",
+	"category" : "SmalltalkCI-Squeak-Core",
 	"classinstvars" : [
 		 ],
 	"classvars" : [
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"originalTranscript" ],
-	"name" : "SCISqueakTranscript",
+		 ],
+	"name" : "SCISqueakToolSet",
 	"pools" : [
 		 ],
-	"super" : "TranscriptStream",
+	"super" : "StandardToolSet",
 	"type" : "normal" }
