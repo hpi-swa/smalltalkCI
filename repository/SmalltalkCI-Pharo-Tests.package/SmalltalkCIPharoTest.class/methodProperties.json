@@ -1,0 +1,11 @@
+{
+	"class" : {
+		"coverageTestFile" : "TravisCI 4/15/2016 23:35" },
+	"instance" : {
+		"deleteTestFile" : "TravisCI 4/15/2016 23:36",
+		"sci" : "TravisCI 4/15/2016 23:22",
+		"sci:" : "TravisCI 4/15/2016 23:22",
+		"setUp" : "TravisCI 4/15/2016 23:31",
+		"tearDown" : "TravisCI 4/15/2016 23:31",
+		"testCoverageHelpers" : "TravisCI 4/15/2016 23:36",
+		"testMethodReferenceForSelector" : "TravisCI 4/15/2016 23:27" } }
