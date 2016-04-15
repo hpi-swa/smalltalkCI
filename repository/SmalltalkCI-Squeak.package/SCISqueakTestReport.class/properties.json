@@ -12,8 +12,8 @@
 		"suiteTime",
 		"suiteFailures",
 		"suiteErrors" ],
-	"name" : "SCITestReport",
+	"name" : "SCISqueakTestReport",
 	"pools" : [
 		 ],
-	"super" : "SCIReport",
+	"super" : "Object",
 	"type" : "normal" }

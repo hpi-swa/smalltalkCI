@@ -1,3 +1,3 @@
 executing
 runTests
-	SCITestReport runClasses: self classesToTest named: self suiteName
+	SCISqueakTestReport runClasses: self classesToTest named: self suiteName

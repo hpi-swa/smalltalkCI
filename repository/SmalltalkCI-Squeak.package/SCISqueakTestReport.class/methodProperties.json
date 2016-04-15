@@ -4,6 +4,7 @@
 		"runSuite:" : "fn 1/16/2016 16:55" },
 	"instance" : {
 		"beginTestCase:runBlock:" : "fn 4/14/2016 14:35",
+		"encode:" : "fn 4/15/2016 09:50",
 		"endTestCaseWith:" : "fn 4/14/2016 14:36",
 		"formatTime:" : "fn 1/17/2016 02:57",
 		"hasFailuresOrErrors" : "fn 4/7/2016 13:41",
