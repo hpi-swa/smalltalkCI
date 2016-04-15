@@ -1,3 +1,3 @@
 accessing
-compatibleSpecs 
+compatibleLoadSpecs 
 	^ spec loading select: [ :each | each isPlatformCompatible ]

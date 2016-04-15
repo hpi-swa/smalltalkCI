@@ -6,7 +6,7 @@ classesToTest
 			(spec testing includesKey: key)
 				ifTrue: [ ^ self class classesToTestFrom: spec testing ] ].
 	classes := Set new.
-	self compatibleSpecs do: [ :each | classes addAll: each testClasses ].
+	self compatibleLoadSpecs do: [ :each | classes addAll: each testClasses ].
 	spec testing at: #'include'
 		ifPresent: [ :includeDict | classes addAll: (self class classesToTestFrom: includeDict) ].
 	spec testing at: #'exclude'

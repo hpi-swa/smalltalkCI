@@ -1,3 +1,3 @@
 executing
 finishUpAfterCI
-	self compatibleSpecs do: [ :each | each finishUpAfterCI ]
+	self compatibleLoadSpecs do: [ :each | each finishUpAfterCI ]

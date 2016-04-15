@@ -1,4 +1,4 @@
 executing
 prepareForCI
-	self compatibleSpecs do: [ :each | each prepareForCI ]
+	self compatibleLoadSpecs do: [ :each | each prepareForCI ]
 	

@@ -1,3 +1,3 @@
 accessing
 suiteName
-  ^ suiteName ifNil: [ 'SmalltalkCI' ]
+  ^ suiteName ifNil: [ ^ self class defaultSuiteName ]

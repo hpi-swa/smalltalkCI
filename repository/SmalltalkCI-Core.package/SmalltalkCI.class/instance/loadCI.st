@@ -1,6 +1,5 @@
 executing
 loadCI
-	self
-		prepareForCI;
+	self prepareForCI;
 		loadProjects;
 		finishUpAfterCI

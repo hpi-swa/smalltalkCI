@@ -1,3 +1,3 @@
 loading
 performMetacelloLoad: aBlock
-  ^ aBlock value
+	^ aBlock value
