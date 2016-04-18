@@ -159,7 +159,7 @@ SmalltalkCISpec {
       */
       #baseline : 'MyProject',                                // Define MC Baseline
       #configuration : 'MyProject',                           // Alternatively, define MC Configuration
-      #directory : 'tests',                                   // Path to packages if FileTree is used
+      #directory : 'packages',                                // Path to packages if FileTree is used
       #repository : 'http://ss3.gemtalksystems.com/ss/...',   // Alternatively, define MC repository
       #onWarningLog : true,                                   // Handle Warnings and log message to Transcript
       #load : [ 'default' ],                                  // Define MC load attributes
