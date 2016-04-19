@@ -1,3 +1,3 @@
 accessing
 isCoverageTestingEnabled
-	^ self spec testing includesKey: #coverageAgainst
+	^ self class supportsCoverage and: [ self spec testing includesKey: #coverage ]

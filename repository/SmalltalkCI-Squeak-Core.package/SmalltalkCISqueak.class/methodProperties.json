@@ -6,8 +6,10 @@
 		"isHeadless" : "fn 1/27/2016 17:04",
 		"isPlatformCompatible" : "fn 1/31/2016 17:57",
 		"methodReferenceFor:selector:" : "fn 4/14/2016 01:18",
+		"packageNameForClass:" : "fn 4/19/2016 18:43",
 		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:37",
-		"slash" : "fn 4/14/2016 01:02" },
+		"slash" : "fn 4/14/2016 01:02",
+		"supportsCoverage" : "fn 4/19/2016 18:31" },
 	"instance" : {
 		"finishUpAfterCI" : "jc 4/12/2016 16:44",
 		"linesForFile:" : "fn 4/14/2016 01:06",

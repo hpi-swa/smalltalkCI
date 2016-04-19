@@ -5,13 +5,10 @@ fileNameFor: aCompiledMethod in: aDirectoryName
 	| method class package instanceOrClass |
 	method := aCompiledMethod selector ifEmpty: [ aCompiledMethod searchForSelector ].
 	class := aCompiledMethod methodClass.
-	(class isKindOf: Metaclass)
-		ifTrue: [
-			instanceOrClass := 'class'.
-			package := class soleInstance category ]
-		ifFalse: [
-			instanceOrClass := 'instance'.
-			package := class category ].
+	class isMeta
+		ifTrue: [ instanceOrClass := 'class' ]
+		ifFalse: [ instanceOrClass := 'instance' ].
+	package := self class packageNameForClass: class.
 	^ aDirectoryName, self class slash,
 		package, '.package', self class slash,
 		class name, '.class', self class slash,
