@@ -6,4 +6,6 @@ runCI
 	Smalltalk at: #WorldState ifPresent: [:global |
 		global addDeferredUIMessage: [
     			Smalltalk at: #SmalltalkImage ifPresent: [:image |
-     	 			image current snapshot: true andQuit: true ]]]	
+				"For compatibility reasons, do not snapshot and quit at the same time."
+     	 			image current snapshot: true andQuit: false.
+				image current snapshot: false andQuit: true ]]]	
