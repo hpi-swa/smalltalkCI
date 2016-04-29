@@ -3,7 +3,8 @@
 		 },
 	"instance" : {
 		"expectedFailures" : "fn 1/23/2016 19:14",
-		"testError" : "fn 1/23/2016 19:13",
+		"testAssertError" : "fn 4/29/2016 17:23",
+		"testError" : "fn 4/29/2016 17:23",
 		"testFailure" : "fn 1/23/2016 19:13",
 		"testShouldFail" : "fn 1/23/2016 19:11",
 		"testShouldPass" : "fn 1/23/2016 19:14",
