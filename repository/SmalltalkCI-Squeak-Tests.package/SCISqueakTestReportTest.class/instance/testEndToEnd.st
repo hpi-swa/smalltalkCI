@@ -8,10 +8,10 @@ testEndToEnd
 	result := SCISqueakTestReport runClasses: {SCIExcludedTests} named: self class suiteName.
 	isUsingSCISqueakTranscript ifTrue: [ SCISqueakTranscript install ].
 
-	self assert: 2 equals: result suiteFailures.
+	self assert: 3 equals: result suiteFailures.
 	self assert: 1 equals: result suiteErrors.
 	self assert: 2 equals: result suitePassing.
-	self assert: 5 equals: result suiteTotal.
+	self assert: 6 equals: result suiteTotal.
 	self assert: result hasFailuresOrErrors equals: true.
 	
 	testStream := StandardFileStream fileNamed: self class expectedFileName.
