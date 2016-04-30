@@ -5,7 +5,7 @@ stackTraceString: err of: aTestCase
 		context := err signalerContext.
 		[ context isNil or: [ context receiver == aTestCase and: [ context methodSelector == #runCase ] ] ] whileFalse: [
 			str print: context.
-			context method isTestMethod
+			(context method methodClass isKindOf: TestCase)
 				ifTrue: [ | pcRange code |
 					pcRange := context debuggerMap rangeForPC: context pc contextIsActiveContext: false.
 					code := context method getSource asString copyFrom: pcRange first to: pcRange last.
