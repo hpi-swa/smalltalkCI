@@ -77,6 +77,11 @@ print_help() {
 EOF
 }
 
+report_coverage() {
+  python "${SMALLTALK_CI_HOME}/lib/coveralls_notifier.py" \
+         "${SMALLTALK_CI_BUILD}"
+}
+
 print_results() {
   local build_dir=$1
   local status=0
