@@ -1,5 +1,5 @@
 executing
 loadCI
 	self prepareForCI;
-		loadProjects;
+		loadAllCompatibleSpecs;
 		finishUpAfterCI

@@ -11,7 +11,7 @@
 		"supportsCoverage" : "fn 4/19/2016 18:31" },
 	"instance" : {
 		"linesForFile:" : "fn 4/14/2016 01:05",
-		"loadProjects" : "MaxLeske 3/5/2016 11:35",
+		"loadAllCompatibleSpecs" : "fn 5/8/2016 15:08",
 		"md5ForFile:" : "fn 4/14/2016 01:05",
 		"readSTONSpec:" : "fn 1/31/2016 19:58",
 		"runTests" : "fn 4/14/2016 00:52" } }
