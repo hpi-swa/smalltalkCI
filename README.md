@@ -64,10 +64,10 @@ they can take up a lot of space on your drive.*
 
 | Squeak          | Pharo            | GemStone             |
 | --------------- | ---------------- | -------------------- |
-| `Squeak-trunk`  | `Pharo-alpha`    | `GemStone-3.3.0`     |
-| `Squeak-5.0`    | `Pharo-stable`   | `GemStone-3.2.12`    |
-| `Squeak-4.6`    | `Pharo-5.0`      | `GemStone-3.1.0.6`   |
-| `Squeak-4.5`    | `Pharo-4.0`      |                      |
+| `Squeak-trunk`  | `Pharo-alpha`    | `GemStone-3.3.x`     |
+| `Squeak-5.0`    | `Pharo-stable`   | `GemStone-3.2.x`     |
+| `Squeak-4.6`    | `Pharo-5.0`      | `GemStone-3.1.0.x`   |
+| `Squeak-4.5`    | `Pharo-4.0`      | `Gemstone-2.4.x`     |
 |                 | `Pharo-3.0`      |                      |
 
 
