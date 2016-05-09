@@ -48,6 +48,9 @@ matrix:
     - smalltalk: GemStone-3.3.0
       os: linux
       env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
+      cache:
+        directories:
+          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
     - smalltalk: GemStone-3.2.14
       os: linux
       cache:
@@ -61,6 +64,9 @@ matrix:
     # GemStone OS X builds
     - smalltalk: GemStone-3.3.0
       os: osx
+      cache:
+        directories:
+          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
 ##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
 #    - smalltalk: GemStone-3.2.14
 #      os: osx
