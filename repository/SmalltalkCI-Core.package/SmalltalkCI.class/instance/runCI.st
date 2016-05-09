@@ -1,8 +1,8 @@
 executing
 runCI
-	self prepareForCI.
+	[ self prepareForCI.
 	self loadAllCompatibleSpecs.
 	self isCoverageTestingEnabled
 		ifTrue: [ self runTestsWithCoverage ]
-		ifFalse: [ self runTests ].
-	self finishUpAfterCI
+		ifFalse: [ self runTests ] ]
+	ensure: [ self finishUpAfterCI ]
