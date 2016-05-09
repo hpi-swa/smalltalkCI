@@ -128,7 +128,7 @@ gemstone::prepare_stone() {
     timer_start
 
     if is_file "${GS_HOME}/bin/.smalltalkCI_create_arg_supported"; then
-      config_stone_create_arg="-z ${config_project_home}/${config_ston}"
+      config_stone_create_arg="-z ${config_ston}"
     fi
 
     if [[ "${TRAVIS_CACHE_ENABLED:-}" = "false" ]]; then
@@ -197,7 +197,7 @@ gemstone::prepare_client() {
  travis_fold start "create_${client_name}" "Creating client ${client_name}..."
     timer_start
 
-    ${GS_HOME}/bin/createClient -t pharo "${client_name}" -v ${client_version} -s "${STONE_NAME}" -z "${config_project_home}/${config_ston}" || print_error_and_exit "createClient ${client_name} failed."
+    ${GS_HOME}/bin/createClient -t pharo "${client_name}" -v ${client_version} -s "${STONE_NAME}" -z "${config_ston}" || print_error_and_exit "createClient ${client_name} failed."
 
     timer_finish
   travis_fold end "create_${client_name}"
@@ -226,7 +226,7 @@ gemstone::load_and_test_project() {
           repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
           load: 'Core'.
         System commitTransaction.
-        (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_project_home}/${config_ston}'.
+        (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_ston}'.
       ].
 EOF
 
@@ -242,7 +242,7 @@ EOF
     timer_start
 
     ${GS_HOME}/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
-      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_project_home}/${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
+      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
       System commitTransaction.
 EOF
 
@@ -256,7 +256,7 @@ EOF
       travis_fold start "test_${client_name}" "Testing client project ${client_name}..."
         timer_start
     
-        ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_project_home}/${config_ston}"
+        ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}"
 
         timer_finish
       travis_fold end "test_${client_name}"

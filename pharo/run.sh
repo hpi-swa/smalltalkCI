@@ -167,14 +167,12 @@ pharo::prepare_image() {
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
 # Arguments:
-#   project_home
 #   project_ston
 # Returns:
 #   Status code of build
 ################################################################################
 pharo::load_and_test_project() {
-  local project_home=$1
-  local project_ston=$2
+  local project_ston=$1
   local vm_flags="--save"
   local status=0
 
@@ -191,7 +189,7 @@ pharo::load_and_test_project() {
           repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
           onConflict: [:ex | ex pass];
           load ] on: Warning do: [:w | w resume ].
-      (Smalltalk at: #SmalltalkCI) runCIFor: '${project_home}/${config_ston}'
+      (Smalltalk at: #SmalltalkCI) runCIFor: '${project_ston}'
     " || status=$?
 
     timer_finish
@@ -210,7 +208,7 @@ run_build() {
 
   pharo::prepare_image "${config_smalltalk}"
   pharo::prepare_vm "${config_smalltalk}" "${config_headless}"
-  pharo::load_and_test_project "${config_project_home}" "${config_ston}" || exit_status=$?
+  pharo::load_and_test_project "${config_ston}" || exit_status=$?
 
   return "${exit_status}"
 }

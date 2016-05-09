@@ -11,27 +11,44 @@ readonly INSTALL_TARGET_OSX="/usr/local/bin"
 # Determine $SMALLTALK_CI_HOME and load helpers.
 ################################################################################
 initialize() {
-  local base_path="${BASH_SOURCE[0]}"
+  local resolved_path
 
   trap interrupted INT
 
+  # Fail if OS is not supported
+  case "$(uname -s)" in
+    "Linux"|"Darwin")
+      ;;
+    *)
+      echo "Unsupported platform '$(uname -s)'." 1>&2
+      exit 1
+      ;;
+  esac
+
   if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
-    # Resolve symlink if necessary and fail if OS is not supported
+    # Try to determine absolute path to smalltalkCI
+    SMALLTALK_CI_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+    if [[ ! -f "${SMALLTALK_CI_HOME}/run.sh" ]]; then
+      # Try to resolve symlink
       case "$(uname -s)" in
         "Linux")
-          base_path="$(readlink -f "${base_path}")" || true
+          resolved_path="$(readlink -f "${BASH_SOURCE[0]}")" || true
           ;;
         "Darwin")
-          base_path="$(readlink "${base_path}")" || true
-          ;;
-        *)
-          echo "Unsupported platform '$(uname -s)'." 1>&2
-          exit 1
+          resolved_path="$(readlink "${BASH_SOURCE[0]}")" || true
           ;;
       esac
+      SMALLTALK_CI_HOME=$(dirname "${resolved_path}")
+    fi
 
-      SMALLTALK_CI_HOME="$(cd "$(dirname "${base_path}")" && pwd)"
-      source "${SMALLTALK_CI_HOME}/env_vars"
+    if [[ ! -f "${SMALLTALK_CI_HOME}/run.sh" ]]; then
+      echo "Unable to locate smalltalkCI directory." 1>&2
+      exit 1
+    fi
+
+    # Load environment variables
+    source "${SMALLTALK_CI_HOME}/env_vars"
   fi
 
   if [[ ! -f "${SMALLTALK_CI_HOME}/run.sh" ]]; then
@@ -52,55 +69,62 @@ interrupted() {
 }
 
 ################################################################################
-# Set and verify $config_project_home and $config_ston if applicable.
+# Ensure $config_ston is an existing STON file.
 # Locals:
-#   config_project_home
 #   config_ston
-# Globals:
-#   TRAVIS_BUILD_DIR
 # Arguments:
 #   Custom project home path
 ################################################################################
-determine_project() {
-  local custom_ston="${1:-}"
+ensure_ston_config_exists() {
+  local custom_ston="$1"
 
   if ! is_empty "${custom_ston}" && is_file "${custom_ston}" && \
       [[ ${custom_ston: -5} == ".ston" ]]; then
-    config_ston=$(basename "${custom_ston}")
-    config_project_home="$(dirname "${custom_ston}")"
+    config_ston="${custom_ston}"
   else
-    if is_travis_build; then
-      config_project_home="${TRAVIS_BUILD_DIR}"
-    else
-      config_project_home="$(pwd)"
-    fi
     locate_ston_config
   fi
 
-  # Convert to absolute path if necessary
-  if [[ "${config_project_home:0:1}" != "/" ]]; then
-    config_project_home="$(cd "${config_project_home}" && pwd)"
+  # Resolve absolute path if necessary
+  if [[ "${config_ston:0:1}" != "/" ]]; then
+    case "$(uname -s)" in
+      "Linux")
+        config_ston="$(readlink -f "${config_ston}")" || true
+        ;;
+      "Darwin")
+        config_ston="$(readlink "${config_ston}")" || true
+        ;;
+    esac
   fi
 
-  if ! is_dir "${config_project_home}"; then
-    print_error_and_exit "Project home cannot be found."
+  if ! is_file "${config_ston}"; then
+    print_error_and_exit "STON configuration could not be found."
   fi
 }
 
 ################################################################################
 # Allow STON config filename to start with a dot.
 # Locals:
-#   config_project_home
 #   config_ston
+# Globals:
+#   TRAVIS_BUILD_DIR
 ################################################################################
 locate_ston_config() {
-  if ! is_file "${config_project_home}/${config_ston}"; then
-    if is_file "${config_project_home}/.${config_ston}"; then
-      config_ston=".${config_ston}"
-    else
-      print_error_and_exit "No STON file named '${config_ston}' found
-                            in ${config_project_home}."
-    fi
+  local project_home
+
+  if is_travis_build; then
+    project_home="${TRAVIS_BUILD_DIR}"
+  else
+    project_home="$(pwd)"
+  fi
+
+  if is_file "${project_home}/${DEFAULT_STON_CONFIG}"; then
+    config_ston="${project_home}/${DEFAULT_STON_CONFIG}"
+  elif is_file "${project_home}/.${DEFAULT_STON_CONFIG}"; then
+    config_ston="${project_home}/.${DEFAULT_STON_CONFIG}"
+  else
+    print_error_and_exit "No STON file named '.${DEFAULT_STON_CONFIG}' found \
+in ${project_home}."
   fi
 }
 
@@ -145,12 +169,6 @@ validate_configuration() {
     print_error_and_exit "No STON file found."
   elif ! is_file "${config_ston}"; then
     print_error_and_exit "STON file at '${config_ston}' does not exist."
-  fi
-  if is_empty "${config_project_home}"; then
-    print_error_and_exit "Project home not defined."
-  elif ! is_dir "${config_project_home}"; then
-    print_error_and_exit "Project home at '${config_project_home}' does not
-                          exist."
   fi
 }
 
@@ -222,7 +240,7 @@ parse_options() {
 ################################################################################
 # Make sure all required folders exist, create build folder and symlink project.
 # Locals:
-#   config_project_home
+#   config_ston
 # Globals:
 #   SMALLTALK_CI_CACHE
 #   SMALLTALK_CI_BUILD_BASE
@@ -231,6 +249,8 @@ parse_options() {
 #   SMALLTALK_CI_GIT
 ################################################################################
 prepare_folders() {
+  local project_home
+
   print_info "Preparing folders..."
   is_dir "${SMALLTALK_CI_CACHE}" || mkdir "${SMALLTALK_CI_CACHE}"
   is_dir "${SMALLTALK_CI_BUILD_BASE}" || mkdir "${SMALLTALK_CI_BUILD_BASE}"
@@ -244,7 +264,8 @@ prepare_folders() {
   fi
 
   # Link project folder to git_cache
-  ln -s "${config_project_home}" "${SMALLTALK_CI_GIT}"
+  project_home="$(dirname "${config_ston}")"
+  ln -s "${project_home}" "${SMALLTALK_CI_GIT}"
 }
 
 ################################################################################
@@ -403,8 +424,7 @@ run() {
 ################################################################################
 main() {
   local config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-}"
-  local config_ston="${TRAVIS_SMALLTALK_CONFIG:-$DEFAULT_STON_CONFIG}"
-  local config_project_home
+  local config_ston="${TRAVIS_SMALLTALK_CONFIG:-}"
   local config_builder_ci_fallback="false"
   local config_clean="false"
   local config_debug="false"
@@ -415,7 +435,7 @@ main() {
   initialize
   parse_options "$@"
   [[ "${config_verbose}" = "true" ]] && set -o xtrace
-  determine_project "${!#}"  # Use last argument for custom STON
+  ensure_ston_config_exists "${!#}"  # Use last argument for custom STON
   check_clean_up
   select_smalltalk
   validate_configuration

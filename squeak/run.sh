@@ -260,7 +260,6 @@ squeak::determine_vm_flags() {
 # Load project and save image.
 # Locals:
 #   config_headless
-#   config_project_home
 #   config_ston
 # Globals:
 #   SMALLTALK_CI_IMAGE
@@ -283,7 +282,7 @@ squeak::load_and_test_project() {
     repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
     onConflict: [:ex | ex pass];
     load ] on: Warning do: [:w | w resume ].
-  SmalltalkCI runCIFor: '${config_project_home}/${config_ston}'
+  SmalltalkCI runCIFor: '${config_ston}'
 EOL
 
     "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
