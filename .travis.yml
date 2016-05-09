@@ -38,11 +38,15 @@ matrix:
     - smalltalk: Squeak-5.0
       smalltalk_config: .smalltalk_fail.ston
       os: linux
-      script: $SMALLTALK_CI_HOME/run.sh --debug && false || true
+      script:
+        - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
+        - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then exit 1; fi
     - smalltalk: Pharo-stable
       smalltalk_config: .smalltalk_fail.ston
       os: linux
-      script: $SMALLTALK_CI_HOME/run.sh --debug && false || true
+      script:
+        - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
+        - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then exit 1; fi
 
     # GemStone Linux builds
     - smalltalk: GemStone-3.3.0
