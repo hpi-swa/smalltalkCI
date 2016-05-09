@@ -78,9 +78,17 @@ interrupted() {
 ensure_ston_config_exists() {
   local custom_ston="$1"
 
-  if ! is_empty "${custom_ston}" && is_file "${custom_ston}" && \
-      [[ ${custom_ston: -5} == ".ston" ]]; then
-    config_ston="${custom_ston}"
+  if ! is_empty "${custom_ston}" && [[ ${custom_ston: -5} == ".ston" ]]; then
+    # Make sure $custom_ston does not start with ./
+    custom_ston="${custom_ston#./}"
+
+    if is_file "${custom_ston}"; then
+      if [[ "${custom_ston:0:1}" == "/" ]]; then
+        config_ston="${custom_ston}"
+      else
+        config_ston="$(pwd)/${custom_ston}"
+      fi
+    fi
   else
     locate_ston_config
   fi
