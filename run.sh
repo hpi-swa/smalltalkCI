@@ -89,6 +89,13 @@ ensure_ston_config_exists() {
         config_ston="$(pwd)/${custom_ston}"
       fi
     fi
+  elif is_file "${config_ston}"; then
+    # Make sure $config_ston does not start with ./
+    config_ston="${config_ston#./}"
+
+    if [[ "${config_ston:0:1}" != "/" ]]; then
+      config_ston="$(pwd)/${config_ston}"
+    fi
   else
     locate_ston_config
   fi
