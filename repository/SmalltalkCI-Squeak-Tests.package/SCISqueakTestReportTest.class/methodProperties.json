@@ -1,7 +1,7 @@
 {
 	"class" : {
 		"expectedFileName" : "fn 4/15/2016 22:29",
-		"expectedSubStrings" : "fn 4/30/2016 13:38",
+		"expectedSubStrings" : "fn 5/9/2016 20:13",
 		"suiteName" : "fn 4/15/2016 22:29" },
 	"instance" : {
 		"deleteTestFile" : "fn 4/15/2016 22:28",
