@@ -440,7 +440,6 @@ run() {
 main() {
   local config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-}"
   local config_ston="${TRAVIS_SMALLTALK_CONFIG:-}"
-  local config_builder_ci_fallback="false"
   local config_clean="false"
   local config_debug="false"
   local config_headless="true"
