@@ -85,7 +85,11 @@ ensure_ston_config_exists() {
   fi
 
   if is_travis_build; then
-    config_ston="${TRAVIS_BUILD_DIR}/${TRAVIS_SMALLTALK_CONFIG}"
+    if is_not_empty "${TRAVIS_SMALLTALK_CONFIG}"; then
+      config_ston="${TRAVIS_BUILD_DIR}/${TRAVIS_SMALLTALK_CONFIG}"
+    else
+      locate_ston_config
+    fi
   elif is_file "${config_ston}"; then
     # Make sure $config_ston does not start with ./
     config_ston="${config_ston#./}"
@@ -111,7 +115,8 @@ ensure_ston_config_exists() {
   fi
 
   if ! is_file "${config_ston}"; then
-    print_error_and_exit "STON configuration could not be found."
+    print_error_and_exit "STON configuration could not be found at \
+'${config_ston}'."
   fi
 }
 
