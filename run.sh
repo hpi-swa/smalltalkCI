@@ -78,22 +78,20 @@ interrupted() {
 ensure_ston_config_exists() {
   local custom_ston="$1"
 
-  if ! is_empty "${custom_ston}" && [[ ${custom_ston: -5} == ".ston" ]]; then
-    # Make sure $custom_ston does not start with ./
-    custom_ston="${custom_ston#./}"
+  # STON provided as cmd line parameter can override $config_ston
+  if ! is_empty "${custom_ston}" && [[ ${custom_ston: -5} == ".ston" ]] && \
+      is_file "${custom_ston}"; then
+    config_ston="${custom_ston}"
+  fi
 
-    if is_file "${custom_ston}"; then
-      if [[ "${custom_ston:0:1}" == "/" ]]; then
-        config_ston="${custom_ston}"
-      else
-        config_ston="$(pwd)/${custom_ston}"
-      fi
-    fi
+  if is_travis_build; then
+    config_ston="${TRAVIS_BUILD_DIR}/${TRAVIS_SMALLTALK_CONFIG}"
   elif is_file "${config_ston}"; then
     # Make sure $config_ston does not start with ./
     config_ston="${config_ston#./}"
 
-    if [[ "${config_ston:0:1}" != "/" ]]; then
+    # Expand path if $config_ston does not start with / or ~
+    if ! [[ "${config_ston:0:1}" =~ (\/|\~) ]]; then
       config_ston="$(pwd)/${config_ston}"
     fi
   else
@@ -153,22 +151,26 @@ select_smalltalk() {
                 Pharo-stable Pharo-alpha Pharo-5.0 Pharo-4.0 Pharo-3.0
                 GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6"
 
-  if is_not_empty "${config_smalltalk}" || is_travis_build; then
+  if is_travis_build; then
+    config_smalltalk="${TRAVIS_SMALLTALK_VERSION}"
     return
   fi
 
-  PS3="Choose Smalltalk image: "
-  select selection in $images; do
-    case "${selection}" in
-      Squeak*|Pharo*|GemStone*)
-        config_smalltalk="${selection}"
-        break
-        ;;
-      *)
-        print_error_and_exit "No Smalltalk image selected."
-        ;;
-    esac
-  done
+  # Ask user to choose an image if one has not been selected yet
+  if is_empty "${config_smalltalk}"; then
+    PS3="Choose Smalltalk image: "
+    select selection in $images; do
+      case "${selection}" in
+        Squeak*|Pharo*|GemStone*)
+          config_smalltalk="${selection}"
+          break
+          ;;
+        *)
+          print_error_and_exit "No Smalltalk image selected."
+          ;;
+      esac
+    done
+  fi
 }
 
 ################################################################################
@@ -438,8 +440,8 @@ run() {
 #   All positional parameters
 ################################################################################
 main() {
-  local config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-}"
-  local config_ston="${TRAVIS_SMALLTALK_CONFIG:-}"
+  local config_smalltalk=""
+  local config_ston=""
   local config_clean="false"
   local config_debug="false"
   local config_headless="true"
