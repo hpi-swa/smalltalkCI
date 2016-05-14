@@ -109,17 +109,61 @@ smalltalk:
   - GemStone-3.2.12
   - GemStone-3.1.0.6
 
-# Uncomment to specify one or more custom smalltalkCI configuration files (.smalltalk.ston by default)
-#smalltalk_config: .myconfig.ston
-#  or
-#smalltalk_config:
-#  - myconfig1.ston
-#  - myconfig2.ston
-
 # Uncomment to enable dependency caching - especially useful for GemStone builds (3x faster)
 #cache:
 #  directories:
 #    - $SMALLTALK_CI_CACHE
+```
+
+### `.travis.yml` Template with multiple configurations
+
+```yml
+language: smalltalk
+sudo: false
+
+# Select operating system(s)
+os: linux
+
+# Select compatible Smalltalk image(s)
+smalltalk:
+  - Pharo-alpha
+  - Pharo-stable
+
+# Loads `.smalltalk.ston` (if it exists), `myconfig1.ston` and `myconfig2.ston`
+# **for each build step defined above**:
+smalltalk_config:
+  - myconfig1.ston
+  - myconfig2.ston
+```
+
+### `.travis.yml` Template with matrix configuration
+
+```yml
+language: smalltalk
+sudo: false
+
+# Select operating system(s)
+os: linux
+
+# Select compatible Smalltalk image(s)
+smalltalk:
+  - Pharo-alpha
+  - Pharo-stable
+
+# Add two **additional** build steps.
+# The build steps from above will be run as before with `.smalltalk.ston`.
+# See https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix.
+# Loads `.bleedingEdge.ston ` only:
+matrix:
+  include:
+    - smalltalk: Pharo-alpha
+      smalltalk_config: .bleedingEdge.ston
+      os: linux
+    - smalltalk: Pharo-alpha
+      smalltalk_config: .bleedingEdge.ston
+      os: osx
+  allow_failure:
+    - smalltalk_config: .bleedingEdge.ston
 ```
 
 ### Minimal `.smalltalk.ston` Template
