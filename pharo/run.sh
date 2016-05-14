@@ -47,10 +47,10 @@ pharo::get_vm_url() {
 
   case "${smalltalk_name}" in
     "Pharo-alpha")
-      echo "get.pharo.org/vm50"
+      echo "get.pharo.org/vm60"
       ;;
     "Pharo-stable")
-      echo "get.pharo.org/vm40"
+      echo "get.pharo.org/vm50"
       ;;
     "Pharo-5.0")
       echo "get.pharo.org/vm50"
