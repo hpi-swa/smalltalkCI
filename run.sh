@@ -302,9 +302,14 @@ check_clean_up() {
   if [[ "${config_clean}" = "true" ]]; then
     print_info "cache at '${SMALLTALK_CI_CACHE}'."
     print_info "builds at '${SMALLTALK_CI_BUILD_BASE}'."
-    read -p "${question1}" user_input
-    if [[ "${user_input}" = "y" ]]; then
-      clean_up
+    if is_dir "${SMALLTALK_CI_CACHE}" || \
+        is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+      read -p "${question1}" user_input
+      if [[ "${user_input}" = "y" ]]; then
+        clean_up
+      fi
+    else
+      print_notice "Nothing to clean up."
     fi
     if is_empty "${config_smalltalk}" || is_empty "${config_ston}"; then
       exit  # User did not supply enough arguments to continue
@@ -322,24 +327,19 @@ check_clean_up() {
 #   SMALLTALK_CI_BUILD_BASE
 ################################################################################
 clean_up() {
-  if is_dir "${SMALLTALK_CI_CACHE}" || \
-      is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
-    print_info "Cleaning up..."
-    print_info "Removing the following directories:"
-    if is_dir "${SMALLTALK_CI_CACHE}"; then
-      print_info "  ${SMALLTALK_CI_CACHE}"
-      rm -rf "${SMALLTALK_CI_CACHE}"
-    fi
-    if is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
-      print_info "  ${SMALLTALK_CI_BUILD_BASE}"
-      # Make sure read-only files (e.g. some GemStone files) can be removed
-      chmod -fR +w "${SMALLTALK_CI_BUILD_BASE}"
-      rm -rf "${SMALLTALK_CI_BUILD_BASE}"
-    fi
-    print_info "Done."
-  else
-    print_notice "Nothing to clean up."
+  print_info "Cleaning up..."
+  print_error "Removing the following directories:"
+  if is_dir "${SMALLTALK_CI_CACHE}"; then
+    print_info "  ${SMALLTALK_CI_CACHE}"
+    rm -rf "${SMALLTALK_CI_CACHE}"
   fi
+  if is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+    print_info "  ${SMALLTALK_CI_BUILD_BASE}"
+    # Make sure read-only files (e.g. some GemStone files) can be removed
+    chmod -fR +w "${SMALLTALK_CI_BUILD_BASE}"
+    rm -rf "${SMALLTALK_CI_BUILD_BASE}"
+  fi
+  print_info "Done."
 }
 
 ################################################################################
