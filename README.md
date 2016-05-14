@@ -162,7 +162,7 @@ matrix:
     - smalltalk: Pharo-alpha
       smalltalk_config: .bleedingEdge.ston
       os: osx
-  allow_failure:
+  allow_failures:
     - smalltalk_config: .bleedingEdge.ston
 ```
 
