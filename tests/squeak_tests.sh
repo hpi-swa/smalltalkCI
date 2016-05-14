@@ -4,31 +4,9 @@ readonly BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "${BASE}/helpers.sh"
 source "${BASE}/squeak/run.sh"
 
-test_get_image_filename() {
-  local filename
-
-  filename="$(squeak::get_image_filename "Squeak-trunk")"
-  assertEquals "Squeak-Trunk.tar.gz" "${filename}"
-
-  filename="$(squeak::get_image_filename "Squeak-5.0")"
-  assertEquals "Squeak-5.0.tar.gz" "${filename}"
-
-  filename="$(squeak::get_image_filename "Squeak-4.6")"
-  assertEquals "Squeak-4.6.tar.gz" "${filename}"
-
-  filename="$(squeak::get_image_filename "Squeak-4.5")"
-  assertEquals "Squeak-4.5.tar.gz" "${filename}"
-
-  filename="$(squeak::get_image_filename "")"
-  assertEquals "" "${filename}"
-
-  filename="$(squeak::get_image_filename "Pharo")"
-  assertEquals "" "${filename}"
-
-  set +e
-  $(filename="$(squeak::get_image_filename "Squeak-trunk" 2>/dev/null)") \
-      || fail "Should be successful."
-  set -e
+test_prepare_build() {
+  $(squeak::prepare_build "GemStone" 2>/dev/null) \
+      && fail "Should not be successful."
 }
 
 test_get_vm_details() {

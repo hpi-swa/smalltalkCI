@@ -76,7 +76,7 @@ interrupted() {
 #   Custom project home path
 ################################################################################
 ensure_ston_config_exists() {
-  local custom_ston="$1"
+  local custom_ston=$1
 
   # STON provided as cmd line parameter can override $config_ston
   if ! is_empty "${custom_ston}" && [[ ${custom_ston: -5} == ".ston" ]] && \
@@ -85,7 +85,7 @@ ensure_ston_config_exists() {
   fi
 
   if is_travis_build; then
-    if is_not_empty "${TRAVIS_SMALLTALK_CONFIG}"; then
+    if is_not_empty "${TRAVIS_SMALLTALK_CONFIG:-}"; then
       config_ston="${TRAVIS_BUILD_DIR}/${TRAVIS_SMALLTALK_CONFIG}"
     else
       locate_ston_config
