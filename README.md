@@ -143,7 +143,8 @@ smalltalk:
   - GemStone-3.2.12
   - GemStone-3.1.0.6
 
-# Loads `.smalltalk.ston` (if it exists), `myconfig1.ston` and `myconfig2.ston ` **for each build step defined above**:
+# Loads `.smalltalk.ston` (if it exists), `myconfig1.ston` and `myconfig2.ston`
+# **for each build step defined above**:
 smalltalk_config:
   - myconfig1.ston
   - myconfig2.ston
@@ -177,7 +178,7 @@ smalltalk:
   - GemStone-3.2.12
   - GemStone-3.1.0.6
 
-# Add two **additional** build steps. The builds steps from above will be run as before.
+# Add two **additional** build steps. The builds steps from above will be run as before with `.smalltalk.ston`.
 # See https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix.
 # Loads `.bleedingEdge.ston ` only:
 matrix:
