@@ -13,32 +13,35 @@ SqueakV50.sources.gz"
 readonly VM_DOWNLOAD="${BASE_DOWNLOAD}/vms"
 
 ################################################################################
-# Select Squeak image. Exit with '1' if smalltalk_name is unsupported.
-# Arguments:
+# Prepare Squeak image and vm for build.
+# Argument:
 #   Smalltalk image name
-# Prints:
-#   Image filename string
 ################################################################################
-squeak::get_image_filename() {
+squeak::prepare_build() {
   local smalltalk_name=$1
+  local download_name
 
   case "${smalltalk_name}" in
-    "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk")
-      echo "Squeak-Trunk.tar.gz"
+    "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk"|"Squeak-latest")
+      squeak::prepare_trunk_build
+      return
       ;;
     "Squeak-5.0"|"Squeak5.0")
-      echo "Squeak-5.0.tar.gz"
+      download_name="Squeak-5.0.tar.gz"
       ;;
     "Squeak-4.6"|"Squeak4.6")
-      echo "Squeak-4.6.tar.gz"
+      download_name="Squeak-4.6.tar.gz"
       ;;
     "Squeak-4.5"|"Squeak4.5")
-      echo "Squeak-4.5.tar.gz"
+      download_name="Squeak-4.5.tar.gz"
       ;;
     *)
-      echo ""
+      print_error_and_exit "Unsupported Squeak version '${smalltalk_name}'."
       ;;
   esac
+
+  squeak::download_prepared_image "${download_name}"
+  squeak::prepare_vm
 }
 
 squeak::prepare_trunk_build() {
@@ -93,31 +96,22 @@ squeak::prepare_trunk_build() {
 }
 
 ################################################################################
-# Download image if necessary and extract it.
+# Download image and extract it.
 # Globals:
 #   IMAGE_DOWNLOAD
 #   SMALLTALK_CI_CACHE
 #   SMALLTALK_CI_BUILD
 #   SMALLTALK_CI_IMAGE
-# Arguments:
-#   smalltalk_name
+# Argument:
+#   download_name
 ################################################################################
-squeak::prepare_image() {
-  local smalltalk_name=$1
-  local image_filename
-  local download_url
-  local target
-
-  image_filename=$(squeak::get_image_filename "${smalltalk_name}")
-  download_url="${IMAGE_DOWNLOAD}/${image_filename}"
-  target="${SMALLTALK_CI_CACHE}/${image_filename}"
-
-  if is_empty "${image_filename}"; then
-    print_error_and_exit "Unsupported Squeak version '${smalltalk_name}'."
-  fi
+squeak::download_prepared_image() {
+  local download_name=$1
+  local download_url="${IMAGE_DOWNLOAD}/${download_name}"
+  local target="${SMALLTALK_CI_CACHE}/${download_name}"
 
   if ! is_file "${target}"; then
-    travis_fold start download_image "Downloading ${smalltalk_name} testing image..."
+    travis_fold start download_image "Downloading '${download_name}'' testing image..."
       timer_start
 
       set +e
@@ -136,7 +130,7 @@ squeak::prepare_image() {
   tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
 
   if ! is_file "${SMALLTALK_CI_IMAGE}"; then
-    print_error_and_exit "Unable to prepare image at '${SMALLTALK_CI_IMAGE}'."
+    print_error_and_exit "Failed to prepare image at '${SMALLTALK_CI_IMAGE}'."
   fi
 }
 
@@ -304,12 +298,7 @@ EOL
 run_build() {
   local exit_status=0
 
-  if [[ "${config_smalltalk}" = "Squeak-latest" ]]; then
-    squeak::prepare_trunk_build
-  else
-    squeak::prepare_image "${config_smalltalk}"
-    squeak::prepare_vm
-  fi
+  squeak::prepare_build "${config_smalltalk}"
   squeak::load_and_test_project || exit_status=$?
 
   return "${exit_status}"

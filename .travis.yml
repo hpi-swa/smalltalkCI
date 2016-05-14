@@ -2,7 +2,6 @@ language: smalltalk
 sudo: false
 
 smalltalk:
-  - Squeak-latest
   - Squeak-trunk
   - Squeak-5.0
   - Squeak-4.6
@@ -80,5 +79,6 @@ matrix:
 #      os: osx
 ##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
   allow_failures:
-    - smalltalk: Squeak-latest
+    - smalltalk: Squeak-trunk
+    - smalltalk: Pharo-6.0
   fast_finish: true
