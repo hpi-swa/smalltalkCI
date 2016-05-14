@@ -122,26 +122,12 @@ language: smalltalk
 sudo: false
 
 # Select operating system(s)
-os:
-  - linux
-  - osx
+os: linux
 
 # Select compatible Smalltalk image(s)
 smalltalk:
-  - Squeak-trunk
-  - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
-
   - Pharo-alpha
   - Pharo-stable
-  - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
-
-  - GemStone-3.3.0
-  - GemStone-3.2.12
-  - GemStone-3.1.0.6
 
 # Loads `.smalltalk.ston` (if it exists), `myconfig1.ston` and `myconfig2.ston`
 # **for each build step defined above**:
@@ -157,26 +143,12 @@ language: smalltalk
 sudo: false
 
 # Select operating system(s)
-os:
-  - linux
-  - osx
+os: linux
 
 # Select compatible Smalltalk image(s)
 smalltalk:
-  - Squeak-trunk
-  - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
-
   - Pharo-alpha
   - Pharo-stable
-  - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
-
-  - GemStone-3.3.0
-  - GemStone-3.2.12
-  - GemStone-3.1.0.6
 
 # Add two **additional** build steps.
 # The build steps from above will be run as before with `.smalltalk.ston`.
