@@ -66,8 +66,9 @@ they can take up a lot of space on your drive.*
 | --------------- | ---------------- | -------------------- |
 | `Squeak-trunk`  | `Pharo-alpha`    | `GemStone-3.3.x`     |
 | `Squeak-5.0`    | `Pharo-stable`   | `GemStone-3.2.x`     |
-| `Squeak-4.6`    | `Pharo-5.0`      | `GemStone-3.1.0.x`   |
-| `Squeak-4.5`    | `Pharo-4.0`      | `Gemstone-2.4.x`     |
+| `Squeak-4.6`    | `Pharo-6.0`      | `GemStone-3.1.0.x`   |
+| `Squeak-4.5`    | `Pharo-5.0`      | `Gemstone-2.4.x`     |
+|                 | `Pharo-4.0`      |                      |
 |                 | `Pharo-3.0`      |                      |
 
 
@@ -101,6 +102,7 @@ smalltalk:
 
   - Pharo-alpha
   - Pharo-stable
+  - Pharo-6.0
   - Pharo-5.0
   - Pharo-4.0
   - Pharo-3.0

@@ -20,6 +20,9 @@ pharo::get_image_url() {
     "Pharo-stable")
       echo "get.pharo.org/stable"
       ;;
+    "Pharo-6.0")
+      echo "get.pharo.org/60"
+      ;;
     "Pharo-5.0")
       echo "get.pharo.org/50"
       ;;
@@ -46,13 +49,10 @@ pharo::get_vm_url() {
   local smalltalk_name=$1
 
   case "${smalltalk_name}" in
-    "Pharo-alpha")
+    "Pharo-alpha"|"Pharo-6.0")
       echo "get.pharo.org/vm60"
       ;;
-    "Pharo-stable")
-      echo "get.pharo.org/vm50"
-      ;;
-    "Pharo-5.0")
+    "Pharo-stable"|"Pharo-5.0")
       echo "get.pharo.org/vm50"
       ;;
     "Pharo-4.0")
