@@ -178,7 +178,8 @@ smalltalk:
   - GemStone-3.2.12
   - GemStone-3.1.0.6
 
-# Add two **additional** build steps. The builds steps from above will be run as before with `.smalltalk.ston`.
+# Add two **additional** build steps.
+# The build steps from above will be run as before with `.smalltalk.ston`.
 # See https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix.
 # Loads `.bleedingEdge.ston ` only:
 matrix:
