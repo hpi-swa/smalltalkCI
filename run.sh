@@ -82,6 +82,7 @@ ensure_ston_config_exists() {
   if ! is_empty "${custom_ston}" && [[ ${custom_ston: -5} == ".ston" ]] && \
       is_file "${custom_ston}"; then
     config_ston="${custom_ston}"
+    return
   fi
 
   if is_travis_build; then
