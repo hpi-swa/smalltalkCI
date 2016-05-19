@@ -27,4 +27,4 @@ setUp
   suite resources
     do: [ :each | 
       each isAvailable
-        ifFalse: [ each signalInitializationError ] ]
+        ifFalse: [ self error: 'The resource ', each printString, ' is not initialized' ] ]

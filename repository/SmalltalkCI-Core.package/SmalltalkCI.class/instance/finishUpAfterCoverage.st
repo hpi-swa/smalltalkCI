@@ -3,13 +3,13 @@ finishUpAfterCoverage
 	| output |
 	output := OrderedCollection new.
 	
-	coverageWrappers do: [:wrapper |
+	coverageWrappers do: [ :wrapper | | loadSpec |
 		wrapper uninstall.
-		self spec loading
+		loadSpec := self spec loading
 			detect: [ :loadspec | 
 				self class fileExists: (self absoluteFileNameFor: wrapper in: loadspec directory)]
-			ifFound: [ :loadspec |
-				output add: (self coverageDictFor: wrapper in: (loadspec directory))]
-			ifNone: [ ] ].
+			ifNone: [].
+		loadSpec ifNotNil: [
+			output add: (self coverageDictFor: wrapper in: (loadSpec directory)) ] ].
 	
 	self writeCoverageReport: output asArray

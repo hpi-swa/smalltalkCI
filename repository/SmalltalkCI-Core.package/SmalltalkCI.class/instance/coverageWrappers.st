@@ -1,3 +1,3 @@
 coverage
-writeCoverageReport: anArray
+coverageWrappers
 	self subclassResponsibility
