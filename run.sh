@@ -82,6 +82,10 @@ ensure_ston_config_exists() {
   if ! is_empty "${custom_ston}" && [[ ${custom_ston: -5} == ".ston" ]] && \
       is_file "${custom_ston}"; then
     config_ston="${custom_ston}"
+    # Expand path if $config_ston does not start with / or ~
+    if ! [[ "${config_ston:0:1}" =~ (\/|\~) ]]; then
+      config_ston="$(pwd)/${config_ston}"
+    fi
     return
   fi
 
