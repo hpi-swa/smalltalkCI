@@ -303,6 +303,9 @@ problem.
     [animations](https://github.com/hpi-swa/animations),
     [Ohm-S](https://github.com/hpi-swa/Ohm-S),
     [vivide](https://github.com/hpi-swa/vivide).
+- [@marianopeck](https://github.com/marianopeck):
+    [OSSubprocess](https://github.com/marianopeck/OSSubprocess),
+    [FFICHeaderExtractor](https://github.com/marianopeck/FFICHeaderExtractor).
 - [@pharo-project](https://github.com/pharo-project):
     [pharo-project-proposals](https://github.com/pharo-project/pharo-project-proposals).
 - [@PolyMathOrg](https://github.com/PolyMathOrg):
