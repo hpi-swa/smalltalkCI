@@ -416,19 +416,19 @@ deploy() {
   local version="${TRAVIS_JOB_NUMBER}"
   local name="$(basename ${TRAVIS_BUILD_DIR})-${config_smalltalk}-${version}"
 
-  if is_empty "${BINTRAY_CREDENTIALS}" || \
+  if is_empty "${BINTRAY_CREDENTIALS:-}" || \
       [[ "${TRAVIS_PULL_REQUEST}" != "false" ]]; then
     return
   fi
 
   if [[ "${build_status}" -eq 0 ]]; then
-    if is_empty "${BINTRAY_SUCCESS}" || \
+    if is_empty "${BINTRAY_RELEASE:-}" || \
         [[ "${TRAVIS_BRANCH}" != "master" ]]; then
       return
     fi
-    target="${BINTRAY_API}/${BINTRAY_SUCCESS}/${version}"
+    target="${BINTRAY_API}/${BINTRAY_RELEASE}/${version}"
   else
-    if is_empty "${BINTRAY_FAIL}"; then
+    if is_empty "${BINTRAY_FAIL:-}"; then
       return
     fi
     target="${BINTRAY_API}/${BINTRAY_FAIL}/${version}"
