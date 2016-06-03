@@ -269,6 +269,18 @@ EXAMPLE:
   run.sh -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
 ```
 
+### Using a different smalltalkCI branch or fork
+
+By default, the smalltalkCI master branch is used to perform a build. It is
+possible to select a different smalltalkCI branch or fork for testing/debugging
+purposes by adding the following to the `.travis.yml`:
+
+```yml
+smalltalk_edge:
+  source: hpi-swa/smalltalkCI
+  branch: dev
+```
+
 
 ## Contributing
 
