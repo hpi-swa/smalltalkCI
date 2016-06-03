@@ -413,8 +413,9 @@ uninstall_script() {
 deploy() {
   local build_status=$1
   local target
-  local version="${TRAVIS_JOB_NUMBER}"
-  local name="$(basename ${TRAVIS_BUILD_DIR})-${config_smalltalk}-${version}"
+  local version="${TRAVIS_BUILD_NUMBER}"
+  local project_name="$(basename ${TRAVIS_BUILD_DIR})"
+  local name="${project_name}-${TRAVIS_JOB_NUMBER}-${config_smalltalk}"
   local publish=false
 
   if is_empty "${BINTRAY_CREDENTIALS:-}" || \
