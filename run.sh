@@ -415,6 +415,7 @@ deploy() {
   local target
   local version="${TRAVIS_JOB_NUMBER}"
   local name="$(basename ${TRAVIS_BUILD_DIR})-${config_smalltalk}-${version}"
+  local publish=false
 
   if is_empty "${BINTRAY_CREDENTIALS:-}" || \
       [[ "${TRAVIS_PULL_REQUEST}" != "false" ]]; then
@@ -427,6 +428,7 @@ deploy() {
       return
     fi
     target="${BINTRAY_API}/${BINTRAY_RELEASE}/${version}"
+    publish=true
   else
     if is_empty "${BINTRAY_FAIL:-}"; then
       return
@@ -455,8 +457,10 @@ deploy() {
       fi
     fi
 
-    print_info "Publishing ${version}..."
-    curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
+    if "${publish}"; then
+      print_info "Publishing ${version}..."
+      curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
+    fi
 
     timer_finish
   travis_fold end deploy
