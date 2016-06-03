@@ -6,6 +6,7 @@ set -o nounset
 
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
 readonly INSTALL_TARGET_OSX="/usr/local/bin"
+readonly BINTRAY_API="https://api.bintray.com/content"
 
 ################################################################################
 # Determine $SMALLTALK_CI_HOME and load helpers.
@@ -407,6 +408,60 @@ uninstall_script() {
 }
 
 ################################################################################
+# Deploy build artifacts to bintray if configured.
+################################################################################
+deploy() {
+  local build_status=$1
+  local target
+  local version="${TRAVIS_JOB_NUMBER}"
+  local name="$(basename ${TRAVIS_BUILD_DIR})"
+
+  if is_empty "${BINTRAY_CREDENTIALS}" || \
+      [[ "${TRAVIS_PULL_REQUEST}" != "false" ]]; then
+    return
+  fi
+
+  if [[ "${build_status}" -eq 0 ]] && [[ "${TRAVIS_BRANCH}" = "master" ]]; then
+    if is_empty "${BINTRAY_SUCCESS}"; then
+      return
+    fi
+    target="${BINTRAY_API}/${BINTRAY_SUCCESS}/${version}"
+  else
+    if is_empty "${BINTRAY_FAIL}"; then
+      return
+    fi
+    target="${BINTRAY_API}/${BINTRAY_FAIL}/${version}"
+  fi
+
+  travis_fold start deploy "Deploying to bintray.com..."
+    timer_start
+
+    print_info "Uploading image and changes files..."
+    curl -s -u "$BINTRAY_CREDENTIALS" \
+        -T "${SMALLTALK_CI_IMAGE}" "${target}/${name}.image" > /dev/null
+    curl -s -u "$BINTRAY_CREDENTIALS" \
+        -T "${SMALLTALK_CI_CHANGES}" "${target}/${name}.changes" > /dev/null
+
+    if [[ "${build_status}" -ne 0 ]]; then
+      # Check for xml files and upload them
+      if ls "${TRAVIS_BUILD_DIR}/"*.xml 1> /dev/null 2>&1; then
+        print_info "Compressing and uploading debugging files..."
+        tar czf "${SMALLTALK_CI_BUILD}/debug.tar.gz" \
+            --include="*.xml" --include="*.fuel"
+            "${TRAVIS_BUILD_DIR}/*"
+        curl -s -u "$BINTRAY_CREDENTIALS" \
+            -T "${SMALLTALK_CI_BUILD}/debug.tar.gz" "${target}/" > /dev/null
+      fi
+    fi
+
+    print_info "Publishing ${version}..."
+    curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
+
+    timer_finish
+  travis_fold end deploy
+}
+
+################################################################################
 # Load platform-specific package and run the build.
 # Locals:
 #   config_smalltalk
@@ -478,6 +533,10 @@ main() {
   fi
 
   print_results "${SMALLTALK_CI_BUILD}" || exit_status=$?
+
+  if is_travis_build; then
+    deploy "${exit_status}"
+  fi
   
   exit ${exit_status}
 }
