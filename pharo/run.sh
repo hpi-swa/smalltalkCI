@@ -82,12 +82,6 @@ pharo::prepare_vm() {
   local pharo_vm_folder="${SMALLTALK_CI_VMS}/${smalltalk_name}"
   local pharo_zeroconf
 
-  if [[ "${headless}" = "true" ]]; then
-    export SMALLTALK_CI_VM="${pharo_vm_folder}/pharo"
-  else
-    export SMALLTALK_CI_VM="${pharo_vm_folder}/pharo-ui"
-  fi
-
   if ! is_dir "${pharo_vm_folder}"; then
     travis_fold start download_vm "Downloading ${smalltalk_name} vm..."
       timer_start
@@ -109,10 +103,16 @@ pharo::prepare_vm() {
 
       timer_finish
     travis_fold end download_vm
+  fi
 
-    if ! is_file "${SMALLTALK_CI_VM}"; then
-      print_error_and_exit "Unable to set vm up at '${SMALLTALK_CI_VM}'."
-    fi
+  if [[ "${headless}" = "true" ]]; then
+    ln -s "${pharo_vm_folder}/pharo" "${SMALLTALK_CI_VM}"
+  else
+    ln -s "${pharo_vm_folder}/pharo-ui" "${SMALLTALK_CI_VM}"
+  fi
+
+  if ! is_file "${SMALLTALK_CI_VM}"; then
+    print_error_and_exit "Unable to set vm up at '${SMALLTALK_CI_VM}'."
   fi
 }
 

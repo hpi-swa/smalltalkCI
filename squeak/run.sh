@@ -201,8 +201,6 @@ squeak::prepare_vm() {
   squeakssl_target="${SMALLTALK_CI_CACHE}/squeakssl.zip"
   squeakssl_bin="${SMALLTALK_CI_CACHE}/linux32/SqueakSSL"
 
-  export SMALLTALK_CI_VM="${vm_path}"
-
   if ! is_file "${target}"; then
     travis_fold start download_vm "Downloading virtual machine..."
       timer_start
@@ -219,13 +217,15 @@ squeak::prepare_vm() {
     travis_fold end download_vm
   fi
 
-  if ! is_file "${SMALLTALK_CI_VM}"; then
+  if ! is_file "${vm_path}"; then
     print_info "Extracting virtual machine..."
     tar xzf "${target}" -C "${SMALLTALK_CI_VMS}"
-    if ! is_file "${SMALLTALK_CI_VM}"; then
-      print_error_and_exit "Unable to set vm up at '${SMALLTALK_CI_VM}'."
+    if ! is_file "${vm_path}"; then
+      print_error_and_exit "Unable to set vm up at '${vm_path}'."
     fi
   fi
+
+  ln -s "${vm_path}" "${SMALLTALK_CI_VM}"
 
   travis_fold start display_vm_version "Cog VM Information"
     "${SMALLTALK_CI_VM}" -version
