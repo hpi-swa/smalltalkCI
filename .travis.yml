@@ -1,22 +1,10 @@
 language: smalltalk
 sudo: false
 
-smalltalk:
-  - Squeak-trunk
-  - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
+smalltalk: Pharo-5.0
 
-  # - Pharo-alpha   # identical to Pharo-6.0
-  # - Pharo-stable  # identical to Pharo-5.0
-  - Pharo-6.0
-  - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
-
-os:
-  - linux
-  - osx
+os: osx
+osx_image: xcode7
 
 install:
   # Move cache directory if it exists
@@ -25,60 +13,3 @@ install:
   - if [[ -n "${SMALLTALK_CI_HOME}" ]]; then rm -rf $SMALLTALK_CI_HOME && ln -s "$(pwd)" $SMALLTALK_CI_HOME && source $SMALLTALK_CI_HOME/env_vars; fi
 
 script: $SMALLTALK_CI_HOME/run.sh --debug
-
-matrix:
-  include:
-    # Bash tests
-    - language: bash
-      smalltalk:
-      sudo: false
-      script: bash tests/all_tests.sh
-
-    # Test that smalltalkCI can fail
-    - smalltalk: Squeak-5.0
-      smalltalk_config: .smalltalk_fail.ston
-      os: linux
-      script:
-        - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
-        - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
-    - smalltalk: Pharo-stable
-      smalltalk_config: .smalltalk_fail.ston
-      os: linux
-      script:
-        - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
-        - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
-
-    # GemStone Linux builds
-    - smalltalk: GemStone-3.3.0
-      os: linux
-      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
-    - smalltalk: GemStone-3.2.14
-      os: linux
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
-    - smalltalk: GemStone-3.1.0.6
-      os: linux
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
-    # GemStone OS X builds
-    - smalltalk: GemStone-3.3.0
-      os: osx
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
-##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
-#    - smalltalk: GemStone-3.2.14
-#      os: osx
-##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
-#    - smalltalk: GemStone-3.1.0.6
-#      os: osx
-##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
-  allow_failures:
-    - smalltalk: Squeak-trunk
-    - smalltalk: Pharo-6.0
-  fast_finish: true
