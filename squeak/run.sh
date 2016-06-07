@@ -225,7 +225,8 @@ squeak::prepare_vm() {
     fi
   fi
 
-  ln -s "${vm_path}" "${SMALLTALK_CI_VM}"
+  echo "${vm_path} \"\$@\"" > "${SMALLTALK_CI_VM}"
+  chmod +x "${SMALLTALK_CI_VM}"
 
   travis_fold start display_vm_version "Cog VM Information"
     "${SMALLTALK_CI_VM}" -version
