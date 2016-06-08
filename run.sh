@@ -538,7 +538,7 @@ main() {
     report_coverage
   fi
 
-  print_results "${SMALLTALK_CI_BUILD}" || exit_status=$?
+  print_results || exit_status=$?
 
   if is_travis_build; then
     deploy "${exit_status}"

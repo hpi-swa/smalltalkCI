@@ -83,26 +83,42 @@ report_coverage() {
 }
 
 print_results() {
-  local build_dir=$1
   local status=0
-  local junit_xml_file
-  junit_xml_file=${build_dir}/*.xml
 
-  if is_travis_build && [[ $(ls ${junit_xml_file} 2> /dev/null) ]]; then
-    travis_fold start junit_xml "JUnit XML Output"
-      cat ${junit_xml_file}
-      printf "\n"
-    travis_fold end junit_xml
+  if is_travis_build; then
+    print_xml_files
   fi
 
   python "${SMALLTALK_CI_HOME}/lib/junit_xml_prettfier.py" \
-      "${build_dir}" || status=$?
+      "${SMALLTALK_CI_BUILD}" || status=$?
 
   if is_travis_build && ! [[ ${status} -eq 0 ]]; then
     print_steps_to_reproduce_locally $status
   fi
 
   return "${status}"
+}
+
+print_xml_files() {
+  local xml_files="${SMALLTALK_CI_BUILD}/"*.xml
+  local line_count
+
+  if ! [[ $(ls ${xml_files} 2> /dev/null) ]]; then
+    return
+  fi
+
+  # Do not print if xml files are too long; Travis log can only hold 10k lines
+  line_count="$(cat ${xml_files} | wc -l)"
+  if [[ "${line_count}" -gt 5000 ]] || \
+      ([[ "${config_smalltalk}" == GemStone* ]] && \
+       [[ "${line_count}" -gt 2000 ]]); then
+    return
+  fi
+
+  travis_fold start junit_xml "JUnit XML Output"
+    cat ${xml_files}
+    printf "\n"
+  travis_fold end junit_xml
 }
 
 print_steps_to_reproduce_locally() {
