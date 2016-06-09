@@ -11,8 +11,7 @@
 		"password",
 		"packages",
 		"versions",
-		"loadedClasses",
-		"smalltalkCI" ],
+		"loadedClasses" ],
 	"name" : "SCIMonticelloLoadSpec",
 	"pools" : [
 		 ],

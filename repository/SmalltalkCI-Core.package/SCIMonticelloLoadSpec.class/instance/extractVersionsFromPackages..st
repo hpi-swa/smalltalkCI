@@ -1,7 +1,8 @@
 executing
 extractVersionsFromPackages: aRepository
-	self packages do: [ :pkg | | versionNames |
-		versionNames := aRepository versionNamesForPackageNamed: pkg.
-		versionNames
-			ifEmpty: [ self error: 'No version for "', pkg asString ,'" found in ', aRepository asString ]
-			ifNotEmpty: [ self versions add: versionNames first ] ]
+	self packages do: [ :pkg | 
+		(aRepository allFileNamesOrCache
+			select: [ :filename | (filename copyUpToLast: $-) = pkg ])
+			ifEmpty: [ self error: 'No version for "', pkg ,'" found in ', aRepository asString ]
+			ifNotEmptyDo: [ :versionNames |
+				self versions add: (versionNames detectMax: [ :ea | self versionNumberOf: ea ] ) ]]
