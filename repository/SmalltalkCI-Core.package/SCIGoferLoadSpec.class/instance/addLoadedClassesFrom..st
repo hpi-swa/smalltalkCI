@@ -1,5 +1,5 @@
 executing
 addLoadedClassesFrom: goferReferences
-	| packages |
-	packages := goferReferences collect: [ :ref | ref packageName ].
-	self loadedClasses addAll: (SmalltalkCI classesInCategories: packages)
+	self loadedClasses addAll: (
+		SmalltalkCI classesInCategories: (
+			goferReferences collect: [ :ref | ref packageName ] ))
