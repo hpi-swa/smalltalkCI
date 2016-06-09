@@ -11,6 +11,4 @@ testIsComplete
 		baseline: nil;
 		configuration: 'Foo';
 		platforms: { SmalltalkCI platformSymbol }.
-	self assert: (self spec isComplete) equals: true.
-	
-	
+	self assert: (self spec isComplete) equals: true

@@ -1,0 +1,4 @@
+accessing
+user
+
+	^ user ifNil: [ ^ '' ]

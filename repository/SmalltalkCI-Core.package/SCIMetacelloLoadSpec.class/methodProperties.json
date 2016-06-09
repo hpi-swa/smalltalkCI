@@ -1,6 +1,6 @@
 {
 	"class" : {
-		"getAuthor" : "TravisCI 4/14/2016 21:10",
+		"getAuthor" : "fn 4/14/2016 21:10",
 		"setAuthor:" : "fn 1/31/2016 20:11",
 		"testAuthor" : "fn 1/31/2016 18:53" },
 	"instance" : {
@@ -21,11 +21,9 @@
 		"onWarningLog:" : "dkh 02/05/2016 16:24",
 		"originalAuthor" : "fn 1/31/2016 18:50",
 		"originalAuthor:" : "fn 1/31/2016 18:50",
-		"platforms" : "fniep 1/11/2016 02:39",
-		"platforms:" : "fniep 1/11/2016 02:39",
 		"prepareForCI" : "fn 1/31/2016 22:14",
 		"repository" : "fn 1/10/2016 11:44",
 		"repository:" : "fn 1/10/2016 11:44",
 		"testClasses" : "dkh 02/06/2016 06:41",
-		"version" : "TravisCI 2/20/2016 21:25",
-		"version:" : "TravisCI 2/20/2016 21:25" } }
+		"version" : "fn 2/20/2016 21:25",
+		"version:" : "fn 2/20/2016 21:25" } }
