@@ -1,7 +1,7 @@
 testing
 testRepository
 	| repository |
-	self assert: nil equals: (self spec repository).
+	self assert: nil equals: (self spec url).
 	
 	self spec url: 'http://example.com/'.
 	repository := self spec repository.
