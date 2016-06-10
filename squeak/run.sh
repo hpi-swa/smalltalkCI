@@ -88,7 +88,7 @@ squeak::prepare_trunk_build() {
 
     vm_flags="$(squeak::determine_vm_flags)"
 
-    "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
+    travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
           "${SMALLTALK_CI_HOME}/squeak/prepare.st" || vm_status=$?
 
     timer_finish
@@ -280,7 +280,7 @@ squeak::load_and_test_project() {
   SmalltalkCI runCIFor: '${config_ston}'
 EOL
 
-    "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
+    travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
         "${SMALLTALK_CI_BUILD}/run.st" || vm_status=$?
 
     printf "\n" # Squeak exit msg is missing a linebreak

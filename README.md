@@ -7,7 +7,7 @@ It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy
 way to load and test Smalltalk projects.
 
 
-## Table of contents
+## Table Of Contents
 
 - [Features](#features)
 - [How to enable Travis CI for your Smalltalk project](#how-to-travis)
@@ -30,7 +30,7 @@ way to load and test Smalltalk projects.
 
 
 <a name="how-to-travis"/>
-## How to enable Travis CI for your Smalltalk project
+## How To Enable Travis CI For Your Smalltalk Project
 
 1. Export your project in a [compatible format](#load-formats).
 2. [Enable Travis CI for your repository][travisHowTo].
@@ -40,7 +40,7 @@ way to load and test Smalltalk projects.
 
 
 <a name="how-to-local"/>
-## How to test your Smalltalk project locally
+## How To Test Your Smalltalk Project Locally
 
 You can use smalltalkCI to run your project's tests locally. Just [clone][clone]
 or [download][download] smalltalkCI and then you are able to initiate a local
@@ -109,7 +109,7 @@ smalltalk:
 #    - $SMALLTALK_CI_CACHE
 ```
 
-### `.travis.yml` Template with multiple configurations
+### `.travis.yml` Template With Multiple Configurations
 
 ```yml
 language: smalltalk
@@ -130,7 +130,7 @@ smalltalk_config:
   - myconfig2.ston
 ```
 
-### `.travis.yml` Template with matrix configuration
+### `.travis.yml` Template With Matrix Configuration
 
 ```yml
 language: smalltalk
@@ -279,8 +279,10 @@ SCIGoferLoadSpec {
 
 ## Further Configuration
 
-smalltalkCI supports a couple of options that can be useful for debugging
-purposes or when used locally:
+### Command Line Options
+
+smalltalkCI has a couple of command line options that can be useful for
+debugging purposes or when used locally:
 
 ```
 USAGE: run.sh [options] /path/to/project/your_smalltalk.ston
@@ -301,7 +303,22 @@ EXAMPLE:
   run.sh -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
 ```
 
-### Using a different smalltalkCI branch or fork
+### Travis-specific Options
+
+Jobs on Travis CI [timeout if they don't produce output for
+more than 10 minutes][travisTimeout]. In case of long running tests, it
+is possible to increase this timeout by setting `$SMALLTALK_CI_TIMEOUT` in your
+`.travis.yml` to a value greater than 10:
+
+```yml
+env:
+- SMALLTALK_CI_TIMEOUT=30
+```
+
+The above sets the timeout to 30 minutes. Please note that Travis CI enforces
+[a total build timeout of 50 minutes][travisTimeout].
+
+### Using A Different smalltalkCI Branch Or Fork
 
 By default, the smalltalkCI master branch is used to perform a build. It is
 possible to select a different smalltalkCI branch or fork for testing/debugging
@@ -321,7 +338,7 @@ Please feel free to [open issues][issues] or to
 problem.
 
 
-## Projects using smalltalkCI
+## Projects Using smalltalkCI
 
 *In alphabetical order:*
 
@@ -395,3 +412,4 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [templates]:https://github.com/hpi-swa/smalltalkCI/wiki#templates
 [travisCI]: http://travis-ci.org/
 [travisHowTo]: http://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI%3A
+[travisTimeout]: https://docs.travis-ci.com/user/customizing-the-build/#Build-Timeouts

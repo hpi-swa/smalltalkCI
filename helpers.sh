@@ -156,6 +156,12 @@ is_dir() {
   [[ -d $dir ]]
 }
 
+is_int() {
+  local value=$1
+
+  [[ $value =~ ^-?[0-9]+$ ]]
+}
+
 program_exists() {
   local program=$1
 
@@ -253,6 +259,55 @@ function timer_nanoseconds() {
 
   $cmd -u $format
 }
+
+travis_wait() {
+  local timeout="${SMALLTALK_CI_TIMEOUT:-}"
+
+  local cmd="$@"
+
+  if ! is_int "${timeout}"; then
+    $cmd
+    return $?    
+  fi
+
+  $cmd &
+  local cmd_pid=$!
+
+  travis_jigger $! $timeout $cmd &
+  local jigger_pid=$!
+  local result
+
+  {
+    wait $cmd_pid 2>/dev/null
+    result=$?
+    ps -p$jigger_pid &>/dev/null && kill $jigger_pid
+  }
+
+  if [ $result -ne 0 ]; then
+    print_error_and_exit "The command $cmd exited with $result."
+  fi
+
+  return $result
+}
+
+travis_jigger() {
+  # helper method for travis_wait()
+  local cmd_pid=$1
+  shift
+  local timeout=$1 # in minutes
+  shift
+  local count=0
+
+  while [ $count -lt $timeout ]; do
+    count=$(($count + 1))
+    echo -e "Still running ($count of $timeout): $@"
+    sleep 60
+  done
+
+  echo -e "\n${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
+  kill -9 $cmd_pid
+}
+
 
 travis_fold() {
   local action=$1
