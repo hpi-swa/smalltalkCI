@@ -249,6 +249,10 @@ EOF
     timer_finish
   travis_fold end test_server_project
 
+  if [[ "${status}" -ne 0 ]]; then
+    print_error_and_exit "Error while testing server project."
+  fi
+
   if is_not_empty  "${DEVKIT_CLIENT_NAMES:-}"; then
 
     for client_name in "${DEVKIT_CLIENT_NAMES[@]}"
@@ -256,10 +260,14 @@ EOF
       travis_fold start "test_${client_name}" "Testing client project ${client_name}..."
         timer_start
     
-        ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}"
+        ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
 
         timer_finish
       travis_fold end "test_${client_name}"
+
+      if [[ "${status}" -ne 0 ]]; then
+        print_error_and_exit "Error while testing client project ${client_name}."
+      fi
     done
     
   fi
