@@ -6,6 +6,7 @@
 		"spec" : "fniep 1/10/2016 16:21",
 		"spec:" : "fniep 1/10/2016 16:21",
 		"testIsComplete" : "fniep 1/11/2016 02:53",
+		"testIsPlatformCompatible" : "fn 6/9/2016 10:00",
 		"testPrepareAndFinish" : "fn 4/14/2016 21:06",
 		"testSimple" : "fn 4/14/2016 20:55",
 		"testloadProjectOn" : "fn 4/14/2016 21:01" } }

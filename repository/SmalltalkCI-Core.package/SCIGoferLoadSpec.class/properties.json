@@ -6,9 +6,9 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"platforms" ],
-	"name" : "SCIAbstractLoadSpec",
+		 ],
+	"name" : "SCIGoferLoadSpec",
 	"pools" : [
 		 ],
-	"super" : "Object",
+	"super" : "SCIMonticelloLoadSpec",
 	"type" : "normal" }

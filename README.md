@@ -13,7 +13,6 @@ way to load and test Smalltalk projects.
 - [How to enable Travis CI for your Smalltalk project](#how-to-travis)
 - [How to test your Smalltalk project locally](#how-to-local)
 - [List Of Supported Images](#images)
-- [Compatible Project Loading Formats](#load-formats)
 - [Templates](#templates)
 - [Further Configuration](#further-configuration)
 - [Contributing](#contributing)
@@ -70,13 +69,6 @@ they can take up a lot of space on your drive.*
 | `Squeak-4.5`    | `Pharo-5.0`      | `Gemstone-2.4.x`     |
 |                 | `Pharo-4.0`      |                      |
 |                 | `Pharo-3.0`      |                      |
-
-
-<a name="load-formats"/>
-## Compatible Project Loading Formats
-
-- [FileTree][filetree]/[Metacello][metacello] [Baseline][mc_baseline] or [Configuration][mc_configuration] (*Git-compatible*)
-- *More to follow...*
 
 
 <a name="templates"/>
@@ -185,6 +177,7 @@ SmalltalkCISpec {
 }
 ```
 
+<a name="SmalltalkCISpec"/>
 ### Complete `.smalltalk.ston` Template
 
 *Please note that the `.smalltalk.ston` must be a valid [STON][STON] file. The file can also be called just `smalltalk.ston`*
@@ -193,26 +186,8 @@ SmalltalkCISpec {
 SmalltalkCISpec {
   #loading : [
     /*
-    There can be multiple LoadSpecs in `#loading`. `smalltalkCI` will load all LoadSpecs that are
-    compatible with the selected Smalltalk image (specified via `#platforms`).
+    A list of one or more supported loading specifications (see below).
     */
-    SCIMetacelloLoadSpec {
-      /*
-      A `SCIMetacelloLoadSpec` loads a project either via the specified Metacello `#baseline` or the
-      Metacello `#configuration`. If a `#directory` is specified, the project will be loaded using
-      FileTree/Metacello from the given directory. Otherwise, it will be loaded from the specified
-      `#repository`.
-      */
-      #baseline : 'MyProject',                                // Define MC Baseline
-      #configuration : 'MyProject',                           // Alternatively, define MC Configuration
-      #directory : 'packages',                                // Path to packages if FileTree is used
-      #repository : 'http://ss3.gemtalksystems.com/ss/...',   // Alternatively, define MC repository
-      #onWarningLog : true,                                   // Handle Warnings and log message to Transcript
-      #load : [ 'default' ],                                  // Define MC load attributes
-      #platforms : [ #squeak, #pharo, #gemstone ],            // Define compatible platforms
-      #version : '1.0.0'                                      // Define MC version (for MC
-                                                              // Configurations only)
-    }
   ],
   #testing : {
     /*
@@ -241,6 +216,63 @@ SmalltalkCISpec {
       #projects : [ 'MyProject' ]                             // Exclude projects from testing (GemStone)
     }
   }
+}
+```
+
+<a name="load-formats"/>
+## Compatible Project Loading Specifications
+smalltalkCI supports different mechanisms for loading a projects.
+One or more of those loading specifications have to be provided in the
+`#loading` list as part of a [`SmalltalkCISpec`](#SmalltalkCISpec).
+smalltalkCI will load all specifications that are compatible with the selected
+Smalltalk image (specified via `#platforms`).
+
+### SCIMetacelloLoadSpec
+A `SCIMetacelloLoadSpec` loads a project either via the specified Metacello
+[`#baseline`][mc_baseline] or the Metacello
+[`#configuration`][mc_configuration]. If a `#directory` is specified,
+the project will be loaded using [FileTree][filetree]/[Metacello][metacello]
+from the given directory.
+Otherwise, it will be loaded from the specified `#repository`.
+
+```javascript
+SCIMetacelloLoadSpec {
+  #baseline : 'MyProject',                            // Define MC Baseline
+  #configuration : 'MyProject',                       // Alternatively, define MC Configuration
+  #directory : 'packages',                            // Path to packages if FileTree is used
+  #repository : 'http://smalltalkhub.com/mc/...',     // Alternatively, define MC repository
+  #onWarningLog : true,                               // Handle Warnings and log message to Transcript
+  #load : [ 'default' ],                              // Define MC load attributes
+  #platforms : [ #squeak, #pharo, #gemstone ],        // Define compatible platforms
+  #version : '1.0.0'                                  // Define MC version (for MC
+                                                      // Configurations only)
+}
+```
+
+### SCIMonticelloLoadSpec
+A `SCIMonticelloLoadSpec` loads a project with [Monticello][monticello]. It is
+possible to load the latest version of packages from a remote repository
+(`#packages`) or specific versions (`#versions`).
+
+```javascript
+SCIMonticelloLoadSpec {
+  #url : 'http://ss3.gemtalksystems.com/ss/...',      // Define URL for repository
+  #packages : ['MyProject-Core', 'MyProject-Tests'],  // Load packages and/or
+  #versions : ['MyProject-Core-aa.12'],               // Load specific versions
+  #platforms : [ #squeak, #pharo, #gemstone ]         // Define compatible platforms
+}
+```
+
+### SCIGoferLoadSpec
+A `SCIGoferLoadSpec` works similar to a `SCIMonticelloLoadSpec`, but uses
+[Gofer][gofer] on top of [Monticello][monticello] to load a project.
+
+```javascript
+SCIGoferLoadSpec {
+  #url : 'http://smalltalkhub.com/mc/...',            // Define URL for repository
+  #packages : ['MyProject-Core', 'MyProject-Tests'],  // Load packages and/or
+  #versions : ['MyProject-Core-aa.12'],               // Load specific versions
+  #platforms : [ #squeak, #pharo, #gemstone ]         // Define compatible platforms
 }
 ```
 
@@ -350,11 +382,13 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [coveralls]: https://coveralls.io/
 [download]: https://github.com/hpi-swa/smalltalkCI/archive/master.zip
 [filetree]: https://github.com/dalehenrich/filetree
+[gofer]: http://www.lukas-renggli.ch/blog/gofer
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
 [issues]: https://github.com/hpi-swa/smalltalkCI/issues
 [mc_baseline]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-baseline
 [mc_configuration]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-configuration
 [metacello]: https://github.com/dalehenrich/metacello-work
+[monticello]: http://www.wiresong.ca/monticello/
 [more_projects]: https://github.com/search?l=STON&q=SmalltalkCISpec&ref=advsearch&type=Code
 [pullRequests]: https://help.github.com/articles/using-pull-requests/
 [ston]: https://github.com/svenvc/ston/blob/master/ston-paper.md#smalltalk-object-notation-ston

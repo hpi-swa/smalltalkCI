@@ -1,3 +1,3 @@
 accessing
-platforms: aPlatform
-	^ self subclassResponsibility
+platforms: platformCollection
+	platforms := platformCollection
