@@ -219,7 +219,7 @@ gemstone::load_and_test_project() {
   travis_fold start load_server_project "Loading server project..."
     timer_start
 
-    ${GS_HOME}/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
+    travis_wait ${GS_HOME}/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
       GsDeployer bulkMigrate: [
         Metacello new
           baseline: 'SmalltalkCI';
@@ -241,7 +241,7 @@ EOF
   travis_fold start test_server_project "Testing server project..."
     timer_start
 
-    ${GS_HOME}/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
+    travis_wait ${GS_HOME}/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
       (Smalltalk at: #SmalltalkCI) testCIFor: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
       System commitTransaction.
 EOF
@@ -260,7 +260,7 @@ EOF
       travis_fold start "test_${client_name}" "Testing client project ${client_name}..."
         timer_start
     
-        ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
+        travis_wait ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
 
         timer_finish
       travis_fold end "test_${client_name}"

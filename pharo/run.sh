@@ -183,7 +183,7 @@ pharo::load_and_test_project() {
       vm_flags="${vm_flags} --no-quit"
     fi
 
-    "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval ${vm_flags} "
+    travis_wait "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval ${vm_flags} "
       [ Metacello new
           baseline: 'SmalltalkCI';
           repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
