@@ -13,6 +13,9 @@ SmalltalkCISpec {
     },
     #exclude : {
       #classes : [ #SCIExcludedTests ]
+    },
+    #include : {
+      #classes : [ #SentButNotImplementedTest, #UndefinedSymbolsTest ]
     }
   }
 }
