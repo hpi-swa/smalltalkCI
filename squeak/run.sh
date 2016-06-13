@@ -47,8 +47,7 @@ squeak::prepare_build() {
 squeak::prepare_trunk_build() {
   local image_target="${SMALLTALK_CI_BUILD}/trunk.zip"
   local sources_target="${SMALLTALK_CI_BUILD}/sources.gz"
-  local vm_flags
-  local vm_status=0
+  local status=0
 
   travis_fold start download_image "Downloading ${config_smalltalk} image..."
     timer_start
@@ -86,13 +85,16 @@ squeak::prepare_trunk_build() {
   travis_fold start prepare_image "Preparing ${config_smalltalk} image for CI..."
     timer_start
 
-    vm_flags="$(squeak::determine_vm_flags)"
-
-    travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
-          "${SMALLTALK_CI_HOME}/squeak/prepare.st" || vm_status=$?
+    cp "${SMALLTALK_CI_HOME}/squeak/prepare.st" \
+       "${SMALLTALK_CI_BUILD}/prepare.st"
+    squeak::run_script "prepare.st" || status=$?
 
     timer_finish
   travis_fold end prepare_image
+
+  if is_nonzero "${status}"; then
+    print_error_and_exit "Failed to prepare image for CI." "${status}"
+  fi
 }
 
 ################################################################################
@@ -140,18 +142,16 @@ squeak::download_prepared_image() {
 # Globals:
 #   SMALLTALK_CI_IMAGE
 # Arguments:
-#   os_name
 #   require_spur: '1' for Spur support
 # Prints:
 #   'vm_filename|vm_path' string
 ################################################################################
 squeak::get_vm_details() {
-  local os_name=$1
-  local require_spur=$2
+  local require_spur=$1
   local vm_filename
   local vm_path
 
-  case "${os_name}" in
+  case "$(uname -s)" in
     "Linux")
       if [[ "${require_spur}" -eq 1 ]]; then
         vm_filename="cogspurlinux-15.33.3427.tgz"
@@ -168,6 +168,15 @@ squeak::get_vm_details() {
       else
         vm_filename="Cog.app-15.33.3427.tgz"
         vm_path="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
+      fi
+      ;;
+    "CYGWIN_NT-"*)
+      if [[ "${require_spur}" -eq 1 ]]; then
+        vm_filename="cogspurwin-15.33.3427.tgz"
+        vm_path="${SMALLTALK_CI_VMS}/cogspurwin/SqueakConsole.exe"
+      else
+        vm_filename="cogwin-15.33.3427.tgz"
+        vm_path="${SMALLTALK_CI_VMS}/cogwin/SqueakConsole.exe"
       fi
       ;;
     *)
@@ -194,7 +203,7 @@ squeak::prepare_vm() {
   local target
 
   is_spur_image "${SMALLTALK_CI_IMAGE}" && require_spur=1
-  vm_details=$(squeak::get_vm_details "$(uname -s)" "${require_spur}")
+  vm_details=$(squeak::get_vm_details "${require_spur}")
   set_vars vm_filename vm_path "${vm_details}"
   download_url="${VM_DOWNLOAD}/${vm_filename}"
   target="${SMALLTALK_CI_CACHE}/${vm_filename}"
@@ -223,6 +232,7 @@ squeak::prepare_vm() {
     if ! is_file "${vm_path}"; then
       print_error_and_exit "Unable to set vm up at '${vm_path}'."
     fi
+    chmod +x "${vm_path}"
   fi
 
   echo "${vm_path} \"\$@\"" > "${SMALLTALK_CI_VM}"
@@ -243,12 +253,33 @@ squeak::determine_vm_flags() {
       "Linux")
         vm_flags="-nosound -nodisplay"
         ;;
-      "Darwin")
+      "Darwin"|"CYGWIN_NT-"*)
         vm_flags="-headless"
         ;;
     esac
   fi
   echo "${vm_flags}"
+}
+
+################################################################################
+# Run a .st script located in $SMALLTALK_CI_BUILD
+################################################################################
+squeak::run_script() {
+  local script=$1
+  local vm_flags="$(squeak::determine_vm_flags)"
+
+  case "$(uname -s)" in
+    "Linux"|"Darwin")
+      travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
+        "${SMALLTALK_CI_BUILD}/${script}" || return $?
+      ;;
+    "CYGWIN_NT-"*)
+      "${SMALLTALK_CI_VM}" ${vm_flags} $(resolve_path "${SMALLTALK_CI_IMAGE}") \
+        "${script}" || return $?
+      ;;
+  esac
+
+  return 0
 }
 
 ################################################################################
@@ -262,7 +293,6 @@ squeak::determine_vm_flags() {
 ################################################################################
 squeak::load_project() {
   local status=0
-  vm_flags="$(squeak::determine_vm_flags)"
 
   travis_fold start load_project "Loading project..."
     timer_start
@@ -270,14 +300,13 @@ squeak::load_project() {
     cat >"${SMALLTALK_CI_BUILD}/load.st" <<EOL
   [ Metacello new
     baseline: 'SmalltalkCI';
-    repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
+    repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
     onConflict: [:ex | ex pass];
     load ] on: Warning do: [:w | w resume ].
-  SmalltalkCI load: '${config_ston}'
+  SmalltalkCI load: '$(resolve_path "${config_ston}")'
 EOL
 
-    travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
-        "${SMALLTALK_CI_BUILD}/load.st" || status=$?
+    squeak::run_script "load.st" || status=$?
 
     printf "\n" # Squeak exit msg is missing a linebreak
 
@@ -285,7 +314,7 @@ EOL
   travis_fold end load_project
 
   if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to load project." $?
+    print_error_and_exit "Failed to load project." "${status}"
   fi
 }
 
@@ -300,19 +329,15 @@ EOL
 ################################################################################
 squeak::test_project() {
   local status=0
-  local vm_flags
-
-  vm_flags="$(squeak::determine_vm_flags)"
 
   travis_fold start test_project "Testing project..."
     timer_start
 
     cat >"${SMALLTALK_CI_BUILD}/test.st" <<EOL
-  SmalltalkCI test: '${config_ston}'
+  SmalltalkCI test: '$(resolve_path "${config_ston}")'
 EOL
 
-    travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
-        "${SMALLTALK_CI_BUILD}/test.st" || status=$?
+    squeak::run_script "test.st" || status=$?
 
     printf "\n" # Squeak exit msg is missing a linebreak
 
@@ -320,7 +345,7 @@ EOL
   travis_fold end test_project
 
   if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to test project." $?
+    print_error_and_exit "Failed to test project." "${status}"
   fi
 }
 

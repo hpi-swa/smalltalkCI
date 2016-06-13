@@ -178,6 +178,14 @@ is_travis_build() {
   [[ "${TRAVIS:-}" = "true" ]]
 }
 
+is_appveyor_build() {
+  [[ "${APPVEYOR:-}" = "True" ]]
+}
+
+is_cygwin_build() {
+  [[ $(uname -s) = "CYGWIN_NT-"* ]]
+}
+
 is_spur_image() {
   local image_path=$1
   local image_format_number
@@ -217,6 +225,16 @@ download_file() {
   fi
 }
 
+resolve_path() {
+  local path=$1
+
+  if is_cygwin_build; then
+    echo $(cygpath -w "${path}")
+  else
+    echo "${path}"
+  fi
+}
+
 return_vars() {
   (IFS='|'; echo "$*")
 }
@@ -247,7 +265,7 @@ timer_finish() {
   if is_travis_build; then
     echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
   else
-    duration=$(echo "scale=3;${duration}/1000000000" | bc)
+    duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
     printf "\e[0;34m > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
   fi
 }
