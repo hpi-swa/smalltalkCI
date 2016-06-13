@@ -1,3 +1,3 @@
 constants
-testAuthor
+defaultAuthor
 	^ 'TravisCI'

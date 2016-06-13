@@ -1,5 +1,3 @@
-executing
+external-deprecated
 testCI
-	self prepareForCI.
-	self runTests.
-	self finishUpAfterCI
+	self test

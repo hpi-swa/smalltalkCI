@@ -166,49 +166,67 @@ pharo::prepare_image() {
 #   SMALLTALK_CI_HOME
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
-# Arguments:
-#   project_ston
-# Returns:
-#   Status code of build
 ################################################################################
-pharo::load_and_test_project() {
-  local project_ston=$1
-  local vm_flags="--save"
+pharo::load_project() {
   local status=0
 
-  travis_fold start load_and_test "Loading and testing project..."
+  travis_fold start load_project "Loading project..."
     timer_start
 
-    if ! is_travis_build && [[ "${config_headless}" != "true" ]]; then
-      vm_flags="${vm_flags} --no-quit"
-    fi
-
-    travis_wait "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval ${vm_flags} "
+    travis_wait "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save ${vm_flags} "
       [ Metacello new
           baseline: 'SmalltalkCI';
           repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
           onConflict: [:ex | ex pass];
           load ] on: Warning do: [:w | w resume ].
-      (Smalltalk at: #SmalltalkCI) runCIFor: '${project_ston}'
+      (Smalltalk at: #SmalltalkCI) load: '${config_ston}'
     " || status=$?
 
     timer_finish
-  travis_fold end load_and_test
+  travis_fold end load_project
 
-  return "${status}"
+  if is_nonzero "${status}"; then
+    print_error_and_exit "Failed to load project." $?
+  fi
+}
+
+################################################################################
+# Run tests for project.
+# Globals:
+#   SMALLTALK_CI_HOME
+#   SMALLTALK_CI_IMAGE
+#   SMALLTALK_CI_VM
+################################################################################
+pharo::test_project() {
+  local status=0
+
+  travis_fold start test_project "Testing project..."
+    timer_start
+
+    travis_wait "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval ${vm_flags} "
+      (Smalltalk at: #SmalltalkCI) test: '${config_ston}'
+    " || status=$?
+
+    timer_finish
+  travis_fold end test_project
+
+  if is_nonzero "${status}"; then
+    print_error_and_exit "Failed to test project." $?
+  fi
 }
 
 ################################################################################
 # Main entry point for Pharo builds.
-# Returns:
-#   Status code of build
 ################################################################################
 run_build() {
-  local exit_status=0
+  local vm_flags=""
+
+  if ! is_travis_build && [[ "${config_headless}" != "true" ]]; then
+    vm_flags="--no-quit"
+  fi
 
   pharo::prepare_image "${config_smalltalk}"
   pharo::prepare_vm "${config_smalltalk}" "${config_headless}"
-  pharo::load_and_test_project "${config_ston}" || exit_status=$?
-
-  return "${exit_status}"
+  pharo::load_project
+  pharo::test_project
 }

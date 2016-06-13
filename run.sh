@@ -471,8 +471,6 @@ deploy() {
 # Load platform-specific package and run the build.
 # Locals:
 #   config_smalltalk
-# Returns:
-#   Status code of build
 ################################################################################
 run() {
   case "${config_smalltalk}" in
@@ -502,7 +500,6 @@ run() {
   fi
 
   run_build "$@"
-  return $?
 }
 
 ################################################################################
@@ -517,7 +514,7 @@ main() {
   local config_debug="false"
   local config_headless="true"
   local config_verbose="false"
-  local exit_status=0
+  local status=0
 
   initialize
   parse_options "$@"
@@ -528,23 +525,21 @@ main() {
   validate_configuration
 
   prepare_folders
-  run "$@" || exit_status=$?
-  if [[ "${exit_status}" -ne 0 ]]; then
-    print_error "Failed to load and test project."
-    exit ${exit_status}
-  fi
+  run "$@"
 
   if is_travis_build; then
     report_coverage
   fi
 
-  print_results || exit_status=$?
+  print_results || status=$?
 
   if is_travis_build; then
-    deploy "${exit_status}"
+    deploy "${status}"
   fi
-  
-  exit ${exit_status}
+
+  if is_nonzero "${status}"; then
+    exit "${status}"
+  fi
 }
 
 # Run main if script is not being tested

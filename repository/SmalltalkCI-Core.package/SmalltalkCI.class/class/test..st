@@ -1,6 +1,6 @@
 executing
-testCIFor: aFilenameString
+test: aFilenameString
 	^ self platformClass basicNew
 		initialize;
 		readSTONSpec: aFilenameString;
-		testCI
+		test

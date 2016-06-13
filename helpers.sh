@@ -28,7 +28,7 @@ print_error() {
 
 print_error_and_exit() {
   print_error "$1"
-  exit 1
+  exit "${2:-1}"  # Exit with value of 2nd parameter, if not set exit with 1
 }
 
 print_help() {
@@ -154,6 +154,12 @@ is_dir() {
   local dir=$1
 
   [[ -d $dir ]]
+}
+
+is_nonzero() {
+  local status=$1
+
+  [[ "${status}" -ne 0 ]]
 }
 
 is_int() {

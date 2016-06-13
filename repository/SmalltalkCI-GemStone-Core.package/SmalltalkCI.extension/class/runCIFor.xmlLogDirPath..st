@@ -4,4 +4,5 @@ runCIFor: aFilenameString xmlLogDirPath: aString
     initialize;
     produceXMLLog: true;
     xmlLogDirPath: aString;
-    runCIFor: aFilenameString
+    readSTONSpec: aFilenameString;
+    test

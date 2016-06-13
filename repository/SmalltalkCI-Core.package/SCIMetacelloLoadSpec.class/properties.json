@@ -12,7 +12,6 @@
 		"load",
 		"onWarningLog",
 		"repository",
-		"originalAuthor",
 		"version" ],
 	"name" : "SCIMetacelloLoadSpec",
 	"pools" : [

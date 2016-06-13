@@ -204,16 +204,14 @@ gemstone::prepare_client() {
 }
 
 ################################################################################
-# Load project into GemStone stone and run tests.
+# Load project into GemStone stone.
 # Locals:
 #   config_project_home
 #   config_ston
 # Globals:
 #   SMALLTALK_CI_HOME
-# Returns:
-#   Status code of project loading
 ################################################################################
-gemstone::load_and_test_project() {
+gemstone::load_project() {
   local status=0
 
   travis_fold start load_server_project "Loading server project..."
@@ -226,7 +224,7 @@ gemstone::load_and_test_project() {
           repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
           load: 'Core'.
         System commitTransaction.
-        (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_ston}'.
+        (Smalltalk at: #SmalltalkCI) load: '${config_ston}'.
       ].
 EOF
 
@@ -234,22 +232,33 @@ EOF
 
   travis_fold end load_server_project
 
-  if [[ "${status}" -ne 0 ]]; then
+  if is_nonzero "${status}"; then
     print_error_and_exit "Failed to load project."
   fi
+}
 
+################################################################################
+# Run tests.
+# Locals:
+#   config_project_home
+#   config_ston
+# Globals:
+#   SMALLTALK_CI_HOME
+################################################################################
+gemstone::test_project() {
+  local status=0
   travis_fold start test_server_project "Testing server project..."
     timer_start
 
     travis_wait ${GS_HOME}/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
-      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
+      (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
       System commitTransaction.
 EOF
 
     timer_finish
   travis_fold end test_server_project
 
-  if [[ "${status}" -ne 0 ]]; then
+  if is_nonzero "${status}"; then
     print_error_and_exit "Error while testing server project."
   fi
 
@@ -265,7 +274,7 @@ EOF
         timer_finish
       travis_fold end "test_${client_name}"
 
-      if [[ "${status}" -ne 0 ]]; then
+      if is_nonzero "${status}"; then
         print_error_and_exit "Error while testing client project ${client_name}."
       fi
     done
@@ -277,18 +286,12 @@ EOF
     ${GS_HOME}/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
 
   travis_fold end stop_stone
-
-  return "${status}"
 }
 
 ################################################################################
 # Main entry point for GemStone builds.
-# Returns:
-#   Status code of build
 ################################################################################
 run_build() {
-  local exit_status=0
-
   gemstone::parse_options "$@"
 
   # To bypass cached behavior for local build, export TRAVIS_CACHE_ENABLED
@@ -306,9 +309,8 @@ run_build() {
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${config_smalltalk}"
   gemstone::prepare_optional_clients
-  gemstone::load_and_test_project || exit_status=$?
-
-  return "${exit_status}"
+  gemstone::load_project
+  gemstone::test_project
 }
 
 ################################################################################

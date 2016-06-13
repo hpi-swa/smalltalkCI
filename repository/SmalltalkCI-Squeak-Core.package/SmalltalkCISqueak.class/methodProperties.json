@@ -1,5 +1,7 @@
 {
 	"class" : {
+		"closeAndSaveImage" : "fn 6/13/2016 13:27",
+		"closeImage" : "fn 6/13/2016 13:33",
 		"fileExists:" : "fn 4/14/2016 00:55",
 		"getAuthor" : "fn 1/31/2016 21:37",
 		"installMetacello" : "fn 1/31/2016 19:29",
@@ -12,12 +14,12 @@
 		"supportsCoverage" : "fn 4/19/2016 18:31" },
 	"instance" : {
 		"coverageWrappers" : "fn 5/19/2016 10:30",
-		"finishUpAfterCI" : "jc 4/12/2016 16:44",
 		"linesForFile:" : "fn 4/14/2016 01:06",
+		"load" : "fn 6/13/2016 13:27",
 		"md5ForFile:" : "fn 4/14/2016 01:05",
 		"prepareForCI" : "jc 4/12/2016 16:43",
 		"readSTONSpec:" : "jc 4/8/2016 14:54",
 		"reportImage" : "fn 5/19/2016 10:23",
-		"runCI" : "fn 4/29/2016 17:26",
-		"runTests" : "fn 4/15/2016 09:49",
+		"runTests" : "fn 6/13/2016 13:25",
+		"test" : "fn 6/13/2016 13:33",
 		"writeCoverageReport:" : "fn 5/19/2016 10:20" } }
