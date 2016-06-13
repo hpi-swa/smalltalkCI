@@ -28,13 +28,7 @@ print_error() {
 
 print_error_and_exit() {
   print_error "$1"
-
-  local exit_status=$2
-  if is_int "${exit_status}"; then
-    exit "${exit_status}"
-  else
-    exit 1
-  fi
+  exit "${2:-1}"  # Exit with value of 2nd parameter, if not set exit with 1
 }
 
 print_help() {
