@@ -259,13 +259,9 @@ squeak::determine_vm_flags() {
 # Globals:
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
-# Returns:
-#   Status code of build
 ################################################################################
 squeak::load_project() {
-  local vm_flags
-  local vm_status=0
-
+  local status=0
   vm_flags="$(squeak::determine_vm_flags)"
 
   travis_fold start load_project "Loading project..."
@@ -281,14 +277,16 @@ squeak::load_project() {
 EOL
 
     travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
-        "${SMALLTALK_CI_BUILD}/load.st" || vm_status=$?
+        "${SMALLTALK_CI_BUILD}/load.st" || status=$?
 
     printf "\n" # Squeak exit msg is missing a linebreak
 
     timer_finish
   travis_fold end load_project
 
-  return "${vm_status}"
+  if is_nonzero "${status}"; then
+    print_error_and_exit "Failed to load project." $?
+  fi
 }
 
 ################################################################################
@@ -299,12 +297,10 @@ EOL
 # Globals:
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
-# Returns:
-#   Status code of build
 ################################################################################
 squeak::test_project() {
+  local status=0
   local vm_flags
-  local vm_status=0
 
   vm_flags="$(squeak::determine_vm_flags)"
 
@@ -316,27 +312,23 @@ squeak::test_project() {
 EOL
 
     travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
-        "${SMALLTALK_CI_BUILD}/test.st" || vm_status=$?
+        "${SMALLTALK_CI_BUILD}/test.st" || status=$?
 
     printf "\n" # Squeak exit msg is missing a linebreak
 
     timer_finish
   travis_fold end test_project
 
-  return "${vm_status}"
+  if is_nonzero "${status}"; then
+    print_error_and_exit "Failed to test project." $?
+  fi
 }
 
 ################################################################################
 # Main entry point for Squeak builds.
-# Returns:
-#   Status code of build
 ################################################################################
 run_build() {
-  local exit_status=0
-
   squeak::prepare_build "${config_smalltalk}"
-  squeak::load_project || exit_status=$?
-  squeak::test_project || exit_status=$?
-
-  return "${exit_status}"
+  squeak::load_project
+  squeak::test_project
 }

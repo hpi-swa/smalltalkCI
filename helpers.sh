@@ -28,7 +28,13 @@ print_error() {
 
 print_error_and_exit() {
   print_error "$1"
-  exit 1
+
+  local exit_status=$2
+  if is_int "${exit_status}"; then
+    exit "${exit_status}"
+  else
+    exit 1
+  fi
 }
 
 print_help() {
@@ -154,6 +160,12 @@ is_dir() {
   local dir=$1
 
   [[ -d $dir ]]
+}
+
+is_nonzero() {
+  local status=$1
+
+  [[ "${status}" -ne 0 ]]
 }
 
 is_int() {

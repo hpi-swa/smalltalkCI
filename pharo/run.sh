@@ -166,13 +166,8 @@ pharo::prepare_image() {
 #   SMALLTALK_CI_HOME
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
-# Arguments:
-#   project_ston
-# Returns:
-#   Status code of build
 ################################################################################
 pharo::load_project() {
-  local project_ston=$1
   local status=0
 
   travis_fold start load_project "Loading project..."
@@ -184,13 +179,15 @@ pharo::load_project() {
           repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
           onConflict: [:ex | ex pass];
           load ] on: Warning do: [:w | w resume ].
-      (Smalltalk at: #SmalltalkCI) load: '${project_ston}'
+      (Smalltalk at: #SmalltalkCI) load: '${config_ston}'
     " || status=$?
 
     timer_finish
   travis_fold end load_project
 
-  return "${status}"
+  if is_nonzero "${status}"; then
+    print_error_and_exit "Failed to load project." $?
+  fi
 }
 
 ################################################################################
@@ -199,35 +196,29 @@ pharo::load_project() {
 #   SMALLTALK_CI_HOME
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
-# Arguments:
-#   project_ston
-# Returns:
-#   Status code of build
 ################################################################################
 pharo::test_project() {
-  local project_ston=$1
   local status=0
 
   travis_fold start test_project "Testing project..."
     timer_start
 
     travis_wait "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval ${vm_flags} "
-      (Smalltalk at: #SmalltalkCI) test: '${project_ston}'
+      (Smalltalk at: #SmalltalkCI) test: '${config_ston}'
     " || status=$?
 
     timer_finish
   travis_fold end test_project
 
-  return "${status}"
+  if is_nonzero "${status}"; then
+    print_error_and_exit "Failed to test project." $?
+  fi
 }
 
 ################################################################################
 # Main entry point for Pharo builds.
-# Returns:
-#   Status code of build
 ################################################################################
 run_build() {
-  local exit_status=0
   local vm_flags=""
 
   if ! is_travis_build && [[ "${config_headless}" != "true" ]]; then
@@ -236,8 +227,6 @@ run_build() {
 
   pharo::prepare_image "${config_smalltalk}"
   pharo::prepare_vm "${config_smalltalk}" "${config_headless}"
-  pharo::load_project "${config_ston}" || exit_status=$?
-  pharo::test_project "${config_ston}" || exit_status=$?
-
-  return "${exit_status}"
+  pharo::load_project
+  pharo::test_project
 }
