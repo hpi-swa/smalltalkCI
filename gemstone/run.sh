@@ -226,7 +226,7 @@ gemstone::load_and_test_project() {
           repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
           load: 'Core'.
         System commitTransaction.
-        (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_ston}'.
+        (Smalltalk at: #SmalltalkCI) load: '${config_ston}'.
       ].
 EOF
 
@@ -242,7 +242,7 @@ EOF
     timer_start
 
     travis_wait ${GS_HOME}/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
-      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
+      (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
       System commitTransaction.
 EOF
 

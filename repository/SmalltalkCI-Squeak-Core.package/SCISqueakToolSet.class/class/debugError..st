@@ -11,4 +11,5 @@ debugError: anError
 	(problemPlace stackOfSize: 20) do: [:ctx | s cr. ctx printOn: s].
 	s flush.
 
-	SmalltalkImage current snapshot: false andQuitWithExitCode: 1
+	"Close image and save it for debugging purposes"
+	SmalltalkCISqueak closeAndSaveImage

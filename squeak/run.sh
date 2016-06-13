@@ -262,31 +262,66 @@ squeak::determine_vm_flags() {
 # Returns:
 #   Status code of build
 ################################################################################
-squeak::load_and_test_project() {
+squeak::load_project() {
   local vm_flags
   local vm_status=0
 
   vm_flags="$(squeak::determine_vm_flags)"
 
-  travis_fold start load_and_test "Loading and testing project..."
+  travis_fold start load_project "Loading project..."
     timer_start
 
-    cat >"${SMALLTALK_CI_BUILD}/run.st" <<EOL
+    cat >"${SMALLTALK_CI_BUILD}/load.st" <<EOL
   [ Metacello new
     baseline: 'SmalltalkCI';
     repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
     onConflict: [:ex | ex pass];
     load ] on: Warning do: [:w | w resume ].
-  SmalltalkCI runCIFor: '${config_ston}'
+  SmalltalkCI load: '${config_ston}'
 EOL
 
     travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
-        "${SMALLTALK_CI_BUILD}/run.st" || vm_status=$?
+        "${SMALLTALK_CI_BUILD}/load.st" || vm_status=$?
 
     printf "\n" # Squeak exit msg is missing a linebreak
 
     timer_finish
-  travis_fold end load_and_test
+  travis_fold end load_project
+
+  return "${vm_status}"
+}
+
+################################################################################
+# Test project.
+# Locals:
+#   config_headless
+#   config_ston
+# Globals:
+#   SMALLTALK_CI_IMAGE
+#   SMALLTALK_CI_VM
+# Returns:
+#   Status code of build
+################################################################################
+squeak::test_project() {
+  local vm_flags
+  local vm_status=0
+
+  vm_flags="$(squeak::determine_vm_flags)"
+
+  travis_fold start test_project "Testing project..."
+    timer_start
+
+    cat >"${SMALLTALK_CI_BUILD}/test.st" <<EOL
+  SmalltalkCI test: '${config_ston}'
+EOL
+
+    travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
+        "${SMALLTALK_CI_BUILD}/test.st" || vm_status=$?
+
+    printf "\n" # Squeak exit msg is missing a linebreak
+
+    timer_finish
+  travis_fold end test_project
 
   return "${vm_status}"
 }
@@ -300,7 +335,8 @@ run_build() {
   local exit_status=0
 
   squeak::prepare_build "${config_smalltalk}"
-  squeak::load_and_test_project || exit_status=$?
+  squeak::load_project || exit_status=$?
+  squeak::test_project || exit_status=$?
 
   return "${exit_status}"
 }
