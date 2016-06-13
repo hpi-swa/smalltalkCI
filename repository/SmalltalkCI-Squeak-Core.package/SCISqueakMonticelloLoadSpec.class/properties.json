@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Squeak-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCISqueakMonticelloLoadSpec",
+	"pools" : [
+		 ],
+	"super" : "SCIMonticelloLoadSpec",
+	"type" : "normal" }

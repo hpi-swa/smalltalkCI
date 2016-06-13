@@ -1,0 +1,3 @@
+compatibility
+isPlatformCompatible
+	self subclassResponsibility

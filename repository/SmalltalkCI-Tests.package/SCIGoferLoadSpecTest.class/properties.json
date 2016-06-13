@@ -10,5 +10,5 @@
 	"name" : "SCIGoferLoadSpecTest",
 	"pools" : [
 		 ],
-	"super" : "SCIMonticelloLoadSpecTest",
+	"super" : "SCIAbstractLoadSpecTest",
 	"type" : "normal" }

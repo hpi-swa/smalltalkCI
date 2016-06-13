@@ -1,7 +1,7 @@
 {
 	"category" : "SmalltalkCI-Core",
 	"classinstvars" : [
-		"platformClass" ],
+		"PlatformClass" ],
 	"classvars" : [
 		 ],
 	"commentStamp" : "",
