@@ -1,3 +1,3 @@
-*SmalltalkCI-Gemstone-Core
+executing-deprecated
 loadCIFor: aFilenameString
 	^ self load: aFilenameString

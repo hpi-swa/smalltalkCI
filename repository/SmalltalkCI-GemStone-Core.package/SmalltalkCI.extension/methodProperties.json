@@ -1,7 +1,5 @@
 {
 	"class" : {
-		"loadCIFor:" : "fn 6/13/2016 13:55",
-		"loadCIFor:projectDirectory:" : "fn 6/13/2016 14:29",
 		"runCIFor:projectDirectory:" : "fn 6/13/2016 14:51",
 		"runCIFor:xmlLogDirPath:" : "fn 6/13/2016 13:57" },
 	"instance" : {

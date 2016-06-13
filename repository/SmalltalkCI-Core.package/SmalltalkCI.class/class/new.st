@@ -1,3 +1,3 @@
 instance creation
 new
-	self error: 'Use #runCIFor:'
+	self error: 'Use #load: or #test:'
