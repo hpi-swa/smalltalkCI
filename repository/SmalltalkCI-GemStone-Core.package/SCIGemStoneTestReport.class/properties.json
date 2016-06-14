@@ -16,8 +16,7 @@
 		"progressFile",
 		"stream",
 		"suitePosition",
-		"xmlLogDirPath",
-		"produceXMLLog" ],
+		"xmlLogDirPath" ],
 	"name" : "SCIGemStoneTestReport",
 	"pools" : [
 		 ],

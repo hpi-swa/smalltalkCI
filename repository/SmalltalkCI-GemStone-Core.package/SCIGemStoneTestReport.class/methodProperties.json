@@ -1,9 +1,9 @@
 {
 	"class" : {
-		"runClasses:named:produceXMLLog:" : "dkh 04/04/2016 16:28",
-		"runClasses:named:xmlLogDirPath:" : "dkh 04/10/2016 11:27",
-		"runSuite:produceXMLLog:" : "dkh 04/10/2016 11:28",
-		"runSuite:produceXMLLog:xmlLogDirPath:" : "dkh 04/10/2016 11:27" },
+		"runClasses:named:" : "fn 6/14/2016 22:28",
+		"runClasses:named:xmlLogDirPath:" : "fn 6/14/2016 22:28",
+		"runSuite:" : "fn 6/14/2016 22:27",
+		"runSuite:xmlLogDirPath:" : "fn 6/14/2016 22:27" },
 	"instance" : {
 		"beginTestCase:runBlock:" : "fn 4/15/2016 16:26",
 		"encode:" : "fn 4/15/2016 09:55",
@@ -13,8 +13,6 @@
 		"initialize" : "dkh 02/07/2016 06:43",
 		"initializeOn:" : "EstebanLorenzano 8/26/2015 12:06",
 		"printOn:" : "dkh 02/05/2016 12:45",
-		"produceXMLLog" : "dkh 02/05/2016 09:44",
-		"produceXMLLog:" : "dkh 02/05/2016 09:44",
 		"recordUnexpectedPassFor:" : "dkh 02/08/2016 16:27",
 		"run" : "fn 1/23/2016 19:40",
 		"runAll" : "fniep 1/12/2016 22:15",

@@ -1,9 +1,0 @@
-SmalltalkCISpec {
-  #loading : [
-    SCIMetacelloLoadSpec {
-      #baseline : 'SmalltalkCITests',
-      #repository : 'github://dalehenrich/smalltalkCI:issue_48/tests',
-      #platforms : [ #squeak, #pharo, #gemstone ]
-    }
-  ]
-}
