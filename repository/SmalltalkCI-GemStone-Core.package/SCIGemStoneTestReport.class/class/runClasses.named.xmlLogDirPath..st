@@ -6,4 +6,4 @@ runClasses: aCollectionOfClasses named: aString xmlLogDirPath: aDirectoryPath
     select: [ :each | (each includesBehavior: TestCase) and: [ each isAbstract not ] ])
     asSortedCollection: [ :a :b | a name <= b name ].
   classes do: [ :each | each addToSuiteFromSelectors: suite ].
-  ^ self runSuite: suite produceXMLLog: true xmlLogDirPath: aDirectoryPath
+  ^ self runSuite: suite xmlLogDirPath: aDirectoryPath
