@@ -1,6 +1,6 @@
-*SmalltalkCI-Gemstone-Core
-runCIFor: aFilenameString xmlLogDirPath: aString
-  ^ self platformClass basicNew
+executing
+loadAndTest: aFilenameString xmlLogDirPath: aString
+  ^ self basicNew
     initialize;
     produceXMLLog: true;
     xmlLogDirPath: aString;
