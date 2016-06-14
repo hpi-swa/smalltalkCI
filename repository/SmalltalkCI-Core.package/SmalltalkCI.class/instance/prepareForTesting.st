@@ -1,4 +1,4 @@
 executing
-prepareForCI
+prepareForTesting
 	"pass"
 	

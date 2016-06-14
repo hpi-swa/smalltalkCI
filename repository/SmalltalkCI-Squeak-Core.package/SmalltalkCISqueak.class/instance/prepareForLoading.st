@@ -1,7 +1,5 @@
 executing
-prepareForCI
+prepareForLoading
 	self class isHeadless
 		ifTrue: [ SCISqueakToolSet load ].
-	SCISqueakTranscript install.
-
-	super prepareForCI.
+	SCISqueakTranscript install

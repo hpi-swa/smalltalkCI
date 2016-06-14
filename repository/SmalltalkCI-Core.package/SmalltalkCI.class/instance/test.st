@@ -1,6 +1,6 @@
 executing
 test
-	self prepareForCI.
+	self prepareForTesting.
 	self isCoverageTestingEnabled
 		ifTrue: [ self runTestsWithCoverage ]
 		ifFalse: [ self runTests ]
