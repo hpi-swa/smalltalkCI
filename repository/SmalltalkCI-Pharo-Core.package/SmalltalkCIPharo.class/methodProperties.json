@@ -11,6 +11,7 @@
 		"supportsCoverage" : "fn 4/19/2016 18:31" },
 	"instance" : {
 		"coverageWrappers" : "fn 5/19/2016 10:30",
+		"explicitTestKeys" : "fn 6/16/2016 10:09",
 		"linesForFile:" : "fn 4/14/2016 01:05",
 		"load" : "fn 6/13/2016 13:29",
 		"md5ForFile:" : "fn 4/14/2016 01:05",
