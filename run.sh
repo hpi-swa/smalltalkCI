@@ -440,18 +440,27 @@ deploy() {
   travis_fold start deploy "Deploying to bintray.com..."
     timer_start
 
-    print_info "Uploading image and changes files..."
+    print_info "Compressing and uploading image and changes files..."
+    mv "${SMALLTALK_CI_IMAGE}/" "${SMALLTALK_CI_BUILD}/${name}.image"
+    mv "${SMALLTALK_CI_CHANGES}/" "${SMALLTALK_CI_BUILD}/${name}.changes"
+    tar czf "${SMALLTALK_CI_BUILD}/${name}.tar.gz" \
+        --include '*.image' --include '*.changes' \
+        "${SMALLTALK_CI_BUILD}/*"
     curl -s -u "$BINTRAY_CREDENTIALS" \
-        -T "${SMALLTALK_CI_IMAGE}" "${target}/${name}.image" > /dev/null
+        -T "${SMALLTALK_CI_BUILD}/${name}.tar.gz" \
+        "${target}/${name}.tar.gz" > /dev/null
+    zip -q "${SMALLTALK_CI_BUILD}/${name}.zip" "${SMALLTALK_CI_BUILD}/*" \
+         --include '*.image' --include '*.changes'
     curl -s -u "$BINTRAY_CREDENTIALS" \
-        -T "${SMALLTALK_CI_CHANGES}" "${target}/${name}.changes" > /dev/null
+        -T "${SMALLTALK_CI_BUILD}/${name}.zip" \
+        "${target}/${name}.zip" > /dev/null
 
     if [[ "${build_status}" -ne 0 ]]; then
       # Check for xml files and upload them
       if ls "${TRAVIS_BUILD_DIR}/"*.xml 1> /dev/null 2>&1; then
         print_info "Compressing and uploading debugging files..."
         tar czf "${SMALLTALK_CI_BUILD}/debug.tar.gz" \
-            --include="*.xml" --include="*.fuel"
+            --include='*.xml' --include='*.fuel' \
             "${TRAVIS_BUILD_DIR}/*"
         curl -s -u "$BINTRAY_CREDENTIALS" \
             -T "${SMALLTALK_CI_BUILD}/debug.tar.gz" "${target}/" > /dev/null
