@@ -160,7 +160,8 @@ in ${project_home}."
 select_smalltalk() {
   local images="Squeak-trunk Squeak-5.0 Squeak-4.6 Squeak-4.5
                 Pharo-stable Pharo-alpha Pharo-6.0 Pharo-5.0 Pharo-4.0 Pharo-3.0
-                GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6"
+                GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6
+                Moose-6.0"
 
   if is_travis_build; then
     config_smalltalk="${TRAVIS_SMALLTALK_VERSION}"
@@ -172,7 +173,7 @@ select_smalltalk() {
     PS3="Choose Smalltalk image: "
     select selection in $images; do
       case "${selection}" in
-        Squeak*|Pharo*|GemStone*)
+        Squeak*|Pharo*|GemStone*|Moose*)
           config_smalltalk="${selection}"
           break
           ;;
@@ -478,7 +479,7 @@ run() {
       print_info "Starting Squeak build..."
       source "${SMALLTALK_CI_HOME}/squeak/run.sh"
       ;;
-    Pharo*)
+    Pharo*|Moose*)
       print_info "Starting Pharo build..."
       source "${SMALLTALK_CI_HOME}/pharo/run.sh"
       ;;
