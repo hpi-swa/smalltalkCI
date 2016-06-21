@@ -442,8 +442,8 @@ deploy() {
     timer_start
 
     print_info "Compressing and uploading image and changes files..."
-    mv "${SMALLTALK_CI_IMAGE}/" "${SMALLTALK_CI_BUILD}/${name}.image"
-    mv "${SMALLTALK_CI_CHANGES}/" "${SMALLTALK_CI_BUILD}/${name}.changes"
+    mv "${SMALLTALK_CI_IMAGE}" "${SMALLTALK_CI_BUILD}/${name}.image"
+    mv "${SMALLTALK_CI_CHANGES}" "${SMALLTALK_CI_BUILD}/${name}.changes"
     tar czf "${SMALLTALK_CI_BUILD}/${name}.tar.gz" \
         --include '*.image' --include '*.changes' \
         "${SMALLTALK_CI_BUILD}/*"
