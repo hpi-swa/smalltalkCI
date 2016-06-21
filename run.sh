@@ -417,6 +417,8 @@ deploy() {
   local version="${TRAVIS_BUILD_NUMBER}"
   local project_name="$(basename ${TRAVIS_BUILD_DIR})"
   local name="${project_name}-${TRAVIS_JOB_NUMBER}-${config_smalltalk}"
+  local image_name="${SMALLTALK_CI_BUILD}/${name}.image"
+  local changes_name="${SMALLTALK_CI_BUILD}/${name}.changes"
   local publish=false
 
   if is_empty "${BINTRAY_CREDENTIALS:-}" || \
@@ -442,16 +444,14 @@ deploy() {
     timer_start
 
     print_info "Compressing and uploading image and changes files..."
-    mv "${SMALLTALK_CI_IMAGE}" "${SMALLTALK_CI_BUILD}/${name}.image"
-    mv "${SMALLTALK_CI_CHANGES}" "${SMALLTALK_CI_BUILD}/${name}.changes"
+    mv "${SMALLTALK_CI_IMAGE}" "${image_name}"
+    mv "${SMALLTALK_CI_CHANGES}" "${changes_name}"
     tar czf "${SMALLTALK_CI_BUILD}/${name}.tar.gz" \
-        --include '*.image' --include '*.changes' \
-        "${SMALLTALK_CI_BUILD}/*"
+        "${image_name}" "${changes_name}"
     curl -s -u "$BINTRAY_CREDENTIALS" \
         -T "${SMALLTALK_CI_BUILD}/${name}.tar.gz" \
         "${target}/${name}.tar.gz" > /dev/null
-    zip -q "${SMALLTALK_CI_BUILD}/${name}.zip" "${SMALLTALK_CI_BUILD}/*" \
-         --include '*.image' --include '*.changes'
+    zip -q "${SMALLTALK_CI_BUILD}/${name}.zip" "${image_name}" "${changes_name}"
     curl -s -u "$BINTRAY_CREDENTIALS" \
         -T "${SMALLTALK_CI_BUILD}/${name}.zip" \
         "${target}/${name}.zip" > /dev/null
@@ -460,9 +460,8 @@ deploy() {
       # Check for xml files and upload them
       if ls "${TRAVIS_BUILD_DIR}/"*.xml 1> /dev/null 2>&1; then
         print_info "Compressing and uploading debugging files..."
-        tar czf "${SMALLTALK_CI_BUILD}/debug.tar.gz" \
-            --include='*.xml' --include='*.fuel' \
-            "${TRAVIS_BUILD_DIR}/*"
+        find "${TRAVIS_BUILD_DIR}" -name "*.xml" -o -name "*.fuel" | \
+            tar czf "${SMALLTALK_CI_BUILD}/debug.tar.gz" -T -
         curl -s -u "$BINTRAY_CREDENTIALS" \
             -T "${SMALLTALK_CI_BUILD}/debug.tar.gz" "${target}/" > /dev/null
       fi
