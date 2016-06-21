@@ -443,27 +443,26 @@ deploy() {
   travis_fold start deploy "Deploying to bintray.com..."
     timer_start
 
+    pushd "${SMALLTALK_CI_BUILD}" > /dev/null
+
     print_info "Compressing and uploading image and changes files..."
-    mv "${SMALLTALK_CI_IMAGE}" "${image_name}"
-    mv "${SMALLTALK_CI_CHANGES}" "${changes_name}"
-    tar czf "${SMALLTALK_CI_BUILD}/${name}.tar.gz" \
-        "${image_name}" "${changes_name}"
-    curl -s -u "$BINTRAY_CREDENTIALS" \
-        -T "${SMALLTALK_CI_BUILD}/${name}.tar.gz" \
+    mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
+    mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
+    tar czf "${name}.tar.gz" "${name}.image" "${name}.changes"
+    curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.tar.gz" \
         "${target}/${name}.tar.gz" > /dev/null
-    zip -q "${SMALLTALK_CI_BUILD}/${name}.zip" "${image_name}" "${changes_name}"
-    curl -s -u "$BINTRAY_CREDENTIALS" \
-        -T "${SMALLTALK_CI_BUILD}/${name}.zip" \
+    zip -q "${name}.zip" "${name}.image" "${name}.changes"
+    curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.zip" \
         "${target}/${name}.zip" > /dev/null
 
     if [[ "${build_status}" -ne 0 ]]; then
       # Check for xml files and upload them
-      if ls "${TRAVIS_BUILD_DIR}/"*.xml 1> /dev/null 2>&1; then
+      if ls *.xml 1> /dev/null 2>&1; then
         print_info "Compressing and uploading debugging files..."
-        find "${TRAVIS_BUILD_DIR}" -name "*.xml" -o -name "*.fuel" | \
-            tar czf "${SMALLTALK_CI_BUILD}/debug.tar.gz" -T -
+        mv "${TRAVIS_BUILD_DIR}/"*.fuel "${SMALLTALK_CI_BUILD}/" || true
+        find . -name "*.xml" -o -name "*.fuel" | tar czf "debug.tar.gz" -T -
         curl -s -u "$BINTRAY_CREDENTIALS" \
-            -T "${SMALLTALK_CI_BUILD}/debug.tar.gz" "${target}/" > /dev/null
+            -T "debug.tar.gz" "${target}/" > /dev/null
       fi
     fi
 
@@ -471,6 +470,8 @@ deploy() {
       print_info "Publishing ${version}..."
       curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
     fi
+
+    popd > /dev/null
 
     timer_finish
   travis_fold end deploy
