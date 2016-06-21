@@ -3,6 +3,10 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
+readonly MOOSE_6_NAME="moose-6.0"
+readonly MOOSE_6_DOWNLOAD="https://ci.inria.fr/moose/job/${MOOSE_6_NAME}/\
+lastSuccessfulBuild/artifact/${MOOSE_6_NAME}.zip"
+
 ################################################################################
 # Select Pharo image download url. Exit if smalltalk_name is unsupported.
 # Arguments:
@@ -52,7 +56,7 @@ pharo::get_vm_url() {
     "Pharo-alpha"|"Pharo-6.0")
       echo "get.pharo.org/vm60"
       ;;
-    "Pharo-stable"|"Pharo-5.0")
+    "Pharo-stable"|"Pharo-5.0"|"Moose-6.0")
       echo "get.pharo.org/vm50"
       ;;
     "Pharo-4.0")
@@ -155,9 +159,50 @@ pharo::prepare_image() {
     travis_fold end download_image
   fi
 
-  print_info "Preparing image..."
+  print_info "Preparing Pharo image..."
   cp "${SMALLTALK_CI_CACHE}/${pharo_image_file}" "${SMALLTALK_CI_IMAGE}"
   cp "${SMALLTALK_CI_CACHE}/${pharo_changes_file}" "${SMALLTALK_CI_CHANGES}"
+}
+
+################################################################################
+# Download Moose image if necessary and extract it into build folder.
+# Globals:
+#   SMALLTALK_CI_BUILD
+#   SMALLTALK_CI_CACHE
+# Arguments:
+#   smalltalk_name
+################################################################################
+pharo::prepare_moose_image() {
+  local smalltalk_name=$1
+  local pharo_image_url="${MOOSE_6_DOWNLOAD}"
+  local moose_image_file="${MOOSE_6_NAME}.image"
+  local moose_changes_file="${MOOSE_6_NAME}.changes"
+  local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}.zip"
+
+  if ! is_file "${target}"; then
+    travis_fold start download_image "Downloading ${smalltalk_name} image..."
+      timer_start
+
+      set +e
+      download_file "${MOOSE_6_DOWNLOAD}" > "${target}"
+      if [[ ! $? -eq 0 ]]; then
+        rm -f "${target}"
+        print_error_and_exit "Download failed."
+      fi
+      set -e
+
+      timer_finish
+    travis_fold end download_image
+  fi
+
+  print_info "Extracting and preparing Moose image..."
+  unzip -q "${target}" -d "${SMALLTALK_CI_BUILD}"
+  mv "${SMALLTALK_CI_BUILD}/${moose_image_file}" "${SMALLTALK_CI_IMAGE}"
+  mv "${SMALLTALK_CI_BUILD}/${moose_changes_file}" "${SMALLTALK_CI_CHANGES}"
+
+  if ! is_file "${SMALLTALK_CI_IMAGE}"; then
+    print_error_and_exit "Failed to prepare image at '${SMALLTALK_CI_IMAGE}'."
+  fi
 }
 
 ################################################################################
@@ -225,7 +270,15 @@ run_build() {
     vm_flags="--no-quit"
   fi
 
-  pharo::prepare_image "${config_smalltalk}"
+  case "${config_smalltalk}" in
+    Pharo*)
+      pharo::prepare_image "${config_smalltalk}"
+      ;;
+    Moose*)
+      pharo::prepare_moose_image "${config_smalltalk}"
+      ;;
+  esac
+
   pharo::prepare_vm "${config_smalltalk}" "${config_headless}"
   pharo::load_project
   pharo::test_project
