@@ -5,8 +5,8 @@ classesToTest
 			classes := Set new.
       		classes addAll: TestCase allSubclasses.
       		spec testing at: #'include'
-        		ifPresent: [ :includeDict | classes addAll: (self class classesToTestFrom: includeDict) ].
+        		ifPresent: [ :includeDict | classes addAll: (self class testClassesFrom: includeDict) ].
       		spec testing at: #'exclude'
-        		ifPresent: [ :excludeDict | classes removeAllFoundIn: (self class classesToTestFrom: excludeDict) ].
+        		ifPresent: [ :excludeDict | classes removeAllFoundIn: (self class testClassesFrom: excludeDict) ].
       		^ classes ].
 	^ super classesToTest

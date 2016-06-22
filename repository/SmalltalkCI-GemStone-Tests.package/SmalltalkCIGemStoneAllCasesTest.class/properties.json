@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-GemStone-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"ci" ],
+	"name" : "SmalltalkCIGemStoneAllCasesTest",
+	"pools" : [
+		 ],
+	"super" : "TestCase",
+	"type" : "normal" }

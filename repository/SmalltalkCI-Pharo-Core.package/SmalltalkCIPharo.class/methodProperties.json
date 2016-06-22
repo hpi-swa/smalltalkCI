@@ -1,6 +1,8 @@
 {
 	"class" : {
-		"classesToTestFrom:" : "fn 4/13/2016 16:03",
+		"allPackageNames" : "fn 6/22/2016 00:44",
+		"classesFrom:" : "fn 6/22/2016 00:32",
+		"classesInPackage:" : "fn 6/22/2016 09:16",
 		"fileExists:" : "fn 4/14/2016 00:56",
 		"getAuthor" : "fn 6/13/2016 13:49",
 		"isHeadless" : "fn 1/27/2016 17:04",

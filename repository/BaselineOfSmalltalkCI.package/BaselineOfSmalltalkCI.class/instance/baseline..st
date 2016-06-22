@@ -18,8 +18,6 @@ baseline: spec
         group: 'Core' with: #('SmalltalkCI-Core');
 	  group: 'tests'
           with: #('SmalltalkCI-Tests' 'SmalltalkCI-Excluded-Tests');
-        group: 'Packages' with: #('SmalltalkCI-Package-Tests');
-        group: 'AllCases' with: #('SmalltalkCI-AllCases-Tests');
         yourself ].
   spec
     for: #'squeak'
@@ -59,12 +57,8 @@ baseline: spec
           with: [ spec requires: #('SmalltalkCI-Core') ];
         package: 'SmalltalkCI-Pharo-Tests'
           with: [ spec requires: #('SmalltalkCI-Pharo-Core') ];
-	  package: 'SmalltalkCI-Package-Tests'
-          with: [ spec includes: 'SmalltalkCI-Package-Pharo-Tests' ];
-        package: 'SmalltalkCI-Package-Pharo-Tests'
-          with: [ spec requires: 'SmalltalkCI-Package-Tests' ];
         yourself.
-	spec group: 'tests' with: #('SmalltalkCI-Pharo-Tests' 'Packages') ].
+	spec group: 'tests' with: #('SmalltalkCI-Pharo-Tests') ].
   spec
     for: #'gemstone'
     do: [ 
@@ -73,9 +67,7 @@ baseline: spec
           with: [ spec includes: #('SmalltalkCI-GemStone-Core') ];
         package: 'SmalltalkCI-GemStone-Core'
           with: [ spec requires: #('SmalltalkCI-Core') ];
-	  package: 'SmalltalkCI-Package-Tests'
-          with: [ spec includes: 'SmalltalkCI-Package-GemStone-Tests' ];
-        package: 'SmalltalkCI-Package-GemStone-Tests'
-          with: [ spec requires: 'SmalltalkCI-Package-Tests' ];
+        package: 'SmalltalkCI-GemStone-Tests'
+          with: [ spec requires: 'SmalltalkCI-GemStone-Core' ];
         yourself.
-	spec group: 'tests' with: #('Packages' 'AllCases') ]
+	spec group: 'tests' with: #('SmalltalkCI-GemStone-Tests') ]
