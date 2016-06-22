@@ -2,6 +2,6 @@ class organization
 resolveAll: names with: knownNames
 	| items |
 	items := Set new.
-	names do: [ :name |
-		items addAll: (self resolve: name with: knownNames) ].
+	names do: [ :n |
+		items addAll: (self resolve: n with: knownNames) ].
 	^ items asArray
