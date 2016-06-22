@@ -7,7 +7,7 @@ testClassesToTest
         yourself)).
 
 	classes := self sci classesToTest.
-	self deny: (classes includes: Dictionary).
+	self assert: (classes includes: Dictionary).
 	self deny: (classes includes: SmalltalkCI).
 	self assert: (classes includes: SmalltalkCITest).
 	
@@ -21,7 +21,7 @@ testClassesToTest
 		yourself);
         yourself).
 	classes := self sci classesToTest.
-	self deny: (classes includes: Object).
-	self deny: (classes includes: SmalltalkCI).
+	self assert: (classes includes: Object).
+	self assert: (classes includes: SmalltalkCI).
 	self assert: (classes includes: SmalltalkCITest).
 	self deny: (classes includes: SCIExcludedTests).

@@ -1,5 +1,5 @@
 coverage
 classesToCover
 	self spec testing at: #coverage
-		ifPresent: [ :co | ^ SmalltalkCI testClassesFrom: co]
+		ifPresent: [ :co | ^ SmalltalkCI classesFrom: co]
 		ifAbsent: [ ^ OrderedCollection new ]

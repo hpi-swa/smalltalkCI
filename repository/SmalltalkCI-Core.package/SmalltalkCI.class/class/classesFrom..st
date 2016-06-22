@@ -8,11 +8,11 @@ classesFrom: aDictionary
 				Smalltalk at: eachClass ifPresent: [ :class | classes add: class ] ] ].
 	
 	aDictionary at: #categories
-		ifPresent: [ :categoryNames |
-			classes addAll: (self classesWithCategoryNames: categoryNames) ].
+		ifPresent: [ :categories |
+			classes addAll: (self classesForCategories: categories) ].
 
 	aDictionary at: #packages
-		ifPresent: [ :packageNames |
-			classes addAll: (self classesWithPackageNames: packageNames) ].
+		ifPresent: [ :packages |
+			classes addAll: (self classesForPackages: packages) ].
 
 	^ classes
