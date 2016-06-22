@@ -12,8 +12,7 @@
 		"loadAndTest:xmlLogDirPath:" : "fn 6/14/2016 22:24",
 		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:36" },
 	"instance" : {
-		"classesToTest" : "fn 6/22/2016 10:46",
-		"explicitTestKeys" : "dkh 02/06/2016 09:54",
+		"explicitTestKeys" : "fn 6/22/2016 13:06",
 		"performMetacelloLoad:" : "dkh 04/11/2016 09:56",
 		"readSTONSpec:" : "fn 02/04/2016 15:45",
 		"runTests" : "fn 4/15/2016 09:56",
