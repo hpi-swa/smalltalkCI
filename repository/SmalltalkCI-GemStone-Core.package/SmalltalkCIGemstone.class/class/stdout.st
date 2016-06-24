@@ -1,3 +1,3 @@
 helpers
 stdout
-	^ Transcript
+	^ (Smalltalk at: #GsFile) stdout
