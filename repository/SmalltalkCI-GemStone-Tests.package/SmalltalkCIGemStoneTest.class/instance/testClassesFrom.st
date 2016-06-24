@@ -1,7 +1,7 @@
 testing
 testClassesFrom
-	| classes |
-	self sci spec testing: (Dictionary new
+	| classes testing |
+	testing := (Dictionary new
 	  add: #'projects' -> #('GLASS1');
 	  add: #'categories' -> #('SmalltalkCI-*');
         add: #'exclude' -> (Dictionary new
@@ -12,8 +12,8 @@ testClassesFrom
 		yourself);
         yourself).
 
-	classes := SmalltalkCIGemstone classesFrom: self sci spec testing.
-	self deny: classes isEmpty.
+	classes := SmalltalkCIGemstone classesFrom: testing.
+	self assert: classes size > 0.
 	self assert: (classes includes: (Smalltalk at: #CachingClassOrganizer)).
 	self assert: (classes includes: SystemChangeAnnouncement).
 	self assert: (classes includes: SmalltalkCI).
