@@ -18,12 +18,13 @@ testClassesToTest
 		add: #'classes' -> #(SCIExcludedTests);
 		yourself);
         add: #'include' -> (Dictionary new
-		add: #'classes' -> #(Object ObjectTest);
+		add: #'classes' -> #(Object ObjectTest BreakpointTest);
 		yourself);
         yourself).
 	classes := self sci classesToTest.
 	self deny: (classes includes: Object).
-	self assert: (classes includes: ObjectTest).
+	Smalltalk at: #'ObjectTest' ifPresent: [ :ot | self assert: (classes includes: ot) ].
+	Smalltalk at: #'BreakpointTest' ifPresent: [ :bt | self assert: (classes includes: bt) ].
 	self deny: (classes includes: SmalltalkCI).
 	self assert: (classes includes: SmalltalkCITest).
 	self deny: (classes includes: SCIExcludedTests).
@@ -39,7 +40,8 @@ testClassesToTest
         yourself).
 	classes := self sci classesToTest.
 	self deny: (classes includes: Object).
-	self assert: (classes includes: ObjectTest).
+	Smalltalk at: #'ObjectTest' ifPresent: [ :ot | self assert: (classes includes: ot) ].
+	Smalltalk at: #'BreakpointTest' ifPresent: [ :bt | self assert: (classes includes: bt) ].
 	self deny: (classes includes: SmalltalkCI).
 	self assert: (classes includes: SmalltalkCITest).
 	self deny: (classes includes: SCIExcludedTests).
