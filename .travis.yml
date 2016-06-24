@@ -14,6 +14,8 @@ smalltalk:
   - Pharo-4.0
   - Pharo-3.0
 
+  - Moose-6.0
+
 os:
   - linux
   - osx

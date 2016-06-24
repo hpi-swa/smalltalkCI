@@ -61,14 +61,15 @@ they can take up a lot of space on your drive.*
 <a name="images"/>
 ## List Of Supported Images
 
-| Squeak          | Pharo            | GemStone             |
-| --------------- | ---------------- | -------------------- |
-| `Squeak-trunk`  | `Pharo-alpha`    | `GemStone-3.3.x`     |
-| `Squeak-5.0`    | `Pharo-stable`   | `GemStone-3.2.x`     |
-| `Squeak-4.6`    | `Pharo-6.0`      | `GemStone-3.1.0.x`   |
-| `Squeak-4.5`    | `Pharo-5.0`      | `Gemstone-2.4.x`     |
-|                 | `Pharo-4.0`      |                      |
-|                 | `Pharo-3.0`      |                      |
+| Squeak          | Pharo             | GemStone             | Others          |
+| --------------- | ----------------- | -------------------- | --------------- |
+| `Squeak-trunk`  | `Pharo-alpha`     | `GemStone-3.3.x`     | `Moose-6.0`     |
+| `Squeak-5.0`    | `Pharo-stable`    | `GemStone-3.2.x`     |                 |
+| `Squeak-4.6`    | `Pharo-6.0`       | `GemStone-3.1.0.x`   |                 |
+| `Squeak-4.5`    | `Pharo-5.0`       | `Gemstone-2.4.x`     |                 |
+|                 | `Pharo-4.0`       |                      |                 |
+|                 | `Pharo-3.0`       |                      |                 |
+|                 |                   |                      |                 |
 
 
 <a name="templates"/>

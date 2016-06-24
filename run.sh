@@ -160,7 +160,8 @@ in ${project_home}."
 select_smalltalk() {
   local images="Squeak-trunk Squeak-5.0 Squeak-4.6 Squeak-4.5
                 Pharo-stable Pharo-alpha Pharo-6.0 Pharo-5.0 Pharo-4.0 Pharo-3.0
-                GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6"
+                GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6
+                Moose-6.0"
 
   if is_travis_build; then
     config_smalltalk="${TRAVIS_SMALLTALK_VERSION}"
@@ -172,7 +173,7 @@ select_smalltalk() {
     PS3="Choose Smalltalk image: "
     select selection in $images; do
       case "${selection}" in
-        Squeak*|Pharo*|GemStone*)
+        Squeak*|Pharo*|GemStone*|Moose*)
           config_smalltalk="${selection}"
           break
           ;;
@@ -416,6 +417,8 @@ deploy() {
   local version="${TRAVIS_BUILD_NUMBER}"
   local project_name="$(basename ${TRAVIS_BUILD_DIR})"
   local name="${project_name}-${TRAVIS_JOB_NUMBER}-${config_smalltalk}"
+  local image_name="${SMALLTALK_CI_BUILD}/${name}.image"
+  local changes_name="${SMALLTALK_CI_BUILD}/${name}.changes"
   local publish=false
 
   if is_empty "${BINTRAY_CREDENTIALS:-}" || \
@@ -440,21 +443,26 @@ deploy() {
   travis_fold start deploy "Deploying to bintray.com..."
     timer_start
 
-    print_info "Uploading image and changes files..."
-    curl -s -u "$BINTRAY_CREDENTIALS" \
-        -T "${SMALLTALK_CI_IMAGE}" "${target}/${name}.image" > /dev/null
-    curl -s -u "$BINTRAY_CREDENTIALS" \
-        -T "${SMALLTALK_CI_CHANGES}" "${target}/${name}.changes" > /dev/null
+    pushd "${SMALLTALK_CI_BUILD}" > /dev/null
+
+    print_info "Compressing and uploading image and changes files..."
+    mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
+    mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
+    tar czf "${name}.tar.gz" "${name}.image" "${name}.changes"
+    curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.tar.gz" \
+        "${target}/${name}.tar.gz" > /dev/null
+    zip -q "${name}.zip" "${name}.image" "${name}.changes"
+    curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.zip" \
+        "${target}/${name}.zip" > /dev/null
 
     if [[ "${build_status}" -ne 0 ]]; then
       # Check for xml files and upload them
-      if ls "${TRAVIS_BUILD_DIR}/"*.xml 1> /dev/null 2>&1; then
+      if ls *.xml 1> /dev/null 2>&1; then
         print_info "Compressing and uploading debugging files..."
-        tar czf "${SMALLTALK_CI_BUILD}/debug.tar.gz" \
-            --include="*.xml" --include="*.fuel"
-            "${TRAVIS_BUILD_DIR}/*"
+        mv "${TRAVIS_BUILD_DIR}/"*.fuel "${SMALLTALK_CI_BUILD}/" || true
+        find . -name "*.xml" -o -name "*.fuel" | tar czf "debug.tar.gz" -T -
         curl -s -u "$BINTRAY_CREDENTIALS" \
-            -T "${SMALLTALK_CI_BUILD}/debug.tar.gz" "${target}/" > /dev/null
+            -T "debug.tar.gz" "${target}/" > /dev/null
       fi
     fi
 
@@ -462,6 +470,8 @@ deploy() {
       print_info "Publishing ${version}..."
       curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
     fi
+
+    popd > /dev/null
 
     timer_finish
   travis_fold end deploy
@@ -478,7 +488,7 @@ run() {
       print_info "Starting Squeak build..."
       source "${SMALLTALK_CI_HOME}/squeak/run.sh"
       ;;
-    Pharo*)
+    Pharo*|Moose*)
       print_info "Starting Pharo build..."
       source "${SMALLTALK_CI_HOME}/pharo/run.sh"
       ;;
