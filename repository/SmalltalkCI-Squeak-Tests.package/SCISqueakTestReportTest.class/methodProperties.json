@@ -1,10 +1,10 @@
 {
 	"class" : {
-		"expectedFileName" : "fn 4/15/2016 22:29",
+		"expectedFile" : "fn 6/24/2016 22:58",
 		"expectedSubStrings" : "fn 5/9/2016 20:13",
 		"suiteName" : "fn 4/15/2016 22:29" },
 	"instance" : {
-		"deleteTestFile" : "fn 4/15/2016 22:28",
+		"deleteTestFile" : "fn 6/24/2016 22:58",
 		"setUp" : "fn 4/15/2016 22:28",
 		"tearDown" : "fn 4/15/2016 22:28",
-		"testEndToEnd" : "fn 4/30/2016 13:36" } }
+		"testEndToEnd" : "fn 6/24/2016 23:10" } }

@@ -1,4 +1,4 @@
 setup
 deleteTestFile
-	(SmalltalkCISqueak fileExists: self class expectedFileName)
-		ifTrue: [ SmalltalkCISqueakTest deleteFile: self class expectedFileName ]
+	(SmalltalkCISqueak fileExists: self class expectedFile)
+		ifTrue: [ SmalltalkCISqueakTest deleteFile: self class expectedFile ]

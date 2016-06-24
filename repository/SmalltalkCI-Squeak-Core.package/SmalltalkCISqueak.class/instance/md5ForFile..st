@@ -1,7 +1,7 @@
 coverage
-md5ForFile: aFilename
+md5ForFile: aFile
 	| fs md5 |
-	fs := StandardFileStream fileNamed: self projectDirectory, FileDirectory slash, aFilename.
+	fs := StandardFileStream fileNamed: aFile.
 	md5 := WebUtils md5Digest: fs contentsOfEntireFile.
 	fs close.
 	^ md5
