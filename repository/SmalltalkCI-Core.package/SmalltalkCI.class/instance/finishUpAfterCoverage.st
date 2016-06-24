@@ -2,7 +2,7 @@ coverage
 finishUpAfterCoverage
 	| output |
 	output := OrderedCollection new.
-	
+
 	coverageWrappers do: [ :wrapper | | loadSpec |
 		wrapper uninstall.
 		loadSpec := self spec loading

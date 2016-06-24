@@ -186,7 +186,7 @@ pharo::load_project() {
   travis_fold end load_project
 
   if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to load project." $?
+    print_error_and_exit "Failed to load project." ${status}
   fi
 }
 
@@ -211,7 +211,7 @@ pharo::test_project() {
   travis_fold end test_project
 
   if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to test project." $?
+    print_error_and_exit "Failed to test project." "${status}"
   fi
 }
 
