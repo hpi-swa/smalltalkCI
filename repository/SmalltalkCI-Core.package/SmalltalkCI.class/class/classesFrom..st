@@ -14,5 +14,9 @@ classesFrom: aDictionary
 	aDictionary at: #packages
 		ifPresent: [ :packages |
 			classes addAll: (self classesForPackages: packages) ].
+		
+	aDictionary at: #'projects'
+		ifPresent: [ :projectsList |
+			classes addAll: (self classesOfProjects: projectsList) ].
 
 	^ classes

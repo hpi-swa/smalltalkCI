@@ -46,4 +46,9 @@ testClassesToTest
 	self assert: (classes includes: SmalltalkCITest).
 	self deny: (classes includes: SCIExcludedTests).
 	
+	self sci spec testing: Dictionary new.
+	classes := SmalltalkCI classesFrom: (Dictionary new
+        add: #'projects' -> #('SmalltalkCI');
+        yourself).
+	self sci classesToTest allSatisfy: [ :cl | classes includes: cl]
 	
