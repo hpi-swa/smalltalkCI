@@ -270,16 +270,8 @@ squeak::run_script() {
   local script=$1
   local vm_flags="$(squeak::determine_vm_flags)"
 
-  case "$(uname -s)" in
-    "Linux"|"Darwin")
-      travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "${SMALLTALK_CI_IMAGE}" \
-        "${SMALLTALK_CI_BUILD}/${script}" || return $?
-      ;;
-    "CYGWIN_NT-"*)
-      "${SMALLTALK_CI_VM}" ${vm_flags} $(resolve_path "${SMALLTALK_CI_IMAGE}") \
-        "${script}" || return $?
-      ;;
-  esac
+  travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "$(resolve_path "${SMALLTALK_CI_IMAGE}")" \
+    "$(resolve_path "${SMALLTALK_CI_BUILD}/${script}")" || return $?
 
   return 0
 }
