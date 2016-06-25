@@ -270,8 +270,15 @@ squeak::run_script() {
   local script=$1
   local vm_flags="$(squeak::determine_vm_flags)"
 
-  travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} "$(resolve_path "${SMALLTALK_CI_IMAGE}")" \
-    "$(resolve_path "${SMALLTALK_CI_BUILD}/${script}")" || return $?
+  case "$(uname -s)" in
+    "Linux"|"Darwin")
+      # VMs for Linux and macOS expect full path to script
+      script="${SMALLTALK_CI_BUILD}/${script}"
+      ;;
+  esac
+
+  travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} \
+    "$(resolve_path "${SMALLTALK_CI_IMAGE}")" "${script}" || return $?
 
   return 0
 }
