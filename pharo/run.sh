@@ -114,6 +114,7 @@ pharo::prepare_vm() {
   else
     echo "${pharo_vm_folder}/pharo-ui \"\$@\"" > "${SMALLTALK_CI_VM}"
   fi
+  chmod +x "${SMALLTALK_CI_VM}"
 
   if ! is_file "${SMALLTALK_CI_VM}"; then
     print_error_and_exit "Unable to set vm up at '${SMALLTALK_CI_VM}'."
