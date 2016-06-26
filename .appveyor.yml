@@ -5,10 +5,10 @@ environment:
   CYG_EXE: C:\cygwin\setup-x86.exe
   CYG_MIRROR: http://cygwin.mirror.constant.com
   matrix:
-    - TRAVIS_SMALLTALK_VERSION: Squeak-trunk
-    - TRAVIS_SMALLTALK_VERSION: Squeak-5.0
-    - TRAVIS_SMALLTALK_VERSION: Pharo-6.0
-    - TRAVIS_SMALLTALK_VERSION: Pharo-5.0
+    - SMALLTALK: Squeak-trunk
+    - SMALLTALK: Squeak-5.0
+    - SMALLTALK: Pharo-6.0
+    - SMALLTALK: Pharo-5.0
 
 platform:
   - x86

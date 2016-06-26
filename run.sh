@@ -164,7 +164,7 @@ select_smalltalk() {
                 Moose-6.0"
 
   if is_travis_build || is_appveyor_build; then
-    config_smalltalk="${TRAVIS_SMALLTALK_VERSION}"
+    config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-${SMALLTALK}}"
     return
   fi
 
