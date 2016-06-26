@@ -1,5 +1,9 @@
 environment:
+  CYG_ROOT: C:\cygwin
   CYG_BASH: C:\cygwin\bin\bash
+  CYG_CACHE: C:\cygwin\var\cache\setup
+  CYG_EXE: C:\cygwin\setup-x86.exe
+  CYG_MIRROR: http://cygwin.mirror.constant.com
   matrix:
     - TRAVIS_SMALLTALK_VERSION: Squeak-trunk
     - TRAVIS_SMALLTALK_VERSION: Squeak-5.0
@@ -11,6 +15,10 @@ platform:
 
 clone_depth: 5
 build: false
+version: "{build}"
+
+install:
+  - '%CYG_EXE% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip'
 
 # Cygwin build script
 #

@@ -52,25 +52,12 @@ squeak::prepare_trunk_build() {
   travis_fold start download_image "Downloading ${config_smalltalk} image..."
     timer_start
 
-    set +e
-    download_file "${TRUNK_IMAGE_DOWNLOAD}" > "${image_target}"
-    if [[ ! $? -eq 0 ]]; then
-      rm -f "${image_target}"
-      print_error_and_exit "Download failed."
-    fi
-    set -e
-    
+    download_file "${TRUNK_IMAGE_DOWNLOAD}" "${image_target}"
     unzip -q "${image_target}" -d "${SMALLTALK_CI_BUILD}"
     mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_BUILD}/TravisCI.image"
     mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_BUILD}/TravisCI.changes"
 
-    set +e
-    download_file "${TRUNK_SOURCES_DOWNLOAD}" > "${sources_target}"
-    if [[ ! $? -eq 0 ]]; then
-      rm -f "${sources_target}"
-      print_error_and_exit "Download failed."
-    fi
-    set -e
+    download_file "${TRUNK_SOURCES_DOWNLOAD}" "${sources_target}"
     gunzip -c "${sources_target}" > "${SMALLTALK_CI_BUILD}/SqueakV50.sources"
 
     timer_finish
@@ -115,15 +102,7 @@ squeak::download_prepared_image() {
   if ! is_file "${target}"; then
     travis_fold start download_image "Downloading '${download_name}'' testing image..."
       timer_start
-
-      set +e
-      download_file "${download_url}" > "${target}"
-      if [[ ! $? -eq 0 ]]; then
-        rm -f "${target}"
-        print_error_and_exit "Download failed."
-      fi
-      set -e
-
+      download_file "${download_url}" "${target}"
       timer_finish
     travis_fold end download_image
   fi
@@ -215,15 +194,7 @@ squeak::prepare_vm() {
   if ! is_file "${target}"; then
     travis_fold start download_vm "Downloading virtual machine..."
       timer_start
-
-      set +e
-      download_file "${download_url}" > "${target}"
-      if [[ ! $? -eq 0 ]]; then
-        rm -f "${target}"
-        print_error_and_exit "Download failed."
-      fi
-      set -e
-
+      download_file "${download_url}" "${target}"
       timer_finish
     travis_fold end download_vm
   fi

@@ -209,19 +209,20 @@ debug_enabled() {
 
 download_file() {
   local url=$1
+  local target=$2
 
-  if is_empty "${url}"; then
-    print_error "download_file() expects an URL."
-    exit 1
+  if is_empty "${url}" || is_empty "${target}"; then
+    print_error_and_exit "download_file() expects an URL and a target path."
   fi
 
   if program_exists "curl"; then
-    curl -f -s --retry 3 "${url}"
+    curl -f -s -L --retry 3 -o "${target}" "${url}" || print_error_and_exit \
+      "curl failed to download ${url} to '${target}'."
   elif program_exists "wget"; then
-    wget -q -O - "${url}"
+    wget -q -O "${target}" "${url}" || print_error_and_exit \
+      "wget failed to download ${url} to '${target}'."
   else
-    print_error "Please install curl or wget."
-    exit 1
+    print_error_and_exit "Please install curl or wget."
   fi
 }
 
