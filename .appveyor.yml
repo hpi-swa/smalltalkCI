@@ -10,6 +10,7 @@ platform:
   - x86
 
 clone_depth: 5
+build: false
 
 # Cygwin build script
 #

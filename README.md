@@ -430,7 +430,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 
 [travis_b]: https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master
 [travis_url]: https://travis-ci.org/hpi-swa/smalltalkCI
-[appveyor_b]: https://ci.appveyor.com/api/projects/status/hq32bwd6c26q9lor/branch/master?svg=true
+[appveyor_b]: https://ci.appveyor.com/api/projects/status/c2uchb5faykdrj3y/branch/master?svg=true
 [appveyor_url]: https://ci.appveyor.com/project/smalltalkCI/smalltalkci/branch/master
 [coveralls_b]: https://coveralls.io/repos/github/hpi-swa/smalltalkCI/badge.svg?branch=master
 [coveralls_url]: https://coveralls.io/github/hpi-swa/smalltalkCI?branch=master
