@@ -11,21 +11,21 @@ Installer gemsource
   version: #'previewBootstrap') load.
 
 "Load the Preview version of Metacello from GitHub"
-(Smalltalk at: #Metacello) new
+"(Smalltalk at: #Metacello) new
   configuration: 'MetacelloPreview';
   version: #stable;
   repository: 'github://dalehenrich/metacello-work:configuration';
-  load.
+  load."
 
 "Now load latest version of Metacello"
-(Smalltalk at: #Metacello) new
+"(Smalltalk at: #Metacello) new
   baseline: 'Metacello';
   repository: 'github://dalehenrich/metacello-work:master/repository';
   get.
 (Smalltalk at: #Metacello) new
   baseline: 'Metacello';
   repository: 'github://dalehenrich/metacello-work:master/repository';
-  load.
+  load."
 
 "=============================================================================="
 
@@ -36,9 +36,6 @@ Smalltalk at: #MCMcmUpdater ifPresent: [ :updater |
     ifFalse: [ (updater respondsTo: #updateFromDefaultRepository)
                 ifTrue: [ updater updateFromDefaultRepository ]] ]
     on: Warning do: [ :ex | ex resume: true ]].
-
-"Only keep the latest changes"
-Smalltalk condenseChanges.
 
 "Save and quit image"
 Smalltalk at: #WorldState ifPresent: [:global |

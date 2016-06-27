@@ -3,27 +3,28 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-ANSI_RED="\033[31;1m"
-ANSI_GREEN="\033[32;1m"
-ANSI_YELLOW="\033[33;1m"
-ANSI_BLUE="\033[34;1m"
+ANSI_BOLD="\033[1m"
+ANSI_RED="\033[31m"
+ANSI_GREEN="\033[32m"
+ANSI_YELLOW="\033[33m"
+ANSI_BLUE="\033[34m"
 ANSI_RESET="\033[0m"
 ANSI_CLEAR="\033[0K"
 
 print_info() {
-  printf "${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
+  printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
 }
 
 print_notice() {
-  printf "${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
+  printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
 }
 
 print_success() {
-  printf "${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
+  printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
 }
 
 print_error() {
-  printf "${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
+  printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
 }
 
 print_error_and_exit() {
@@ -178,6 +179,14 @@ is_travis_build() {
   [[ "${TRAVIS:-}" = "true" ]]
 }
 
+is_appveyor_build() {
+  [[ "${APPVEYOR:-}" = "True" ]]
+}
+
+is_cygwin_build() {
+  [[ $(uname -s) = "CYGWIN_NT-"* ]]
+}
+
 is_spur_image() {
   local image_path=$1
   local image_format_number
@@ -201,19 +210,30 @@ debug_enabled() {
 
 download_file() {
   local url=$1
+  local target=$2
 
-  if is_empty "${url}"; then
-    print_error "download_file() expects an URL."
-    exit 1
+  if is_empty "${url}" || is_empty "${target}"; then
+    print_error_and_exit "download_file() expects an URL and a target path."
   fi
 
   if program_exists "curl"; then
-    curl -f -s --retry 3 "${url}"
+    curl -f -s -L --retry 3 -o "${target}" "${url}" || print_error_and_exit \
+      "curl failed to download ${url} to '${target}'."
   elif program_exists "wget"; then
-    wget -q -O - "${url}"
+    wget -q -O "${target}" "${url}" || print_error_and_exit \
+      "wget failed to download ${url} to '${target}'."
   else
-    print_error "Please install curl or wget."
-    exit 1
+    print_error_and_exit "Please install curl or wget."
+  fi
+}
+
+resolve_path() {
+  local path=$1
+
+  if is_cygwin_build; then
+    echo $(cygpath -w "${path}")
+  else
+    echo "${path}"
   fi
 }
 
@@ -247,8 +267,8 @@ timer_finish() {
   if is_travis_build; then
     echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
   else
-    duration=$(echo "scale=3;${duration}/1000000000" | bc)
-    printf "\e[0;34m > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
+    duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
+    printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
   fi
 }
 
@@ -310,7 +330,7 @@ travis_jigger() {
     sleep 60
   done
 
-  echo -e "\n${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
+  echo -e "\n${ANSI_BOLD}${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
   kill -9 $cmd_pid
 }
 
@@ -325,6 +345,6 @@ travis_fold() {
     echo -en "travis_fold:${action}:${prefix}${name}\r${ANSI_CLEAR}"
   fi
   if is_not_empty "${title}"; then
-    echo -e "${ANSI_BLUE}${title}${ANSI_RESET}"
+    echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
   fi
 }

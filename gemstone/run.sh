@@ -92,16 +92,16 @@ gemstone::prepare_stone() {
         mkdir "${SMALLTALK_CI_VMS}/Pharo-3.0"
         print_info "Downloading Pharo-3.0 vm to cache" 
         pushd "${SMALLTALK_CI_VMS}/Pharo-3.0" > /dev/null
-          pharo_zeroconf="$(download_file "get.pharo.org/vm30")" || print_error_and_exit "Pharo-3.0 vm download failed."
-          bash -c "${pharo_zeroconf}"  || print_error_and_exit "Pharo-3.0 vm download failed."
+          download_file "get.pharo.org/vm30" "$(pwd)/zeroconfig"
+          bash "$(pwd)/zeroconfig" || print_error_and_exit "Pharo-3.0 vm download failed."
         popd > /dev/null
       fi
   
       if ! is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}"; then
         print_info "Downloading Pharo-3.0 image to cache..." 
         pushd ${SMALLTALK_CI_CACHE} > /dev/null
-          pharo_zeroconf="$(download_file "get.pharo.org/30")" || print_error_and_exit "Pharo-3.0 image download failed."
-          bash -c "${pharo_zeroconf}"  || print_error_and_exit "Pharo-3.0 image download failed."
+          download_file "get.pharo.org/30" "$(pwd)/pharo30_zeroconfig"
+          bash "$(pwd)/pharo30_zeroconfig" || print_error_and_exit "Pharo-3.0 image download failed."
           mv "Pharo.image" "${PHARO_IMAGE_FILE}"
           mv "Pharo.changes" "${PHARO_CHANGES_FILE}"
         popd > /dev/null
@@ -318,6 +318,14 @@ run_build() {
 ################################################################################
 gemstone::parse_options() {
   local devkit_client_args
+
+  case "$(uname -s)" in
+    "Linux"|"Darwin")
+      ;;
+    *)
+      print_error_and_exit "GemStone is not supported on '$(uname -s)'"
+      ;;
+  esac
 
   GS_HOME="${DEFAULT_GS_HOME}"
 

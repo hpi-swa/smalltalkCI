@@ -1,3 +1,3 @@
 constants
 coverageTestFile
-	^  '__coverage_helpers.txt'
+	^  FileDirectory fullPathForURI: '__coverage_helpers.txt'

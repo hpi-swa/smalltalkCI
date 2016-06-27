@@ -18,7 +18,7 @@ initialize() {
 
   # Fail if OS is not supported
   case "$(uname -s)" in
-    "Linux"|"Darwin")
+    "Linux"|"Darwin"|"CYGWIN_NT-"*)
       ;;
     *)
       echo "Unsupported platform '$(uname -s)'." 1>&2
@@ -163,8 +163,8 @@ select_smalltalk() {
                 GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6
                 Moose-6.0"
 
-  if is_travis_build; then
-    config_smalltalk="${TRAVIS_SMALLTALK_VERSION}"
+  if is_travis_build || is_appveyor_build; then
+    config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-${SMALLTALK}}"
     return
   fi
 

@@ -84,7 +84,7 @@ pharo::prepare_vm() {
   local headless=$2
   local pharo_vm_url="$(pharo::get_vm_url "${smalltalk_name}")"
   local pharo_vm_folder="${SMALLTALK_CI_VMS}/${smalltalk_name}"
-  local pharo_zeroconf
+  local pharo_zeroconf="${pharo_vm_folder}/zeroconfig"
 
   if ! is_dir "${pharo_vm_folder}"; then
     travis_fold start download_vm "Downloading ${smalltalk_name} vm..."
@@ -93,15 +93,8 @@ pharo::prepare_vm() {
       mkdir "${pharo_vm_folder}"
       pushd "${pharo_vm_folder}" > /dev/null
 
-      set +e
-      pharo_zeroconf="$(download_file "${pharo_vm_url}")"
-      if [[ ! $? -eq 0 ]]; then
-        print_error_and_exit "Download failed."
-      fi
-      set -e
-
-      # Execute Pharo Zeroconf Script
-      bash -c "${pharo_zeroconf}"
+      download_file "${pharo_vm_url}" "${pharo_zeroconf}"
+      bash "${pharo_zeroconf}"
 
       popd > /dev/null
 
@@ -110,10 +103,11 @@ pharo::prepare_vm() {
   fi
 
   if [[ "${headless}" = "true" ]]; then
-    ln -s "${pharo_vm_folder}/pharo" "${SMALLTALK_CI_VM}"
+    echo "${pharo_vm_folder}/pharo \"\$@\"" > "${SMALLTALK_CI_VM}"
   else
-    ln -s "${pharo_vm_folder}/pharo-ui" "${SMALLTALK_CI_VM}"
+    echo "${pharo_vm_folder}/pharo-ui \"\$@\"" > "${SMALLTALK_CI_VM}"
   fi
+  chmod +x "${SMALLTALK_CI_VM}"
 
   if ! is_file "${SMALLTALK_CI_VM}"; then
     print_error_and_exit "Unable to set vm up at '${SMALLTALK_CI_VM}'."
@@ -133,7 +127,7 @@ pharo::prepare_image() {
   local pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
   local pharo_image_file="${smalltalk_name}.image"
   local pharo_changes_file="${smalltalk_name}.changes"
-  local pharo_zeroconf
+  local pharo_zeroconf="${SMALLTALK_CI_CACHE}/${smalltalk_name}_zeroconfig"
 
   if ! is_file "${SMALLTALK_CI_CACHE}/${pharo_image_file}"; then
     travis_fold start download_image "Downloading ${smalltalk_name} image..."
@@ -141,15 +135,8 @@ pharo::prepare_image() {
 
       pushd "${SMALLTALK_CI_CACHE}" > /dev/null
 
-      set +e
-      pharo_zeroconf="$(download_file "${pharo_image_url}")"
-      if [[ ! $? -eq 0 ]]; then
-        print_error_and_exit "Download failed."
-      fi
-      set -e
-
-      # Execute Pharo Zeroconf Script
-      bash -c "${pharo_zeroconf}"
+      download_file "${pharo_image_url}" "${pharo_zeroconf}"
+      bash "${pharo_zeroconf}"
 
       mv "Pharo.image" "${pharo_image_file}"
       mv "Pharo.changes" "${pharo_changes_file}"
@@ -184,7 +171,7 @@ pharo::prepare_moose_image() {
       timer_start
 
       set +e
-      download_file "${MOOSE_6_DOWNLOAD}" > "${target}"
+      download_file "${MOOSE_6_DOWNLOAD}" "${target}"
       if [[ ! $? -eq 0 ]]; then
         rm -f "${target}"
         print_error_and_exit "Download failed."
@@ -218,20 +205,21 @@ pharo::load_project() {
   travis_fold start load_project "Loading project..."
     timer_start
 
-    travis_wait "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval --save ${vm_flags} "
+    travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
+        eval --save ${vm_flags} "
       [ Metacello new
           baseline: 'SmalltalkCI';
-          repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
+          repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
           onConflict: [:ex | ex pass];
           load ] on: Warning do: [:w | w resume ].
-      (Smalltalk at: #SmalltalkCI) load: '${config_ston}'
+      (Smalltalk at: #SmalltalkCI) load: '$(resolve_path "${config_ston}")'
     " || status=$?
 
     timer_finish
   travis_fold end load_project
 
   if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to load project." $?
+    print_error_and_exit "Failed to load project." ${status}
   fi
 }
 
@@ -248,15 +236,16 @@ pharo::test_project() {
   travis_fold start test_project "Testing project..."
     timer_start
 
-    travis_wait "${SMALLTALK_CI_VM}" "${SMALLTALK_CI_IMAGE}" eval ${vm_flags} "
-      (Smalltalk at: #SmalltalkCI) test: '${config_ston}'
+    travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
+        eval ${vm_flags} "
+      (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")'
     " || status=$?
 
     timer_finish
   travis_fold end test_project
 
   if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to test project." $?
+    print_error_and_exit "Failed to test project." "${status}"
   fi
 }
 

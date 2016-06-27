@@ -5,7 +5,6 @@ testAddLoadedClassesFrom
 	
 	mcOrganization := MCOrganizationDefinition categories: #('SmalltalkCI-Core' 'SmalltalkCI-Tests').
 	self spec addLoadedClassesFrom: {mcOrganization}.
-	self assert: false equals: (self spec loadedClasses isEmpty).
-	self assert: true equals: (self spec loadedClasses includes: SmalltalkCI).
-	self assert: false equals: (self spec testClasses includes: SmalltalkCI).
-	self assert: true equals: (self spec testClasses includes: SmalltalkCITest).
+	self deny: (self spec loadedClasses isEmpty).
+	self assert: (self spec loadedClasses includes: SmalltalkCI).
+	self assert: (self spec loadedClasses includes: SmalltalkCITest).

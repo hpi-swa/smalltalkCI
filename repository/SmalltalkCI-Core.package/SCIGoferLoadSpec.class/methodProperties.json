@@ -2,7 +2,7 @@
 	"class" : {
 		 },
 	"instance" : {
-		"addLoadedClassesFrom:" : "fn 6/9/2016 15:50",
+		"addLoadedClassesFrom:" : "fn 6/21/2016 23:43",
 		"basicLoadProjectOn:" : "fn 6/9/2016 15:18",
 		"isComplete" : "fn 6/13/2016 09:47",
 		"loadedClasses" : "fn 6/13/2016 09:49",
@@ -11,7 +11,6 @@
 		"packages:" : "fn 6/13/2016 09:47",
 		"password" : "fn 6/13/2016 09:51",
 		"password:" : "fn 6/13/2016 09:47",
-		"testClasses" : "fn 6/13/2016 09:48",
 		"url" : "fn 6/13/2016 09:47",
 		"url:" : "fn 6/13/2016 09:47",
 		"user" : "fn 6/13/2016 09:49",

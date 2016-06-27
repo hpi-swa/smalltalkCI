@@ -1,7 +1,7 @@
 testing
 testEndToEnd
 	| testStream contents result isUsingSCISqueakTranscript |
-	self assert: false equals: (SmalltalkCISqueak fileExists: self class expectedFileName).
+	self assert: false equals: (SmalltalkCISqueak fileExists: self class expectedFile).
 	
 	isUsingSCISqueakTranscript := (Transcript isKindOf: SCISqueakTranscript).
 	isUsingSCISqueakTranscript ifTrue: [ SCISqueakTranscript uninstall ].
@@ -14,7 +14,7 @@ testEndToEnd
 	self assert: 6 equals: result suiteTotal.
 	self assert: result hasFailuresOrErrors equals: true.
 	
-	testStream := StandardFileStream fileNamed: self class expectedFileName.
+	testStream := StandardFileStream fileNamed: self class expectedFile.
 	testStream := MultiByteFileStream newFrom: testStream.
 	contents := testStream contents.
 	testStream close.
@@ -22,4 +22,4 @@ testEndToEnd
 	self class expectedSubStrings do: [ :subString |
 		self assert: (contents includesSubString: subString) ].
 	
-	self assert: true equals: (SmalltalkCISqueak fileExists: self class expectedFileName).
+	self assert: true equals: (SmalltalkCISqueak fileExists: self class expectedFile).

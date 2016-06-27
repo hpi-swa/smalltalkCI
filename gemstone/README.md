@@ -167,7 +167,7 @@ The `debug continuation` menu item can be used to bring up the debugger on the c
 To rerun the the tests from within a tODE session use the following command in the tODE shell:
 
 ```
-eval `SmalltalkCI testCIFor: '$GS_HOME/shared/repos/tode/.smalltalk.ston'`
+eval `SmalltalkCI test: '$GS_HOME/shared/repos/tode/.smalltalk.ston'`
 ```
 
 # Client/Server SmalltalkCI builds

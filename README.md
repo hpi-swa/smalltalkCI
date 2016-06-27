@@ -1,7 +1,8 @@
-# smalltalkCI [![Build Status](https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master)](https://travis-ci.org/hpi-swa/smalltalkCI) [![Coverage Status](https://coveralls.io/repos/github/hpi-swa/smalltalkCI/badge.svg?branch=master)](https://coveralls.io/github/hpi-swa/smalltalkCI?branch=master)
+# smalltalkCI [![Build Status][travis_b]][travis_url] [![AppVeyor status][appveyor_b]][appveyor_url] [![Coverage Status][coveralls_b]][coveralls_url]
 
-Community-supported framework for testing Smalltalk projects on Linux & OS X and
-on [Travis CI][travisCI].
+Community-supported framework for testing Smalltalk projects on Linux, OS X, and
+Windows with built-in support for [Travis CI][travisCI] and
+[AppVeyor][appveyor].
 
 It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy
 way to load and test Smalltalk projects.
@@ -21,9 +22,11 @@ way to load and test Smalltalk projects.
 
 ## Features
 
-- Simple configuration via `.travis.yml` and `.smalltalk.ston` ([see below for templates](#templates))
+- Simple configuration via `.smalltalk.ston`, `.travis.yml`, and `appveyor.yml`
+  ([see below for templates](#templates))
 - Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
-- Runs on Travis' [container-based infrastructure][cbi] ([*"Builds start in seconds"*][bsis])
+- Runs on Travis' [container-based infrastructure][cbi]
+  ([*"Builds start in seconds"*][bsis])
 - Supports Linux and OS X and can be run locally for debug purposes
 - Exports test results in the JUnit XML format as part of the Travis build log
 - Supports coverage testing and publishes results to [coveralls.io][coveralls]
@@ -32,10 +35,12 @@ way to load and test Smalltalk projects.
 <a name="how-to-travis"/>
 ## How To Enable Travis CI For Your Smalltalk Project
 
-1. Export your project in a [compatible format](#load-formats).
+1. Export your project in a [compatible format](#load-specs).
 2. [Enable Travis CI for your repository][travisHowTo].
-3. Create a `.travis.yml` and specifiy the [Smalltalk image(s)](#images) you want your project to be tested against.
-4. Create a `.smalltalk.ston` ([see below for templates](#templates)) and specify how to load and test your project.
+3. Create a `.travis.yml` and specifiy the [Smalltalk image(s)](#images) you
+   want your project to be tested against.
+4. Create a `.smalltalk.ston` ([see below for templates](#templates)) and
+   specify how to load and test your project.
 5. Push all of this to GitHub and enjoy your fast Smalltalk builds!
 
 
@@ -74,6 +79,25 @@ they can take up a lot of space on your drive.*
 
 <a name="templates"/>
 ## Templates
+
+### Minimal `.smalltalk.ston` Template
+
+The following `SmalltalkCISpec` will load `BaselineOfMyProject` using
+Metacello/FileTree from the `./packages` directory in Squeak, Pharo, and
+GemStone. See below how you can [customize your `SmalltalkCISpec`.]
+(#SmalltalkCISpec)
+
+```javascript
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'MyProject',
+      #directory : 'packages',
+      #platforms : [ #squeak, #pharo, #gemstone ]
+    }
+  ]
+}
+```
 
 ### `.travis.yml` Template
 
@@ -161,74 +185,72 @@ matrix:
     - smalltalk_config: .bleedingEdge.ston
 ```
 
-### Minimal `.smalltalk.ston` Template
+### `appveyor.yml` Template
 
-The following `SmalltalkCISpec` will load `BaselineOfMyProject` using
-Metacello/FileTree from the `./packages` directory in Squeak, Pharo and GemStone.
+```yml
+environment:
+  CYG_ROOT: C:\cygwin
+  CYG_BASH: C:\cygwin\bin\bash
+  CYG_CACHE: C:\cygwin\var\cache\setup
+  CYG_EXE: C:\cygwin\setup-x86.exe
+  CYG_MIRROR: http://cygwin.mirror.constant.com
+  SCI_RUN: /cygdrive/c/smalltalkCI-master/run.sh
+  matrix:
+    # Currently, only Squeak and Pharo images are supported on AppVeyor.
+    - SMALLTALK: Squeak-trunk
+    - SMALLTALK: Squeak-5.0
+    - SMALLTALK: Pharo-6.0
+    - SMALLTALK: Pharo-5.0
+    # ...
 
-```javascript
-SmalltalkCISpec {
-  #loading : [
-    SCIMetacelloLoadSpec {
-      #baseline : 'MyProject',
-      #directory : 'packages',
-      #platforms : [ #squeak, #pharo, #gemstone ]
-    }
-  ]
-}
+platform:
+  - x86
+
+install:
+  - '%CYG_EXE% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip'
+  - ps: Start-FileDownload "https://github.com/hpi-swa/smalltalkCI/archive/master.zip" "C:\smalltalkCI.zip"
+  - 7z x C:\smalltalkCI.zip -oC:\ -y > NULL
+
+build: false
+
+test_script:
+  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN"'
 ```
 
-<a name="SmalltalkCISpec"/>
-### Complete `.smalltalk.ston` Template
 
-*Please note that the `.smalltalk.ston` must be a valid [STON][STON] file. The file can also be called just `smalltalk.ston`*
+## Further Configuration
+
+<a name="SmalltalkCISpec"/>
+### Setting Up A Custom `.smalltalk.ston`
+
+smalltalkCI requires a `.smalltalk.ston` configuration file which can be
+customized for a project to cover various use cases.
+The `.smalltalk.ston` must be a valid [STON][STON] file and has to contain a
+single `SmalltalkCISpec` object.
+This object can hold one or more [load specifications](#load-specs) in
+`#loading` and configurations for the [TestCase selection](#testcase-selection)
+in `#testing`.
 
 ```javascript
 SmalltalkCISpec {
   #loading : [
-    /*
-    A list of one or more supported loading specifications (see below).
-    */
+    // List Of Load Specifications...
   ],
   #testing : {
-    /*
-    By default, smalltalkCI will determine the tests to run from the given LoadSpecs. If this is not
-    sufficient, it is possible to define the tests on category-level or class-level in here. With
-    `#categories` it is possible to define category names or category prefixes (end with `*`),
-    `#classes` expects a list of class name symbols. Both can be specified explicitly (ignore tests
-    determined from LoadSpecs completely). If you only want to include or exclude tests from the
-    default or `#'*'` case , you can use `#include` or `#exclude`.
-    */
-    #categories : [ 'MyProject-*' ],                          // Define categories to test explicitly
-    #classes : [ #MyProjectTestCase ],                        // Define classes to test explicitly
-    #packages : [ 'MyProject.*' ],                            // Define packages to test (Pharo and GemStone)
-    #projects : [ 'MyProject' ],                              // Define projects to test (GemStone)
-    #'*' : [],                                                // Run all tests in image (GemStone)
-    #include : {
-      #categories : [ 'AnotherProject-Tests' ],               // Include categories to test
-      #classes : [ #AnotherProjectTestCase ],                 // Include classes to test
-      #packages : [ 'AnotherProject.*' ],                     // Include packages to test (Pharo and GemStone)
-      #projects : [ 'MyProject' ],                            // Include projects to test (GemStone)
-    },
-    #exclude : {
-      #categories : [ 'AnotherProject-Tests' ],               // Exclude categories from testing
-      #classes : [ #AnotherProjectTestCase ],                 // Exclude classes from testing
-      #packages : [ 'AnotherProject.*' ],                     // Exclude packages from testing (Pharo and GemStone)
-      #projects : [ 'MyProject' ]                             // Exclude projects from testing (GemStone)
-    }
+    // TestCase Selection...
   }
 }
 ```
 
-<a name="load-formats"/>
-## Compatible Project Loading Specifications
-smalltalkCI supports different mechanisms for loading a projects.
+<a name="load-specs"/>
+#### Project Loading Specifications
+smalltalkCI supports different mechanisms for loading Smalltalk projects.
 One or more of those loading specifications have to be provided in the
 `#loading` list as part of a [`SmalltalkCISpec`](#SmalltalkCISpec).
 smalltalkCI will load all specifications that are compatible with the selected
 Smalltalk image (specified via `#platforms`).
 
-### SCIMetacelloLoadSpec
+##### SCIMetacelloLoadSpec
 A `SCIMetacelloLoadSpec` loads a project either via the specified Metacello
 [`#baseline`][mc_baseline] or the Metacello
 [`#configuration`][mc_configuration]. If a `#directory` is specified,
@@ -250,7 +272,7 @@ SCIMetacelloLoadSpec {
 }
 ```
 
-### SCIMonticelloLoadSpec
+##### SCIMonticelloLoadSpec
 A `SCIMonticelloLoadSpec` loads a project with [Monticello][monticello]. It is
 possible to load the latest version of packages from a remote repository
 (`#packages`) or specific versions (`#versions`).
@@ -264,7 +286,7 @@ SCIMonticelloLoadSpec {
 }
 ```
 
-### SCIGoferLoadSpec
+##### SCIGoferLoadSpec
 A `SCIGoferLoadSpec` works similar to a `SCIMonticelloLoadSpec`, but uses
 [Gofer][gofer] on top of [Monticello][monticello] to load a project.
 
@@ -277,8 +299,54 @@ SCIGoferLoadSpec {
 }
 ```
 
+#### TestCase Selection
 
-## Further Configuration
+smalltalkCI runs a list of TestCases during a build.
+By default, smalltalkCI will use a list of all TestCases that it has loaded into
+the image.
+It is possible to adjust this list using the `#testing` slot.
+In general, TestCases can be selected on class-level (`#classes`), on
+category-level (`#categories`), on package-level (`#packages`) and on
+project-level (`#projects`, GemStone only).
+`#classes` expects a list of class name symbols, `#categories` and `#packages`
+expect category names and prefixes or package names and prefixes respectively.
+The default list can be replaced by a list of all TestCases that are present in
+the image by setting `#allTestCases` to `true`.
+Additionally, it is possible to add (`#include`) or remove (`#exclude`) classes
+from this list.
+The list can also be specified explicitly which means that *only* these
+TestCases will run.
+
+```javascript
+SmalltalkCISpec {
+  ...
+  #testing : {
+    // Include specific TestCases
+    #include : {
+      #classes : [ #AnotherProjectTestCase ],
+      #categories : [ 'AnotherProject-Tests' ],
+      #packages : [ 'AnotherProject.*' ],
+      #projects : [ 'MyProject' ] // (GemStone only)
+    },
+
+    // Exclude specific TestCases from testing
+    #exclude : {
+      #classes : [ #AnotherProjectTestCase ],
+      #categories : [ 'AnotherProject-Tests' ],
+      #packages : [ 'AnotherProject.*' ],
+      #projects : [ 'MyProject' ] // (GemStone only)
+    },
+
+    #allTestCases : true, // Run all TestCases in image
+
+    // Define TestCases explicitly
+    #classes : [ #MyProjectTestCase ],
+    #categories : [ 'MyProject-*' ],
+    #packages : [ 'MyProject.*' ],
+    #projects : [ 'MyProject' ] // (GemStone only)
+  }
+}
+```
 
 ### Command Line Options
 
@@ -392,6 +460,14 @@ problem.
 list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 
 
+[travis_b]: https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master
+[travis_url]: https://travis-ci.org/hpi-swa/smalltalkCI
+[appveyor_b]: https://ci.appveyor.com/api/projects/status/c2uchb5faykdrj3y/branch/master?svg=true
+[appveyor_url]: https://ci.appveyor.com/project/smalltalkCI/smalltalkci/branch/master
+[coveralls_b]: https://coveralls.io/repos/github/hpi-swa/smalltalkCI/badge.svg?branch=master
+[coveralls_url]: https://coveralls.io/github/hpi-swa/smalltalkCI?branch=master
+
+[appveyor]: https://www.appveyor.com/
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
 [builderCI]: https://github.com/dalehenrich/builderCI
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/

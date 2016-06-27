@@ -1,7 +1,7 @@
 coverage
-linesForFile: aFilename 
+linesForFile: aFile
 	| fs loc |
-	fs := StandardFileStream fileNamed: self projectDirectory, FileDirectory slash, aFilename.
+	fs := StandardFileStream fileNamed: aFile.
 	loc := fs contentsOfEntireFile lineCount.
 	fs close.
 	^ loc

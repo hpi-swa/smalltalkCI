@@ -1,3 +1,3 @@
 coverage
 packageNameForClass: aClass
-	^ (RPackageOrganizer default packageOf: Object) packageName
+	^ ((Smalltalk at: #RPackageOrganizer) default packageOf: aClass) packageName

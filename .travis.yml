@@ -20,6 +20,10 @@ os:
   - linux
   - osx
 
+branches:
+  except:
+    - windows
+
 install:
   # Move cache directory if it exists
   - if [[ -d "${SMALLTALK_CI_CACHE}" ]]; then mv $SMALLTALK_CI_CACHE "$(pwd)"; fi

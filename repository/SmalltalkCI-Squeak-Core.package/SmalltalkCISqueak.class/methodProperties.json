@@ -1,5 +1,7 @@
 {
 	"class" : {
+		"allPackageNames" : "fn 6/22/2016 00:44",
+		"classesInPackage:" : "fn 6/22/2016 09:16",
 		"closeAndSaveImage" : "fn 6/13/2016 13:27",
 		"closeImage" : "fn 6/13/2016 13:33",
 		"fileExists:" : "fn 4/14/2016 00:55",
@@ -9,15 +11,16 @@
 		"isPlatformCompatible" : "fn 1/31/2016 17:57",
 		"methodReferenceFor:selector:" : "fn 4/14/2016 01:18",
 		"packageNameForClass:" : "fn 4/19/2016 18:43",
+		"pathNameDelimiter" : "fn 6/24/2016 23:04",
 		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:37",
 		"slash" : "fn 4/14/2016 01:02",
 		"supportsCoverage" : "fn 4/19/2016 18:31" },
 	"instance" : {
 		"coverageWrappers" : "fn 5/19/2016 10:30",
 		"finishUpAfterLoading" : "fn 6/14/2016 19:17",
-		"linesForFile:" : "fn 4/14/2016 01:06",
+		"linesForFile:" : "fn 6/24/2016 23:06",
 		"load" : "fn 6/13/2016 13:27",
-		"md5ForFile:" : "fn 4/14/2016 01:05",
+		"md5ForFile:" : "fn 6/24/2016 23:06",
 		"prepareForLoading" : "fn 6/14/2016 19:17",
 		"prepareForTesting" : "fn 6/14/2016 19:17",
 		"readSTONSpec:" : "jc 4/8/2016 14:54",
