@@ -3,27 +3,28 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-ANSI_RED="\033[31;1m"
-ANSI_GREEN="\033[32;1m"
-ANSI_YELLOW="\033[33;1m"
-ANSI_BLUE="\033[34;1m"
+ANSI_BOLD="\033[1m"
+ANSI_RED="\033[31m"
+ANSI_GREEN="\033[32m"
+ANSI_YELLOW="\033[33m"
+ANSI_BLUE="\033[34m"
 ANSI_RESET="\033[0m"
 ANSI_CLEAR="\033[0K"
 
 print_info() {
-  printf "${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
+  printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
 }
 
 print_notice() {
-  printf "${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
+  printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
 }
 
 print_success() {
-  printf "${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
+  printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
 }
 
 print_error() {
-  printf "${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
+  printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
 }
 
 print_error_and_exit() {
@@ -267,7 +268,7 @@ timer_finish() {
     echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
   else
     duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
-    printf "\e[0;34m > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
+    printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
   fi
 }
 
@@ -329,7 +330,7 @@ travis_jigger() {
     sleep 60
   done
 
-  echo -e "\n${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
+  echo -e "\n${ANSI_BOLD}${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
   kill -9 $cmd_pid
 }
 
@@ -344,6 +345,6 @@ travis_fold() {
     echo -en "travis_fold:${action}:${prefix}${name}\r${ANSI_CLEAR}"
   fi
   if is_not_empty "${title}"; then
-    echo -e "${ANSI_BLUE}${title}${ANSI_RESET}"
+    echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
   fi
 }
