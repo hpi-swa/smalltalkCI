@@ -208,7 +208,7 @@ platform:
 
 install:
   - '%CYG_EXE% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip'
-  - ps: (New-Object Net.WebClient).Downloadfile("https://github.com/hpi-swa/smalltalkCI/archive/master.zip", "C:\smalltalkCI.zip")
+  - ps: Start-FileDownload "https://github.com/hpi-swa/smalltalkCI/archive/master.zip" "C:\smalltalkCI.zip"
   - 7z x C:\smalltalkCI.zip -oC:\ -y > NULL
 
 build: false
