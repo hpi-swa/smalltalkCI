@@ -1,7 +1,7 @@
 testing
 loadedClasses
   self baseline
-    ifNotNil: [ :b | ^ self getClassesForMetacelloProjectRegistration: b ].
+    ifNotNil: [ :b | ^ self getClassesForMetacelloProjectRegistration: 'BaselineOf' , b ].
   self configuration
-    ifNotNil: [ :c | ^ self getClassesForMetacelloProjectRegistration: c ].
+    ifNotNil: [ :c | ^ self getClassesForMetacelloProjectRegistration: 'ConfigurationOf' , c ].
   ^ #()

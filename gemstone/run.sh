@@ -217,7 +217,12 @@ gemstone::load_project() {
   travis_fold start load_server_project "Loading server project..."
     timer_start
 
-    travis_wait ${GS_HOME}/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
+    travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
+      iferr 1 stk
+      iferr 2 stack
+      iferr 3 exit 1
+      login
+      run
       GsDeployer bulkMigrate: [
         Metacello new
           baseline: 'SmalltalkCI';
@@ -226,6 +231,9 @@ gemstone::load_project() {
         System commitTransaction.
         (Smalltalk at: #SmalltalkCI) load: '${config_ston}'.
       ].
+%
+      logout
+      exit 0
 EOF
 
     timer_finish
@@ -250,9 +258,17 @@ gemstone::test_project() {
   travis_fold start test_server_project "Testing server project..."
     timer_start
 
-    travis_wait ${GS_HOME}/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
+    travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
+      iferr 1 stk
+      iferr 2 stack
+      iferr 3 exit 1
+      login
+      run
       (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
       System commitTransaction.
+%
+      logout
+      exit 0
 EOF
 
     timer_finish
