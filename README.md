@@ -326,7 +326,7 @@ SmalltalkCISpec {
       #classes : [ #AnotherProjectTestCase ],
       #categories : [ 'AnotherProject-Tests' ],
       #packages : [ 'AnotherProject.*' ],
-      #projects : [ 'MyProject' ] // (GemStone only)
+      #projects : [ 'BaselineOfMyProject' ]
     },
 
     // Exclude specific TestCases from testing
@@ -334,7 +334,7 @@ SmalltalkCISpec {
       #classes : [ #AnotherProjectTestCase ],
       #categories : [ 'AnotherProject-Tests' ],
       #packages : [ 'AnotherProject.*' ],
-      #projects : [ 'MyProject' ] // (GemStone only)
+      #projects : [ 'ConfigurationOfMyOtherProject' ]
     },
 
     #allTestCases : true, // Run all TestCases in image
@@ -343,7 +343,7 @@ SmalltalkCISpec {
     #classes : [ #MyProjectTestCase ],
     #categories : [ 'MyProject-*' ],
     #packages : [ 'MyProject.*' ],
-    #projects : [ 'MyProject' ] // (GemStone only)
+    #projects : [ 'BaselineOfMyProject' ]
   }
 }
 ```
