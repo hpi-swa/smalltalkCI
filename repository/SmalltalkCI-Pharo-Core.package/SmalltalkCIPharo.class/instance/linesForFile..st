@@ -1,7 +1,7 @@
 coverage
 linesForFile: aFilename 
 	| fr loc |
-	fr := (self projectDirectory, '/', aFilename) asFileReference readStream.
+	fr := aFilename asFileReference readStream.
 	loc := fr contents lineCount.
 	fr close.
 	^ loc
