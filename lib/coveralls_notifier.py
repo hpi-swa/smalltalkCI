@@ -52,7 +52,7 @@ def git_info():
 
 def run_command(*args):
     cmd = subprocess.Popen(
-            list(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        list(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = cmd.communicate()
     assert cmd.returncode == 0, ('command return code %d, STDOUT: "%s"\n'
                                  'STDERR: "%s"' % (cmd.returncode, stdout,

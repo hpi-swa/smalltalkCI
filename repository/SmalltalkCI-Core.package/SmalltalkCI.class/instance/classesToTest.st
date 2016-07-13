@@ -5,7 +5,7 @@ classesToTest
 		do: [ :key | 
 			(spec testing includesKey: key)
 				ifTrue: [ ^ self class classesFrom: spec testing ] ].
-	classes := Set new.
+	classes := OrderedCollection new.
 	(spec testing at: #'allTestCases' ifAbsent: [ false ]) = true
 		ifTrue: [ classes addAll: TestCase allSubclasses ]
 		ifFalse: [ "By default, add all classes that have been loaded by compatible LoadSpecs"
