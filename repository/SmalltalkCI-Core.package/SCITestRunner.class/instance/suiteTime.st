@@ -1,0 +1,4 @@
+accessing
+suiteTime
+
+	^ suiteTime

@@ -1,0 +1,18 @@
+{
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"suite",
+		"stdoutStream",
+		"xmlStream",
+		"suiteTime",
+		"results" ],
+	"name" : "SCITestRunner",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }

@@ -1,10 +1,17 @@
 executing
 test
+	| successful |
 	self prepareForTesting.
 	self isCoverageTestingEnabled
 		ifTrue: [
-			self runTestsWithCoverage.
+			successful := self runTestsWithCoverage.
 			SmalltalkCI printToStdout: 'Testing stage (including coverage) completed'. ]
 		ifFalse: [
-			self runTests.
-			SmalltalkCI printToStdout: 'Testing stage completed'. ]
+			successful := self runTests.
+			SmalltalkCI printToStdout: 'Testing stage completed'. ].
+	successful
+		ifTrue: [ SmalltalkCI platformClass closeImageWithExitCode: 0 ]
+		ifFalse: [
+			SmalltalkCI platformClass saveImage.
+			SmalltalkCI platformClass closeImageWithExitCode: 1 ]
+	

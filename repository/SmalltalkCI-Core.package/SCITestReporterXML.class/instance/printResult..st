@@ -1,0 +1,13 @@
+printing
+printResult: aResult
+	self
+		tab; print: '<testcase classname="';
+		print: (self encode: (aResult testCase class category copyReplaceAll: '-' with: '.'));
+		print: '.', (self encode: aResult testCase class name), '" ';
+		print: 'name="', (self encode: aResult testCase selector), '" ';
+		print: 'time="', (aResult testTime / 1000.0) asString, '">'.
+	aResult passed ifFalse: [
+		self lf.
+		super printResult: aResult.
+		self tab ].
+	self print: '</testcase>'; lf

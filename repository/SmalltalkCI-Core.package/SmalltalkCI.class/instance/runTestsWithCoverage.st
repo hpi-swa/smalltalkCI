@@ -1,5 +1,7 @@
 executing
 runTestsWithCoverage
+	| successful |
 	self prepareCoverage.
-	self runTests.
-	self finishUpAfterCoverage
+	successful := self runTests.
+	self finishUpAfterCoverage.
+	^ successful

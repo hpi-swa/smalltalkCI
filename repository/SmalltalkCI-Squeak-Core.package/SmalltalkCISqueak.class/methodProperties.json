@@ -3,7 +3,7 @@
 		"allPackageNames" : "fn 6/22/2016 00:44",
 		"classesInPackage:" : "fn 6/22/2016 09:16",
 		"closeAndSaveImage" : "fn 6/13/2016 13:27",
-		"closeImage" : "fn 6/13/2016 13:33",
+		"closeImageWithExitCode:" : "fn 7/2/2016 16:03",
 		"fileExists:" : "fn 4/14/2016 00:55",
 		"getAuthor" : "fn 1/31/2016 21:37",
 		"installMetacello" : "fn 1/31/2016 19:29",
@@ -25,6 +25,5 @@
 		"prepareForTesting" : "fn 6/14/2016 19:17",
 		"readSTONSpec:" : "jc 4/8/2016 14:54",
 		"reportImage" : "fn 5/19/2016 10:23",
-		"runTests" : "fn 6/13/2016 13:25",
-		"test" : "fn 6/13/2016 13:33",
+		"test" : "fn 7/2/2016 17:22",
 		"writeCoverageReport:" : "fn 5/19/2016 10:20" } }

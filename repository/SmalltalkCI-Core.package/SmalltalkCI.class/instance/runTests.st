@@ -1,3 +1,3 @@
 executing
 runTests
-	self subclassResponsibility
+	^ SCITestRunner runClasses: self classesToTest named: self suiteName
