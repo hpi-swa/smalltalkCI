@@ -100,7 +100,7 @@ squeak::download_prepared_image() {
   local target="${SMALLTALK_CI_CACHE}/${download_name}"
 
   if ! is_file "${target}"; then
-    travis_fold start download_image "Downloading '${download_name}'' testing image..."
+    travis_fold start download_image "Downloading '${download_name}' testing image..."
       timer_start
       download_file "${download_url}" "${target}"
       timer_finish
