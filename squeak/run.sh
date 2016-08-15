@@ -3,8 +3,7 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/\
-smalltalkci"
+readonly BASE_DOWNLOAD="https://dl.bintray.com/hpi-swa-lab/smalltalkCI"
 readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}"
 readonly TRUNK_IMAGE_DOWNLOAD="http://build.squeak.org/job/Trunk/default/\
 lastSuccessfulBuild/artifact/target/TrunkImage.zip"
@@ -87,7 +86,7 @@ squeak::prepare_trunk_build() {
 ################################################################################
 # Download image and extract it.
 # Globals:
-#   IMAGE_DOWNLOAD
+#   BASE_DOWNLOAD
 #   SMALLTALK_CI_CACHE
 #   SMALLTALK_CI_BUILD
 #   SMALLTALK_CI_IMAGE
@@ -96,7 +95,7 @@ squeak::prepare_trunk_build() {
 ################################################################################
 squeak::download_prepared_image() {
   local download_name=$1
-  local download_url="${IMAGE_DOWNLOAD}/${download_name}"
+  local download_url="${BASE_DOWNLOAD}/${download_name}"
   local target="${SMALLTALK_CI_CACHE}/${download_name}"
 
   if ! is_file "${target}"; then
