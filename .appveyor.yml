@@ -7,8 +7,14 @@ environment:
   matrix:
     - SMALLTALK: Squeak-trunk
     - SMALLTALK: Squeak-5.0
-    - SMALLTALK: Pharo-6.0
+    - SMALLTALK: Pharo-alpha
     - SMALLTALK: Pharo-5.0
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - SMALLTALK: Squeak-trunk
+    - SMALLTALK: Pharo-alpha
 
 platform:
   - x86
