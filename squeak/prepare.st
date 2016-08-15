@@ -1,3 +1,8 @@
+| monitor |
+monitor := [ [
+  FileStream stdout nextPutAll: '.'.
+  (Delay forMilliseconds: 5000) wait] repeat ] forkAt: 75.
+
 "# Install Metacello/FileTree ================================================="
 
 "Get the Metacello configuration (for Squeak users)"
@@ -36,6 +41,9 @@ Smalltalk at: #MCMcmUpdater ifPresent: [ :updater |
     ifFalse: [ (updater respondsTo: #updateFromDefaultRepository)
                 ifTrue: [ updater updateFromDefaultRepository ]] ]
     on: Warning do: [ :ex | ex resume: true ]].
+
+monitor terminate.
+monitor := nil.
 
 "Save and quit image"
 Smalltalk at: #WorldState ifPresent: [:global |
