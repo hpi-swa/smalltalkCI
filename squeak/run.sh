@@ -4,11 +4,6 @@
 ################################################################################
 
 readonly BASE_DOWNLOAD="https://dl.bintray.com/hpi-swa-lab/smalltalkCI"
-readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}"
-readonly TRUNK_IMAGE_DOWNLOAD="http://build.squeak.org/job/Trunk/default/\
-lastSuccessfulBuild/artifact/target/TrunkImage.zip"
-readonly TRUNK_SOURCES_DOWNLOAD="http://ftp.squeak.org/sources_files/\
-SqueakV50.sources.gz"
 readonly VM_DOWNLOAD="${BASE_DOWNLOAD}/vms"
 
 ################################################################################
@@ -44,20 +39,16 @@ squeak::prepare_build() {
 }
 
 squeak::prepare_trunk_build() {
-  local image_target="${SMALLTALK_CI_BUILD}/trunk.zip"
-  local sources_target="${SMALLTALK_CI_BUILD}/sources.gz"
+  local target="${SMALLTALK_CI_BUILD}/trunk.zip"
   local status=0
 
   travis_fold start download_image "Downloading ${config_smalltalk} image..."
     timer_start
 
-    download_file "${TRUNK_IMAGE_DOWNLOAD}" "${image_target}"
-    unzip -q "${image_target}" -d "${SMALLTALK_CI_BUILD}"
+    download_file "${BASE_DOWNLOAD}/Squeak-trunk.tar.gz" "${target}"
+    tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
     mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_BUILD}/TravisCI.image"
     mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_BUILD}/TravisCI.changes"
-
-    download_file "${TRUNK_SOURCES_DOWNLOAD}" "${sources_target}"
-    gunzip -c "${sources_target}" > "${SMALLTALK_CI_BUILD}/SqueakV50.sources"
 
     timer_finish
   travis_fold end download_image
