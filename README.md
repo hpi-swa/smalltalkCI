@@ -441,7 +441,9 @@ problem.
 - [@PolyMathOrg](https://github.com/PolyMathOrg):
     [PolyMath](https://github.com/PolyMathOrg/PolyMath).
 - [@SeasideSt](https://github.com/SeasideSt):
-    [Grease](https://github.com/SeasideSt/Grease).
+    [Grease](https://github.com/SeasideSt/Grease),
+    [Parasol](https://github.com/SeasideSt/Parasol),
+    [Seaside](https://github.com/SeasideSt/Seaside).
 - [@SergeStinckwich](https://github.com/SergeStinckwich):
     [PlayerST](https://github.com/SergeStinckwich/PlayerST).
 - [@theseion](https://github.com/theseion):
