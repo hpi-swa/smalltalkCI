@@ -27,7 +27,7 @@ way to load and test Smalltalk projects.
 - Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
 - Runs on Travis' [container-based infrastructure][cbi]
   ([*"Builds start in seconds"*][bsis])
-- Supports Linux and OS X and can be run locally for debug purposes
+- Supports Linux, macOS, and Windows and can be run locally (e.g. for debug purposes)
 - Exports test results in the JUnit XML format as part of the Travis build log
 - Supports coverage testing and publishes results to [coveralls.io][coveralls]
 
