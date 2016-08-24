@@ -20,6 +20,9 @@ squeak::prepare_build() {
       squeak::prepare_trunk_build
       return
       ;;
+    "Squeak-5.1"|"Squeak5.1")
+      download_name="Squeak-5.1.tar.gz"
+      ;;
     "Squeak-5.0"|"Squeak5.0")
       download_name="Squeak-5.0.tar.gz"
       ;;

@@ -69,10 +69,10 @@ they can take up a lot of space on your drive.*
 | Squeak          | Pharo             | GemStone             | Others          |
 | --------------- | ----------------- | -------------------- | --------------- |
 | `Squeak-trunk`  | `Pharo-alpha`     | `GemStone-3.3.x`     | `Moose-6.0`     |
-| `Squeak-5.0`    | `Pharo-stable`    | `GemStone-3.2.x`     |                 |
-| `Squeak-4.6`    | `Pharo-6.0`       | `GemStone-3.1.0.x`   |                 |
-| `Squeak-4.5`    | `Pharo-5.0`       | `Gemstone-2.4.x`     |                 |
-|                 | `Pharo-4.0`       |                      |                 |
+| `Squeak-5.1`    | `Pharo-stable`    | `GemStone-3.2.x`     |                 |
+| `Squeak-5.0`    | `Pharo-6.0`       | `GemStone-3.1.0.x`   |                 |
+| `Squeak-4.6`    | `Pharo-5.0`       | `Gemstone-2.4.x`     |                 |
+| `Squeak-4.5`    | `Pharo-4.0`       |                      |                 |
 |                 | `Pharo-3.0`       |                      |                 |
 |                 |                   |                      |                 |
 
@@ -113,6 +113,7 @@ os:
 # Select compatible Smalltalk image(s)
 smalltalk:
   - Squeak-trunk
+  - Squeak-5.1
   - Squeak-5.0
   - Squeak-4.6
   - Squeak-4.5
