@@ -171,7 +171,7 @@ smalltalk:
   - Pharo-stable
 
 # Add two **additional** build steps.
-# The build steps from above will be run as before with `.smalltalk.ston`.
+# The build steps from above will be run as before with `.smalltalk.ston` if it's available. If you don't want the default build step to execute, simply remove everything before the `matrix:`.
 # See https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix.
 # Loads `.bleedingEdge.ston ` only:
 matrix:
@@ -185,6 +185,49 @@ matrix:
   allow_failures:
     - smalltalk_config: .bleedingEdge.ston
 ```
+
+# A more complex use case is a build matrix for multiple Metacello versions and groups:
+matrix:
+  include:
+    # Squeak-trunk-> stable
+    - smalltalk: Squeak-trunk
+      smalltalk_config: .stable-default.ston
+      os: linux
+    # Squeak-5.1 -> stable
+    - smalltalk: Squeak-5.1
+      smalltalk_config: .stable-default.ston
+      os: linux
+    - smalltalk: Squeak-5.1
+      smalltalk_config: .stable-default.ston
+      os: osx
+    # Pharo-alpha -> bleedingEdge
+    - smalltalk: Pharo-alpha
+      smalltalk_config: .bleedingedge-corewithextras.ston
+      os: linux
+    # Pharo-5.0 -> stable
+    - smalltalk: Pharo-5.0
+      smalltalk_config: .stable-default.ston
+      os: linux
+    - smalltalk: Pharo-5.0
+      smalltalk_config: .stable-default.ston
+      os: osx
+
+# The configuration for `.bleedingedge-corewithextras.ston` may look like this:
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #configuration : 'Fuel',
+      #repository : 'http://smalltalkhub.com/mc/...',
+      #load : [ 'CoreWithExtras' ],
+      #platforms : [
+        #pharo ],
+      #version : #bleedingEdge
+    }
+  ],
+  #testing : {
+    #categories : [ 'MyTests*' ]
+  }
+}
 
 ### `appveyor.yml` Template
 
