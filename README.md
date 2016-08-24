@@ -185,7 +185,8 @@ matrix:
   allow_failures:
     - smalltalk_config: .bleedingEdge.ston```
 
-# A more complex use case is a build matrix for multiple Metacello versions and groups:
+### A more complex use case is a build matrix for multiple Metacello versions and groups:
+
 ```matrix:
   include:
     # Squeak-trunk-> stable
@@ -209,10 +210,10 @@ matrix:
       os: linux
     - smalltalk: Pharo-5.0
       smalltalk_config: .stable-default.ston
-      os: osx
-```
+      os: osx```
 
-# The configuration for `.bleedingedge-corewithextras.ston` may look like this:
+### The configuration for `.bleedingedge-corewithextras.ston` may look like this:
+
 ```SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
