@@ -187,8 +187,8 @@ matrix:
 ```
 
 #### A more complex use case is a build matrix for multiple Metacello versions and groups:
-
-```matrix:
+```yml
+matrix:
   include:
     # Squeak-trunk-> stable
     - smalltalk: Squeak-trunk
@@ -216,7 +216,8 @@ matrix:
 
 #### The configuration for `.bleedingedge-corewithextras.ston` may look like this:
 
-```SmalltalkCISpec {
+```javascript
+SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #configuration : 'Fuel',
@@ -230,7 +231,8 @@ matrix:
   #testing : {
     #categories : [ 'MyTests*' ]
   }
-}```
+}
+```
 
 ### `appveyor.yml` Template
 
