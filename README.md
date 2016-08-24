@@ -171,7 +171,7 @@ smalltalk:
   - Pharo-stable
 
 # Add two **additional** build steps.
-# The build steps from above will be run as before with `.smalltalk.ston` if it's available. If you don't want the default build step to execute, simply remove everything before the `matrix:`.
+# The build steps from above will be run as before with `.smalltalk.ston` (the build will fail if `.smalltalk.ston` is not available). If you don't want the default build step to execute, simply remove everything before the `matrix:`.
 # See https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix.
 # Loads `.bleedingEdge.ston ` only:
 matrix:
@@ -184,7 +184,7 @@ matrix:
       os: osx
   allow_failures:
     - smalltalk_config: .bleedingEdge.ston
-```
+
 
 # A more complex use case is a build matrix for multiple Metacello versions and groups:
 matrix:
@@ -227,7 +227,7 @@ SmalltalkCISpec {
   #testing : {
     #categories : [ 'MyTests*' ]
   }
-}
+}```
 
 ### `appveyor.yml` Template
 
