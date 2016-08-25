@@ -232,7 +232,8 @@ SmalltalkCISpec {
   #testing : {
     #categories : [ 'MyTests*' ]
   }
-}```
+}
+```
 </details>
 
 ### `appveyor.yml` Template
