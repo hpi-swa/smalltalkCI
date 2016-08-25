@@ -170,8 +170,7 @@ smalltalk:
   - Pharo-alpha
   - Pharo-stable
 
-<details>
-  <summary># Add two **additional** build steps</summary>
+# Add two **additional** build steps
 # The build steps from above will be run as before with `.smalltalk.ston` (the build will fail if `.smalltalk.ston` is not available). If you don't want the default build step to execute, simply remove everything before the `matrix:`.
 # See https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix.
 # Loads `.bleedingEdge.ston ` only:
@@ -184,22 +183,17 @@ matrix:
       smalltalk_config: .bleedingEdge.ston
       os: osx
   allow_failures:
-<<<<<<< HEAD
-    - smalltalk_config: .bleedingEdge.ston```
-</details>
-<details>
-  <summary>Build matrix for multiple Metacello versions and groups</summary>
-```matrix:
-||||||| merged common ancestors
-    - smalltalk_config: .bleedingEdge.ston```
-
-# A more complex use case is a build matrix for multiple Metacello versions and groups:
-```matrix:
-=======
     - smalltalk_config: .bleedingEdge.ston
 ```
 
-#### A more complex use case is a build matrix for multiple Metacello versions and groups:
+<details>
+  <summary>Build matrix for multiple Metacello versions and groups</summary>
+```yml
+matrix:
+    - smalltalk_config: .bleedingEdge.ston```
+
+<details>
+<summary>####Build matrix for multiple Metacello versions and groups</summary>
 ```yml
 matrix:
   include:
