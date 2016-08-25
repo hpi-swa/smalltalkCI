@@ -129,61 +129,10 @@ smalltalk:
   - GemStone-3.2.12
   - GemStone-3.1.0.6
 
-# Uncomment to enable dependency caching - especially useful for GemStone builds (3x faster)
+# Uncomment to enable caching (only useful for GemStone builds (3x faster))
 #cache:
 #  directories:
 #    - $SMALLTALK_CI_CACHE
-```
-
-### `.travis.yml` Template With Multiple Configurations
-
-```yml
-language: smalltalk
-sudo: false
-
-# Select operating system(s)
-os: linux
-
-# Select compatible Smalltalk image(s)
-smalltalk:
-  - Pharo-alpha
-  - Pharo-stable
-
-# Loads `.smalltalk.ston` (if it exists), `myconfig1.ston` and `myconfig2.ston`
-# **for each build step defined above**:
-smalltalk_config:
-  - myconfig1.ston
-  - myconfig2.ston
-```
-
-### `.travis.yml` Template With Matrix Configuration
-
-```yml
-language: smalltalk
-sudo: false
-
-# Select operating system(s)
-os: linux
-
-# Select compatible Smalltalk image(s)
-smalltalk:
-  - Pharo-alpha
-  - Pharo-stable
-
-# Add two **additional** build steps.
-# The build steps from above will be run as before with `.smalltalk.ston`.
-# See https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix.
-# Loads `.bleedingEdge.ston ` only:
-matrix:
-  include:
-    - smalltalk: Pharo-alpha
-      smalltalk_config: .bleedingEdge.ston
-      os: linux
-    - smalltalk: Pharo-alpha
-      smalltalk_config: .bleedingEdge.ston
-      os: osx
-  allow_failures:
-    - smalltalk_config: .bleedingEdge.ston
 ```
 
 ### `appveyor.yml` Template
@@ -217,6 +166,73 @@ build: false
 test_script:
   - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN"'
 ```
+
+### Advanced Templates
+
+<details>
+<summary>`.travis.yml` template with additional jobs</summary>
+
+It is possible to add additional jobs to the [build matrix][build_matrix] using
+the `smalltalk_config` key:
+
+```yml
+language: smalltalk
+sudo: false
+
+smalltalk:
+  - Squeak-5.1
+  - Pharo-6.0
+
+matrix:
+  include:
+    - smalltalk: Squeak-trunk
+      smalltalk_config: .bleedingEdge.ston
+    - smalltalk: Pharo-alpha
+      smalltalk_config: .bleedingEdge.ston
+  allow_failures: # Allow bleeding edge builds to fail
+    - smalltalk_config: .bleedingEdge.ston
+```
+
+Resulting build matrix:
+
+| Smalltalk      | Config               | OS    |
+| -------------- | -------------------- | ----- |
+| `Squeak-5.1`   | `.smalltalk.ston`    | Linux |
+| `Pharo-6.0`    | `.smalltalk.ston`    | Linux |
+| `Squeak-trunk` | `.bleedingEdge.ston` | Linux |
+| `Pharo-alpha`  | `.bleedingEdge.ston` | Linux |
+
+</details>
+
+<details>
+<summary>`.travis.yml` template with multiple smalltalkCI configurations</summary>
+
+The build matrix can be expanded with multiple smalltalkCI configuration files
+using the `smalltalk_config` key:
+
+```yml
+language: smalltalk
+sudo: false
+
+smalltalk:
+  - Squeak-trunk
+  - Pharo-alpha
+
+smalltalk_config:
+  - myConfigA.ston
+  - myConfigB.ston
+```
+
+Resulting build matrix:
+
+| Smalltalk      | Config           | OS    |
+| -------------- | ---------------- | ----- |
+| `Squeak-trunk` | `myConfigA.ston` | Linux |
+| `Squeak-trunk` | `myConfigB.ston` | Linux |
+| `Pharo-alpha`  | `myConfigA.ston` | Linux |
+| `Pharo-alpha`  | `myConfigB.ston` | Linux |
+
+</details>
 
 
 ## Further Configuration
@@ -473,6 +489,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [appveyor]: https://www.appveyor.com/
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
 [builderCI]: https://github.com/dalehenrich/builderCI
+[build_matrix]:https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 [ci_skip]: https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build
 [clone]: https://help.github.com/articles/cloning-a-repository/
