@@ -188,7 +188,22 @@ smalltalk_config:
   - .bleedingEdge.ston
 ```
 
-Resulting build matrix:
+The `.bleedingEdge.ston` configuration may look like this:
+
+```javascript
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      ...
+      #load : [ 'CoreWithExtras' ],
+      #version : #bleedingEdge
+    }
+  ],
+  ...
+}
+```
+
+#### Resulting build matrix
 
 | Smalltalk      | Config               | OS    |
 | -------------- | -------------------- | ----- |
@@ -225,7 +240,7 @@ matrix:
     - smalltalk_config: .bleedingEdge.ston
 ```
 
-Resulting build matrix:
+#### Resulting build matrix
 
 | Smalltalk      | Config               | OS    |
 | -------------- | -------------------- | ----- |
@@ -273,7 +288,7 @@ test_script:
   - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN $SMALLTALK_CONFIG"'
 ```
 
-Resulting build matrix:
+#### Resulting build matrix
 
 | Smalltalk      | Config               |
 | -------------- | -------------------- |
