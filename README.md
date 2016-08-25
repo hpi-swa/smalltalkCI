@@ -170,7 +170,8 @@ smalltalk:
   - Pharo-alpha
   - Pharo-stable
 
-# Add two **additional** build steps.
+<details>
+  <summary># Add two **additional** build steps</summary>
 # The build steps from above will be run as before with `.smalltalk.ston` (the build will fail if `.smalltalk.ston` is not available). If you don't want the default build step to execute, simply remove everything before the `matrix:`.
 # See https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix.
 # Loads `.bleedingEdge.ston ` only:
@@ -184,8 +185,9 @@ matrix:
       os: osx
   allow_failures:
     - smalltalk_config: .bleedingEdge.ston```
-
-# A more complex use case is a build matrix for multiple Metacello versions and groups:
+</details>
+<details>
+  <summary>Build matrix for multiple Metacello versions and groups</summary>
 ```matrix:
   include:
     # Squeak-trunk-> stable
@@ -228,7 +230,7 @@ matrix:
     #categories : [ 'MyTests*' ]
   }
 }```
-
+</details>
 ### `appveyor.yml` Template
 
 ```yml
@@ -260,7 +262,35 @@ build: false
 test_script:
   - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN"'
 ```
+<details>
+  <summary>Build matrix for multiple Metacello versions and groups</summary>
+environment:
+  CYG_ROOT: C:\cygwin
+  CYG_BASH: C:\cygwin\bin\bash
+  CYG_CACHE: C:\cygwin\var\cache\setup
+  CYG_EXE: C:\cygwin\setup-x86.exe
+  CYG_MIRROR: http://cygwin.mirror.constant.com
+  SCI_RUN: /cygdrive/c/SMALLTALKCI-master/run.sh
 
+  matrix:
+    - SMALLTALK: Squeak-trunk
+      SMALLTALK_CONFIG: .stable-default.ston
+    - SMALLTALK: Squeak-trunk
+      SMALLTALK_CONFIG: .stable-tests.ston
+
+platform:
+  - x86
+
+install:
+  - '%CYG_EXE% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip'
+  - ps: Start-FileDownload "https://github.com/hpi-swa/SMALLTALKCI/archive/master.zip" "C:\SMALLTALKCI.zip"
+  - 7z x C:\SMALLTALKCI.zip -oC:\ -y > NULL
+
+build: false
+
+test_script:
+  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN $SMALLTALK_CONFIG"'
+</details>
 
 ## Further Configuration
 
