@@ -187,13 +187,7 @@ matrix:
 ```
 
 <details>
-  <summary>Build matrix for multiple Metacello versions and groups</summary>
-```yml
-matrix:
-    - smalltalk_config: .bleedingEdge.ston```
-
-<details>
-<summary>####Build matrix for multiple Metacello versions and groups</summary>
+<summary>###Build matrix for multiple Metacello versions and groups</summary>
 ```yml
 matrix:
   include:
