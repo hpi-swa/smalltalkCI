@@ -184,11 +184,24 @@ matrix:
       smalltalk_config: .bleedingEdge.ston
       os: osx
   allow_failures:
+<<<<<<< HEAD
     - smalltalk_config: .bleedingEdge.ston```
 </details>
 <details>
   <summary>Build matrix for multiple Metacello versions and groups</summary>
 ```matrix:
+||||||| merged common ancestors
+    - smalltalk_config: .bleedingEdge.ston```
+
+# A more complex use case is a build matrix for multiple Metacello versions and groups:
+```matrix:
+=======
+    - smalltalk_config: .bleedingEdge.ston
+```
+
+#### A more complex use case is a build matrix for multiple Metacello versions and groups:
+```yml
+matrix:
   include:
     # Squeak-trunk-> stable
     - smalltalk: Squeak-trunk
@@ -214,8 +227,10 @@ matrix:
       os: osx
 ```
 
-# The configuration for `.bleedingedge-corewithextras.ston` may look like this:
-```SmalltalkCISpec {
+#### The configuration for `.bleedingedge-corewithextras.ston` may look like this:
+
+```javascript
+SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #configuration : 'Fuel',
@@ -231,6 +246,7 @@ matrix:
   }
 }```
 </details>
+
 ### `appveyor.yml` Template
 
 ```yml
@@ -262,8 +278,10 @@ build: false
 test_script:
   - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN"'
 ```
+
 <details>
   <summary>Build matrix for multiple Metacello versions and groups</summary>
+```yml
 environment:
   CYG_ROOT: C:\cygwin
   CYG_BASH: C:\cygwin\bin\bash
@@ -290,6 +308,7 @@ build: false
 
 test_script:
   - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN $SMALLTALK_CONFIG"'
+```
 </details>
 
 ## Further Configuration
