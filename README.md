@@ -170,14 +170,46 @@ test_script:
 ### Advanced Templates
 
 <details>
-<summary>`.travis.yml` template with additional jobs</summary>
+<summary>`.travis.yml` template with multiple smalltalkCI configurations</summary>
 
-It is possible to add additional jobs to the [build matrix][build_matrix] using
-the `smalltalk_config` key:
+The build matrix can be expanded with multiple smalltalkCI configuration files
+using the `smalltalk_config` key:
 
 ```yml
 language: smalltalk
 sudo: false
+
+smalltalk:
+  - Squeak-trunk
+  - Pharo-alpha
+
+smalltalk_config:
+  - .smalltalk.ston
+  - .bleedingEdge.ston
+```
+
+Resulting build matrix:
+
+| Smalltalk      | Config               | OS    |
+| -------------- | -------------------- | ----- |
+| `Squeak-trunk` | `.smalltalk.ston`    | Linux |
+| `Squeak-trunk` | `.bleedingEdge.ston` | Linux |
+| `Pharo-alpha`  | `.smalltalk.ston`    | Linux |
+| `Pharo-alpha`  | `.bleedingEdge.ston` | Linux |
+
+</details>
+
+<details>
+<summary>`.travis.yml` template with additional jobs</summary>
+
+It is possible to add additional jobs to the [build matrix][build_matrix_travis]
+using the `smalltalk_config` key:
+
+```yml
+language: smalltalk
+sudo: false
+
+os: osx
 
 smalltalk:
   - Squeak-5.1
@@ -197,40 +229,58 @@ Resulting build matrix:
 
 | Smalltalk      | Config               | OS    |
 | -------------- | -------------------- | ----- |
-| `Squeak-5.1`   | `.smalltalk.ston`    | Linux |
-| `Pharo-6.0`    | `.smalltalk.ston`    | Linux |
-| `Squeak-trunk` | `.bleedingEdge.ston` | Linux |
-| `Pharo-alpha`  | `.bleedingEdge.ston` | Linux |
+| `Squeak-5.1`   | `.smalltalk.ston`    | macOS |
+| `Pharo-6.0`    | `.smalltalk.ston`    | macOS |
+| `Squeak-trunk` | `.bleedingEdge.ston` | macOS |
+| `Pharo-alpha`  | `.bleedingEdge.ston` | macOS |
 
 </details>
 
 <details>
-<summary>`.travis.yml` template with multiple smalltalkCI configurations</summary>
+  <summary>`appveyor.yml` template with additional jobs</summary>
 
-The build matrix can be expanded with multiple smalltalkCI configuration files
-using the `smalltalk_config` key:
+It is possible to add additional jobs to the
+[build matrix][build_matrix_appveyor] using `environment.matrix` as follows:
 
 ```yml
-language: smalltalk
-sudo: false
+environment:
+  CYG_ROOT: C:\cygwin
+  CYG_BASH: C:\cygwin\bin\bash
+  CYG_CACHE: C:\cygwin\var\cache\setup
+  CYG_EXE: C:\cygwin\setup-x86.exe
+  CYG_MIRROR: http://cygwin.mirror.constant.com
+  SCI_RUN: /cygdrive/c/SMALLTALKCI-master/run.sh
 
-smalltalk:
-  - Squeak-trunk
-  - Pharo-alpha
+  matrix:
+    - SMALLTALK: Squeak-5.1
+    - SMALLTALK: Squeak-trunk
+      SMALLTALK_CONFIG: .bleedingEdge.ston
+    - SMALLTALK: Pharo-6.0
+    - SMALLTALK: Pharo-alpha
+      SMALLTALK_CONFIG: .bleedingEdge.ston
 
-smalltalk_config:
-  - myConfigA.ston
-  - myConfigB.ston
+platform:
+  - x86
+
+install:
+  - '%CYG_EXE% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip'
+  - ps: Start-FileDownload "https://github.com/hpi-swa/SMALLTALKCI/archive/master.zip" "C:\SMALLTALKCI.zip"
+  - 7z x C:\SMALLTALKCI.zip -oC:\ -y > NULL
+
+build: false
+
+test_script:
+  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN $SMALLTALK_CONFIG"'
 ```
 
 Resulting build matrix:
 
-| Smalltalk      | Config           | OS    |
-| -------------- | ---------------- | ----- |
-| `Squeak-trunk` | `myConfigA.ston` | Linux |
-| `Squeak-trunk` | `myConfigB.ston` | Linux |
-| `Pharo-alpha`  | `myConfigA.ston` | Linux |
-| `Pharo-alpha`  | `myConfigB.ston` | Linux |
+| Smalltalk      | Config               |
+| -------------- | -------------------- |
+| `Squeak-5.1`   | `.smalltalk.ston`    |
+| `Squeak-trunk` | `.bleedingEdge.ston` |
+| `Pharo-6.0`    | `.smalltalk.ston`    |
+| `Pharo-alpha`  | `.bleedingEdge.ston` |
 
 </details>
 
@@ -489,7 +539,8 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [appveyor]: https://www.appveyor.com/
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
 [builderCI]: https://github.com/dalehenrich/builderCI
-[build_matrix]:https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix
+[build_matrix_travis]: https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix
+[build_matrix_appveyor]: https://www.appveyor.com/docs/build-configuration/#build-matrix
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 [ci_skip]: https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build
 [clone]: https://help.github.com/articles/cloning-a-repository/
