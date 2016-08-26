@@ -7,6 +7,8 @@ Windows with built-in support for [Travis CI][travisCI] and
 It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy
 way to load and test Smalltalk projects.
 
+[![ESUG][esug_logo]][esug]
+[![13th Innovation Technology Awards][esug_ita16_b]][esug_ita16]
 
 ## Table Of Contents
 
@@ -561,6 +563,10 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [clone]: https://help.github.com/articles/cloning-a-repository/
 [coveralls]: https://coveralls.io/
 [download]: https://github.com/hpi-swa/smalltalkCI/archive/master.zip
+[esug]: http://www.esug.org/
+[esug_logo]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/logo.png
+[esug_ita16]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/2016_512x512.png
+[esug_ita16_b]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/2016_64x64.png
 [filetree]: https://github.com/dalehenrich/filetree
 [gofer]: http://www.lukas-renggli.ch/blog/gofer
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
