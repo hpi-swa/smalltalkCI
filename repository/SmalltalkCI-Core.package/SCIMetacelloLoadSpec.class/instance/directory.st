@@ -1,3 +1,3 @@
 accessing
 directory
-	^ directory
+	^ directory ifNil: [ directory := '' ]

@@ -3,6 +3,9 @@ testSimple
 	| smalltalkCI |
 	smalltalkCI := SmalltalkCI basicNew initialize.
 	smalltalkCI projectDirectory: '/dir/to/project'.
+	
+	self assert: '' equals: self spec directory.
+	self assert: #() equals: self spec load.
 
 	self spec
 		directory: 'foodir';
