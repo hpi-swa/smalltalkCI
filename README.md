@@ -37,7 +37,8 @@ way to load and test Smalltalk projects.
 <a name="how-to-travis"/>
 ## How To Enable Travis CI For Your Smalltalk Project
 
-1. Export your project in a [compatible format](#load-specs).
+1. Export your project in a [compatible format](#load-specs) (e.g.
+   [FileTree][filetree]).
 2. [Enable Travis CI for your repository][travisHowTo].
 3. Create a `.travis.yml` and specifiy the [Smalltalk image(s)](#images) you
    want your project to be tested against.
@@ -328,7 +329,8 @@ SmalltalkCISpec {
 
 <a name="load-specs"/>
 #### Project Loading Specifications
-smalltalkCI supports different mechanisms for loading Smalltalk projects.
+smalltalkCI supports different formats for loading Smalltalk projects and for
+each, there is a loading specification.
 One or more of those loading specifications have to be provided in the
 `#loading` list as part of a [`SmalltalkCISpec`](#SmalltalkCISpec).
 smalltalkCI will load all specifications that are compatible with the selected
