@@ -69,15 +69,15 @@ they can take up a lot of space on your drive.*
 <a name="images"/>
 ## List Of Supported Images
 
-| Squeak          | Pharo             | GemStone             | Others          |
-| --------------- | ----------------- | -------------------- | --------------- |
-| `Squeak-trunk`  | `Pharo-alpha`     | `GemStone-3.3.x`     | `Moose-trunk`   |
-| `Squeak-5.1`    | `Pharo-stable`    | `GemStone-3.2.x`     | `Moose-6.1`     |
-| `Squeak-5.0`    | `Pharo-6.0`       | `GemStone-3.1.0.x`   | `Moose-6.0`     |
-| `Squeak-4.6`    | `Pharo-5.0`       | `Gemstone-2.4.x`     |                 |
-| `Squeak-4.5`    | `Pharo-4.0`       |                      |                 |
-|                 | `Pharo-3.0`       |                      |                 |
-|                 |                   |                      |                 |
+| [Squeak][squeak] | [Pharo][pharo] | [GemStone][gemstone] | [Moose][moose] |
+| ---------------- | -------------- | -------------------- | -------------- |
+| `Squeak-trunk`   | `Pharo-alpha`  | `GemStone-3.3.x`     | `Moose-trunk`  |
+| `Squeak-5.1`     | `Pharo-stable` | `GemStone-3.2.x`     | `Moose-6.1`    |
+| `Squeak-5.0`     | `Pharo-6.0`    | `GemStone-3.1.0.x`   | `Moose-6.0`    |
+| `Squeak-4.6`     | `Pharo-5.0`    | `Gemstone-2.4.x`     |                |
+| `Squeak-4.5`     | `Pharo-4.0`    |                      |                |
+|                  | `Pharo-3.0`    |                      |                |
+|                  |                |                      |                |
 
 
 <a name="templates"/>
@@ -557,19 +557,20 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 
 [appveyor]: https://www.appveyor.com/
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
-[builderCI]: https://github.com/dalehenrich/builderCI
-[build_matrix_travis]: https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix
 [build_matrix_appveyor]: https://www.appveyor.com/docs/build-configuration/#build-matrix
+[build_matrix_travis]: https://docs.travis-ci.com/user/customizing-the-build/#Build-Matrix
+[builderCI]: https://github.com/dalehenrich/builderCI
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 [ci_skip]: https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build
 [clone]: https://help.github.com/articles/cloning-a-repository/
 [coveralls]: https://coveralls.io/
 [download]: https://github.com/hpi-swa/smalltalkCI/archive/master.zip
 [esug]: http://www.esug.org/
-[esug_logo]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/logo.png
 [esug_ita16]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/2016_512x512.png
 [esug_ita16_b]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/2016_64x64.png
+[esug_logo]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/logo.png
 [filetree]: https://github.com/dalehenrich/filetree
+[gemstone]: https://gemtalksystems.com/
 [gofer]: http://www.lukas-renggli.ch/blog/gofer
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
 [issues]: https://github.com/hpi-swa/smalltalkCI/issues
@@ -577,8 +578,11 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [mc_configuration]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-configuration
 [metacello]: https://github.com/dalehenrich/metacello-work
 [monticello]: http://www.wiresong.ca/monticello/
+[moose]: http://moosetechnology.org/
 [more_projects]: https://github.com/search?l=STON&q=SmalltalkCISpec&ref=advsearch&type=Code
+[pharo]: http://pharo.org/
 [pullRequests]: https://help.github.com/articles/using-pull-requests/
+[squeak]: http://squeak.org/
 [ston]: https://github.com/svenvc/ston/blob/master/ston-paper.md#smalltalk-object-notation-ston
 [templates]:https://github.com/hpi-swa/smalltalkCI/wiki#templates
 [travisCI]: http://travis-ci.org/
