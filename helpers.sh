@@ -238,14 +238,18 @@ resolve_path() {
 }
 
 return_vars() {
-  (IFS='|'; echo "$*")
+  (IFS="|"; echo "$*")
 }
 
 set_vars() {
   local variables=(${@:1:(($# - 1))})
   local values="${!#}"
 
-  IFS='|' read -r "${variables[@]}" <<< "${values}"
+  IFS="|" read -r "${variables[@]}" <<< "${values}"
+}
+
+to_lowercase() {
+  echo $1 | tr "[:upper:]" "[:lower:]"
 }
 
 

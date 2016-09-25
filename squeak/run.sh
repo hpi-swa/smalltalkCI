@@ -3,13 +3,7 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-readonly BASE_DOWNLOAD="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/\
-smalltalkci"
-readonly IMAGE_DOWNLOAD="${BASE_DOWNLOAD}"
-readonly TRUNK_IMAGE_DOWNLOAD="http://build.squeak.org/job/Trunk/default/\
-lastSuccessfulBuild/artifact/target/TrunkImage.zip"
-readonly TRUNK_SOURCES_DOWNLOAD="http://ftp.squeak.org/sources_files/\
-SqueakV50.sources.gz"
+readonly BASE_DOWNLOAD="https://dl.bintray.com/hpi-swa-lab/smalltalkCI"
 readonly VM_DOWNLOAD="${BASE_DOWNLOAD}/vms"
 
 ################################################################################
@@ -25,6 +19,9 @@ squeak::prepare_build() {
     "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk"|"Squeak-latest")
       squeak::prepare_trunk_build
       return
+      ;;
+    "Squeak-5.1"|"Squeak5.1")
+      download_name="Squeak-5.1.tar.gz"
       ;;
     "Squeak-5.0"|"Squeak5.0")
       download_name="Squeak-5.0.tar.gz"
@@ -45,20 +42,16 @@ squeak::prepare_build() {
 }
 
 squeak::prepare_trunk_build() {
-  local image_target="${SMALLTALK_CI_BUILD}/trunk.zip"
-  local sources_target="${SMALLTALK_CI_BUILD}/sources.gz"
+  local target="${SMALLTALK_CI_BUILD}/trunk.zip"
   local status=0
 
   travis_fold start download_image "Downloading ${config_smalltalk} image..."
     timer_start
 
-    download_file "${TRUNK_IMAGE_DOWNLOAD}" "${image_target}"
-    unzip -q "${image_target}" -d "${SMALLTALK_CI_BUILD}"
+    download_file "${BASE_DOWNLOAD}/Squeak-trunk.tar.gz" "${target}"
+    tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
     mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_BUILD}/TravisCI.image"
     mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_BUILD}/TravisCI.changes"
-
-    download_file "${TRUNK_SOURCES_DOWNLOAD}" "${sources_target}"
-    gunzip -c "${sources_target}" > "${SMALLTALK_CI_BUILD}/SqueakV50.sources"
 
     timer_finish
   travis_fold end download_image
@@ -87,7 +80,7 @@ squeak::prepare_trunk_build() {
 ################################################################################
 # Download image and extract it.
 # Globals:
-#   IMAGE_DOWNLOAD
+#   BASE_DOWNLOAD
 #   SMALLTALK_CI_CACHE
 #   SMALLTALK_CI_BUILD
 #   SMALLTALK_CI_IMAGE
@@ -96,11 +89,11 @@ squeak::prepare_trunk_build() {
 ################################################################################
 squeak::download_prepared_image() {
   local download_name=$1
-  local download_url="${IMAGE_DOWNLOAD}/${download_name}"
+  local download_url="${BASE_DOWNLOAD}/${download_name}"
   local target="${SMALLTALK_CI_CACHE}/${download_name}"
 
   if ! is_file "${target}"; then
-    travis_fold start download_image "Downloading '${download_name}'' testing image..."
+    travis_fold start download_image "Downloading '${download_name}' testing image..."
       timer_start
       download_file "${download_url}" "${target}"
       timer_finish

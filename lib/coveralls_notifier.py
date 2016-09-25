@@ -102,10 +102,9 @@ def main(directory):
     with open(coveralls_json, 'w') as f:
         f.write(json.dumps(data))
 
-    post_request = run_command('curl', '-F',
-                               'json_file=@%s' % coveralls_json,
-                               API_ENDPOINT)
-    print 'Coveralls: ' + json.loads(post_request)['message']
+    response = run_command('curl', '-F',
+                           'json_file=@%s' % coveralls_json, API_ENDPOINT)
+    print 'Coveralls:\n', response
 
 
 if __name__ == '__main__':
