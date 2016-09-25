@@ -1,3 +1,8 @@
 executing
 runTests
-	^ SCITestRunner runClasses: self classesToTest named: self suiteName
+	| runner |
+	runner := SCITestRunner
+		runClasses: self classesToTest
+		named: self suiteName.
+	self reportResults: runner.
+	^ runner isSuccessful

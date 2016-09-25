@@ -1,28 +1,16 @@
 {
 	"class" : {
-		"ansiBlue" : "fn 6/30/2016 09:26",
-		"ansiBold" : "fn 6/30/2016 10:24",
-		"ansiClear" : "fn 6/30/2016 09:26",
-		"ansiGray" : "fn 6/30/2016 09:26",
-		"ansiGreen" : "fn 6/30/2016 09:26",
-		"ansiRed" : "fn 6/30/2016 09:25",
-		"ansiReset" : "fn 6/30/2016 09:25",
-		"ansiYellow" : "fn 6/30/2016 09:26",
-		"ballot" : "fn 6/30/2016 10:00",
-		"checkMark" : "fn 6/30/2016 10:01",
-		"escape" : "fn 6/30/2016 09:24",
 		"isTestMethod:" : "fn 6/30/2016 11:58",
 		"runClasses:named:" : "fn 6/30/2016 11:52",
-		"runSuite:" : "fn 6/30/2016 11:52",
-		"separator" : "fn 6/30/2016 10:14",
-		"travisFold:startOrEnd:" : "fn 7/1/2016 09:41" },
+		"runSuite:" : "fn 6/30/2016 11:52" },
 	"instance" : {
 		"erroredTests" : "fn 7/1/2016 18:41",
 		"failedTests" : "fn 7/1/2016 18:41",
 		"initialize" : "fn 7/1/2016 18:32",
 		"initializeOn:" : "fn 6/30/2016 12:22",
+		"isSuccessful" : "fn 7/18/2016 09:26",
 		"results" : "fn 7/1/2016 18:03",
-		"run" : "fn 7/2/2016 17:19",
+		"run" : "fn 7/18/2016 09:27",
 		"runAll" : "fn 6/30/2016 12:00",
 		"runCase:" : "fn 7/1/2016 18:27",
 		"serializeError:of:" : "fn 6/30/2016 12:24",
@@ -32,4 +20,4 @@
 		"suite:" : "fn 6/30/2016 11:56",
 		"suiteTime" : "fn 6/30/2016 11:56",
 		"suiteTimeInSeconds" : "fn 6/30/2016 12:20",
-		"tearDown" : "fn 7/2/2016 17:19" } }
+		"tearDown" : "fn 7/18/2016 09:27" } }

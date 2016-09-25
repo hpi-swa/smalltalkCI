@@ -1,4 +1,4 @@
-as yet unclassified
+helpers
 stackTraceString: err of: aTestCase
 	^ String streamContents: [ :str |
 		| context |
