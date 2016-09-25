@@ -1,4 +1,4 @@
-helpers
+compatibility
 closeAndSaveImage
 	Smalltalk at: #WorldState ifPresent: [:global |
 		global addDeferredUIMessage: [

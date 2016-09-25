@@ -1,4 +1,4 @@
-helpers
+compatibility
 closeImageWithExitCode: exitCode
 	Smalltalk at: #WorldState ifPresent: [:global |
 		global addDeferredUIMessage: [
