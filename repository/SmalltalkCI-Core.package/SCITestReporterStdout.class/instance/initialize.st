@@ -1,4 +1,4 @@
 initialize-release
 initialize
 	super initialize.
-	stream := FileStream stdout
+	stream := SmalltalkCI platformClass stdout

@@ -1,5 +1,6 @@
-ansi
+travis
 travisFold: foldName startOrEnd: startOrEnd
-	| prefix |
+	| name prefix |
 	prefix := ''.
-	^ self ansiClear, 'travis_fold:', startOrEnd, ':', prefix, (foldName copyReplaceAll: '>>#' with: '_')
+	name := foldName copyReplaceAll: '>>#' with: '_'.
+	^ self ansiClear, 'travis_fold:', startOrEnd, ':', prefix, name.
