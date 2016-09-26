@@ -1,3 +1,3 @@
-as yet unclassified
+ansi
 ansiBold
 	^ self escape, '[1m'

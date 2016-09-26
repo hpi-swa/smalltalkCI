@@ -1,3 +1,3 @@
-as yet unclassified
+ansi
 ansiRed
 	^ self escape, '[31m'

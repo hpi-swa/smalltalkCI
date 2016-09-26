@@ -1,3 +1,3 @@
-as yet unclassified
+ansi
 ansiYellow
 	^ self escape, '[33m'

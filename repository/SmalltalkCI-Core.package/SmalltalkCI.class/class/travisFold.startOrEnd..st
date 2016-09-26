@@ -1,4 +1,4 @@
-as yet unclassified
+ansi
 travisFold: foldName startOrEnd: startOrEnd
 	| prefix |
 	prefix := ''.

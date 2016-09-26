@@ -1,3 +1,3 @@
-as yet unclassified
+ansi
 ansiGray
 	^ self escape, '[37m'

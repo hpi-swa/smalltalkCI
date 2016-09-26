@@ -1,4 +1,4 @@
-executing
+executing-deprecated
 test: aFilenameString projectDirectory: aDirectoryPathString
 	^ self platformClass basicNew
 		initialize;

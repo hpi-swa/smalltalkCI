@@ -1,3 +1,3 @@
 ansi
 setModeRed
-	self print: self class ansiRed
+	self print: SmalltalkCI ansiRed

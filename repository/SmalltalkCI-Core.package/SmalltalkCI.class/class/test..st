@@ -1,6 +1,3 @@
 executing
 test: aFilenameString
-	^ self platformClass basicNew
-		initialize;
-		readSTONSpec: aFilenameString;
-		test
+	^ self test: aFilenameString named: self defaultSuiteName

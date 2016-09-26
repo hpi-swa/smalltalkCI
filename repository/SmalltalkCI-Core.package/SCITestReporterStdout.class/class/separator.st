@@ -1,3 +1,3 @@
-as yet unclassified
+strings
 separator
 	^ String new: 80 withAll: $#

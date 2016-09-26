@@ -229,7 +229,7 @@ gemstone::load_project() {
           repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
           load: 'Core'.
         System commitTransaction.
-        (Smalltalk at: #SmalltalkCI) load: '${config_ston}'.
+        (Smalltalk at: #SmalltalkCI) load: '${config_ston}' env: '$(get_build_env)'.
       ].
 %
       logout
@@ -267,7 +267,7 @@ gemstone::test_project() {
       iferr 3 exit 1
       login
       run
-      (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
+      (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}' env: '$(get_build_env)'.
       System commitTransaction.
 %
       logout

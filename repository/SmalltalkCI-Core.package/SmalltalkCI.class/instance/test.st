@@ -1,14 +1,19 @@
 executing
 test
-	| successful |
+	| time successful message |
+	SmalltalkCI startTravisFold: 'test_project' title: 'Testing project...'.
+	
 	self prepareForTesting.
-	self isCoverageTestingEnabled
+	time := [ self isCoverageTestingEnabled
 		ifTrue: [
 			successful := self runTestsWithCoverage.
-			SmalltalkCI printToStdout: 'Testing stage (including coverage) completed' ]
+			message := 'Testing stage (including coverage) completed' ]
 		ifFalse: [
 			successful := self runTests.
-			SmalltalkCI printToStdout: 'Testing stage completed' ].
+			message := 'Testing stage completed' ] ] timeToRun.
+	
+	SmalltalkCI endTravisFold: 'test_project' message: message time: time.
+	
 	successful
 		ifTrue: [ SmalltalkCI platformClass closeImageWithExitCode: 0 ]
 		ifFalse: [

@@ -1,3 +1,3 @@
 ansi
 resetMode
-	self print: self class ansiReset
+	self print: SmalltalkCI ansiReset

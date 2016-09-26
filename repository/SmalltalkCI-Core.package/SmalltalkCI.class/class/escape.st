@@ -1,3 +1,3 @@
-as yet unclassified
+ansi
 escape
 	^ Character escape asString

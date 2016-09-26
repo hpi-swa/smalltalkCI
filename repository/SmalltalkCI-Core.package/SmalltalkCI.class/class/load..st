@@ -1,6 +1,3 @@
 executing
 load: aFilenameString
-	^ self platformClass basicNew
-		initialize;
-		readSTONSpec: aFilenameString;
-		load
+	^ self load: aFilenameString env: nil
