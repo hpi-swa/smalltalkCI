@@ -252,9 +252,12 @@ EOF
 #   config_ston
 # Globals:
 #   SMALLTALK_CI_HOME
+# Return:
+#   Build status (zero if successful)
 ################################################################################
 gemstone::test_project() {
   local status=0
+  local return_status=0
   travis_fold start test_server_project "Testing server project..."
     timer_start
 
@@ -291,7 +294,8 @@ EOF
       travis_fold end "test_${client_name}"
 
       if is_nonzero "${status}"; then
-        print_error_and_exit "Error while testing client project ${client_name}."
+        return_status="${status}"
+        print_error "Error while testing client project ${client_name}."
       fi
     done
     
@@ -302,6 +306,8 @@ EOF
     ${GS_HOME}/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
 
   travis_fold end stop_stone
+
+  return "${return_status}"
 }
 
 ################################################################################

@@ -291,6 +291,8 @@ EOL
 # Globals:
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
+# Return:
+#   Build status (zero if successful)
 ################################################################################
 squeak::test_project() {
   local status=0
@@ -305,9 +307,10 @@ EOL
     squeak::run_script "test.st" || status=$?
 
     printf "\n" # Squeak exit msg is missing a linebreak
-
     timer_finish
   travis_fold end test_project
+
+  return "${status}"
 }
 
 ################################################################################

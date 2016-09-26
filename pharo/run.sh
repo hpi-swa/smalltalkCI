@@ -250,6 +250,8 @@ pharo::load_project() {
 #   SMALLTALK_CI_HOME
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
+# Return:
+#   Build status (zero if successful)
 ################################################################################
 pharo::test_project() {
   local status=0
@@ -264,6 +266,8 @@ pharo::test_project() {
 
     timer_finish
   travis_fold end test_project
+
+  return "${status}"
 }
 
 ################################################################################
