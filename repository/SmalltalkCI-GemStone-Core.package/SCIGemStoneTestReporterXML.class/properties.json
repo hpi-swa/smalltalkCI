@@ -6,9 +6,9 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		 ],
-	"name" : "SmalltalkCIGemstone",
+		"projectDirectory" ],
+	"name" : "SCIGemStoneTestReporterXML",
 	"pools" : [
 		 ],
-	"super" : "SmalltalkCI",
+	"super" : "SCITestReporterXML",
 	"type" : "normal" }
