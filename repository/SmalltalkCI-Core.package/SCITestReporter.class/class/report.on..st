@@ -1,4 +1,4 @@
-as yet unclassified
+executing
 report: aSCITestRunner on: aStream
 	self
 		basicNew
