@@ -308,10 +308,6 @@ EOL
 
     timer_finish
   travis_fold end test_project
-
-  if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to test project." "${status}"
-  fi
 }
 
 ################################################################################

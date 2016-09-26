@@ -535,13 +535,11 @@ main() {
   validate_configuration
 
   prepare_folders
-  run "$@"
+  run "$@" || status=$?
 
   if is_travis_build; then
     report_coverage
   fi
-
-  print_results || status=$?
 
   if is_travis_build; then
     deploy "${status}"

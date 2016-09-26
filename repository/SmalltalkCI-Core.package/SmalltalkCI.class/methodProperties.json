@@ -39,6 +39,7 @@
 		"saveImage" : "fn 7/2/2016 17:21",
 		"slash" : "fn 4/14/2016 01:00",
 		"stdout" : "fn 6/24/2016 15:06",
+		"stepsToReproduceLocally" : "fn 9/26/2016 11:01",
 		"supportsCoverage" : "fn 4/19/2016 18:29",
 		"test:" : "fn 6/13/2016 11:31",
 		"test:named:" : "fn 6/13/2016 11:31",
@@ -63,6 +64,7 @@
 		"prepareCoverage" : "fn 5/19/2016 10:29",
 		"prepareForLoading" : "fn 6/14/2016 19:13",
 		"prepareForTesting" : "fn 6/14/2016 19:13",
+		"printStepsToReproduceLocally" : "fn 9/26/2016 11:01",
 		"projectDirectory" : "EstebanLorenzano 1/26/2016 16:20",
 		"projectDirectory:" : "fn 02/04/2016 15:47",
 		"readSTONSpec:" : "dkh 02/04/2016 12:46",
@@ -74,6 +76,6 @@
 		"spec:" : "fn 1/31/2016 18:59",
 		"suiteName" : "fn 4/14/2016 22:04",
 		"suiteName:" : "dkh 04/07/2016 15:27",
-		"test" : "fn 7/2/2016 17:21",
+		"test" : "fn 9/26/2016 11:00",
 		"testCI" : "fn 6/13/2016 14:31",
 		"writeCoverageReport:" : "fn 5/19/2016 10:20" } }

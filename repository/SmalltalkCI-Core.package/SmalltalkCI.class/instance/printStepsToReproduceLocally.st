@@ -1,0 +1,3 @@
+private
+printStepsToReproduceLocally
+	SmalltalkCI printToStdout: self class stepsToReproduceLocally

@@ -3,4 +3,4 @@ initialize
 	super initialize.
 	stdoutStream := FileStream stdout.
 	suiteTime := 0 asDuration.
-	results := OrderedDictionary new
+	results := Dictionary new
