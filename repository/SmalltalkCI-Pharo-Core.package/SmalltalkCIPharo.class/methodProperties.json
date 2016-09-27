@@ -6,6 +6,7 @@
 		"closeImageWithExitCode:" : "fn 7/2/2016 16:52",
 		"fileExists:" : "fn 4/14/2016 00:56",
 		"getAuthor" : "fn 6/13/2016 13:49",
+		"imagePath" : "fn 9/27/2016 20:13",
 		"isHeadless" : "fn 1/27/2016 17:04",
 		"isPlatformCompatible" : "fn 1/31/2016 17:57",
 		"methodReferenceFor:selector:" : "fn 4/14/2016 01:21",

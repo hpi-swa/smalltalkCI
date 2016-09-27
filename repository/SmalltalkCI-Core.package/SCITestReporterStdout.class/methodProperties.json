@@ -4,7 +4,7 @@
 		"checkMark" : "fn 7/2/2016 16:54",
 		"separator" : "fn 7/1/2016 16:28" },
 	"instance" : {
-		"initialize" : "fn 9/26/2016 21:09",
+		"initialize" : "fn 9/27/2016 17:40",
 		"printClassTitle:" : "fn 7/1/2016 17:28",
 		"printEnd" : "fn 9/27/2016 14:40",
 		"printError:" : "fn 7/1/2016 18:43",
@@ -23,5 +23,4 @@
 		"setModeBoldBlue" : "fn 9/26/2016 21:52",
 		"setModeGreen" : "fn 9/26/2016 16:13",
 		"setModeRed" : "fn 9/26/2016 16:13",
-		"setModeYellow" : "fn 9/26/2016 16:14",
-		"stdout:" : "fn 7/1/2016 16:28" } }
+		"setModeYellow" : "fn 9/26/2016 16:14" } }
