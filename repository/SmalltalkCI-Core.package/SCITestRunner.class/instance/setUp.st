@@ -1,6 +1,6 @@
 running
 setUp
-	Transcript cr; show: 'Running suite: ', suite name; cr.
+	SmalltalkCI printToStdout: 'Running suite: ', suite name.
 
 	"Initialize the test resources."
 	suite resources do: [ :each |
