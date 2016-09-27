@@ -4,4 +4,4 @@ printPass: aResult
 		setModeGreen;
 		print: ' ', self class checkMark;
 		resetMode;
-		print: ' ', (aResult testCase asString); cr
+		printTestTitle: aResult; cr

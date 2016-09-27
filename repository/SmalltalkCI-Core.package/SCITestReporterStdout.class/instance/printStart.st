@@ -1,6 +1,6 @@
 printing
 printStart
-	self cr; cr;
+	self cr;
 		setModeBoldBlue; print: self class separator; cr;
 		setModeBoldBlue; print: '# ', runner suite name; cr;
 		setModeBoldBlue; print: '# ', runner totalTests asString, ' Tests, ';
