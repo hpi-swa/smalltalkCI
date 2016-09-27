@@ -1,6 +1,6 @@
 printing
 printResults
-	runner results keysAndValuesDo: [ :class :results |
-		self printClassTitle: class.
-		results do: [ :result |
-			self printResult: result ] ]
+	runner passingTests > 0
+		ifTrue: [ self printPassingResults ].
+	runner isSuccessful
+		ifFalse: [ self printNotPassingResults ]

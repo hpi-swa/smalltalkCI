@@ -1,10 +1,12 @@
 printing
 printEnd
+	self setModeBold.
 	runner erroredTests > 0
-		ifTrue: [ self setModeBold; setModeRed ]
+		ifTrue: [ self setModeRed ]
 		ifFalse: [
 			runner failedTests > 0
-				ifTrue: [ self setModeBold; setModeYellow ]].
+				ifTrue: [ self setModeYellow ]
+				ifFalse: [ self setModeGreen ]].
 
 	self cr; cr;
 		print: '    Executed ', runner suite tests size asString, ' tests';

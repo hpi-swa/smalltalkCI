@@ -9,6 +9,7 @@
 		"initialize" : "fn 9/26/2016 11:14",
 		"initializeOn:" : "fn 9/26/2016 21:28",
 		"isSuccessful" : "fn 7/18/2016 09:26",
+		"passingTests" : "fn 9/27/2016 14:23",
 		"results" : "fn 7/1/2016 18:03",
 		"run" : "fn 7/18/2016 09:27",
 		"runAll" : "fn 6/30/2016 12:00",
@@ -20,4 +21,5 @@
 		"suite:" : "fn 6/30/2016 11:56",
 		"suiteTime" : "fn 6/30/2016 11:56",
 		"suiteTimeInSeconds" : "fn 6/30/2016 12:20",
-		"tearDown" : "fn 7/18/2016 09:27" } }
+		"tearDown" : "fn 7/18/2016 09:27",
+		"totalTests" : "fn 9/27/2016 14:07" } }
