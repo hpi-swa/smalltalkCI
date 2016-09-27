@@ -1,3 +1,3 @@
 helpers
 cr
-	stream cr
+	stream nextPut: Character cr
