@@ -1,3 +1,3 @@
 printing
 printTestTitle: aResult
-	self print: (aResult testCase asString), ' (', aResult testTime asString, 'ms)'; cr
+	self cr; print: (aResult testCase asString), ' (', aResult testTime asString, 'ms)'; cr
