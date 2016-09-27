@@ -1,5 +1,5 @@
 executing
 runTests
-	^ SCITestRunner
+	^ self class testRunnerClass
 		runClasses: self classesToTest
 		named: self suiteName
