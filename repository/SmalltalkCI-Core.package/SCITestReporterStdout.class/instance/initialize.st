@@ -1,3 +1,3 @@
 initialize-release
 initialize
-	stream := SmalltalkCI platformClass stdout
+	stream := SmalltalkCI stdout

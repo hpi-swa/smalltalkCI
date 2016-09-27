@@ -1,3 +1,3 @@
 helpers
 printToStdout: msg
-	self platformClass stdout nextPutAll: msg; cr; flush
+	self stdout nextPutAll: msg; cr; flush

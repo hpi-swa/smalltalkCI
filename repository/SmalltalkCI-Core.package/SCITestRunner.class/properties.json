@@ -7,7 +7,6 @@
 	"commentStamp" : "",
 	"instvars" : [
 		"suite",
-		"stdoutStream",
 		"suiteTime",
 		"results" ],
 	"name" : "SCITestRunner",
