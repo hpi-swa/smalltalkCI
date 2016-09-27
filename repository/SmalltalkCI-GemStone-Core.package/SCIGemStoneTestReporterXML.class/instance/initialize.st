@@ -1,3 +1,3 @@
 initialize-release
 initialize
-	stream := AnsiWriteStream
+	stream := AnsiWriteStream on: String new
