@@ -3,7 +3,7 @@ report: aSCITestRunner projectDirectory: projectDirectory
 	self
 		basicNew
 		runner: aSCITestRunner;
-		projectDirectory: projectDirectory
+		projectDirectory: projectDirectory;
 		initialize;
 		report;
 		writeToFile
