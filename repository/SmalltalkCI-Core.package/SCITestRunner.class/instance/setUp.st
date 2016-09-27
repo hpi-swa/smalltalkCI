@@ -5,4 +5,4 @@ setUp
 	"Initialize the test resources."
 	suite resources do: [ :each |
 		each isAvailable
-			ifFalse: [ each signalInitializationError ] ]
+			ifFalse: [ TestResult signalErrorWith: 'Resource ' , each name , ' could not be initialized' ] ]

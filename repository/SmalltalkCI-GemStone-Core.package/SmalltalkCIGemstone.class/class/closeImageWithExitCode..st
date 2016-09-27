@@ -1,3 +1,3 @@
 compatibility
 closeImageWithExitCode: exitCode
-	"Not yet implemented"
+	exitCode = 0 ifFalse: [ self error: 'Build failed' ]
