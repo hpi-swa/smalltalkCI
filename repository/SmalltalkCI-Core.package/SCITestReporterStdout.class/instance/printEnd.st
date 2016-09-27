@@ -1,6 +1,6 @@
 printing
 printEnd
-	self setModeBold.
+	self cr; cr; setModeBold.
 	runner erroredTests > 0
 		ifTrue: [ self setModeRed ]
 		ifFalse: [
@@ -8,10 +8,10 @@ printEnd
 				ifTrue: [ self setModeYellow ]
 				ifFalse: [ self setModeGreen ]].
 
-	self cr; cr;
+	self
 		print: '    Executed ', runner suite tests size asString, ' tests';
 		print: ', with ', runner failedTests asString, ' failures';
 		print: ', and ', runner erroredTests asString, ' errors';
 		print: ' in ', runner suiteTimeInSeconds asString, 's.';
-		cr; cr;
-		resetMode
+		resetMode;
+		cr; cr

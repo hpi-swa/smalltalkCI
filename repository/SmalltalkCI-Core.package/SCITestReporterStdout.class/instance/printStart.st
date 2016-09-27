@@ -7,5 +7,5 @@ printStart
 		print: '', runner failedTests asString, ' Failures, ';
 		print: '', runner erroredTests asString, ' Errors ';
 		print: 'in ', runner suiteTimeInSeconds asString, 's'; cr;
-		setModeBoldBlue; print: self class separator; cr;
+		setModeBoldBlue; print: self class separator; cr; cr;
 		resetMode
