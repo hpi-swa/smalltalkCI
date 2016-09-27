@@ -258,53 +258,37 @@ EOF
 gemstone::test_project() {
   local status=0
   local return_status=0
-  travis_fold start test_server_project "Testing server project..."
-    timer_start
 
-    travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
-      iferr 1 stk
-      iferr 2 stack
-      iferr 3 exit 1
-      login
-      run
-      (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}' env: '$(get_build_env)'.
+  travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
+    iferr 1 stk
+    iferr 2 stack
+    iferr 3 exit 1
+    login
+    run
+    (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}' env: '$(get_build_env)'.
 %
-      logout
-      exit 0
+    logout
+    exit 0
 EOF
-
-    timer_finish
-  travis_fold end test_server_project
 
   if is_nonzero "${status}"; then
     print_error_and_exit "Error while testing server project."
   fi
 
   if is_not_empty  "${DEVKIT_CLIENT_NAMES:-}"; then
-
     for client_name in "${DEVKIT_CLIENT_NAMES[@]}"
     do
-      travis_fold start "test_${client_name}" "Testing client project ${client_name}..."
-        timer_start
-    
-        travis_wait ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
-
-        timer_finish
-      travis_fold end "test_${client_name}"
+      travis_wait ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
 
       if is_nonzero "${status}"; then
         return_status="${status}"
         print_error "Error while testing client project ${client_name}."
       fi
     done
-    
   fi
 
-  travis_fold start stop_stone
-
-    ${GS_HOME}/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
-
-  travis_fold end stop_stone
+  print_info "Stopping stone..."
+  ${GS_HOME}/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
 
   return "${return_status}"
 }
