@@ -1,3 +1,0 @@
-compatibility
-closeAndSaveImage
-	self subclassResponsibility

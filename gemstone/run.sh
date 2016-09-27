@@ -268,7 +268,6 @@ gemstone::test_project() {
       login
       run
       (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}' env: '$(get_build_env)'.
-      System commitTransaction.
 %
       logout
       exit 0
