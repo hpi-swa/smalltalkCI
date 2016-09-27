@@ -1,5 +1,5 @@
 strings
 ballot
 	SmalltalkCI platformSymbol = #gemstone
-		ifTrue: [ ^ (Character value: 215) asString ].
+		ifTrue: [ ^ 'x' ].
 	^ (Character value: 10007) asString

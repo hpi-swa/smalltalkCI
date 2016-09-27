@@ -2,6 +2,6 @@ printing
 printPass: aResult
 	self
 		setModeGreen;
-		print: ' ', self class checkMark;
+		print: ' ', self class checkMark, ' ';
 		resetMode;
-		printTestTitle: aResult; cr
+		printTestTitle: aResult

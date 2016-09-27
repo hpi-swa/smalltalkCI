@@ -1,7 +1,7 @@
 {
 	"class" : {
-		"ballot" : "fn 9/27/2016 21:39",
-		"checkMark" : "fn 9/27/2016 21:38",
+		"ballot" : "fn 9/27/2016 21:45",
+		"checkMark" : "fn 9/27/2016 21:45",
 		"separator" : "fn 7/1/2016 16:28" },
 	"instance" : {
 		"initialize" : "fn 9/27/2016 20:37",
@@ -10,7 +10,7 @@
 		"printError:" : "fn 7/1/2016 18:43",
 		"printFailure:" : "fn 7/1/2016 18:43",
 		"printNotPassingResults" : "fn 9/27/2016 14:18",
-		"printPass:" : "fn 9/27/2016 21:23",
+		"printPass:" : "fn 9/27/2016 21:42",
 		"printPassingResults" : "fn 9/27/2016 14:39",
 		"printResults" : "fn 9/27/2016 14:13",
 		"printStart" : "fn 9/27/2016 21:21",
