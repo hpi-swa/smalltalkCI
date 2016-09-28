@@ -1,6 +1,7 @@
 travis
 travisFold: foldName startOrEnd: startOrEnd
-	| sanitizedFoldName foldPrefix |
+	| sanitizedFoldName foldPrefix end |
 	foldPrefix := ''.
 	sanitizedFoldName := foldName copyReplaceAll: '>>#' with: '_'.
-	^ self ansiClear, 'travis_fold:', startOrEnd, ':', foldPrefix, sanitizedFoldName.
+	end := Character cr asString, self ansiReset.
+	^ 'travis_fold:', startOrEnd, ':', foldPrefix, sanitizedFoldName, end.
