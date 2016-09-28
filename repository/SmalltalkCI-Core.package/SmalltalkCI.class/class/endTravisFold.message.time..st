@@ -1,4 +1,4 @@
 travis
 endTravisFold: foldName message: aMessage time: aTime
-	self printToStdout: ' > ', aMessage, ' in ', ((aTime / 1000.0) roundTo: 0.001) asString, 's.'.
+	self printToStdout: ' > ', aMessage, ' in ', (self stringFor: aTime maxDecimalPlaces: 3), 's.'.
 	self printTravisFold: foldName startOrEnd: 'end'

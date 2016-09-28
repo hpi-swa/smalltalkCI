@@ -12,6 +12,6 @@ printEnd
 		print: '    Executed ', runner suite tests size asString, ' tests';
 		print: ', with ', runner failedTests asString, ' failures';
 		print: ', and ', runner erroredTests asString, ' errors';
-		print: ' in ', runner suiteTimeInSeconds asString, 's.';
+		print: ' in '; printTotalTime; print: '.';
 		resetMode;
 		cr; cr
