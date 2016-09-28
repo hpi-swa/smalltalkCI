@@ -1,3 +1,3 @@
 running
 run
-	[ self setUp. suiteTime := [ self runAll ] timeToRun ] ensure: [ self tearDown ]
+	[ self setUp. suiteTime := SmalltalkCI timeToRun: [ self runAll ] ] ensure: [ self tearDown ]

@@ -61,6 +61,7 @@
 		"test:named:env:" : "fn 9/26/2016 17:25",
 		"test:projectDirectory:" : "fn 6/13/2016 11:31",
 		"testRunnerClass" : "fn 9/27/2016 15:14",
+		"timeToRun:" : "fn 9/28/2016 13:03",
 		"travisFold:startOrEnd:" : "fn 9/28/2016 07:53" },
 	"instance" : {
 		"classesToCover" : "fn 6/24/2016 14:49",
@@ -76,7 +77,7 @@
 		"finishUpAfterLoading" : "fn 6/14/2016 19:14",
 		"isCoverageTestingEnabled" : "fn 4/19/2016 18:30",
 		"linesForFile:" : "fn 4/14/2016 01:05",
-		"load" : "fn 9/26/2016 17:17",
+		"load" : "fn 9/28/2016 13:01",
 		"md5ForFile:" : "fn 4/14/2016 01:05",
 		"performMetacelloLoad:" : "fn 4/15/2016 10:47",
 		"prepareCoverage" : "fn 5/19/2016 10:29",
@@ -94,6 +95,6 @@
 		"spec:" : "fn 1/31/2016 18:59",
 		"suiteName" : "fn 4/14/2016 22:04",
 		"suiteName:" : "dkh 04/07/2016 15:27",
-		"test" : "fn 9/26/2016 17:53",
+		"test" : "fn 9/28/2016 13:02",
 		"testCI" : "fn 6/13/2016 14:31",
 		"writeCoverageReport:" : "fn 5/19/2016 10:20" } }

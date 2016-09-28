@@ -4,13 +4,14 @@ test
 	SmalltalkCI startTravisFold: 'test_project' title: 'Testing project...'.
 	
 	self prepareForTesting.
-	time := [ self isCoverageTestingEnabled
-		ifTrue: [
-			runner := self runTestsWithCoverage.
-			message := 'Testing stage (including coverage) completed' ]
-		ifFalse: [
-			runner := self runTests.
-			message := 'Testing stage completed' ] ] timeToRun.
+	time := SmalltalkCI timeToRun: [
+		self isCoverageTestingEnabled
+			ifTrue: [
+				runner := self runTestsWithCoverage.
+				message := 'Testing stage (including coverage) completed' ]
+			ifFalse: [
+				runner := self runTests.
+				message := 'Testing stage completed' ] ].
 	
 	SmalltalkCI endTravisFold: 'test_project' message: message time: time.
 	
