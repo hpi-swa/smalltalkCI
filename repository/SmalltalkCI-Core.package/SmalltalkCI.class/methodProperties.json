@@ -39,6 +39,7 @@
 		"loadCIFor:projectDirectory:" : "fn 6/13/2016 14:29",
 		"methodReferenceFor:selector:" : "fn 4/14/2016 01:19",
 		"new" : "fn 6/13/2016 15:14",
+		"newLine" : "fn 9/29/2016 16:34",
 		"packageNameForClass:" : "fn 4/19/2016 18:42",
 		"pathNameDelimiter" : "fn 6/24/2016 23:03",
 		"platformClass" : "fn 6/13/2016 09:18",
@@ -62,7 +63,7 @@
 		"test:projectDirectory:" : "fn 6/13/2016 11:31",
 		"testRunnerClass" : "fn 9/27/2016 15:14",
 		"timeToRun:" : "fn 9/28/2016 13:03",
-		"travisFold:startOrEnd:" : "fn 9/29/2016 16:12" },
+		"travisFold:startOrEnd:" : "fn 9/29/2016 16:34" },
 	"instance" : {
 		"classesToCover" : "fn 6/24/2016 14:49",
 		"classesToTest" : "fn 6/22/2016 13:26",

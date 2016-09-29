@@ -8,4 +8,4 @@ testReportSuccess
 	expectedTests := SmalltalkCITest methodDict keys select: [ :ea | ea beginsWith: 'test' ].
 	self assert: (result findString: 'MyRunnerName') > 0.
 	self assert: (result findString: 'Executed ', expectedTests size asString, ' tests') > 0.
-	self assert: (result endsWith: Character lf asString)
+	self assert: (result endsWith: SmalltalkCI platformClass newLine)
