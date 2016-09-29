@@ -1,10 +1,10 @@
 printing
 printStart
 	self
-		print: '<?xml version="1.0" encoding="UTF-8"?>'; lf;
+		print: '<?xml version="1.0" encoding="UTF-8"?>'; newLine;
 		print: '<testsuite name="', (self encode: runner suite name);
     		print: '" tests="', runner suite tests size asString;
     		print: '" failures="', runner failedTests asString;
     		print: '" errors="', runner erroredTests asString;
     		print: '" time="', (runner suiteTime / 1000.0) asString , '">';
-		lf.
+		newLine

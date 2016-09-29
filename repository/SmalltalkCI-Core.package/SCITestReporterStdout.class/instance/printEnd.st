@@ -1,6 +1,6 @@
 printing
 printEnd
-	self cr; cr; setModeBold.
+	self newLine; newLine; setModeBold.
 	runner erroredTests > 0
 		ifTrue: [ self setModeRed ]
 		ifFalse: [
@@ -14,4 +14,4 @@ printEnd
 		print: ', and ', runner erroredTests asString, ' errors';
 		print: ' in '; printTotalTime; print: '.';
 		resetMode;
-		cr; cr
+		newLine; newLine

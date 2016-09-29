@@ -8,6 +8,6 @@ printException: aType result: aResult
 		print: '" message="', (self encode: (error messageText ifNil: [ error description ])), '">'.
 	aResult testStack ifNotNil: [
 		self
-			lf; print: (self encode: aResult testStack);
+			newLine; print: (self encode: aResult testStack);
 			tab; tab ].
-	self print: '</', aType, '>'; lf
+	self print: '</', aType, '>'; newLine

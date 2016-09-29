@@ -2,5 +2,5 @@ printing
 printClassTitle: aClass
 	self
 		setModeBold;
-		cr; print: aClass asString; cr;
+		newLine; print: aClass asString; newLine;
 		resetMode
