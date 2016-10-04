@@ -10,5 +10,5 @@ stackTraceString: err of: aTestCase
 					pcRange := context debuggerMap rangeForPC: context pc contextIsActiveContext: false.
 					code := context method getSource asString copyFrom: pcRange first to: pcRange last.
 					str nextPutAll: ' ...', code ].
-			str newLine.
+			str cr.
 			context := context sender ] ] 
