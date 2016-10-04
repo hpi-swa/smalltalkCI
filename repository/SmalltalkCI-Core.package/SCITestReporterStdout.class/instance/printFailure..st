@@ -1,7 +1,7 @@
 printing
 printFailure: aResult
 	self
-		printTravisFold: aResult testCase asString startOrEnd: 'start';
+		printTravisFold: aResult testName startOrEnd: 'start';
 		setModeBold; setModeYellow;
 		print: ' ', self class ballot, ' ';
 		printTestTitle: aResult;

@@ -1,4 +1,6 @@
 printing
 printTestTitle: aResult
-	aResult testCase printOn: stream.
-	self print: ' (', (SmalltalkCI stringFor: aResult testTime maxDecimalPlaces: 0), 'ms)'; newLine
+	| time |
+	time := SmalltalkCI stringFor: aResult testTime maxDecimalPlaces: 0.
+	self print: aResult testName, ' (', time, 'ms)';
+		newLine
