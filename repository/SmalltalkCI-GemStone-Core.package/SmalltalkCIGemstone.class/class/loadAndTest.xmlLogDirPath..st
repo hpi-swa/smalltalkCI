@@ -1,3 +1,8 @@
-executing
+executing-deprecated
 loadAndTest: aFilenameString xmlLogDirPath: aString
-  ^ self loadAndTest: aFilenameString env: nil xmlLogDirPath: aString
+  ^ self basicNew
+    initialize;
+    xmlLogDirPath: aString;
+    readSTONSpec: aFilenameString;
+    load;
+    test

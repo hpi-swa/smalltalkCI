@@ -1,3 +1,7 @@
 executing
 loadAndTest: aFilenameString
-  ^ self loadAndTest: aFilenameString env: nil
+  ^ self
+	basicNew initialize;
+	readSTONSpec: aFilenameString;
+	load;
+	test
