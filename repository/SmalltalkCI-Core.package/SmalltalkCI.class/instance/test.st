@@ -1,6 +1,8 @@
 executing
 test
 	| time runner message |
+	self headfullBreakpoint.
+
 	SmalltalkCI startTravisFold: 'test_project' title: 'Testing project...'.
 	
 	self prepareForTesting.
@@ -17,12 +19,9 @@ test
 	
 	self reportResults: runner.
 	
-	SmalltalkCI platformClass isHeadless ifFalse: [ self halt ].
-	
 	runner isSuccessful
 		ifTrue: [ SmalltalkCI platformClass closeImageWithExitCode: 0 ]
 		ifFalse: [
 			self printStepsToReproduceLocally.
-			SmalltalkCI platformClass saveImage.
-			SmalltalkCI platformClass closeImageWithExitCode: 1 ]
+			self saveImageAndFail ]
 	
