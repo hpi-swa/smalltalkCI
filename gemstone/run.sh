@@ -265,7 +265,7 @@ gemstone::test_project() {
     iferr 3 exit 1
     login
     run
-    (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}' env: '$(get_build_env)'.
+    (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${config_smalltalk} Server (${STONE_NAME})' env: '$(get_build_env)'.
 %
     logout
     exit 0
