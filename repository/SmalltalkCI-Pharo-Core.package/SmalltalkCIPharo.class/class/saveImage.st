@@ -1,3 +1,3 @@
 compatibility
 saveImage
-	Smalltalk snapshot: true andQuit: false
+	^ Smalltalk snapshot: true andQuit: false

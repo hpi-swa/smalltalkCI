@@ -1,4 +1,3 @@
 helpers
 saveImageAndFail
-	SmalltalkCI platformClass saveImage.
-	SmalltalkCI platformClass closeImageWithExitCode: 1
+	self saveImageAndQuitWithExitCode: 1
