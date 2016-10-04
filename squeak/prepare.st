@@ -30,7 +30,7 @@ Installer gemsource
 (Smalltalk at: #Metacello) new
   baseline: 'Metacello';
   repository: 'github://dalehenrich/metacello-work:master/repository';
-  load."
+  load: #('Cypress')."
 
 "=============================================================================="
 
