@@ -1,8 +1,8 @@
 executing
-loadAndTest: aFilenameString env: buildEnvironment
-  BuildEnvironment := buildEnvironment.
+loadAndTest: aFilenameString produceXMLLog: produceXMLLog
   ^ self basicNew
     initialize;
     readSTONSpec: aFilenameString;
+    produceXMLLog: produceXMLLog
     load;
     test

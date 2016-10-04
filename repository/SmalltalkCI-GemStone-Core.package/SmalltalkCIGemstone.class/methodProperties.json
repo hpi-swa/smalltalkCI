@@ -9,8 +9,9 @@
 		"isHeadless" : "fn 1/27/2016 17:03",
 		"isPlatformCompatible" : "fn 1/31/2016 17:58",
 		"loadAndTest:" : "fn 10/4/2016 13:31",
-		"loadAndTest:env:" : "fn 10/4/2016 13:30",
+		"loadAndTest:env:" : "fn 10/4/2016 14:02",
 		"loadAndTest:env:xmlLogDirPath:" : "fn 10/4/2016 13:30",
+		"loadAndTest:produceXMLLog:" : "fn 10/4/2016 14:02",
 		"loadAndTest:xmlLogDirPath:" : "fn 10/4/2016 13:31",
 		"newLine" : "fn 9/29/2016 16:34",
 		"pathNameDelimiter" : "fn 6/24/2016 23:03",
@@ -21,7 +22,9 @@
 		"testRunnerClass" : "fn 9/27/2016 15:15" },
 	"instance" : {
 		"explicitTestKeys" : "fn 6/22/2016 13:06",
+		"initialize" : "fn 10/4/2016 14:00",
 		"performMetacelloLoad:" : "dkh 04/11/2016 09:56",
+		"produceXMLLog:" : "fn 10/4/2016 13:59",
 		"readSTONSpec:" : "fn 02/04/2016 15:45",
-		"reportResults:" : "fn 10/4/2016 13:28",
+		"reportResults:" : "fn 10/4/2016 14:04",
 		"xmlLogDirPath:" : "fn 10/4/2016 13:26" } }

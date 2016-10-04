@@ -6,6 +6,7 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
+		"produceXMLLog",
 		"xmlLogDirPath" ],
 	"name" : "SmalltalkCIGemstone",
 	"pools" : [
