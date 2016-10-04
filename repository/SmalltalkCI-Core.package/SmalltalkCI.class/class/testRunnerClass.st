@@ -1,3 +1,3 @@
 compatibility
 testRunnerClass
-	^ SCITestRunner
+	^ self platformClass testRunnerClass

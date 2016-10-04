@@ -9,6 +9,7 @@
 		"imagePath" : "fn 9/27/2016 20:13",
 		"isHeadless" : "fn 1/27/2016 17:04",
 		"isPlatformCompatible" : "fn 1/31/2016 17:57",
+		"methodDictOf:" : "fn 10/4/2016 17:25",
 		"methodReferenceFor:selector:" : "fn 4/14/2016 01:21",
 		"packageNameForClass:" : "fn 6/24/2016 15:01",
 		"pathNameDelimiter" : "fn 6/25/2016 00:21",
@@ -16,7 +17,8 @@
 		"saveImage" : "fn 10/4/2016 16:34",
 		"stdout" : "fn 9/27/2016 20:38",
 		"stringFor:maxDecimalPlaces:" : "fn 9/28/2016 11:48",
-		"supportsCoverage" : "fn 4/19/2016 18:31" },
+		"supportsCoverage" : "fn 4/19/2016 18:31",
+		"testRunnerClass" : "fn 10/4/2016 17:21" },
 	"instance" : {
 		"coverageWrappers" : "fn 5/19/2016 10:30",
 		"linesForFile:" : "fn 9/25/2016 19:56",
