@@ -12,4 +12,4 @@ printError: aResult
 		self
 			print: aResult testStack; newLine;
 			resetMode ].
-	self printTravisFold: aResult testCase asString startOrEnd: 'end'.
+	self printTravisFold: aResult testName startOrEnd: 'end'.

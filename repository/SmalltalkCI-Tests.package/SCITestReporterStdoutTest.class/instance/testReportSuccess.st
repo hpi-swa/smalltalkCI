@@ -2,7 +2,7 @@ testing
 testReportSuccess
 	| runner reporter stream result expectedTests |
 	runner := SmalltalkCI testRunnerClass runClasses: {SmalltalkCITest} named: 'MyRunnerName'.
-	stream := WriteStream on: ''.
+	stream := WriteStream on: (String new: 1000).
 	reporter := SCITestReporterStdout report: runner on: stream.
 	result := stream contents.
 	expectedTests := (SmalltalkCI methodDictOf: SmalltalkCITest) keys select: [ :ea | ea beginsWith: 'test' ].
