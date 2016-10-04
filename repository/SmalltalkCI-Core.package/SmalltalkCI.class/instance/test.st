@@ -17,6 +17,8 @@ test
 	
 	self reportResults: runner.
 	
+	SmalltalkCI platformClass isHeadless ifFalse: [ self halt ].
+	
 	runner isSuccessful
 		ifTrue: [ SmalltalkCI platformClass closeImageWithExitCode: 0 ]
 		ifFalse: [

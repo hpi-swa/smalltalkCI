@@ -2,6 +2,8 @@ executing
 load
 	| time |
 	SmalltalkCI startTravisFold: 'load_project' title: 'Loading project...'.
+
+	SmalltalkCI platformClass isHeadless ifFalse: [ self halt ].
 	
 	time := SmalltalkCI timeToRun: [[
 		self prepareForLoading.
