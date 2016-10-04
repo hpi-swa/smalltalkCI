@@ -1,7 +1,8 @@
 {
 	"class" : {
-		"report:projectDirectory:" : "fn 9/27/2016 16:02" },
+		"report:xmlLogDirPath:" : "fn 10/4/2016 13:27" },
 	"instance" : {
 		"initialize" : "fn 9/27/2016 15:35",
-		"projectDirectory:" : "fn 9/26/2016 21:40",
-		"writeToFile" : "fn 9/27/2016 15:41" } }
+		"writeToFile" : "fn 10/4/2016 13:45",
+		"xmlFilePath" : "fn 10/4/2016 13:47",
+		"xmlLogDirPath:" : "fn 10/4/2016 13:27" } }

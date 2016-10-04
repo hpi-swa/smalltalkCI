@@ -1,7 +1,6 @@
 initialize-release
 writeToFile
-	| path file |
-	path := projectDirectory, SmalltalkCIGemstone pathNameDelimiter, runner suite name , '.xml'.
-	file := BinaryOrTextFile openWrite: path.
+	| file |
+	file := BinaryOrTextFile openWrite: self xmlFilePath.
  	file nextPutAll: stream contents.
 	file close
