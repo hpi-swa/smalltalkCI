@@ -8,5 +8,4 @@ testReportSuccess
 	expectedTests := (SmalltalkCI methodDictOf: SmalltalkCITest) keys select: [ :ea | ea beginsWith: 'test' ].
 	expectedTestsString := 'Executed ', expectedTests size asString, ' tests'.
 	self assert: (result findString: 'MyRunnerName') > 0 description: 'MyRunnerName not found in "', result ,'".' .
-	self assert: (result findString: expectedTestsString) > 0 description: '"', expectedTestsString, '" not found in "', result ,'".' .
-	self assert: (result endsWith: SmalltalkCI platformClass newLine) description: 'Test result does not end with newLine.'
+	self assert: (result findString: expectedTestsString) > 0 description: '"', expectedTestsString, '" not found in "', result ,'".'
