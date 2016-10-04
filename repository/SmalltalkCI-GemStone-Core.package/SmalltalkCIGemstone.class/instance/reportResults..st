@@ -2,4 +2,4 @@ executing
 reportResults: aTestRunner
 	SCIGemStoneTestReporterStdout report: aTestRunner.
 	self produceXMLLog ifTrue: [
-		SCIGemStoneTestReporterXML report: aTestRunner xmlLogDirPath: self xmlLogDirPath ]
+		SCIGemStoneTestReporterXML report: aTestRunner xmlLogDirPath: xmlLogDirPath ]
