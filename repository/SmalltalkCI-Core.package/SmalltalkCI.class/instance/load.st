@@ -1,18 +1,12 @@
 executing
 load
-	| time |
 	self headfullBreakpoint.
 	
-	SmalltalkCI startTravisFold: 'load_project' title: 'Loading project...'.
-	
-	time := SmalltalkCI timeToRun: [[
+	SmalltalkCI travisFold: 'load_project' title: 'Loading project...' block: [ [
 		self prepareForLoading.
 		"Install all specs for the current platform"
 		self compatibleLoadSpecs 
 			do: [ :each | each loadProjectOn: self ]
-	] ensure: [ self finishUpAfterLoading ]].
-
-	SmalltalkCI endTravisFold: 'load_project' message: 'Loading stage completed' time: time.
+		] ensure: [ self finishUpAfterLoading ] ].
 	
 	self saveImageAndQuit
-	

@@ -1,0 +1,3 @@
+helpers
+quitImage
+	SmalltalkCI platformClass closeImageWithExitCode: 0

@@ -1,27 +1,18 @@
 executing
 test
-	| time runner message |
+	| runner |
 	self headfullBreakpoint.
 
-	SmalltalkCI startTravisFold: 'test_project' title: 'Testing project...'.
-	
-	self prepareForTesting.
-	time := SmalltalkCI timeToRun: [
+	SmalltalkCI travisFold: 'test_project' title: 'Testing project...' block: [
+		self prepareForTesting.
 		self isCoverageTestingEnabled
-			ifTrue: [
-				runner := self runTestsWithCoverage.
-				message := 'Testing stage (including coverage) completed' ]
-			ifFalse: [
-				runner := self runTests.
-				message := 'Testing stage completed' ] ].
-	
-	SmalltalkCI endTravisFold: 'test_project' message: message time: time.
+			ifTrue: [ runner := self runTestsWithCoverage ]
+			ifFalse: [ runner := self runTests ] ].
 	
 	self reportResults: runner.
 	
 	runner isSuccessful
-		ifTrue: [ SmalltalkCI platformClass closeImageWithExitCode: 0 ]
+		ifTrue: [ self quitImage ]
 		ifFalse: [
 			self printStepsToReproduceLocally.
 			self saveImageAndFail ]
-	
