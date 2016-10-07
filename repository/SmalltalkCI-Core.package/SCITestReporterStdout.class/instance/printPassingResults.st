@@ -1,7 +1,7 @@
 printing
 printPassingResults
 	| title |
-	self printTravisFold: 'passing_tests' startOrEnd: 'start'.
+	self printTravisFold: 'passing_tests' action: 'start'.
 	title := runner passingTests asString, ' passing Tests'.
 	self setModeBold; setModeGreen; print: title; newLine; resetMode.
 	
@@ -10,4 +10,4 @@ printPassingResults
 		passing ifNotEmpty: [
 			self printClassTitle: class.
 			passing do: [ :result | self printResult: result ] ] ]
-	] ensure: [ self printTravisFold: 'passing_tests' startOrEnd: 'end' ]
+	] ensure: [ self printTravisFold: 'passing_tests' action: 'end' ]

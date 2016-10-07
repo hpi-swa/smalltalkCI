@@ -3,7 +3,7 @@ test
 	| runner |
 	self headfullBreakpoint.
 
-	SmalltalkCI travisFold: 'test_project' title: 'Testing project...' block: [
+	SmalltalkCI stage: 'Testing project...' id: 'test_project' block: [
 		self prepareForTesting.
 		self isCoverageTestingEnabled
 			ifTrue: [ runner := self runTestsWithCoverage ]

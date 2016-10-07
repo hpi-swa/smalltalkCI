@@ -2,7 +2,7 @@ executing
 load
 	self headfullBreakpoint.
 	
-	SmalltalkCI travisFold: 'load_project' title: 'Loading project...' block: [ [
+	SmalltalkCI stage: 'Loading project...' id: 'load_project' block: [ [
 		self prepareForLoading.
 		"Install all specs for the current platform"
 		self compatibleLoadSpecs 

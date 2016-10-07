@@ -18,4 +18,5 @@
 		"testResolveAllWith" : "fn 6/22/2016 00:01",
 		"testResolveWith" : "fn 6/21/2016 23:53",
 		"testSuiteName" : "fn 4/14/2016 22:05",
-		"testTravisDetection" : "fn 9/27/2016 20:13" } }
+		"testTravisDetection" : "fn 9/27/2016 20:13",
+		"testTravisFold" : "fn 10/7/2016 21:50" } }
