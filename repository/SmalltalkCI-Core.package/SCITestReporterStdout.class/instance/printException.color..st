@@ -1,7 +1,7 @@
 printing
 printException: aResult color: aColor
 	self
-		printTravisFold: aResult testName action: 'start';
+		printTravisFold: aResult foldName action: 'start';
 		setModeBold;
 		print: aColor, ' ', self class ballot, ' ';
 		printTestTitle: aResult;
@@ -12,4 +12,4 @@ printException: aResult color: aColor
 		self newLine;
 			print: aResult testStack;
 			resetMode ].
-	self printTravisFold: aResult testName action: 'end'.
+	self printTravisFold: aResult foldName action: 'end'.
