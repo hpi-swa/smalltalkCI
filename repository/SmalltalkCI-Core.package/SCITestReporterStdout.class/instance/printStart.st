@@ -7,7 +7,7 @@ printStart
 	separator := String new: (textLength + 4) withAll: $#. "+ 4 for `#  #` (see below)"
 	self newLine;
 		setModeBoldBlue; print: separator; newLine;
-		setModeBoldBlue; print: '# ', (title padded: #right to: textLength with: Character space), ' #'; newLine;
-		setModeBoldBlue; print: '# ', (summary padded: #right to: textLength with: Character space), ' #'; newLine;
+		setModeBoldBlue; print: '# ', (self rightPad: title to: textLength), ' #'; newLine;
+		setModeBoldBlue; print: '# ', (self rightPad: summary to: textLength), ' #'; newLine;
 		setModeBoldBlue; print: separator; newLine; newLine;
 		resetMode
