@@ -1,3 +1,0 @@
-coverage
-writeCoverageReport: anArray
-	self subclassResponsibility

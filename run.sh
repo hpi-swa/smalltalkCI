@@ -533,13 +533,10 @@ main() {
   check_clean_up
   select_smalltalk
   validate_configuration
-
   prepare_folders
-  run "$@" || status=$?
+  export_coveralls_data
 
-  if is_travis_build; then
-    report_coverage
-  fi
+  run "$@" || status=$?
 
   if is_travis_build; then
     deploy "${status}"

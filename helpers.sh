@@ -78,11 +78,6 @@ print_help() {
 EOF
 }
 
-report_coverage() {
-  python "${SMALLTALK_CI_HOME}/lib/coveralls_notifier.py" \
-         "${SMALLTALK_CI_BUILD}"
-}
-
 is_empty() {
   local var=$1
 
@@ -222,6 +217,45 @@ set_vars() {
 
 to_lowercase() {
   echo $1 | tr "[:upper:]" "[:lower:]"
+}
+
+git_log() {
+  local format_value=$1
+  git --no-pager log -1 --pretty=format:"${format_value}"
+}
+
+export_coveralls_data() {
+  local service_name
+
+  if is_travis_build; then
+    service_name="travis-ci"
+  elif is_appveyor_build; then
+    service_name="appveyor"
+  fi
+
+  cat >"${SMALLTALK_CI_BUILD}/coveralls_data.json" <<EOL
+{
+  "git": {
+    "branch": "${TRAVIS_BRANCH:-${APPVEYOR_REPO_BRANCH:-}}",
+    "head": {
+      "author_email": "$(git_log "%ae")",
+      "author_name": "$(git_log "%aN")",
+      "committer_email": "$(git_log "%ce")",
+      "committer_name": "$(git_log "%cN")",
+      "id": "$(git_log "%H")",
+      "message": "$(git_log "%s")"
+    },
+    "remotes": [
+      {
+        "url": "https://github.com/${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-}}.git",
+        "name": "origin"
+      }
+    ]
+  },
+  "service_job_id": "${TRAVIS_JOB_ID:-${APPVEYOR_BUILD_ID:-}}",
+  "service_name": "${service_name}"
+}
+EOL
 }
 
 

@@ -1,0 +1,3 @@
+compatibility
+codeCoverageClass
+	^ self platformClass codeCoverageClass

@@ -9,4 +9,4 @@ load
 			do: [ :each | each loadProjectOn: self ]
 		] ensure: [ self finishUpAfterLoading ] ].
 	
-	self saveImageAndQuit
+	SmalltalkCI saveImageAndQuit

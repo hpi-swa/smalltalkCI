@@ -1,3 +1,0 @@
-helpers
-saveImageAndFail
-	self saveImageAndQuitWithExitCode: 1

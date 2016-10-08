@@ -1,3 +1,0 @@
-coverage
-coverageWrappers
-	self subclassResponsibility

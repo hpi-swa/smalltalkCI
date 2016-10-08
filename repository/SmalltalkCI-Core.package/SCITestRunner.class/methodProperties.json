@@ -21,5 +21,7 @@
 		"suite:" : "fn 6/30/2016 11:56",
 		"suiteTime" : "fn 6/30/2016 11:56",
 		"suiteTimeInSeconds" : "fn 6/30/2016 12:20",
+		"suiteTimeString" : "fn 10/8/2016 13:05",
+		"summary" : "fn 10/8/2016 13:14",
 		"tearDown" : "fn 9/27/2016 20:22",
 		"totalTests" : "fn 9/27/2016 14:07" } }

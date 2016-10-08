@@ -20,6 +20,18 @@ baseline: spec
           with: #('SmalltalkCI-Tests' 'SmalltalkCI-Excluded-Tests');
         yourself ].
   spec
+	for: #'squeakCommon'
+	do: [ 
+      spec 
+	  project: 'WebClient' with: [
+	    spec
+	      className: 'ConfigurationOfWebClient';
+		version: #stable;
+		repository: 'http://www.squeaksource.com/MetacelloRepository' ].
+	spec
+	  package: 'SmalltalkCI-Core' with: [ spec requires: #('WebClient') ];
+        yourself ].
+  spec
     for: #'squeak'
     do: [ 
       spec

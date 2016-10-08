@@ -1,3 +1,0 @@
-coverage
-coverageFilename
-	^ 'coverage.json'

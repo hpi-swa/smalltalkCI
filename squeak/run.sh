@@ -269,7 +269,6 @@ squeak::load_project() {
 EOL
 
   squeak::run_script "load.st" || status=$?
-  printf "\n" # Squeak exit msg is missing a linebreak
 
   if is_nonzero "${status}"; then
     print_error_and_exit "Failed to load project." "${status}"
