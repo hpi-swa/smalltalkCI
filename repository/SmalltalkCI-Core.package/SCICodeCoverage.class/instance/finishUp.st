@@ -15,4 +15,4 @@ finishUp
 			sourceFiles add: (self coverageDictFor: wrapper in: directory) ] ].
 	
 	coverallsData at: 'source_files' put: sourceFiles asArray.
-	self uploadResults
+	self exportResults

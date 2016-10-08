@@ -3,6 +3,8 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
+COVERALLS_API='https://coveralls.io/api/v1/jobs'
+
 ANSI_BOLD="\033[1m"
 ANSI_RED="\033[31m"
 ANSI_GREEN="\033[32m"
@@ -258,6 +260,16 @@ export_coveralls_data() {
 EOL
 }
 
+upload_coverage_results() {
+  local coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"
+
+  if is_file "${coverage_results}"; then
+    travis_fold start coveralls "Uploading coverage results to Coveralls..."
+    curl -F json_file="@${coverage_results}" "${COVERALLS_API}"
+    travis_fold end coveralls
+  fi
+}
+
 
 ################################################################################
 # Travis-related helper functions (based on https://git.io/vzcTj).
@@ -272,7 +284,7 @@ timer_start() {
 }
 
 timer_finish() {
-  timer_end_time=$(timer_nanoseconds)
+  local timer_end_time=$(timer_nanoseconds)
   local duration=$(($timer_end_time-$timer_start_time))
   if is_travis_build; then
     echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"

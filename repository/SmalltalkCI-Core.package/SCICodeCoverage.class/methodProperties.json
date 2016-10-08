@@ -2,6 +2,7 @@
 	"class" : {
 		"coverallsAPI" : "fn 10/8/2016 16:27",
 		"coverallsDataFilename" : "fn 10/8/2016 15:27",
+		"coverallsResultFilename" : "fn 10/8/2016 17:50",
 		"methodReferenceFor:selector:" : "fn 10/8/2016 15:10",
 		"packageNameForClass:" : "fn 10/8/2016 15:11",
 		"run:cover:spec:in:" : "fn 10/8/2016 15:52" },
@@ -11,8 +12,9 @@
 		"coverageWrappers:" : "fn 10/8/2016 16:48",
 		"coverageWrappersFor:" : "fn 10/8/2016 15:04",
 		"coverallsData:" : "fn 10/8/2016 16:48",
+		"exportResults" : "fn 10/8/2016 17:50",
 		"fileNameFor:in:" : "fn 10/8/2016 16:25",
-		"finishUp" : "fn 10/8/2016 16:26",
+		"finishUp" : "fn 10/8/2016 17:48",
 		"initialize" : "fn 10/8/2016 15:38",
 		"installCoverageWrappersFor:" : "fn 10/8/2016 16:24",
 		"linesForFile:" : "fn 10/8/2016 14:52",
@@ -20,5 +22,4 @@
 		"projectDirectory:" : "fn 10/8/2016 16:48",
 		"readCoverallsData" : "fn 10/8/2016 15:26",
 		"run:cover:spec:in:" : "fn 10/8/2016 15:52",
-		"spec:" : "fn 10/8/2016 16:48",
-		"uploadResults" : "fn 10/8/2016 17:24" } }
+		"spec:" : "fn 10/8/2016 16:48" } }

@@ -538,6 +538,10 @@ main() {
 
   run "$@" || status=$?
 
+  if is_travis_build || is_appveyor_build; then
+    upload_coverage_results
+  fi
+
   if is_travis_build; then
     deploy "${status}"
   fi
