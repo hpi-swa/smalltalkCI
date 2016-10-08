@@ -287,8 +287,9 @@ EOF
     done
   fi
 
-  print_info "Stopping stone..."
+  travis_fold start stop_stone "Stopping stone..."
   ${GS_HOME}/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
+  travis_fold end stop_stone
 
   return "${return_status}"
 }
