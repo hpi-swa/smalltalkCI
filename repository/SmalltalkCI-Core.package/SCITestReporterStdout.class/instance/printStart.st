@@ -1,13 +1,13 @@
 printing
 printStart
-	| title summary separatorLength separator |
+	| title summary textLength separator |
 	title := runner suite name.
 	summary := runner summary.
-	separatorLength := (title size max: summary size) + 4. "4 for `#  #` (see below)"
-	separator := String new: separatorLength withAll: $#.
+	textLength := (title size max: summary size).
+	separator := String new: (textLength + 4) withAll: $#. "+ 4 for `#  #` (see below)"
 	self newLine;
 		setModeBoldBlue; print: separator; newLine;
-		setModeBoldBlue; print: '# ', title, ' #'; newLine;
-		setModeBoldBlue; print: '# ', summary, ' #'; newLine;
+		setModeBoldBlue; print: '# ', (title padded: #right to: textLength with: Character space), ' #'; newLine;
+		setModeBoldBlue; print: '# ', (summary padded: #right to: textLength with: Character space), ' #'; newLine;
 		setModeBoldBlue; print: separator; newLine; newLine;
 		resetMode

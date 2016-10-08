@@ -264,9 +264,8 @@ upload_coverage_results() {
   local coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"
 
   if is_file "${coverage_results}"; then
-    travis_fold start coveralls "Uploading coverage results to Coveralls..."
-    curl -F json_file="@${coverage_results}" "${COVERALLS_API}"
-    travis_fold end coveralls
+    print_info "Uploading coverage results to Coveralls..."
+    curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" > /dev/null
   fi
 }
 

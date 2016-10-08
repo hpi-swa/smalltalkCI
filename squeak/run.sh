@@ -295,7 +295,7 @@ squeak::test_project() {
 EOL
 
   squeak::run_script "test.st" || status=$?
-  printf "\n" # Squeak exit msg is missing a linebreak
+  printf "\n\n"
   return "${status}"
 }
 
