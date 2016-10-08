@@ -223,7 +223,9 @@ to_lowercase() {
 
 git_log() {
   local format_value=$1
-  git --no-pager log -1 --pretty=format:"${format_value}"
+  local output
+  output=$(git --no-pager log -1 --pretty=format:"${format_value}")
+  echo "${output/\"/\\\"}" # Escape double quotes
 }
 
 export_coveralls_data() {
