@@ -1,3 +1,0 @@
-coverage
-packageNameForClass: aClass
-	self subclassResponsibility

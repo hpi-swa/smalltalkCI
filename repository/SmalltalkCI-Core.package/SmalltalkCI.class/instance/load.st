@@ -1,8 +1,12 @@
 executing
 load
-	[ self prepareForLoading.
-	"Install all specs for the current platform"
-	self compatibleLoadSpecs 
-		do: [ :each | each loadProjectOn: self ]
-	] ensure: [ self finishUpAfterLoading ].
-	SmalltalkCI printToStdout: 'Loading stage completed'
+	self headfullBreakpoint.
+	
+	SmalltalkCI stage: 'Loading project...' id: 'load_project' block: [ [
+		self prepareForLoading.
+		"Install all specs for the current platform"
+		self compatibleLoadSpecs 
+			do: [ :each | each loadProjectOn: self ]
+		] ensure: [ self finishUpAfterLoading ] ].
+	
+	SmalltalkCI saveImageAndQuit

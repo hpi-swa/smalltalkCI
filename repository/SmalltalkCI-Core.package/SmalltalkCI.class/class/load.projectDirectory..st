@@ -1,4 +1,4 @@
-executing
+executing-deprecated
 load: aFilenameString projectDirectory: aDirectoryPathString
 	^ self platformClass basicNew
 		initialize;

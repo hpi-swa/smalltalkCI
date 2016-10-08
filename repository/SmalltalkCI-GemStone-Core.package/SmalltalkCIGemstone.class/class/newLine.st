@@ -1,0 +1,3 @@
+compatibility
+newLine
+	^ String crlf

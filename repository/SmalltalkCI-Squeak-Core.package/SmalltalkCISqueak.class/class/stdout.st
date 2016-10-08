@@ -1,0 +1,3 @@
+compatibility
+stdout
+	^ FileStream stdout

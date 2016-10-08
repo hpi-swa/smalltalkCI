@@ -1,3 +1,5 @@
 executing
 runTests
-	self subclassResponsibility
+	^ self class testRunnerClass
+		runClasses: self classesToTest
+		named: self suiteName

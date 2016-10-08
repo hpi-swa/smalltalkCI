@@ -1,4 +1,4 @@
 reporting
 reportImage
-	FileStream stdout cr; cr.
-	SystemReporter new reportImage: FileStream stdout
+	SmalltalkCI stdout cr; cr.
+	SystemReporter new reportImage: SmalltalkCI stdout

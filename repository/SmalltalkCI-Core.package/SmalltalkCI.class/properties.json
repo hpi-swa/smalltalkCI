@@ -1,7 +1,8 @@
 {
 	"category" : "SmalltalkCI-Core",
 	"classinstvars" : [
-		"PlatformClass" ],
+		"PlatformClass",
+		"BuildEnvironment" ],
 	"classvars" : [
 		 ],
 	"commentStamp" : "",

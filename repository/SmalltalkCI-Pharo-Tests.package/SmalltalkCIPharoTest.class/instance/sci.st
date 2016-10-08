@@ -1,3 +1,0 @@
-accessing
-sci
-	^ sci

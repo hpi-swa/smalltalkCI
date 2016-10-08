@@ -259,24 +259,16 @@ squeak::run_script() {
 squeak::load_project() {
   local status=0
 
-  travis_fold start load_project "Loading project..."
-    timer_start
-
-    cat >"${SMALLTALK_CI_BUILD}/load.st" <<EOL
+  cat >"${SMALLTALK_CI_BUILD}/load.st" <<EOL
   [ Metacello new
     baseline: 'SmalltalkCI';
     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
     onConflict: [:ex | ex pass];
     load ] on: Warning do: [:w | w resume ].
-  SmalltalkCI load: '$(resolve_path "${config_ston}")'
+  SmalltalkCI load: '$(resolve_path "${config_ston}")' env: '$(get_build_env)'
 EOL
 
-    squeak::run_script "load.st" || status=$?
-
-    printf "\n" # Squeak exit msg is missing a linebreak
-
-    timer_finish
-  travis_fold end load_project
+  squeak::run_script "load.st" || status=$?
 
   if is_nonzero "${status}"; then
     print_error_and_exit "Failed to load project." "${status}"
@@ -291,27 +283,20 @@ EOL
 # Globals:
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
+# Return:
+#   Build status (zero if successful)
 ################################################################################
 squeak::test_project() {
   local status=0
+  local build_name=""
 
-  travis_fold start test_project "Testing project..."
-    timer_start
-
-    cat >"${SMALLTALK_CI_BUILD}/test.st" <<EOL
-  SmalltalkCI test: '$(resolve_path "${config_ston}")'
+  cat >"${SMALLTALK_CI_BUILD}/test.st" <<EOL
+  SmalltalkCI test: '$(resolve_path "${config_ston}")' named: '$(get_build_name)' env: '$(get_build_env)'
 EOL
 
-    squeak::run_script "test.st" || status=$?
-
-    printf "\n" # Squeak exit msg is missing a linebreak
-
-    timer_finish
-  travis_fold end test_project
-
-  if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to test project." "${status}"
-  fi
+  squeak::run_script "test.st" || status=$?
+  printf "\n\n"
+  return "${status}"
 }
 
 ################################################################################

@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Squeak-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCISqueakCodeCoverage",
+	"pools" : [
+		 ],
+	"super" : "SCICodeCoverage",
+	"type" : "normal" }

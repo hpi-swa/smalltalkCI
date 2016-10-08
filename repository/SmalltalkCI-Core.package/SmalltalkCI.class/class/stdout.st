@@ -1,3 +1,3 @@
 helpers
 stdout
-	^ FileStream stdout
+	^ self platformClass stdout

@@ -1,3 +1,5 @@
 accessing
 isCoverageTestingEnabled
-	^ self class supportsCoverage and: [ self spec testing includesKey: #coverage ]
+	^ SmalltalkCI platformSymbol ~= #gemstone and:
+		[ (SmalltalkCI isTravisBuild or: [ SmalltalkCI isAppVeyorBuild ]) and:
+			[ self spec testing includesKey: #coverage ] ]

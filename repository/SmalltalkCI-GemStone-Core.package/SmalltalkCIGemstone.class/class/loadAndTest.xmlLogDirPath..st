@@ -1,4 +1,4 @@
-executing
+executing-deprecated
 loadAndTest: aFilenameString xmlLogDirPath: aString
   ^ self basicNew
     initialize;

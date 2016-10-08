@@ -229,7 +229,7 @@ gemstone::load_project() {
           repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
           load: 'Core'.
         System commitTransaction.
-        (Smalltalk at: #SmalltalkCI) load: '${config_ston}'.
+        (Smalltalk at: #SmalltalkCI) load: '${config_ston}' env: '$(get_build_env)'.
       ].
 %
       logout
@@ -252,56 +252,46 @@ EOF
 #   config_ston
 # Globals:
 #   SMALLTALK_CI_HOME
+# Return:
+#   Build status (zero if successful)
 ################################################################################
 gemstone::test_project() {
   local status=0
-  travis_fold start test_server_project "Testing server project..."
-    timer_start
+  local return_status=0
 
-    travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
-      iferr 1 stk
-      iferr 2 stack
-      iferr 3 exit 1
-      login
-      run
-      (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
-      System commitTransaction.
+  travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
+    iferr 1 stk
+    iferr 2 stack
+    iferr 3 exit 1
+    login
+    run
+    (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${config_smalltalk} Server (${STONE_NAME})' env: '$(get_build_env)'.
 %
-      logout
-      exit 0
+    logout
+    exit 0
 EOF
-
-    timer_finish
-  travis_fold end test_server_project
 
   if is_nonzero "${status}"; then
     print_error_and_exit "Error while testing server project."
   fi
 
   if is_not_empty  "${DEVKIT_CLIENT_NAMES:-}"; then
-
     for client_name in "${DEVKIT_CLIENT_NAMES[@]}"
     do
-      travis_fold start "test_${client_name}" "Testing client project ${client_name}..."
-        timer_start
-    
-        travis_wait ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
-
-        timer_finish
-      travis_fold end "test_${client_name}"
+      travis_wait ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
 
       if is_nonzero "${status}"; then
-        print_error_and_exit "Error while testing client project ${client_name}."
+        return_status="${status}"
+        print_error "Error while testing client project ${client_name}."
       fi
     done
-    
   fi
 
-  travis_fold start stop_stone
-
-    ${GS_HOME}/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
-
+  travis_fold start stop_stone "Stopping stone..."
+  ${GS_HOME}/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
   travis_fold end stop_stone
+
+  return "${return_status}"
 }
 
 ################################################################################

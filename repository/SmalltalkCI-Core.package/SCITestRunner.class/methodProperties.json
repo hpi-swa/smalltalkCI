@@ -1,0 +1,27 @@
+{
+	"class" : {
+		"isTestMethod:" : "fn 6/30/2016 11:58",
+		"runClasses:named:" : "fn 6/30/2016 11:52",
+		"runSuite:" : "fn 6/30/2016 11:52" },
+	"instance" : {
+		"erroredTests" : "fn 7/1/2016 18:41",
+		"failedTests" : "fn 7/1/2016 18:41",
+		"initialize" : "fn 9/27/2016 20:33",
+		"initializeOn:" : "fn 9/26/2016 21:28",
+		"isSuccessful" : "fn 7/18/2016 09:26",
+		"passingTests" : "fn 9/27/2016 14:23",
+		"results" : "fn 7/1/2016 18:03",
+		"run" : "fn 9/28/2016 13:07",
+		"runAll" : "fn 6/30/2016 12:00",
+		"runCase:" : "fn 10/4/2016 14:45",
+		"serializeError:of:" : "fn 10/4/2016 17:29",
+		"setUp" : "fn 9/27/2016 20:43",
+		"stackTraceString:of:" : "fn 10/4/2016 17:30",
+		"suite" : "fn 6/30/2016 11:56",
+		"suite:" : "fn 6/30/2016 11:56",
+		"suiteTime" : "fn 6/30/2016 11:56",
+		"suiteTimeInSeconds" : "fn 6/30/2016 12:20",
+		"suiteTimeString" : "fn 10/8/2016 13:05",
+		"summary" : "fn 10/8/2016 13:14",
+		"tearDown" : "fn 9/27/2016 20:22",
+		"totalTests" : "fn 9/27/2016 14:07" } }

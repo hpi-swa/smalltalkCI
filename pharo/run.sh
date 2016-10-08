@@ -223,21 +223,15 @@ pharo::prepare_moose_image() {
 pharo::load_project() {
   local status=0
 
-  travis_fold start load_project "Loading project..."
-    timer_start
-
-    travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
-        eval --save ${vm_flags} "
-      [ Metacello new
-          baseline: 'SmalltalkCI';
-          repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-          onConflict: [:ex | ex pass];
-          load ] on: Warning do: [:w | w resume ].
-      (Smalltalk at: #SmalltalkCI) load: '$(resolve_path "${config_ston}")'
-    " || status=$?
-
-    timer_finish
-  travis_fold end load_project
+  travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
+      eval --save ${vm_flags} "
+    [ Metacello new
+        baseline: 'SmalltalkCI';
+        repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
+        onConflict: [:ex | ex pass];
+        load ] on: Warning do: [:w | w resume ].
+    (Smalltalk at: #SmalltalkCI) load: '$(resolve_path "${config_ston}")' env: '$(get_build_env)'
+  " || status=$?
 
   if is_nonzero "${status}"; then
     print_error_and_exit "Failed to load project." ${status}
@@ -250,24 +244,18 @@ pharo::load_project() {
 #   SMALLTALK_CI_HOME
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
+# Return:
+#   Build status (zero if successful)
 ################################################################################
 pharo::test_project() {
   local status=0
 
-  travis_fold start test_project "Testing project..."
-    timer_start
+  travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
+      eval ${vm_flags} "
+    (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")' named: '$(get_build_name)' env: '$(get_build_env)'
+  " || status=$?
 
-    travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
-        eval ${vm_flags} "
-      (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")'
-    " || status=$?
-
-    timer_finish
-  travis_fold end test_project
-
-  if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to test project." "${status}"
-  fi
+  return "${status}"
 }
 
 ################################################################################

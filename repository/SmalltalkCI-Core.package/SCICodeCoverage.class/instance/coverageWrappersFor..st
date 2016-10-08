@@ -1,0 +1,3 @@
+initialize-release
+coverageWrappersFor: classesToCover
+	self subclassResponsibility

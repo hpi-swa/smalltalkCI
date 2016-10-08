@@ -1,6 +1,7 @@
 executing
 loadAndTest: aFilenameString
-  ^ self basicNew
-    initialize;
-    load;
-    test
+  ^ self
+	basicNew initialize;
+	readSTONSpec: aFilenameString;
+	load;
+	test

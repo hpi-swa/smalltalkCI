@@ -1,7 +1,3 @@
 executing
 test: aFilenameString named: aString
-	^ self platformClass basicNew
-		initialize;
-		readSTONSpec: aFilenameString;
-		suiteName: aString;
-		test
+	^ self test: aFilenameString named: aString env: nil

@@ -3,6 +3,8 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
+COVERALLS_API='https://coveralls.io/api/v1/jobs'
+
 ANSI_BOLD="\033[1m"
 ANSI_RED="\033[31m"
 ANSI_GREEN="\033[32m"
@@ -78,61 +80,6 @@ print_help() {
 EOF
 }
 
-report_coverage() {
-  python "${SMALLTALK_CI_HOME}/lib/coveralls_notifier.py" \
-         "${SMALLTALK_CI_BUILD}"
-}
-
-print_results() {
-  local status=0
-
-  if is_travis_build; then
-    print_xml_files
-  fi
-
-  python "${SMALLTALK_CI_HOME}/lib/junit_xml_prettfier.py" \
-      "${SMALLTALK_CI_BUILD}" || status=$?
-
-  if is_travis_build && ! [[ ${status} -eq 0 ]]; then
-    print_steps_to_reproduce_locally $status
-  fi
-
-  return "${status}"
-}
-
-print_xml_files() {
-  local xml_files="${SMALLTALK_CI_BUILD}/"*.xml
-  local line_count
-
-  if ! [[ $(ls ${xml_files} 2> /dev/null) ]]; then
-    return
-  fi
-
-  # Do not print if xml files are too long; Travis log can only hold 10k lines
-  line_count="$(cat ${xml_files} | wc -l)"
-  if [[ "${line_count}" -gt 5000 ]] || \
-      ([[ "${config_smalltalk}" == GemStone* ]] && \
-       [[ "${line_count}" -gt 2000 ]]); then
-    return
-  fi
-
-  travis_fold start junit_xml "JUnit XML Output"
-    cat ${xml_files}
-    printf "\n"
-  travis_fold end junit_xml
-}
-
-print_steps_to_reproduce_locally() {
-  local status=$1
-
-  printf "\n"
-  echo "     To reproduce the failed build locally, download smalltalkCI"
-  echo "     and try to run something like:"
-  printf "\n"
-  print_notice "      /path/to/run.sh --headfull /path/to/project/.smalltalk.ston"
-  printf "\n"
-}
-
 is_empty() {
   local var=$1
 
@@ -204,6 +151,28 @@ is_spur_image() {
   [[ $((image_format_number>>(spur_bit-1) & 1)) -eq 1 ]]
 }
 
+get_build_env() {
+  if is_travis_build; then
+    echo "travis"
+  elif is_appveyor_build; then
+    echo "appveyor"
+  else
+    echo "unknown"
+  fi
+}
+
+get_build_name() {
+  local name="${config_smalltalk} with $(basename $config_ston)"
+
+  if is_travis_build; then
+    echo "${name} on TravisCI (${TRAVIS_JOB_NUMBER})"
+  elif is_appveyor_build; then
+    echo "${name} on Appveyor (${APPVEYOR_JOB_NAME})"
+  else
+    echo "${name}"
+  fi
+}
+
 debug_enabled() {
   [[ "${config_debug}" = "true" ]]
 }
@@ -252,6 +221,56 @@ to_lowercase() {
   echo $1 | tr "[:upper:]" "[:lower:]"
 }
 
+git_log() {
+  local format_value=$1
+  local output
+  output=$(git --no-pager log -1 --pretty=format:"${format_value}")
+  echo "${output/\"/\\\"}" # Escape double quotes
+}
+
+export_coveralls_data() {
+  local service_name
+
+  if is_travis_build; then
+    service_name="travis-ci"
+  elif is_appveyor_build; then
+    service_name="appveyor"
+  fi
+
+  cat >"${SMALLTALK_CI_BUILD}/coveralls_data.json" <<EOL
+{
+  "git": {
+    "branch": "${TRAVIS_BRANCH:-${APPVEYOR_REPO_BRANCH:-}}",
+    "head": {
+      "author_email": "$(git_log "%ae")",
+      "author_name": "$(git_log "%aN")",
+      "committer_email": "$(git_log "%ce")",
+      "committer_name": "$(git_log "%cN")",
+      "id": "$(git_log "%H")",
+      "message": "$(git_log "%s")"
+    },
+    "remotes": [
+      {
+        "url": "https://github.com/${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-}}.git",
+        "name": "origin"
+      }
+    ]
+  },
+  "service_job_id": "${TRAVIS_JOB_ID:-${APPVEYOR_BUILD_ID:-}}",
+  "service_name": "${service_name}"
+}
+EOL
+}
+
+upload_coverage_results() {
+  local coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"
+
+  if is_file "${coverage_results}"; then
+    print_info "Uploading coverage results to Coveralls..."
+    curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" > /dev/null
+  fi
+}
+
 
 ################################################################################
 # Travis-related helper functions (based on https://git.io/vzcTj).
@@ -266,7 +285,7 @@ timer_start() {
 }
 
 timer_finish() {
-  timer_end_time=$(timer_nanoseconds)
+  local timer_end_time=$(timer_nanoseconds)
   local duration=$(($timer_end_time-$timer_start_time))
   if is_travis_build; then
     echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"

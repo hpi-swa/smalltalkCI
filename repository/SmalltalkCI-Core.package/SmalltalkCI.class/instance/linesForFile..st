@@ -1,3 +1,0 @@
-coverage
-linesForFile: aFilename
-	self subclassResponsibility

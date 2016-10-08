@@ -1,10 +1,22 @@
 executing
 test
-	self prepareForTesting.
-	self isCoverageTestingEnabled
-		ifTrue: [
-			self runTestsWithCoverage.
-			SmalltalkCI printToStdout: 'Testing stage (including coverage) completed'. ]
+	| runner |
+	self headfullBreakpoint.
+
+	SmalltalkCI stage: 'Testing project...' id: 'test_project' block: [
+		self prepareForTesting.
+		self isCoverageTestingEnabled
+			ifTrue: [ SmalltalkCI codeCoverageClass
+						run: [ runner := self runTests ]
+						cover: self classesToCover
+						spec: self spec
+						in: self projectDirectory ]
+			ifFalse: [ runner := self runTests ] ].
+
+	self reportResults: runner.
+	
+	runner isSuccessful
+		ifTrue: [ SmalltalkCI quitImage ]
 		ifFalse: [
-			self runTests.
-			SmalltalkCI printToStdout: 'Testing stage completed'. ]
+			self printStepsToReproduceLocally.
+			SmalltalkCI saveImageAndFail ]
