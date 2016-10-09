@@ -1,3 +1,3 @@
 helpers
 coverallsDataFileExists
-	^ SmalltalkCI fileExists: self coverallsDataFilename
+	^ SmalltalkCI platformClass fileExists: self coverallsDataFilename
