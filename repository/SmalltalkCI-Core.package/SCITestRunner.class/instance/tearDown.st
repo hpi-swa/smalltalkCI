@@ -3,4 +3,4 @@ tearDown
 	suite resources
 		do: [ :each | each reset ].
 
-	SmalltalkCI printToStdout: 'Finished running suite: ', suite name
+	SmalltalkCI printToStdout: 'Finished running suite: ', suite name asString
