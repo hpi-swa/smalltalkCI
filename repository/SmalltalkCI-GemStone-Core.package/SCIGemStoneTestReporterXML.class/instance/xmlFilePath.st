@@ -1,7 +1,7 @@
 accessing
 xmlFilePath
   | fileName |
-  fileName := runner suite name , '.xml'.
+  fileName := runner suiteName , '.xml'.
   xmlLogDirPath ifNotNil: [
 	^ xmlLogDirPath, SmalltalkCIGemstone pathNameDelimiter, fileName ].
   ^ ((Smalltalk at: #System) gemEnvironmentVariable: 'SMALLTALK_CI_BUILD')

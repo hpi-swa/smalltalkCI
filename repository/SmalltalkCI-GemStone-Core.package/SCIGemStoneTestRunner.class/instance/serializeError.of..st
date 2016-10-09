@@ -1,7 +1,7 @@
 private
 serializeError: error of: aTestCase
   (Smalltalk at: #DebuggerLogEntry)
-    createContinuationLabeled: suite name , ': ' , aTestCase printString.
+    createContinuationLabeled: self suiteName , ': ' , aTestCase printString.
   (Smalltalk at: #System) commitTransaction
     ifFalse: [ 
       Transcript

@@ -1,3 +1,3 @@
 initialize-release
 initialize
-	stream := SmalltalkCI forceNewFileNamed: (runner suite name , '.xml')
+	stream := SmalltalkCI forceNewFileNamed: (runner suiteName , '.xml')
