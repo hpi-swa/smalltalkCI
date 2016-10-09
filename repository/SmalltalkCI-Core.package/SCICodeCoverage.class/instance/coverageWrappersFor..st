@@ -1,3 +1,3 @@
-initialize-release
+setup
 coverageWrappersFor: classesToCover
 	self subclassResponsibility

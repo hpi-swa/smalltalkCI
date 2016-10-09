@@ -1,4 +1,4 @@
-initialize-release
+setup
 finishUp
 	| sourceFiles |
 	sourceFiles := OrderedCollection new.
