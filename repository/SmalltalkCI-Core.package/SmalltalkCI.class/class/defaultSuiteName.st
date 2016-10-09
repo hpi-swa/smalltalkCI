@@ -1,3 +1,0 @@
-constants
-defaultSuiteName
-	^ 'SmalltalkCI'

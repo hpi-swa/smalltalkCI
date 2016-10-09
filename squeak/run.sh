@@ -291,7 +291,7 @@ squeak::test_project() {
   local build_name=""
 
   cat >"${SMALLTALK_CI_BUILD}/test.st" <<EOL
-  SmalltalkCI test: '$(resolve_path "${config_ston}")' named: '$(get_build_name)'
+  SmalltalkCI test: '$(resolve_path "${config_ston}")'
 EOL
 
   squeak::run_script "test.st" || status=$?

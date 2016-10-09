@@ -532,6 +532,7 @@ main() {
   ensure_ston_config_exists "${!#}"  # Use last argument for custom STON
   check_clean_up
   select_smalltalk
+  export config_smalltalk  # Make Smalltalk selection available in image
   validate_configuration
   prepare_folders
   export_coveralls_data

@@ -151,18 +151,6 @@ is_spur_image() {
   [[ $((image_format_number>>(spur_bit-1) & 1)) -eq 1 ]]
 }
 
-get_build_name() {
-  local name="${config_smalltalk} with $(basename $config_ston)"
-
-  if is_travis_build; then
-    echo "${name} on TravisCI (${TRAVIS_JOB_NUMBER})"
-  elif is_appveyor_build; then
-    echo "${name} on Appveyor (${APPVEYOR_JOB_NAME})"
-  else
-    echo "${name}"
-  fi
-}
-
 debug_enabled() {
   [[ "${config_debug}" = "true" ]]
 }
