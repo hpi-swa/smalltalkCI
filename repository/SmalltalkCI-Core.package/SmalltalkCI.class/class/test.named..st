@@ -1,3 +1,6 @@
-executing
+public-api
 test: aFilenameString named: aString
-	^ self test: aFilenameString named: aString env: nil
+	^ self newInstance
+		readSTONSpec: aFilenameString;
+		suiteName: aString;
+		test

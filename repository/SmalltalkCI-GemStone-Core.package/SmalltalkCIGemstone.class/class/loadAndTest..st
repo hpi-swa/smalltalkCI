@@ -1,4 +1,4 @@
-executing
+public-api
 loadAndTest: aFilenameString
   ^ self
 	basicNew initialize;

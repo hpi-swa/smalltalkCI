@@ -1,4 +1,4 @@
-executing-deprecated
+public-api
 test: aFilenameString projectDirectory: aDirectoryPathString
 	^ self platformClass basicNew
 		initialize;

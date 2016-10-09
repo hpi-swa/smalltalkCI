@@ -1,3 +1,5 @@
-executing
+public-api
 load: aFilenameString
-	^ self load: aFilenameString env: nil
+	^ self newInstance
+		readSTONSpec: aFilenameString;
+		load

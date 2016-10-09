@@ -230,7 +230,7 @@ pharo::load_project() {
         repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
         onConflict: [:ex | ex pass];
         load ] on: Warning do: [:w | w resume ].
-    (Smalltalk at: #SmalltalkCI) load: '$(resolve_path "${config_ston}")' env: '$(get_build_env)'
+    (Smalltalk at: #SmalltalkCI) load: '$(resolve_path "${config_ston}")'
   " || status=$?
 
   if is_nonzero "${status}"; then
@@ -252,7 +252,7 @@ pharo::test_project() {
 
   travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
       eval ${vm_flags} "
-    (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")' named: '$(get_build_name)' env: '$(get_build_env)'
+    (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")' named: '$(get_build_name)'
   " || status=$?
 
   return "${status}"

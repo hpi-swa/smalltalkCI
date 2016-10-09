@@ -1,3 +1,3 @@
 helpers
 isTravisBuild
-	^ BuildEnvironment asString beginsWith: 'travis'
+	^ (self getEnv: 'TRAVIS') = 'true'

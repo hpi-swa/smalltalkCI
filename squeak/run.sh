@@ -265,7 +265,7 @@ squeak::load_project() {
     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
     onConflict: [:ex | ex pass];
     load ] on: Warning do: [:w | w resume ].
-  SmalltalkCI load: '$(resolve_path "${config_ston}")' env: '$(get_build_env)'
+  SmalltalkCI load: '$(resolve_path "${config_ston}")'
 EOL
 
   squeak::run_script "load.st" || status=$?
@@ -291,7 +291,7 @@ squeak::test_project() {
   local build_name=""
 
   cat >"${SMALLTALK_CI_BUILD}/test.st" <<EOL
-  SmalltalkCI test: '$(resolve_path "${config_ston}")' named: '$(get_build_name)' env: '$(get_build_env)'
+  SmalltalkCI test: '$(resolve_path "${config_ston}")' named: '$(get_build_name)'
 EOL
 
   squeak::run_script "test.st" || status=$?

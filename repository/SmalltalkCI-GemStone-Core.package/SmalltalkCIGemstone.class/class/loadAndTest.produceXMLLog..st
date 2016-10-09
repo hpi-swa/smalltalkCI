@@ -1,4 +1,4 @@
-executing
+public-api
 loadAndTest: aFilenameString produceXMLLog: produceXMLLog
   ^ self basicNew
     initialize;

@@ -1,3 +1,3 @@
 helpers
 isAppVeyorBuild
-	^ BuildEnvironment asString beginsWith: 'appveyor'
+	^ (self getEnv: 'APPVEYOR') = 'True'
