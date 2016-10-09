@@ -1,6 +1,6 @@
 executing
 load: aFilenameString env: buildEnvironment
 	BuildEnvironment := buildEnvironment.
-	^ self newInstance;
+	^ self newInstance
 		readSTONSpec: aFilenameString;
 		load

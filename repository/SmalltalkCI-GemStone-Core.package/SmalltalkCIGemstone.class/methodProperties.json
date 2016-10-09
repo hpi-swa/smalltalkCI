@@ -10,6 +10,7 @@
 		"installMetacello" : "fn 1/31/2016 19:30",
 		"isHeadless" : "fn 1/27/2016 17:03",
 		"isPlatformCompatible" : "fn 1/31/2016 17:58",
+		"load:env:projectDirectory:" : "fn 10/9/2016 19:25",
 		"load:projectDirectory:" : "fn 10/9/2016 17:14",
 		"loadAndTest:" : "fn 10/4/2016 14:51",
 		"loadAndTest:produceXMLLog:" : "fn 10/4/2016 14:02",
