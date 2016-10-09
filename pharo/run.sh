@@ -224,7 +224,7 @@ pharo::load_project() {
   local status=0
 
   travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
-      eval --save ${vm_flags} "
+      eval ${vm_flags} "
     [ Metacello new
         baseline: 'SmalltalkCI';
         repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
