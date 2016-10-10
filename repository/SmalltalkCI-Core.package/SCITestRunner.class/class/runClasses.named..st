@@ -1,8 +1,8 @@
 running
 runClasses: aCollectionOfClasses named: aString
-  | suite name classes |
-  name := aString ifNil: [ self defaultSuiteName ].
-  suite := TestSuite named: name.
+  | suite suiteName classes |
+  suiteName := aString ifNil: [ self defaultSuiteName ].
+  suite := TestSuite named: suiteName.
   classes := (aCollectionOfClasses
     select: [ :each | (each includesBehavior: TestCase) and: [ each isAbstract not ] ])
       asSortedCollection: [ :a :b | a name <= b name ].
