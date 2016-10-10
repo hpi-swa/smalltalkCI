@@ -1,4 +1,4 @@
 accessing
 suiteName
 
-	^ suite name asString
+	^ suite name

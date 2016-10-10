@@ -1,7 +1,8 @@
 {
 	"class" : {
+		"defaultSuiteName" : "fn 10/10/2016 23:42",
 		"isTestMethod:" : "fn 6/30/2016 11:58",
-		"runClasses:named:" : "fn 6/30/2016 11:52",
+		"runClasses:named:" : "fn 10/10/2016 23:40",
 		"runSuite:" : "fn 6/30/2016 11:52" },
 	"instance" : {
 		"erroredTests" : "fn 7/1/2016 18:41",
@@ -19,7 +20,7 @@
 		"stackTraceString:of:" : "fn 10/4/2016 17:30",
 		"suite" : "fn 6/30/2016 11:56",
 		"suite:" : "fn 6/30/2016 11:56",
-		"suiteName" : "fn 10/10/2016 00:48",
+		"suiteName" : "fn 10/10/2016 23:44",
 		"suiteTime" : "fn 6/30/2016 11:56",
 		"suiteTimeInSeconds" : "fn 6/30/2016 12:20",
 		"suiteTimeString" : "fn 10/8/2016 13:05",
