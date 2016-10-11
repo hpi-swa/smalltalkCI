@@ -252,12 +252,9 @@ EOF
 #   config_ston
 # Globals:
 #   SMALLTALK_CI_HOME
-# Return:
-#   Build status (zero if successful)
 ################################################################################
 gemstone::test_project() {
   local status=0
-  local return_status=0
 
   travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
     iferr 1 stk
@@ -281,8 +278,7 @@ EOF
       travis_wait ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
 
       if is_nonzero "${status}"; then
-        return_status="${status}"
-        print_error "Error while testing client project ${client_name}."
+        print_error_and_exit "Error while testing client project ${client_name}."
       fi
     done
   fi
@@ -290,8 +286,6 @@ EOF
   travis_fold start stop_stone "Stopping stone..."
   ${GS_HOME}/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
   travis_fold end stop_stone
-
-  return "${return_status}"
 }
 
 ################################################################################
