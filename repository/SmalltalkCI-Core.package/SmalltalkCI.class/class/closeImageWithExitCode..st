@@ -1,3 +1,0 @@
-compatibility
-closeImageWithExitCode: exitCode
-	self subclassResponsibility

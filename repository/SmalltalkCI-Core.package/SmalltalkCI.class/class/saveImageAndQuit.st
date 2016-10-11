@@ -1,3 +1,5 @@
 image-operations
 saveImageAndQuit
-	self saveImageAndQuitWithExitCode: 0
+	self platformClass saveImage
+		"Close image only if it is not resuming."
+		ifFalse: [ self platformClass quitImage ]
