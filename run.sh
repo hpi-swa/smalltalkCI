@@ -299,6 +299,14 @@ prepare_folders() {
 }
 
 ################################################################################
+# Add environment variables for in-image use (with `SCIII_` prefix).
+################################################################################
+add_env_vars() {
+  export SCIII_SMALLTALK="${config_smalltalk}"
+  export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
+}
+
+################################################################################
 # Check build status and exit with non-zero exit code if necessary.
 # Locals:
 #   build_status
@@ -552,10 +560,10 @@ main() {
   ensure_ston_config_exists "${!#}"  # Use last argument for custom STON
   check_clean_up
   select_smalltalk
-  export config_smalltalk  # Make Smalltalk selection available in image
   validate_configuration
   prepare_folders
   export_coveralls_data
+  add_env_vars
 
   run "$@" || status=$?
 

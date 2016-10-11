@@ -1,3 +1,3 @@
 constants
 buildDirectory
-	^ (self getEnv: 'SMALLTALK_CI_BUILD') ifNil: [ '' ]
+	^ (self getEnv: 'SCIII_BUILD') ifNil: [ '' ]
