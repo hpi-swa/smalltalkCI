@@ -152,7 +152,6 @@ gemstone::prepare_stone() {
 
 ################################################################################
 # Optionally create GemStone clients.
-# 
 ################################################################################
 gemstone::prepare_optional_clients() {
   local client_version
@@ -246,6 +245,24 @@ EOF
 }
 
 ################################################################################
+# Check intermediate build status and update build_status if necessary.
+# Locals:
+#   intermediate_build_status
+# Globals:
+#   build_status
+################################################################################
+gemstone::check_intermediate_build_status() {
+  local intermediate_build_status
+
+  if is_file "${build_status_file}"; then
+    intermediate_build_status=$(cat "${build_status_file}")
+    if is_nonzero "${intermediate_build_status}"; then
+      build_status=1
+    fi
+  fi
+}
+
+################################################################################
 # Run tests.
 # Locals:
 #   config_project_home
@@ -255,6 +272,8 @@ EOF
 ################################################################################
 gemstone::test_project() {
   local status=0
+  local build_status=0
+  local build_status_file="${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}"
 
   travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
     iferr 1 stk
@@ -271,6 +290,7 @@ EOF
   if is_nonzero "${status}"; then
     print_error_and_exit "Error while testing server project."
   fi
+  gemstone::check_intermediate_build_status
 
   if is_not_empty  "${DEVKIT_CLIENT_NAMES:-}"; then
     for client_name in "${DEVKIT_CLIENT_NAMES[@]}"
@@ -280,7 +300,13 @@ EOF
       if is_nonzero "${status}"; then
         print_error_and_exit "Error while testing client project ${client_name}."
       fi
+      gemstone::check_intermediate_build_status
     done
+  fi
+
+  # Overwrite build status file if tests failed on the server or on a client
+  if is_nonzero "${build_status}"; then
+    echo 1 > "${build_status_file}"
   fi
 
   travis_fold start stop_stone "Stopping stone..."

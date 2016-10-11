@@ -5,6 +5,7 @@ set -o pipefail
 set -o nounset
 
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
+readonly BUILD_STATUS_FILE="build_status.txt"
 readonly INSTALL_TARGET_OSX="/usr/local/bin"
 readonly BINTRAY_API="https://api.bintray.com/content"
 
@@ -300,19 +301,17 @@ prepare_folders() {
 ################################################################################
 # Check build status and exit with non-zero exit code if necessary.
 # Locals:
-#   build_status_file
 #   build_status
 # Globals:
 #   SMALLTALK_CI_BUILD
 ################################################################################
 check_build_status() {
-  local build_status_file="${SMALLTALK_CI_BUILD}/build_status.txt"
   local build_status
 
-  if ! is_file "${build_status_file}"; then
+  if ! is_file "${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}"; then
     print_error_and_exit "Build failed before tests were performed correctly."
   fi
-  build_status=$(cat "${build_status_file}")
+  build_status=$(cat "${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}")
   if is_nonzero "${build_status}"; then
     exit 1
   fi

@@ -1,3 +1,3 @@
 constants
 buildStatusFile
-	^ 'build_status.txt'
+	^ self buildDirectory, self pathNameDelimiter, 'build_status.txt'
