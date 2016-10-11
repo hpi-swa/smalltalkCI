@@ -1,9 +1,8 @@
 helpers
-exportBuildStatus: aBoolean
-	"true if build was successful, false otherwise"
+exportBuildStatus: buildSuccessful
 	| stream |
 	stream := SmalltalkCI forceNewFileNamed: SmalltalkCI buildStatusFile.
-	aBoolean
+	buildSuccessful
 		ifTrue: [ stream nextPut: SmalltalkCI buildSuccessful ]
 		ifFalse: [ stream nextPut: SmalltalkCI buildFailed ].
 	stream close

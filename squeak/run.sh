@@ -265,7 +265,8 @@ squeak::load_project() {
     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
     onConflict: [:ex | ex pass];
     load ] on: Warning do: [:w | w resume ].
-  SmalltalkCI load: '$(resolve_path "${config_ston}")'
+  SmalltalkCI load: '$(resolve_path "${config_ston}")'.
+  SmalltalkCI isHeadless ifTrue: [ SmalltalkCI saveAndQuitImage ]
 EOL
 
   squeak::run_script "load.st" || status=$?

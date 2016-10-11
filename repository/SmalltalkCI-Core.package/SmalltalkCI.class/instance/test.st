@@ -14,10 +14,4 @@ test
 			ifFalse: [ runner := self runTests ] ].
 
 	self reportResults: runner.
-
-	self exportBuildStatus: runner isSuccessful.
-	runner isSuccessful
-		ifTrue: [ SmalltalkCI quitImage ]
-		ifFalse: [
-			self printStepsToReproduceLocally.
-			SmalltalkCI saveImageAndQuit ]
+	self finishUpAfterTesting: runner isSuccessful

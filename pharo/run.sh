@@ -230,7 +230,8 @@ pharo::load_project() {
         repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
         onConflict: [:ex | ex pass];
         load ] on: Warning do: [:w | w resume ].
-    (Smalltalk at: #SmalltalkCI) load: '$(resolve_path "${config_ston}")'
+    (Smalltalk at: #SmalltalkCI) load: '$(resolve_path "${config_ston}")'.
+    SmalltalkCI isHeadless ifTrue: [ SmalltalkCI saveAndQuitImage ]
   " || status=$?
 
   if is_nonzero "${status}"; then

@@ -1,3 +1,3 @@
 helpers
 isHeadless
-	^ self subclassResponsibility
+	^ self platformClass isHeadless

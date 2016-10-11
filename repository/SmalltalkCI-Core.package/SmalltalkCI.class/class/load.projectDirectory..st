@@ -1,7 +1,6 @@
 public-api
 load: aFilenameString projectDirectory: aDirectoryPathString
-	^ self platformClass basicNew
-		initialize;
+	^ self newInstance
 		readSTONSpec: aFilenameString;
 		projectDirectory: aDirectoryPathString;
 		load
