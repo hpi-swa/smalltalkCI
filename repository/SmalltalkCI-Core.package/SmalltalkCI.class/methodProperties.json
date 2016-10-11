@@ -32,6 +32,7 @@
 		"forceNewFileNamed:" : "fn 10/4/2016 18:02",
 		"getAuthor" : "fn 1/31/2016 21:35",
 		"getEnv:" : "fn 10/9/2016 21:34",
+		"hash:length:" : "fn 10/11/2016 23:01",
 		"imagePath" : "fn 9/27/2016 20:11",
 		"installMetacello" : "fn 1/31/2016 19:21",
 		"isAppVeyorBuild" : "fn 10/9/2016 21:44",
