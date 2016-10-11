@@ -1,0 +1,3 @@
+compatibility
+methodReferenceFor: aClass selector: aSelector
+	self subclassResponsibility

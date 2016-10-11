@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCIGoferLoadSpecTest",
+	"pools" : [
+		 ],
+	"super" : "SCIAbstractLoadSpecTest",
+	"type" : "normal" }

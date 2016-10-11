@@ -1,1 +1,0 @@
-(name 'SmalltalkCI-Package-Tests-dkh.1' message 'Issue #75: split out tests into functional packages (category, all, and package) and stow platform-specific methods in platform-speicifc packages ... take 1' id '1973eec3-8173-42be-9e8c-ccd8b2a2d021' date '02/26/2016' time '15:24:57' author 'dkh' ancestors () stepChildren ())

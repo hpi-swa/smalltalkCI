@@ -1,6 +1,0 @@
-SmalltalkCISpec {
-  #specName : 'GLASS1',
-  #testing : {
-    #projects : [ 'GLASS1' ]
-  }
-}

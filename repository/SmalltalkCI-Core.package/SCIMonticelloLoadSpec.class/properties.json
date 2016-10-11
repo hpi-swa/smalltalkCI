@@ -1,0 +1,19 @@
+{
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [
+		"PlatformClass" ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"url",
+		"user",
+		"password",
+		"packages",
+		"versions",
+		"loadedClasses" ],
+	"name" : "SCIMonticelloLoadSpec",
+	"pools" : [
+		 ],
+	"super" : "SCIAbstractLoadSpec",
+	"type" : "normal" }

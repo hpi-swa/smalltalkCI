@@ -1,0 +1,3 @@
+compatibility
+imagePath
+	^ Smalltalk imagePath

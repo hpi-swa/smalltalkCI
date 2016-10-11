@@ -6,6 +6,7 @@ set -o nounset
 
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
 readonly INSTALL_TARGET_OSX="/usr/local/bin"
+readonly BINTRAY_API="https://api.bintray.com/content"
 
 ################################################################################
 # Determine $SMALLTALK_CI_HOME and load helpers.
@@ -17,7 +18,7 @@ initialize() {
 
   # Fail if OS is not supported
   case "$(uname -s)" in
-    "Linux"|"Darwin")
+    "Linux"|"Darwin"|"CYGWIN_NT-"*)
       ;;
     *)
       echo "Unsupported platform '$(uname -s)'." 1>&2
@@ -76,24 +77,31 @@ interrupted() {
 #   Custom project home path
 ################################################################################
 ensure_ston_config_exists() {
-  local custom_ston="$1"
+  local custom_ston=$1
 
-  if ! is_empty "${custom_ston}" && [[ ${custom_ston: -5} == ".ston" ]]; then
-    # Make sure $custom_ston does not start with ./
-    custom_ston="${custom_ston#./}"
+  # STON provided as cmd line parameter can override $config_ston
+  if ! is_empty "${custom_ston}" && [[ ${custom_ston: -5} == ".ston" ]] && \
+      is_file "${custom_ston}"; then
+    config_ston="${custom_ston}"
+    # Expand path if $config_ston does not start with / or ~
+    if ! [[ "${config_ston:0:1}" =~ (\/|\~) ]]; then
+      config_ston="$(pwd)/${config_ston}"
+    fi
+    return
+  fi
 
-    if is_file "${custom_ston}"; then
-      if [[ "${custom_ston:0:1}" == "/" ]]; then
-        config_ston="${custom_ston}"
-      else
-        config_ston="$(pwd)/${custom_ston}"
-      fi
+  if is_travis_build; then
+    if is_not_empty "${TRAVIS_SMALLTALK_CONFIG:-}"; then
+      config_ston="${TRAVIS_BUILD_DIR}/${TRAVIS_SMALLTALK_CONFIG}"
+    else
+      locate_ston_config
     fi
   elif is_file "${config_ston}"; then
     # Make sure $config_ston does not start with ./
     config_ston="${config_ston#./}"
 
-    if [[ "${config_ston:0:1}" != "/" ]]; then
+    # Expand path if $config_ston does not start with / or ~
+    if ! [[ "${config_ston:0:1}" =~ (\/|\~) ]]; then
       config_ston="$(pwd)/${config_ston}"
     fi
   else
@@ -113,7 +121,8 @@ ensure_ston_config_exists() {
   fi
 
   if ! is_file "${config_ston}"; then
-    print_error_and_exit "STON configuration could not be found."
+    print_error_and_exit "STON configuration could not be found at \
+'${config_ston}'."
   fi
 }
 
@@ -149,26 +158,31 @@ in ${project_home}."
 #   config_smalltalk
 ################################################################################
 select_smalltalk() {
-  local images="Squeak-trunk Squeak-latest Squeak-5.0 Squeak-4.6 Squeak-4.5
-                Pharo-stable Pharo-alpha Pharo-5.0 Pharo-4.0 Pharo-3.0
-                GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6"
+  local images="Squeak-trunk Squeak-5.1 Squeak-5.0 Squeak-4.6 Squeak-4.5
+                Pharo-stable Pharo-alpha Pharo-6.0 Pharo-5.0 Pharo-4.0 Pharo-3.0
+                GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6
+                Moose-trunk Moose-6.1 Moose-6.0"
 
-  if is_not_empty "${config_smalltalk}" || is_travis_build; then
+  if is_travis_build || is_appveyor_build; then
+    config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-${SMALLTALK}}"
     return
   fi
 
-  PS3="Choose Smalltalk image: "
-  select selection in $images; do
-    case "${selection}" in
-      Squeak*|Pharo*|GemStone*)
-        config_smalltalk="${selection}"
-        break
-        ;;
-      *)
-        print_error_and_exit "No Smalltalk image selected."
-        ;;
-    esac
-  done
+  # Ask user to choose an image if one has not been selected yet
+  if is_empty "${config_smalltalk}"; then
+    PS3="Choose Smalltalk image: "
+    select selection in $images; do
+      case "${selection}" in
+        Squeak*|Pharo*|GemStone*|Moose*)
+          config_smalltalk="${selection}"
+          break
+          ;;
+        *)
+          print_error_and_exit "No Smalltalk image selected."
+          ;;
+      esac
+    done
+  fi
 }
 
 ################################################################################
@@ -295,9 +309,14 @@ check_clean_up() {
   if [[ "${config_clean}" = "true" ]]; then
     print_info "cache at '${SMALLTALK_CI_CACHE}'."
     print_info "builds at '${SMALLTALK_CI_BUILD_BASE}'."
-    read -p "${question1}" user_input
-    if [[ "${user_input}" = "y" ]]; then
-      clean_up
+    if is_dir "${SMALLTALK_CI_CACHE}" || \
+        is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+      read -p "${question1}" user_input
+      if [[ "${user_input}" = "y" ]]; then
+        clean_up
+      fi
+    else
+      print_notice "Nothing to clean up."
     fi
     if is_empty "${config_smalltalk}" || is_empty "${config_ston}"; then
       exit  # User did not supply enough arguments to continue
@@ -315,24 +334,19 @@ check_clean_up() {
 #   SMALLTALK_CI_BUILD_BASE
 ################################################################################
 clean_up() {
-  if is_dir "${SMALLTALK_CI_CACHE}" || \
-      is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
-    print_info "Cleaning up..."
-    print_info "Removing the following directories:"
-    if is_dir "${SMALLTALK_CI_CACHE}"; then
-      print_info "  ${SMALLTALK_CI_CACHE}"
-      rm -rf "${SMALLTALK_CI_CACHE}"
-    fi
-    if is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
-      print_info "  ${SMALLTALK_CI_BUILD_BASE}"
-      # Make sure read-only files (e.g. some GemStone files) can be removed
-      chmod -fR +w "${SMALLTALK_CI_BUILD_BASE}"
-      rm -rf "${SMALLTALK_CI_BUILD_BASE}"
-    fi
-    print_info "Done."
-  else
-    print_notice "Nothing to clean up."
+  print_info "Cleaning up..."
+  print_error "Removing the following directories:"
+  if is_dir "${SMALLTALK_CI_CACHE}"; then
+    print_info "  ${SMALLTALK_CI_CACHE}"
+    rm -rf "${SMALLTALK_CI_CACHE}"
   fi
+  if is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+    print_info "  ${SMALLTALK_CI_BUILD_BASE}"
+    # Make sure read-only files (e.g. some GemStone files) can be removed
+    chmod -fR +w "${SMALLTALK_CI_BUILD_BASE}"
+    rm -rf "${SMALLTALK_CI_BUILD_BASE}"
+  fi
+  print_info "Done."
 }
 
 ################################################################################
@@ -395,11 +409,78 @@ uninstall_script() {
 }
 
 ################################################################################
+# Deploy build artifacts to bintray if configured.
+################################################################################
+deploy() {
+  local build_status=$1
+  local target
+  local version="${TRAVIS_BUILD_NUMBER}"
+  local project_name="$(basename ${TRAVIS_BUILD_DIR})"
+  local name="${project_name}-${TRAVIS_JOB_NUMBER}-${config_smalltalk}"
+  local image_name="${SMALLTALK_CI_BUILD}/${name}.image"
+  local changes_name="${SMALLTALK_CI_BUILD}/${name}.changes"
+  local publish=false
+
+  if is_empty "${BINTRAY_CREDENTIALS:-}" || \
+      [[ "${TRAVIS_PULL_REQUEST}" != "false" ]]; then
+    return
+  fi
+
+  if [[ "${build_status}" -eq 0 ]]; then
+    if is_empty "${BINTRAY_RELEASE:-}" || \
+        [[ "${TRAVIS_BRANCH}" != "master" ]]; then
+      return
+    fi
+    target="${BINTRAY_API}/${BINTRAY_RELEASE}/${version}"
+    publish=true
+  else
+    if is_empty "${BINTRAY_FAIL:-}"; then
+      return
+    fi
+    target="${BINTRAY_API}/${BINTRAY_FAIL}/${version}"
+  fi
+
+  travis_fold start deploy "Deploying to bintray.com..."
+    timer_start
+
+    pushd "${SMALLTALK_CI_BUILD}" > /dev/null
+
+    print_info "Compressing and uploading image and changes files..."
+    mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
+    mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
+    tar czf "${name}.tar.gz" "${name}.image" "${name}.changes"
+    curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.tar.gz" \
+        "${target}/${name}.tar.gz" > /dev/null
+    zip -q "${name}.zip" "${name}.image" "${name}.changes"
+    curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.zip" \
+        "${target}/${name}.zip" > /dev/null
+
+    if [[ "${build_status}" -ne 0 ]]; then
+      # Check for xml files and upload them
+      if ls *.xml 1> /dev/null 2>&1; then
+        print_info "Compressing and uploading debugging files..."
+        mv "${TRAVIS_BUILD_DIR}/"*.fuel "${SMALLTALK_CI_BUILD}/" || true
+        find . -name "*.xml" -o -name "*.fuel" | tar czf "debug.tar.gz" -T -
+        curl -s -u "$BINTRAY_CREDENTIALS" \
+            -T "debug.tar.gz" "${target}/" > /dev/null
+      fi
+    fi
+
+    if "${publish}"; then
+      print_info "Publishing ${version}..."
+      curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
+    fi
+
+    popd > /dev/null
+
+    timer_finish
+  travis_fold end deploy
+}
+
+################################################################################
 # Load platform-specific package and run the build.
 # Locals:
 #   config_smalltalk
-# Returns:
-#   Status code of build
 ################################################################################
 run() {
   case "${config_smalltalk}" in
@@ -407,7 +488,7 @@ run() {
       print_info "Starting Squeak build..."
       source "${SMALLTALK_CI_HOME}/squeak/run.sh"
       ;;
-    Pharo*)
+    Pharo*|Moose*)
       print_info "Starting Pharo build..."
       source "${SMALLTALK_CI_HOME}/pharo/run.sh"
       ;;
@@ -429,7 +510,6 @@ run() {
   fi
 
   run_build "$@"
-  return $?
 }
 
 ################################################################################
@@ -438,13 +518,13 @@ run() {
 #   All positional parameters
 ################################################################################
 main() {
-  local config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-}"
-  local config_ston="${TRAVIS_SMALLTALK_CONFIG:-}"
+  local config_smalltalk=""
+  local config_ston=""
   local config_clean="false"
   local config_debug="false"
   local config_headless="true"
   local config_verbose="false"
-  local exit_status=0
+  local status=0
 
   initialize
   parse_options "$@"
@@ -452,22 +532,24 @@ main() {
   ensure_ston_config_exists "${!#}"  # Use last argument for custom STON
   check_clean_up
   select_smalltalk
+  export config_smalltalk  # Make Smalltalk selection available in image
   validate_configuration
-
   prepare_folders
-  run "$@" || exit_status=$?
-  if [[ "${exit_status}" -ne 0 ]]; then
-    print_error "Failed to load and test project."
-    exit ${exit_status}
+  export_coveralls_data
+
+  run "$@" || status=$?
+
+  if is_travis_build || is_appveyor_build; then
+    upload_coverage_results
   fi
 
   if is_travis_build; then
-    report_coverage
+    deploy "${status}"
   fi
 
-  print_results "${SMALLTALK_CI_BUILD}" || exit_status=$?
-  
-  exit ${exit_status}
+  if is_nonzero "${status}"; then
+    exit "${status}"
+  fi
 }
 
 # Run main if script is not being tested

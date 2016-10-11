@@ -1,0 +1,4 @@
+executing
+finishUpAfterLoading
+	SCISqueakTranscript uninstall.
+	SCISqueakToolSet unload

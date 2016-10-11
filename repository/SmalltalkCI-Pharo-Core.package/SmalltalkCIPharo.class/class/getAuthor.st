@@ -1,3 +1,3 @@
 helpers
 getAuthor
-	^ (Smalltalk at: #Author) fullNamePerSe
+	^ (Smalltalk at: #Author) fullNamePerSe ifNil: [ ^ '' ]

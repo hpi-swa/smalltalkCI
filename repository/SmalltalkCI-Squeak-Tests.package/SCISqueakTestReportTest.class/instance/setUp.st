@@ -1,3 +1,0 @@
-setup
-setUp
-	self deleteTestFile

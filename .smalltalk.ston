@@ -4,6 +4,7 @@ SmalltalkCISpec {
       #baseline : 'SmalltalkCI',
       #directory : 'repository',
       #load : [ 'tests' ],
+      #onWarningLog : true,
       #platforms : [ #squeak, #pharo, #gemstone ]
     }
   ],
@@ -13,6 +14,9 @@ SmalltalkCISpec {
     },
     #exclude : {
       #classes : [ #SCIExcludedTests ]
+    },
+    #include : {
+      #classes : [ #SentButNotImplementedTest, #UndefinedSymbolsTest ]
     }
   }
 }

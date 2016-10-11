@@ -92,16 +92,16 @@ gemstone::prepare_stone() {
         mkdir "${SMALLTALK_CI_VMS}/Pharo-3.0"
         print_info "Downloading Pharo-3.0 vm to cache" 
         pushd "${SMALLTALK_CI_VMS}/Pharo-3.0" > /dev/null
-          pharo_zeroconf="$(download_file "get.pharo.org/vm30")" || print_error_and_exit "Pharo-3.0 vm download failed."
-          bash -c "${pharo_zeroconf}"  || print_error_and_exit "Pharo-3.0 vm download failed."
+          download_file "get.pharo.org/vm30" "$(pwd)/zeroconfig"
+          bash "$(pwd)/zeroconfig" || print_error_and_exit "Pharo-3.0 vm download failed."
         popd > /dev/null
       fi
   
       if ! is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}"; then
         print_info "Downloading Pharo-3.0 image to cache..." 
         pushd ${SMALLTALK_CI_CACHE} > /dev/null
-          pharo_zeroconf="$(download_file "get.pharo.org/30")" || print_error_and_exit "Pharo-3.0 image download failed."
-          bash -c "${pharo_zeroconf}"  || print_error_and_exit "Pharo-3.0 image download failed."
+          download_file "get.pharo.org/30" "$(pwd)/pharo30_zeroconfig"
+          bash "$(pwd)/pharo30_zeroconfig" || print_error_and_exit "Pharo-3.0 image download failed."
           mv "Pharo.image" "${PHARO_IMAGE_FILE}"
           mv "Pharo.changes" "${PHARO_CHANGES_FILE}"
         popd > /dev/null
@@ -204,83 +204,100 @@ gemstone::prepare_client() {
 }
 
 ################################################################################
-# Load project into GemStone stone and run tests.
+# Load project into GemStone stone.
 # Locals:
 #   config_project_home
 #   config_ston
 # Globals:
 #   SMALLTALK_CI_HOME
-# Returns:
-#   Status code of project loading
 ################################################################################
-gemstone::load_and_test_project() {
+gemstone::load_project() {
   local status=0
 
   travis_fold start load_server_project "Loading server project..."
     timer_start
 
-    ${GS_HOME}/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
+    travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
+      iferr 1 stk
+      iferr 2 stack
+      iferr 3 exit 1
+      login
+      run
       GsDeployer bulkMigrate: [
         Metacello new
           baseline: 'SmalltalkCI';
           repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
           load: 'Core'.
         System commitTransaction.
-        (Smalltalk at: #SmalltalkCI) loadCIFor: '${config_ston}'.
+        (Smalltalk at: #SmalltalkCI) load: '${config_ston}'.
       ].
+%
+      logout
+      exit 0
 EOF
 
     timer_finish
 
   travis_fold end load_server_project
 
-  if [[ "${status}" -ne 0 ]]; then
+  if is_nonzero "${status}"; then
     print_error_and_exit "Failed to load project."
   fi
+}
 
-  travis_fold start test_server_project "Testing server project..."
-    timer_start
+################################################################################
+# Run tests.
+# Locals:
+#   config_project_home
+#   config_ston
+# Globals:
+#   SMALLTALK_CI_HOME
+# Return:
+#   Build status (zero if successful)
+################################################################################
+gemstone::test_project() {
+  local status=0
+  local return_status=0
 
-    ${GS_HOME}/bin/devKitCommandLine serverDoIt "${STONE_NAME}" << EOF || status=$?
-      (Smalltalk at: #SmalltalkCI) testCIFor: '${config_ston}' named: '${STONE_NAME}_${config_smalltalk}'.
-      System commitTransaction.
+  travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
+    iferr 1 stk
+    iferr 2 stack
+    iferr 3 exit 1
+    login
+    run
+    (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${config_smalltalk} Server (${STONE_NAME})'.
+%
+    logout
+    exit 0
 EOF
 
-    timer_finish
-  travis_fold end test_server_project
-
-  if is_not_empty  "${DEVKIT_CLIENT_NAMES:-}"; then
-
-    for client_name in "${DEVKIT_CLIENT_NAMES[@]}"
-    do
-      travis_fold start "test_${client_name}" "Testing client project ${client_name}..."
-        timer_start
-    
-        ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}"
-
-        timer_finish
-      travis_fold end "test_${client_name}"
-    done
-    
+  if is_nonzero "${status}"; then
+    print_error_and_exit "Error while testing server project."
   fi
 
-  travis_fold start stop_stone
+  if is_not_empty  "${DEVKIT_CLIENT_NAMES:-}"; then
+    for client_name in "${DEVKIT_CLIENT_NAMES[@]}"
+    do
+      travis_wait ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
 
-    ${GS_HOME}/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
+      if is_nonzero "${status}"; then
+        return_status="${status}"
+        print_error "Error while testing client project ${client_name}."
+      fi
+    done
+  fi
 
+  travis_fold start stop_stone "Stopping stone..."
+  ${GS_HOME}/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
   travis_fold end stop_stone
 
-  return "${status}"
+  return "${return_status}"
 }
 
 ################################################################################
 # Main entry point for GemStone builds.
-# Returns:
-#   Status code of build
 ################################################################################
 run_build() {
-  local exit_status=0
-
   gemstone::parse_options "$@"
 
   # To bypass cached behavior for local build, export TRAVIS_CACHE_ENABLED
@@ -298,9 +315,8 @@ run_build() {
   gemstone::prepare_gsdevkit_home
   gemstone::prepare_stone "${config_smalltalk}"
   gemstone::prepare_optional_clients
-  gemstone::load_and_test_project || exit_status=$?
-
-  return "${exit_status}"
+  gemstone::load_project
+  gemstone::test_project
 }
 
 ################################################################################
@@ -308,6 +324,14 @@ run_build() {
 ################################################################################
 gemstone::parse_options() {
   local devkit_client_args
+
+  case "$(uname -s)" in
+    "Linux"|"Darwin")
+      ;;
+    *)
+      print_error_and_exit "GemStone is not supported on '$(uname -s)'"
+      ;;
+  esac
 
   GS_HOME="${DEFAULT_GS_HOME}"
 

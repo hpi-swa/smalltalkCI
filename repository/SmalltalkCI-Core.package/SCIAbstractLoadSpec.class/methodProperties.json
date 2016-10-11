@@ -3,11 +3,9 @@
 		 },
 	"instance" : {
 		"basicLoadProjectOn:" : "EatebanLorenzano 1/27/2016 14:24",
-		"finishUpAfterCI" : "fn 4/14/2016 21:05",
 		"isComplete" : "fniep 1/10/2016 23:47",
 		"isPlatformCompatible" : "fn 1/31/2016 19:57",
 		"loadProjectOn:" : "fn 1/31/2016 19:18",
-		"platforms" : "fniep 1/11/2016 02:41",
-		"platforms:" : "fniep 1/11/2016 02:55",
-		"prepareForCI" : "fn 4/14/2016 21:05",
-		"testClasses" : "fn 1/16/2016 16:03" } }
+		"loadedClasses" : "fn 6/22/2016 10:49",
+		"platforms" : "fn 6/9/2016 09:02",
+		"platforms:" : "fn 6/9/2016 09:02" } }

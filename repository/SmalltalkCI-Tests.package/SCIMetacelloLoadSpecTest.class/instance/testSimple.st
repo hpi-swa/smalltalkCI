@@ -3,22 +3,22 @@ testSimple
 	| smalltalkCI |
 	smalltalkCI := SmalltalkCI basicNew initialize.
 	smalltalkCI projectDirectory: '/dir/to/project'.
+	self assert: '' equals: self spec directory.
+	self assert: #() equals: self spec load.
 
 	self spec
 		directory: 'foodir';
 		load: #('FooLoad');
 		version: '1.2.3';
-		onWarningLog: true;
-		originalAuthor: 'The Author'.
+		onWarningLog: true.
 	
 	self
-		assert: self spec directory equals: 'foodir';
-		assert: self spec load first equals: 'FooLoad';
-		assert: self spec version equals: '1.2.3';
-		assert: self spec onWarningLog equals: true;
-		assert: self spec originalAuthor equals: 'The Author';
-		assert: (self spec loadRepositoryFor: smalltalkCI) equals: 'filetree:///dir/to/project/foodir'.
+		assert: 'foodir' equals: self spec directory;
+		assert: 'FooLoad' equals: self spec load first;
+		assert: '1.2.3' equals: self spec version;
+		assert: self spec onWarningLog;
+		assert: ('filetree:///dir/to/project', SmalltalkCI pathNameDelimiter, 'foodir')
+			equals: (self spec loadRepositoryFor: smalltalkCI).
 		
-	self spec repository: 'repo'.
-	
-	self assert: (self spec loadRepositoryFor: smalltalkCI) equals: 'repo'
+	self spec repository: 'repo'.	
+	self assert: 'repo' equals: (self spec loadRepositoryFor: smalltalkCI)

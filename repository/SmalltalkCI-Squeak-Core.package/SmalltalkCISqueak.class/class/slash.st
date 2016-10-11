@@ -1,3 +1,0 @@
-compatibility
-slash
-	^ FileDirectory slash

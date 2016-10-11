@@ -13,6 +13,9 @@ test_get_image_url() {
   image_url="$(pharo::get_image_url "Pharo-stable")"
   assertEquals "get.pharo.org/stable" "${image_url}"
 
+  image_url="$(pharo::get_image_url "Pharo-6.0")"
+  assertEquals "get.pharo.org/60" "${image_url}"
+
   image_url="$(pharo::get_image_url "Pharo-5.0")"
   assertEquals "get.pharo.org/50" "${image_url}"
 
@@ -36,10 +39,13 @@ test_get_vm_url() {
   local vm_url
 
   vm_url="$(pharo::get_vm_url "Pharo-alpha")"
-  assertEquals "get.pharo.org/vm50" "${vm_url}"
+  assertEquals "get.pharo.org/vm60" "${vm_url}"
 
   vm_url="$(pharo::get_vm_url "Pharo-stable")"
-  assertEquals "get.pharo.org/vm40" "${vm_url}"
+  assertEquals "get.pharo.org/vm50" "${vm_url}"
+
+  vm_url="$(pharo::get_vm_url "Pharo-6.0")"
+  assertEquals "get.pharo.org/vm60" "${vm_url}"
 
   vm_url="$(pharo::get_vm_url "Pharo-5.0")"
   assertEquals "get.pharo.org/vm50" "${vm_url}"

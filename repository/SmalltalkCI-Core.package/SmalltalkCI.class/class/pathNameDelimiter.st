@@ -1,0 +1,3 @@
+compatibility
+pathNameDelimiter
+	^ self platformClass pathNameDelimiter

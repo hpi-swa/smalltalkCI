@@ -1,15 +1,14 @@
 testing
 testAuthor
 	| currentAuthor |
-	currentAuthor := (Smalltalk at: #MetacelloPlatform) current authorName.
-	(Smalltalk at: #MetacelloPlatform) current authorName: 'foo'.
+	currentAuthor := SmalltalkCI getAuthor.
 	
-	self spec prepareForCI.
-	self assert: SCIMetacelloLoadSpec getAuthor equals: SCIMetacelloLoadSpec testAuthor.
-	self spec finishUpAfterCI.
+	SCIMetacelloLoadSpec setAuthor: ''.
+	SCIMetacelloLoadSpec new.
+	self assert: SmalltalkCI getAuthor equals: SCIMetacelloLoadSpec defaultAuthor.
 	
 	(Smalltalk at: #MetacelloPlatform) current authorName: currentAuthor.
-	self assert: SCIMetacelloLoadSpec getAuthor equals: currentAuthor
+	self assert: SmalltalkCI getAuthor equals: currentAuthor
 		
 		
 	

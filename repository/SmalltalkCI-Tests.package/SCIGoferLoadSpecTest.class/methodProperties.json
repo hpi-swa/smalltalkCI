@@ -1,0 +1,8 @@
+{
+	"class" : {
+		 },
+	"instance" : {
+		"setUp" : "fn 6/9/2016 15:26",
+		"testAddLoadedClassesFrom" : "fn 6/22/2016 10:50",
+		"testIsComplete" : "fn 6/13/2016 09:50",
+		"testSimple" : "fn 6/13/2016 09:50" } }

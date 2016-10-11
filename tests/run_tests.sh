@@ -5,29 +5,23 @@ source "${BASE}/run.sh"
 # Initialize smalltalkCI
 initialize
 
-test_determine_project_home() {
-  local config_project_home
+test_ensure_ston_config_exists() {
   local config_ston
   local travis="${TRAVIS:-}"
 
-  determine_project "${BASE}/.smalltalk.ston"
-  assertEquals "${BASE}" "${config_project_home}"
-  assertEquals ".smalltalk.ston" "${config_ston}"
+  ensure_ston_config_exists "${BASE}/.smalltalk.ston"
+  assertEquals ".smalltalk.ston" "${config_ston: -15}"
 
   [[ -z "${travis}" ]] && export TRAVIS="true" && export TRAVIS_BUILD_DIR="${BASE}"
-  determine_project ""
-  assertEquals "${TRAVIS_BUILD_DIR}" "${config_project_home}"
-  assertEquals ".smalltalk.ston" "${config_ston}"
-  determine_project
-  assertEquals "${TRAVIS_BUILD_DIR}" "${config_project_home}"
-  assertEquals ".smalltalk.ston" "${config_ston}"
+  ensure_ston_config_exists ""
+  assertEquals ".smalltalk.ston" "${config_ston: -15}"
   [[ -z "${travis}" ]] && unset TRAVIS_BUILD_DIR && unset TRAVIS
 
   return 0
 }
 
 test_prepare_folders() {
-  config_project_home="/tmp"
+  config_ston="/tmp/.smalltalk.ston"
   SMALLTALK_CI_HOME="${BASE}/tests"
   source "${BASE}/env_vars"
 

@@ -2,27 +2,36 @@ language: smalltalk
 sudo: false
 
 smalltalk:
-  - Squeak-latest
   - Squeak-trunk
+  - Squeak-5.1
   - Squeak-5.0
   - Squeak-4.6
   - Squeak-4.5
 
-  - Pharo-alpha
-  - Pharo-stable
+  # - Pharo-alpha   # identical to Pharo-6.0
+  # - Pharo-stable  # identical to Pharo-5.0
+  - Pharo-6.0
   - Pharo-5.0
   - Pharo-4.0
   - Pharo-3.0
+
+  # - Moose-trunk   # identical to Moose-6.1
+  - Moose-6.1
+  - Moose-6.0
 
 os:
   - linux
   - osx
 
+branches:
+  except:
+    - windows
+
 install:
   # Move cache directory if it exists
   - if [[ -d "${SMALLTALK_CI_CACHE}" ]]; then mv $SMALLTALK_CI_CACHE "$(pwd)"; fi
   # Make sure to use smalltalkCI from this branch
-  - if [[ -n "${SMALLTALK_CI_HOME}" ]]; then rm -rf $SMALLTALK_CI_HOME && ln -s "$(pwd)" $SMALLTALK_CI_HOME; fi
+  - if [[ -n "${SMALLTALK_CI_HOME}" ]]; then rm -rf $SMALLTALK_CI_HOME && ln -s "$(pwd)" $SMALLTALK_CI_HOME && source $SMALLTALK_CI_HOME/env_vars; fi
 
 script: $SMALLTALK_CI_HOME/run.sh --debug
 
@@ -78,6 +87,13 @@ matrix:
 #    - smalltalk: GemStone-3.1.0.6
 #      os: osx
 ##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
+  exclude:
+    - smalltalk: Moose-6.1
+      os: osx
+    - smalltalk: Moose-6.0
+      os: osx
   allow_failures:
-    - smalltalk: Squeak-latest
+    - smalltalk: Squeak-trunk
+    - smalltalk: Pharo-6.0
+    - smalltalk: Moose-6.1
   fast_finish: true

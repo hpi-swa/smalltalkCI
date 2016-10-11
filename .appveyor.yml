@@ -1,0 +1,38 @@
+environment:
+  CYG_ROOT: C:\cygwin
+  CYG_BASH: C:\cygwin\bin\bash
+  CYG_CACHE: C:\cygwin\var\cache\setup
+  CYG_EXE: C:\cygwin\setup-x86.exe
+  CYG_MIRROR: http://cygwin.mirror.constant.com
+  matrix:
+    - SMALLTALK: Squeak-trunk
+    - SMALLTALK: Squeak-5.1
+    - SMALLTALK: Squeak-5.0
+    - SMALLTALK: Pharo-alpha
+    - SMALLTALK: Pharo-5.0
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - SMALLTALK: Squeak-trunk
+    - SMALLTALK: Pharo-alpha
+
+platform:
+  - x86
+
+clone_depth: 5
+build: false
+version: "{build}"
+
+install:
+  - '%CYG_EXE% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip'
+
+# Cygwin build script
+#
+# NOTES:
+#
+# The stdin/stdout file descriptor appears not to be valid for the Appveyor
+# build which causes failures as certain functions attempt to redirect
+# default file handles. Ensure a dummy file descriptor is opened with 'exec'.
+test_script:
+  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; ./run.sh"'

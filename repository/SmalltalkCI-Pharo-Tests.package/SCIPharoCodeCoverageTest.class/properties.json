@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Pharo-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"inst" ],
+	"name" : "SCIPharoCodeCoverageTest",
+	"pools" : [
+		 ],
+	"super" : "TestCase",
+	"type" : "normal" }

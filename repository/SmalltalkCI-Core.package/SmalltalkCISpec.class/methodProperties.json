@@ -1,6 +1,7 @@
 {
 	"class" : {
-		"fromStream:" : "fn 1/31/2016 22:15" },
+		"fromStream:" : "fn 7/11/2016 16:11",
+		"writeOn:" : "fn 7/11/2016 16:11" },
 	"instance" : {
 		"addLoadSpec:" : "EstebanLorenzano 1/26/2016 17:41",
 		"configuring" : "dkh 4/1/2016 11:03",

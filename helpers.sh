@@ -3,32 +3,35 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-ANSI_RED="\033[31;1m"
-ANSI_GREEN="\033[32;1m"
-ANSI_YELLOW="\033[33;1m"
-ANSI_BLUE="\033[34;1m"
+COVERALLS_API='https://coveralls.io/api/v1/jobs'
+
+ANSI_BOLD="\033[1m"
+ANSI_RED="\033[31m"
+ANSI_GREEN="\033[32m"
+ANSI_YELLOW="\033[33m"
+ANSI_BLUE="\033[34m"
 ANSI_RESET="\033[0m"
 ANSI_CLEAR="\033[0K"
 
 print_info() {
-  printf "${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
+  printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
 }
 
 print_notice() {
-  printf "${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
+  printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
 }
 
 print_success() {
-  printf "${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
+  printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
 }
 
 print_error() {
-  printf "${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
+  printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
 }
 
 print_error_and_exit() {
   print_error "$1"
-  exit 1
+  exit "${2:-1}"  # Exit with value of 2nd parameter, if not set exit with 1
 }
 
 print_help() {
@@ -77,45 +80,6 @@ print_help() {
 EOF
 }
 
-report_coverage() {
-  python "${SMALLTALK_CI_HOME}/lib/coveralls_notifier.py" \
-         "${SMALLTALK_CI_BUILD}"
-}
-
-print_results() {
-  local build_dir=$1
-  local status=0
-  local junit_xml_file
-  junit_xml_file=${build_dir}/*.xml
-
-  if is_travis_build && [[ $(ls ${junit_xml_file} 2> /dev/null) ]]; then
-    travis_fold start junit_xml "JUnit XML Output"
-      cat ${junit_xml_file}
-      printf "\n"
-    travis_fold end junit_xml
-  fi
-
-  python "${SMALLTALK_CI_HOME}/lib/junit_xml_prettfier.py" \
-      "${build_dir}" || status=$?
-
-  if is_travis_build && ! [[ ${status} -eq 0 ]]; then
-    print_steps_to_reproduce_locally $status
-  fi
-
-  return "${status}"
-}
-
-print_steps_to_reproduce_locally() {
-  local status=$1
-
-  printf "\n"
-  echo "     To reproduce the failed build locally, download smalltalkCI"
-  echo "     and try to run something like:"
-  printf "\n"
-  print_notice "      /path/to/run.sh --headfull /path/to/project/.smalltalk.ston"
-  printf "\n"
-}
-
 is_empty() {
   local var=$1
 
@@ -140,6 +104,18 @@ is_dir() {
   [[ -d $dir ]]
 }
 
+is_nonzero() {
+  local status=$1
+
+  [[ "${status}" -ne 0 ]]
+}
+
+is_int() {
+  local value=$1
+
+  [[ $value =~ ^-?[0-9]+$ ]]
+}
+
 program_exists() {
   local program=$1
 
@@ -148,6 +124,14 @@ program_exists() {
 
 is_travis_build() {
   [[ "${TRAVIS:-}" = "true" ]]
+}
+
+is_appveyor_build() {
+  [[ "${APPVEYOR:-}" = "True" ]]
+}
+
+is_cygwin_build() {
+  [[ $(uname -s) = "CYGWIN_NT-"* ]]
 }
 
 is_spur_image() {
@@ -173,31 +157,96 @@ debug_enabled() {
 
 download_file() {
   local url=$1
+  local target=$2
 
-  if is_empty "${url}"; then
-    print_error "download_file() expects an URL."
-    exit 1
+  if is_empty "${url}" || is_empty "${target}"; then
+    print_error_and_exit "download_file() expects an URL and a target path."
   fi
 
   if program_exists "curl"; then
-    curl -f -s --retry 3 "${url}"
+    curl -f -s -L --retry 3 -o "${target}" "${url}" || print_error_and_exit \
+      "curl failed to download ${url} to '${target}'."
   elif program_exists "wget"; then
-    wget -q -O - "${url}"
+    wget -q -O "${target}" "${url}" || print_error_and_exit \
+      "wget failed to download ${url} to '${target}'."
   else
-    print_error "Please install curl or wget."
-    exit 1
+    print_error_and_exit "Please install curl or wget."
+  fi
+}
+
+resolve_path() {
+  local path=$1
+
+  if is_cygwin_build; then
+    echo $(cygpath -w "${path}")
+  else
+    echo "${path}"
   fi
 }
 
 return_vars() {
-  (IFS='|'; echo "$*")
+  (IFS="|"; echo "$*")
 }
 
 set_vars() {
   local variables=(${@:1:(($# - 1))})
   local values="${!#}"
 
-  IFS='|' read -r "${variables[@]}" <<< "${values}"
+  IFS="|" read -r "${variables[@]}" <<< "${values}"
+}
+
+to_lowercase() {
+  echo $1 | tr "[:upper:]" "[:lower:]"
+}
+
+git_log() {
+  local format_value=$1
+  local output
+  output=$(git --no-pager log -1 --pretty=format:"${format_value}")
+  echo "${output/\"/\\\"}" # Escape double quotes
+}
+
+export_coveralls_data() {
+  local service_name
+
+  if is_travis_build; then
+    service_name="travis-ci"
+  elif is_appveyor_build; then
+    service_name="appveyor"
+  fi
+
+  cat >"${SMALLTALK_CI_BUILD}/coveralls_data.json" <<EOL
+{
+  "git": {
+    "branch": "${TRAVIS_BRANCH:-${APPVEYOR_REPO_BRANCH:-}}",
+    "head": {
+      "author_email": "$(git_log "%ae")",
+      "author_name": "$(git_log "%aN")",
+      "committer_email": "$(git_log "%ce")",
+      "committer_name": "$(git_log "%cN")",
+      "id": "$(git_log "%H")",
+      "message": "$(git_log "%s")"
+    },
+    "remotes": [
+      {
+        "url": "https://github.com/${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-}}.git",
+        "name": "origin"
+      }
+    ]
+  },
+  "service_job_id": "${TRAVIS_JOB_ID:-${APPVEYOR_BUILD_ID:-}}",
+  "service_name": "${service_name}"
+}
+EOL
+}
+
+upload_coverage_results() {
+  local coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"
+
+  if is_file "${coverage_results}"; then
+    print_info "Uploading coverage results to Coveralls..."
+    curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" > /dev/null
+  fi
 }
 
 
@@ -214,13 +263,13 @@ timer_start() {
 }
 
 timer_finish() {
-  timer_end_time=$(timer_nanoseconds)
+  local timer_end_time=$(timer_nanoseconds)
   local duration=$(($timer_end_time-$timer_start_time))
   if is_travis_build; then
     echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
   else
-    duration=$(echo "scale=3;${duration}/1000000000" | bc)
-    printf "\e[0;34m > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
+    duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
+    printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
   fi
 }
 
@@ -238,6 +287,55 @@ function timer_nanoseconds() {
   $cmd -u $format
 }
 
+travis_wait() {
+  local timeout="${SMALLTALK_CI_TIMEOUT:-}"
+
+  local cmd="$@"
+
+  if ! is_int "${timeout}"; then
+    $cmd
+    return $?    
+  fi
+
+  $cmd &
+  local cmd_pid=$!
+
+  travis_jigger $! $timeout $cmd &
+  local jigger_pid=$!
+  local result
+
+  {
+    wait $cmd_pid 2>/dev/null
+    result=$?
+    ps -p$jigger_pid &>/dev/null && kill $jigger_pid
+  }
+
+  if [ $result -ne 0 ]; then
+    print_error_and_exit "The command $cmd exited with $result."
+  fi
+
+  return $result
+}
+
+travis_jigger() {
+  # helper method for travis_wait()
+  local cmd_pid=$1
+  shift
+  local timeout=$1 # in minutes
+  shift
+  local count=0
+
+  while [ $count -lt $timeout ]; do
+    count=$(($count + 1))
+    echo -e "Still running ($count of $timeout): $@"
+    sleep 60
+  done
+
+  echo -e "\n${ANSI_BOLD}${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
+  kill -9 $cmd_pid
+}
+
+
 travis_fold() {
   local action=$1
   local name=$2
@@ -248,6 +346,6 @@ travis_fold() {
     echo -en "travis_fold:${action}:${prefix}${name}\r${ANSI_CLEAR}"
   fi
   if is_not_empty "${title}"; then
-    echo -e "${ANSI_BLUE}${title}${ANSI_RESET}"
+    echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
   fi
 }

@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCITestReporterXML",
+	"pools" : [
+		 ],
+	"super" : "SCITestReporter",
+	"type" : "normal" }

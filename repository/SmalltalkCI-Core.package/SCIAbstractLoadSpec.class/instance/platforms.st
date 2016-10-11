@@ -1,3 +1,3 @@
 accessing
 platforms
-	^ self subclassResponsibility
+	^ platforms ifNil: [ platforms := OrderedCollection new ]

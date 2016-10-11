@@ -1,0 +1,3 @@
+helpers
+readCoverallsData
+	self subclassResponsibility

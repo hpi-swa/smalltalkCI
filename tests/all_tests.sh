@@ -2,7 +2,15 @@
 
 readonly BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-"${BASE}/run_tests.sh"
-"${BASE}/helpers_tests.sh"
-"${BASE}/pharo_tests.sh"
-"${BASE}/squeak_tests.sh"
+status=0
+
+"${BASE}/run_tests.sh" || status=$?
+echo "======================================================"
+"${BASE}/helpers_tests.sh" || status=$?
+echo "======================================================"
+"${BASE}/pharo_tests.sh" || status=$?
+echo "======================================================"
+"${BASE}/squeak_tests.sh" || status=$?
+echo "======================================================"
+
+exit "${status}"

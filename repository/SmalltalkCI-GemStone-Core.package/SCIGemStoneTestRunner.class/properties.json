@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-GemStone-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCIGemStoneTestRunner",
+	"pools" : [
+		 ],
+	"super" : "SCITestRunner",
+	"type" : "normal" }

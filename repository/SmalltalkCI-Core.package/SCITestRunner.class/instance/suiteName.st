@@ -1,0 +1,4 @@
+accessing
+suiteName
+
+	^ suite name

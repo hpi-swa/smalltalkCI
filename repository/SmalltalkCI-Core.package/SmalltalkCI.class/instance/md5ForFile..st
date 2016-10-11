@@ -1,3 +1,0 @@
-coverage
-md5ForFile: aFilename
-	self subclassResponsibility

@@ -1,3 +1,8 @@
+| monitor |
+monitor := [ [
+  FileStream stdout nextPutAll: '.'.
+  (Delay forMilliseconds: 5000) wait] repeat ] forkAt: 75.
+
 "# Install Metacello/FileTree ================================================="
 
 "Get the Metacello configuration (for Squeak users)"
@@ -11,21 +16,21 @@ Installer gemsource
   version: #'previewBootstrap') load.
 
 "Load the Preview version of Metacello from GitHub"
-(Smalltalk at: #Metacello) new
+"(Smalltalk at: #Metacello) new
   configuration: 'MetacelloPreview';
   version: #stable;
   repository: 'github://dalehenrich/metacello-work:configuration';
-  load.
+  load."
 
 "Now load latest version of Metacello"
-(Smalltalk at: #Metacello) new
+"(Smalltalk at: #Metacello) new
   baseline: 'Metacello';
   repository: 'github://dalehenrich/metacello-work:master/repository';
   get.
 (Smalltalk at: #Metacello) new
   baseline: 'Metacello';
   repository: 'github://dalehenrich/metacello-work:master/repository';
-  load.
+  load: #('Cypress')."
 
 "=============================================================================="
 
@@ -37,8 +42,8 @@ Smalltalk at: #MCMcmUpdater ifPresent: [ :updater |
                 ifTrue: [ updater updateFromDefaultRepository ]] ]
     on: Warning do: [ :ex | ex resume: true ]].
 
-"Only keep the latest changes"
-Smalltalk condenseChanges.
+monitor terminate.
+monitor := nil.
 
 "Save and quit image"
 Smalltalk at: #WorldState ifPresent: [:global |
