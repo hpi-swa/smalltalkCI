@@ -2,8 +2,8 @@ printing
 printPassingResults
 	| title |
 	self printTravisFold: 'passing_tests' action: 'start'.
-	title := runner passingTests asString, ' passing Tests'.
-	self setModeBold; setModeGreen; print: title; newLine; resetMode.
+	title := '(', runner passingTests asString, ' tests passed)'.
+	self print: title; newLine.
 	
 	[ runner results keysAndValuesDo: [ :class :results | | passing |
 		passing := results select: [ :result | result passed ].
