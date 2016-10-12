@@ -230,7 +230,8 @@ pharo::load_project() {
         repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
         onConflict: [:ex | ex pass];
         load ] on: Warning do: [:w | w resume ].
-    (Smalltalk at: #SmalltalkCI) load: '$(resolve_path "${config_ston}")'
+    (Smalltalk at: #SmalltalkCI) load: '$(resolve_path "${config_ston}")'.
+    SmalltalkCI isHeadless ifTrue: [ SmalltalkCI saveAndQuitImage ]
   " || status=$?
 
   if is_nonzero "${status}"; then
@@ -244,8 +245,6 @@ pharo::load_project() {
 #   SMALLTALK_CI_HOME
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
-# Return:
-#   Build status (zero if successful)
 ################################################################################
 pharo::test_project() {
   local status=0
@@ -254,8 +253,6 @@ pharo::test_project() {
       eval ${vm_flags} "
     (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")'
   " || status=$?
-
-  return "${status}"
 }
 
 ################################################################################

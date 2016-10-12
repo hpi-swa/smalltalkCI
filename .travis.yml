@@ -64,6 +64,16 @@ matrix:
       cache:
         directories:
           - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
+    - smalltalk: GemStone-3.3.0
+      smalltalk_config: .smalltalk_fail.ston
+      os: linux
+      env: GSCI_CLIENTS="Pharo-5.0 Pharo-3.0" # latest and oldest clients
+      script:
+        - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
+        - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
+      cache:
+        directories:
+          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
     - smalltalk: GemStone-3.2.14
       os: linux
       cache:

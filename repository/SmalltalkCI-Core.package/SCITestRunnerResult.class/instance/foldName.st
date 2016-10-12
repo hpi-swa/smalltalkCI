@@ -1,3 +1,3 @@
 accessing
 foldName
-	^ self testName copyReplaceAll: '>>#' with: '_'.
+	^ SmalltalkCI hash: self testName length: 6

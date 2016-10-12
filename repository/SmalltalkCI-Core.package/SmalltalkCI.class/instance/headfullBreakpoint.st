@@ -1,3 +1,3 @@
 helpers
 headfullBreakpoint
-	SmalltalkCI platformClass isHeadless ifFalse: [ self halt ]
+	SmalltalkCI isHeadless ifFalse: [ self halt ]

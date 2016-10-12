@@ -213,6 +213,8 @@ export_coveralls_data() {
     service_name="travis-ci"
   elif is_appveyor_build; then
     service_name="appveyor"
+  else
+    return 0 # Coverage testing only supported on TravisCI and AppVeyor
   fi
 
   cat >"${SMALLTALK_CI_BUILD}/coveralls_data.json" <<EOL

@@ -1,0 +1,3 @@
+constants
+buildFailed
+	^ $1

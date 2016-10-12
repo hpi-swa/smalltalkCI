@@ -5,6 +5,7 @@ set -o pipefail
 set -o nounset
 
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
+readonly BUILD_STATUS_FILE="build_status.txt"
 readonly INSTALL_TARGET_OSX="/usr/local/bin"
 readonly BINTRAY_API="https://api.bintray.com/content"
 
@@ -298,6 +299,33 @@ prepare_folders() {
 }
 
 ################################################################################
+# Add environment variables for in-image use (with `SCIII_` prefix).
+################################################################################
+add_env_vars() {
+  export SCIII_SMALLTALK="${config_smalltalk}"
+  export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
+}
+
+################################################################################
+# Check build status and exit with non-zero exit code if necessary.
+# Locals:
+#   build_status
+# Globals:
+#   SMALLTALK_CI_BUILD
+################################################################################
+check_build_status() {
+  local build_status
+
+  if ! is_file "${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}"; then
+    print_error_and_exit "Build failed before tests were performed correctly."
+  fi
+  build_status=$(cat "${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}")
+  if is_nonzero "${build_status}"; then
+    exit 1
+  fi
+}
+
+################################################################################
 # Run cleanup if requested by user.
 # Locals:
 #   config_clean
@@ -532,10 +560,10 @@ main() {
   ensure_ston_config_exists "${!#}"  # Use last argument for custom STON
   check_clean_up
   select_smalltalk
-  export config_smalltalk  # Make Smalltalk selection available in image
   validate_configuration
   prepare_folders
   export_coveralls_data
+  add_env_vars
 
   run "$@" || status=$?
 
@@ -547,9 +575,7 @@ main() {
     deploy "${status}"
   fi
 
-  if is_nonzero "${status}"; then
-    exit "${status}"
-  fi
+  check_build_status
 }
 
 # Run main if script is not being tested

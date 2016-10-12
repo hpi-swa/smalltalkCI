@@ -1,7 +1,6 @@
 public-api
 test: aFilenameString projectDirectory: aDirectoryPathString
-	^ self platformClass basicNew
-		initialize;
+	^ self newInstance
 		readSTONSpec: aFilenameString;
 		projectDirectory: aDirectoryPathString;
 		test

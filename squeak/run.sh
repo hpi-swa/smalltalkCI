@@ -265,7 +265,8 @@ squeak::load_project() {
     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
     onConflict: [:ex | ex pass];
     load ] on: Warning do: [:w | w resume ].
-  SmalltalkCI load: '$(resolve_path "${config_ston}")'
+  SmalltalkCI load: '$(resolve_path "${config_ston}")'.
+  SmalltalkCI isHeadless ifTrue: [ SmalltalkCI saveAndQuitImage ]
 EOL
 
   squeak::run_script "load.st" || status=$?
@@ -283,8 +284,6 @@ EOL
 # Globals:
 #   SMALLTALK_CI_IMAGE
 #   SMALLTALK_CI_VM
-# Return:
-#   Build status (zero if successful)
 ################################################################################
 squeak::test_project() {
   local status=0
@@ -296,7 +295,6 @@ EOL
 
   squeak::run_script "test.st" || status=$?
   printf "\n\n"
-  return "${status}"
 }
 
 ################################################################################
