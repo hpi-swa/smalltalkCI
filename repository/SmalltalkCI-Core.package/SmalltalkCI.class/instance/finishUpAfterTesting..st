@@ -1,6 +1,6 @@
 executing
 finishUpAfterTesting: buildSuccessful
 	self exportBuildStatus: buildSuccessful.
-	SmalltalkCI isHeadless
+	self class isHeadless
 		ifTrue: [ self finishUpAfterTestingHeadless: buildSuccessful ]
 		ifFalse: [ self finishUpAfterTestingHeadful: buildSuccessful ]
