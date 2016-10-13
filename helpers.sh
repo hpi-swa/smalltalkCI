@@ -80,6 +80,12 @@ print_help() {
 EOF
 }
 
+print_config() {
+  for var in ${!config_@}; do
+    echo "${var}=${!var}"
+  done
+}
+
 is_empty() {
   local var=$1
 

@@ -23,23 +23,23 @@ gemstone::prepare_gsdevkit_home() {
     travis_fold start clone_gsdevkit "Cloning GsDevKit..."
       timer_start
 
-      pushd "${SMALLTALK_CI_BUILD}" || print_error_and_exit "pushd failed."
-        git clone -b "${DEVKIT_BRANCH}" --depth 1 "${DEVKIT_DOWNLOAD}" || print_error_and_exit "git clone failed."
-        cd "${GS_HOME}" || print_error_and_exit "cd failed."
+      pushd "${SMALLTALK_CI_BUILD}"
+        git clone -b "${DEVKIT_BRANCH}" --depth 1 "${DEVKIT_DOWNLOAD}"
+        cd "${GS_HOME}"
         # pre-clone /sys/local, so that travis can skip backups
-        ${GS_HOME}/bin/private/clone_sys_local || print_error_and_exit "clone_sys_local failed."
+        ${GS_HOME}/bin/private/clone_sys_local
         # arrange to skip backups
-        cp ${GS_HOME}/tests/sys/local/client/tode-scripts/* ${GS_HOME}/sys/local/client/tode-scripts || print_error_and_exit "cp failed."
+        cp ${GS_HOME}/tests/sys/local/client/tode-scripts/* ${GS_HOME}/sys/local/client/tode-scripts
 
-        cp ${GS_HOME}/tests/sys/local/gsdevkit_bin/* ${GS_HOME}/sys/local/gsdevkit_bin || print_error_and_exit "cp failed."
+        cp ${GS_HOME}/tests/sys/local/gsdevkit_bin/* ${GS_HOME}/sys/local/gsdevkit_bin
 
         # Operating system setup already performed
-        touch ${GS_HOME}/bin/.gsdevkitSysSetup || print_error_and_exit "touch failed."
+        touch ${GS_HOME}/bin/.gsdevkitSysSetup
 
         # Make sure the GsDevKit_home is using $SMALLTALK_CI_HOME in $GS_HOME/shared/repos
-        ln -s ${SMALLTALK_CI_HOME} ${GS_HOME}/shared/repos/smalltalkCI || print_error_and_exit "ln -s failed."
+        ln -s ${SMALLTALK_CI_HOME} ${GS_HOME}/shared/repos/smalltalkCI
 
-      popd || print_error_and_exit "popd failed."
+      popd
 
       timer_finish
     travis_fold end clone_gsdevkit
@@ -65,7 +65,7 @@ gemstone::prepare_stone() {
     travis_fold start install_server "Installing server..."
       timer_start
 
-      ${GS_HOME}/bin/installServer || print_error_and_exit "installServer failed."
+      ${GS_HOME}/bin/installServer
 
       timer_finish
     travis_fold end install_server
@@ -93,7 +93,7 @@ gemstone::prepare_stone() {
         print_info "Downloading Pharo-3.0 vm to cache" 
         pushd "${SMALLTALK_CI_VMS}/Pharo-3.0" > /dev/null
           download_file "get.pharo.org/vm30" "$(pwd)/zeroconfig"
-          bash "$(pwd)/zeroconfig" || print_error_and_exit "Pharo-3.0 vm download failed."
+          bash "$(pwd)/zeroconfig"
         popd > /dev/null
       fi
   
@@ -101,7 +101,7 @@ gemstone::prepare_stone() {
         print_info "Downloading Pharo-3.0 image to cache..." 
         pushd ${SMALLTALK_CI_CACHE} > /dev/null
           download_file "get.pharo.org/30" "$(pwd)/pharo30_zeroconfig"
-          bash "$(pwd)/pharo30_zeroconfig" || print_error_and_exit "Pharo-3.0 image download failed."
+          bash "$(pwd)/pharo30_zeroconfig"
           mv "Pharo.image" "${PHARO_IMAGE_FILE}"
           mv "Pharo.changes" "${PHARO_CHANGES_FILE}"
         popd > /dev/null
@@ -132,17 +132,17 @@ gemstone::prepare_stone() {
     fi
 
     if [[ "${TRAVIS_CACHE_ENABLED:-}" = "false" ]]; then
-      ${GS_HOME}/bin/createStone ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
+      ${GS_HOME}/bin/createStone ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}"
     else
       if ! is_file "${gemstone_cached_extent_file}"; then
-        ${GS_HOME}/bin/createStone ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
-        cp "${GS_HOME}/server/stones/${STONE_NAME}/snapshots/extent0.tode.dbf" ${gemstone_cached_extent_file} || print_error_and_exit "copy extent0.tode.dbf to travis cache failed."
+        ${GS_HOME}/bin/createStone ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}"
+        cp "${GS_HOME}/server/stones/${STONE_NAME}/snapshots/extent0.tode.dbf" ${gemstone_cached_extent_file}
       else
-        ${GS_HOME}/bin/createStone -t "${gemstone_cached_extent_file}" ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}" || print_error_and_exit "createStone failed."
+        ${GS_HOME}/bin/createStone -t "${gemstone_cached_extent_file}" ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}"
       fi
   
       if ! is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
-        cp ${GS_HOME}/shared/pharo/gsDevKitCommandLine.* "${SMALLTALK_CI_CACHE}/gemstone/pharo/" || print_error_and_exit "copy gsDevKitCommandLine.image to travis cache failed."
+        cp ${GS_HOME}/shared/pharo/gsDevKitCommandLine.* "${SMALLTALK_CI_CACHE}/gemstone/pharo/"
       fi
     fi
 
@@ -196,7 +196,7 @@ gemstone::prepare_client() {
  travis_fold start "create_${client_name}" "Creating client ${client_name}..."
     timer_start
 
-    ${GS_HOME}/bin/createClient -t pharo "${client_name}" -v ${client_version} -s "${STONE_NAME}" -z "${config_ston}" || print_error_and_exit "createClient ${client_name} failed."
+    ${GS_HOME}/bin/createClient -t pharo "${client_name}" -v ${client_version} -s "${STONE_NAME}" -z "${config_ston}"
 
     timer_finish
   travis_fold end "create_${client_name}"
@@ -310,7 +310,7 @@ EOF
   fi
 
   travis_fold start stop_stone "Stopping stone..."
-  ${GS_HOME}/bin/stopStone -b "${STONE_NAME}" || print_error_and_exit "stopStone failed."
+  ${GS_HOME}/bin/stopStone -b "${STONE_NAME}"
   travis_fold end stop_stone
 }
 

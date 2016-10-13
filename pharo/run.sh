@@ -221,8 +221,6 @@ pharo::prepare_moose_image() {
 #   SMALLTALK_CI_VM
 ################################################################################
 pharo::load_project() {
-  local status=0
-
   travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
       eval ${vm_flags} "
     [ Metacello new
@@ -232,11 +230,7 @@ pharo::load_project() {
         load ] on: Warning do: [:w | w resume ].
     (Smalltalk at: #SmalltalkCI) load: '$(resolve_path "${config_ston}")'.
     SmalltalkCI isHeadless ifTrue: [ SmalltalkCI saveAndQuitImage ]
-  " || status=$?
-
-  if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to load project." ${status}
-  fi
+  "
 }
 
 ################################################################################
@@ -247,12 +241,10 @@ pharo::load_project() {
 #   SMALLTALK_CI_VM
 ################################################################################
 pharo::test_project() {
-  local status=0
-
   travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
       eval ${vm_flags} "
     (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")'
-  " || status=$?
+  "
 }
 
 ################################################################################
