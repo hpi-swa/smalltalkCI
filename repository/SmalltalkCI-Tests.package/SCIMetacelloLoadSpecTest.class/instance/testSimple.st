@@ -5,6 +5,8 @@ testSimple
 	smalltalkCI projectDirectory: '/dir/to/project'.
 	self assert: '' equals: self spec directory.
 	self assert: #() equals: self spec load.
+	self deny: self spec onWarningLog.
+	self deny: self spec useLatestMetacello.
 
 	self spec
 		directory: 'foodir';

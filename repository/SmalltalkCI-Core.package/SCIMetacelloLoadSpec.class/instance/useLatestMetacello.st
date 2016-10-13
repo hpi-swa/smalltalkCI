@@ -1,4 +1,4 @@
 accessing
 useLatestMetacello
-
-	^ useLatestMetacello
+  useLatestMetacello ifNil: [ useLatestMetacello := false ].
+  ^ useLatestMetacello
