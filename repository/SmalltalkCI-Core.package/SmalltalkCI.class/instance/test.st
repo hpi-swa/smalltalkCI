@@ -1,8 +1,6 @@
 executing
 test
 	| runner |
-	self headfullBreakpoint.
-
 	self class
 		stage: 'Testing project...'
 		id: 'test_project'

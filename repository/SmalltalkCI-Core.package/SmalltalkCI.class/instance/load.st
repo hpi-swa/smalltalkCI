@@ -1,7 +1,5 @@
 executing
-load
-	self headfullBreakpoint.
-	
+load	
 	self class
 		stage: 'Loading project...'
 		id: 'load_project'

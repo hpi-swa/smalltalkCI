@@ -157,8 +157,18 @@ is_spur_image() {
   [[ $((image_format_number>>(spur_bit-1) & 1)) -eq 1 ]]
 }
 
+is_headless() {
+  [[ "${config_headless}" = "true" ]]
+}
+
 debug_enabled() {
   [[ "${config_debug}" = "true" ]]
+}
+
+conditional_debug_halt() {
+  if ! is_headless && debug_enabled; then
+    printf "self halt.\n"
+  fi
 }
 
 download_file() {

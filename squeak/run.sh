@@ -214,7 +214,7 @@ squeak::prepare_vm() {
 ################################################################################
 squeak::determine_vm_flags() {
   local vm_flags=""
-  if is_travis_build || [[ "${config_headless}" = "true" ]]; then
+  if is_travis_build || is_headless; then
     case "$(uname -s)" in
       "Linux")
         vm_flags="-nosound -nodisplay"
@@ -256,13 +256,16 @@ squeak::run_script() {
 ################################################################################
 squeak::load_project() {
   cat >"${SMALLTALK_CI_BUILD}/load.st" <<EOL
+  | smalltalkCI |
+  $(conditional_debug_halt)
   [ Metacello new
     baseline: 'SmalltalkCI';
     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
     onConflict: [:ex | ex pass];
     load ] on: Warning do: [:w | w resume ].
-  SmalltalkCI load: '$(resolve_path "${config_ston}")'.
-  SmalltalkCI isHeadless ifTrue: [ SmalltalkCI saveAndQuitImage ]
+  smalltalkCI := (Smalltalk at: #SmalltalkCI).
+  smalltalkCI load: '$(resolve_path "${config_ston}")'.
+  smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
 EOL
 
   squeak::run_script "load.st"
@@ -279,7 +282,8 @@ EOL
 ################################################################################
 squeak::test_project() {
   cat >"${SMALLTALK_CI_BUILD}/test.st" <<EOL
-  SmalltalkCI test: '$(resolve_path "${config_ston}")'
+  $(conditional_debug_halt)
+  (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")'
 EOL
 
   squeak::run_script "test.st"
