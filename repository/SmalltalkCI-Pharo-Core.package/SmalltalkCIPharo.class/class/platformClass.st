@@ -1,3 +1,0 @@
-compatibility
-platformClass
-	^ self
