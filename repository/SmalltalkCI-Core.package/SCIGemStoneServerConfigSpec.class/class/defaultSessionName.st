@@ -1,3 +1,3 @@
 public-api
 defaultSessionName
-  ^ defaultSessionName ifNil: [ defaultSessionName := 'travis' ]
+  ^ DefaultSessionName ifNil: [ DefaultSessionName := 'travis' ]

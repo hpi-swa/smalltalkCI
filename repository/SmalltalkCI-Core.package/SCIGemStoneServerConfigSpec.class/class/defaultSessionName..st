@@ -1,4 +1,4 @@
 public-api
 defaultSessionName: anObject
 
-   defaultSessionName := anObject
+   DefaultSessionName := anObject
