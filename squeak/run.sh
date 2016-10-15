@@ -214,7 +214,7 @@ squeak::prepare_vm() {
 ################################################################################
 squeak::determine_vm_flags() {
   local vm_flags=""
-  if is_travis_build || [[ "${config_headless}" = "true" ]]; then
+  if is_travis_build || is_headless; then
     case "$(uname -s)" in
       "Linux")
         vm_flags="-nosound -nodisplay"
@@ -242,9 +242,7 @@ squeak::run_script() {
   esac
 
   travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} \
-    "$(resolve_path "${SMALLTALK_CI_IMAGE}")" "${script}" || return $?
-
-  return 0
+    "$(resolve_path "${SMALLTALK_CI_IMAGE}")" "${script}"
 }
 
 ################################################################################
@@ -257,23 +255,20 @@ squeak::run_script() {
 #   SMALLTALK_CI_VM
 ################################################################################
 squeak::load_project() {
-  local status=0
-
   cat >"${SMALLTALK_CI_BUILD}/load.st" <<EOL
+  | smalltalkCI |
+  $(conditional_debug_halt)
   [ Metacello new
     baseline: 'SmalltalkCI';
     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
     onConflict: [:ex | ex pass];
     load ] on: Warning do: [:w | w resume ].
-  SmalltalkCI load: '$(resolve_path "${config_ston}")'.
-  SmalltalkCI isHeadless ifTrue: [ SmalltalkCI saveAndQuitImage ]
+  smalltalkCI := (Smalltalk at: #SmalltalkCI).
+  smalltalkCI load: '$(resolve_path "${config_ston}")'.
+  smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
 EOL
 
-  squeak::run_script "load.st" || status=$?
-
-  if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to load project." "${status}"
-  fi
+  squeak::run_script "load.st"
 }
 
 ################################################################################
@@ -286,14 +281,13 @@ EOL
 #   SMALLTALK_CI_VM
 ################################################################################
 squeak::test_project() {
-  local status=0
-  local build_name=""
-
   cat >"${SMALLTALK_CI_BUILD}/test.st" <<EOL
-  SmalltalkCI test: '$(resolve_path "${config_ston}")'
+  $(conditional_debug_halt)
+  (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")'
 EOL
 
-  squeak::run_script "test.st" || status=$?
+  squeak::run_script "test.st"
+
   printf "\n\n"
 }
 

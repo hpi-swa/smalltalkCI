@@ -1,7 +1,7 @@
 executing
 finishUpAfterTestingHeadless: buildSuccessful
 	buildSuccessful
-		ifTrue: [ SmalltalkCI quitImage ]
+		ifTrue: [ self class quitImage ]
 		ifFalse: [
 			self printStepsToReproduceLocally.
-			SmalltalkCI saveAndQuitImage ]
+			self class saveAndQuitImage ]

@@ -351,6 +351,7 @@ SCIMetacelloLoadSpec {
   #directory : 'packages',                            // Path to packages if FileTree is used
   #repository : 'http://smalltalkhub.com/mc/...',     // Alternatively, define MC repository
   #onWarningLog : true,                               // Handle Warnings and log message to Transcript
+  #useLatestMetacello : true,                         // Upgrade Metacello before loading
   #load : [ 'default' ],                              // Define MC load attributes
   #platforms : [ #squeak, #pharo, #gemstone ],        // Define compatible platforms
   #version : '1.0.0'                                  // Define MC version (for MC

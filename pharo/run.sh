@@ -100,11 +100,9 @@ pharo::get_vm_url() {
 #   SMALLTALK_CI_VM
 # Arguments:
 #   smalltalk_name
-#   headful: 'true' for headful, 'false' for headless mode
 ################################################################################
 pharo::prepare_vm() {
   local smalltalk_name=$1
-  local headless=$2
   local pharo_vm_url="$(pharo::get_vm_url "${smalltalk_name}")"
   local pharo_vm_folder="${SMALLTALK_CI_VMS}/${smalltalk_name}"
   local pharo_zeroconf="${pharo_vm_folder}/zeroconfig"
@@ -125,7 +123,7 @@ pharo::prepare_vm() {
     travis_fold end download_vm
   fi
 
-  if [[ "${headless}" = "true" ]]; then
+  if is_headless; then
     echo "${pharo_vm_folder}/pharo \"\$@\"" > "${SMALLTALK_CI_VM}"
   else
     echo "${pharo_vm_folder}/pharo-ui \"\$@\"" > "${SMALLTALK_CI_VM}"
@@ -221,22 +219,19 @@ pharo::prepare_moose_image() {
 #   SMALLTALK_CI_VM
 ################################################################################
 pharo::load_project() {
-  local status=0
-
   travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
       eval ${vm_flags} "
+    | smalltalkCI |
+    $(conditional_debug_halt)
     [ Metacello new
         baseline: 'SmalltalkCI';
         repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
         onConflict: [:ex | ex pass];
         load ] on: Warning do: [:w | w resume ].
-    (Smalltalk at: #SmalltalkCI) load: '$(resolve_path "${config_ston}")'.
-    SmalltalkCI isHeadless ifTrue: [ SmalltalkCI saveAndQuitImage ]
-  " || status=$?
-
-  if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to load project." ${status}
-  fi
+    smalltalkCI := (Smalltalk at: #SmalltalkCI).
+    smalltalkCI load: '$(resolve_path "${config_ston}")'.
+    smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
+  "
 }
 
 ################################################################################
@@ -247,12 +242,11 @@ pharo::load_project() {
 #   SMALLTALK_CI_VM
 ################################################################################
 pharo::test_project() {
-  local status=0
-
   travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
       eval ${vm_flags} "
+    $(conditional_debug_halt)
     (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")'
-  " || status=$?
+  "
 }
 
 ################################################################################
@@ -261,7 +255,7 @@ pharo::test_project() {
 run_build() {
   local vm_flags=""
 
-  if ! is_travis_build && [[ "${config_headless}" != "true" ]]; then
+  if ! is_travis_build && ! is_headless; then
     vm_flags="--no-quit"
   fi
 
@@ -274,7 +268,7 @@ run_build() {
       ;;
   esac
 
-  pharo::prepare_vm "${config_smalltalk}" "${config_headless}"
+  pharo::prepare_vm "${config_smalltalk}"
   pharo::load_project
   pharo::test_project
 }

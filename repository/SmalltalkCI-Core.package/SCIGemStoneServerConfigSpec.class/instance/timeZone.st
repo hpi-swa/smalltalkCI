@@ -1,4 +1,4 @@
-accessing
+public-api
 timeZone
 
    ^ timeZone

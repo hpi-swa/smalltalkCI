@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -o errexit
+set -o errtrace
 set -o pipefail
 set -o nounset
 
@@ -15,7 +16,8 @@ readonly BINTRAY_API="https://api.bintray.com/content"
 initialize() {
   local resolved_path
 
-  trap interrupted INT
+  trap 'handle_error ${FUNCNAME} $? ${LINENO}' ERR
+  trap handle_interrupt INT
 
   # Fail if OS is not supported
   case "$(uname -s)" in
@@ -63,9 +65,30 @@ initialize() {
 }
 
 ################################################################################
-# Print notice on interrupt.
+# Print error information and exit.
 ################################################################################
-interrupted() {
+handle_error() {
+  local function_name=$1
+  local error_code=$2
+  local error_line=$3
+  local i
+
+  printf "\n"
+  print_notice "Error with status ${error_code} on line ${error_line} in \
+${function_name}():"
+  i=0
+  while caller $i;
+    do ((i++));
+  done
+  printf "====================================================================="
+  print_config
+  exit "${error_code}"
+}
+
+################################################################################
+# Print notice on interrupt and exit.
+################################################################################
+handle_interrupt() {
   print_notice $'\nsmalltalkCI has been interrupted. Exiting...'
   exit 1
 }
@@ -532,7 +555,7 @@ run() {
   if debug_enabled; then
     travis_fold start display_config "Current configuration"
       for var in ${!config_@}; do
-        echo "${var}=${!var}"
+        print_config
       done
     travis_fold end display_config
   fi
@@ -564,8 +587,7 @@ main() {
   prepare_folders
   export_coveralls_data
   add_env_vars
-
-  run "$@" || status=$?
+  run "$@"
 
   if is_travis_build || is_appveyor_build; then
     upload_coverage_results

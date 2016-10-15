@@ -2,6 +2,7 @@ executing
 basicLoadProjectOn: aSmalltalkCI
   | metacello baseBlock loadBlock |
   aSmalltalkCI class requireMetacello.
+  self updateMetacelloIfRequested.
   metacello := (Smalltalk at: #'Metacello') new.
   metacello
     repository: (self loadRepositoryFor: aSmalltalkCI);

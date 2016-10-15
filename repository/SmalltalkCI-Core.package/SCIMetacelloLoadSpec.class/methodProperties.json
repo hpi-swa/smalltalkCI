@@ -1,11 +1,12 @@
 {
 	"class" : {
 		"defaultAuthor" : "fn 6/13/2016 11:45",
-		"setAuthor:" : "fn 1/31/2016 20:11" },
+		"setAuthor:" : "fn 1/31/2016 20:11",
+		"updateMetacello" : "fn 10/13/2016 16:14" },
 	"instance" : {
 		"baseline" : "fn 1/10/2016 11:44",
 		"baseline:" : "fn 1/10/2016 11:44",
-		"basicLoadProjectOn:" : "dkh 07/07/2016 07:24",
+		"basicLoadProjectOn:" : "fn 10/13/2016 14:53",
 		"configuration" : "fn 1/10/2016 11:45",
 		"configuration:" : "fn 1/10/2016 11:44",
 		"directory" : "fn 8/28/2016 19:20",
@@ -20,8 +21,10 @@
 		"loadedClasses" : "dkh 07/05/2016 17:01",
 		"onWarningLog" : "dkh 02/05/2016 16:24",
 		"onWarningLog:" : "dkh 02/05/2016 16:24",
-		"prepareForCI" : "fn 6/13/2016 11:45",
 		"repository" : "fn 1/10/2016 11:44",
 		"repository:" : "fn 1/10/2016 11:44",
+		"updateMetacelloIfRequested" : "fn 10/13/2016 14:53",
+		"useLatestMetacello" : "fn 10/13/2016 17:18",
+		"useLatestMetacello:" : "fn 10/13/2016 14:30",
 		"version" : "fn 2/20/2016 21:25",
 		"version:" : "fn 2/20/2016 21:25" } }
