@@ -1,13 +1,13 @@
 {
-	"category" : "SmalltalkCI-Pharo-Tests",
+	"category" : "SmalltalkCI-Tests",
 	"classinstvars" : [
 		 ],
 	"classvars" : [
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"inst" ],
-	"name" : "SCIPharoCodeCoverageTest",
+		 ],
+	"name" : "SCITestReporterXMLTest",
 	"pools" : [
 		 ],
 	"super" : "TestCase",

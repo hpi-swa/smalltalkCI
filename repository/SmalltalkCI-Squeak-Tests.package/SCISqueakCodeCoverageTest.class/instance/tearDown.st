@@ -1,3 +1,0 @@
-setup
-tearDown
-	self deleteTestFile

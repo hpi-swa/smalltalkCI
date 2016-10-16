@@ -6,7 +6,7 @@
 		"coverallsResultFilename" : "fn 10/8/2016 17:50",
 		"methodReferenceFor:selector:" : "fn 10/8/2016 15:10",
 		"packageNameForClass:" : "fn 10/8/2016 15:11",
-		"run:cover:spec:in:" : "fn 10/8/2016 15:52" },
+		"run:spec:in:" : "fn 10/16/2016 15:33" },
 	"instance" : {
 		"classesToCover" : "fn 10/8/2016 15:50",
 		"coverageDictFor:in:" : "fn 10/8/2016 14:53",
@@ -21,5 +21,5 @@
 		"md5ForFile:" : "fn 10/8/2016 14:52",
 		"projectDirectory:" : "fn 10/8/2016 16:48",
 		"readCoverallsData" : "fn 10/8/2016 15:26",
-		"run:cover:spec:in:" : "fn 10/9/2016 16:57",
+		"run:spec:in:" : "fn 10/16/2016 15:33",
 		"spec:" : "fn 10/8/2016 16:48" } }

@@ -25,7 +25,8 @@
 		"stdout" : "fn 9/27/2016 20:25",
 		"stringFor:maxDecimalPlaces:" : "fn 9/28/2016 12:52",
 		"test:xmlLogDirPath:" : "fn 10/9/2016 21:37",
-		"testRunnerClass" : "fn 9/27/2016 15:15" },
+		"testRunnerClass" : "fn 9/27/2016 15:15",
+		"workingDirectory" : "fn 10/16/2016 16:31" },
 	"instance" : {
 		"explicitTestKeys" : "fn 6/22/2016 13:06",
 		"initialize" : "fn 10/4/2016 14:00",

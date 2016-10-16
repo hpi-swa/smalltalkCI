@@ -1,13 +1,13 @@
 {
-	"category" : "SmalltalkCI-Squeak-Tests",
+	"category" : "SmalltalkCI-Tests",
 	"classinstvars" : [
 		 ],
 	"classvars" : [
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"inst" ],
-	"name" : "SCISqueakCodeCoverageTest",
+		 ],
+	"name" : "SCICodeCoverageTest",
 	"pools" : [
 		 ],
 	"super" : "TestCase",
