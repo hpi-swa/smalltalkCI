@@ -4,8 +4,5 @@ readSTONSpec: aFilename
 	stream := StandardFileStream oldFileNamed: aFilename.
   	stream := MultiByteFileStream newFrom: stream.
 	projectDirectory := stream directory fullName.	
-	[ self spec: ((Smalltalk at: #SmalltalkCISpec) fromStream: stream) ]
-		on: STONReaderError do: [ :error |
-			SmalltalkCI stdout nextPutAll: 'Cannot read STON config file for smalltalkCI:', Character cr, error asString; flush.
-			SmalltalkImage current snapshot: false andQuitWithExitCode: 1].
+	self spec: ((Smalltalk at: #SmalltalkCISpec) fromStream: stream).
 	stream close
