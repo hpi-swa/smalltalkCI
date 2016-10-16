@@ -7,9 +7,7 @@ testTravisDetection
 	SmalltalkCI isTravisBuild ifTrue: [
 		self
 			assert: 'true'
-			equals: (SmalltalkCI getEnv: 'CI')
-			description: '$CI not set to true'.
+			equals: (SmalltalkCI getEnv: 'CI').
 		self
 			assert: (SmalltalkCI getEnv: 'TRAVIS_SMALLTALK_VERSION') notEmpty
-			description: '$TRAVIS_SMALLTALK_VERSION is empty'
 	]

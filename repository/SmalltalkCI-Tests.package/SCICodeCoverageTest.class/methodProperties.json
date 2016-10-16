@@ -4,5 +4,4 @@
 	"instance" : {
 		"createTestFile" : "fn 10/16/2016 16:05",
 		"deleteTestFile" : "fn 10/16/2016 15:59",
-		"testCoverageHelpers" : "fn 10/16/2016 16:10",
-		"testMethodReferenceForSelector" : "fn 10/16/2016 16:00" } }
+		"testCoverageHelpers" : "fn 10/16/2016 16:10" } }
