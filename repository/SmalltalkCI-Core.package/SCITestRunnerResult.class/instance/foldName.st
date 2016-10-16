@@ -1,3 +1,3 @@
 accessing
 foldName
-	^ SmalltalkCI hash: self testName length: 6
+	^ SmalltalkCI hash: self testName maxLength: 6
