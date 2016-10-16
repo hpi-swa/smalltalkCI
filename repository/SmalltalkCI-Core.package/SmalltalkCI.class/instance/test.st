@@ -9,7 +9,6 @@ test
 			self isCoverageTestingEnabled
 				ifTrue: [ self class codeCoverageClass
 							run: [ runner := self runTests ]
-							cover: self classesToCover
 							spec: self spec
 							in: self projectDirectory ]
 				ifFalse: [ runner := self runTests ] ].

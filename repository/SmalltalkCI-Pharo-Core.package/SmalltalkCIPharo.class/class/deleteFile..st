@@ -1,0 +1,3 @@
+compatibility
+deleteFile: aFilename
+	aFilename asFileReference delete
