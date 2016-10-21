@@ -1,4 +1,4 @@
-helpers
+finalizing
 exportBuildStatus: buildSuccessful
 	| stream |
 	stream := SmalltalkCI forceNewFileNamed: SmalltalkCI buildStatusFile.

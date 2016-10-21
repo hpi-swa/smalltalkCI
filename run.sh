@@ -256,7 +256,7 @@ parse_options() {
       print_help
       exit 0
       ;;
-    --headfull)
+    --headful | --headfull)
       config_headless="false"
       shift
       ;;
