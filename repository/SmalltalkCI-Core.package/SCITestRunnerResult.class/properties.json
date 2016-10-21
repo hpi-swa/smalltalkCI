@@ -7,9 +7,10 @@
 	"commentStamp" : "",
 	"instvars" : [
 		"testCase",
-		"testTime",
 		"testError",
-		"testStack" ],
+		"error",
+		"time",
+		"stack" ],
 	"name" : "SCITestRunnerResult",
 	"pools" : [
 		 ],

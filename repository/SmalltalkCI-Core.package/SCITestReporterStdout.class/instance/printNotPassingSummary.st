@@ -1,10 +1,7 @@
 printing
-printNotPassingResults
-	self printNotPassingBanner.
+printNotPassingSummary
 	runner results keysAndValuesDo: [ :class :results | | notPassing |
 		notPassing := results select: [ :result | result passed not ].
 		notPassing ifNotEmpty: [
 			self printClassTitle: class.
-			notPassing do: [ :result | self printException: result ] ] ].
-	SmalltalkCI isTravisBuild
-		ifFalse: [ self printNotPassingSummary ]
+			notPassing do: [ :result | self print: result ansiTitle; newLine ] ] ]
