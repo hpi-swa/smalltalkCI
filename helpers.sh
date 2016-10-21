@@ -44,7 +44,7 @@ print_help() {
     --clean             Clear cache and delete builds.
     -d | --debug        Enable debug mode.
     -h | --help         Show this help text.
-    --headfull          Open vm in headfull mode and do not close image.
+    --headful           Open vm in headful mode and do not close image.
     --install           Install symlink to this smalltalkCI instance.
     -s | --smalltalk    Overwrite Smalltalk image selection.
     --uninstall         Remove symlink to any smalltalkCI instance.

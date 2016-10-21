@@ -1,5 +1,6 @@
 executing
-load	
+load
+	self reportImageInfo.
 	self class
 		stage: 'Loading project...'
 		id: 'load_project'

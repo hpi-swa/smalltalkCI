@@ -14,4 +14,4 @@ test
 				ifFalse: [ runner := self runTests ] ].
 
 	self reportResults: runner.
-	self finishUpAfterTesting: runner isSuccessful
+	SmalltalkCI shutdown: runner isSuccessful

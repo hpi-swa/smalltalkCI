@@ -1,3 +1,0 @@
-printing
-printFailure: aResult
-	self subclassResponsibility

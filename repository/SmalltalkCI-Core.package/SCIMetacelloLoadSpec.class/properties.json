@@ -9,6 +9,7 @@
 		"baseline",
 		"configuration",
 		"directory",
+		"failOn",
 		"load",
 		"onWarningLog",
 		"repository",

@@ -30,7 +30,7 @@
 		"workingDirectory" : "fn 10/16/2016 16:29" },
 	"instance" : {
 		"finishUpAfterLoading" : "fn 6/14/2016 19:17",
+		"imageInfo" : "fn 10/21/2016 16:20",
 		"prepareForLoading" : "fn 6/14/2016 19:17",
 		"prepareForTesting" : "fn 6/14/2016 19:17",
-		"readSTONSpec:" : "fn 10/16/2016 16:13",
-		"reportImage" : "fn 9/27/2016 20:40" } }
+		"readSTONSpec:" : "fn 10/16/2016 16:13" } }

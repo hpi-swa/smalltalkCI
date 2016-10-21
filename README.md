@@ -350,7 +350,8 @@ SCIMetacelloLoadSpec {
   #configuration : 'MyProject',                       // Alternatively, define MC Configuration
   #directory : 'packages',                            // Path to packages if FileTree is used
   #repository : 'http://smalltalkhub.com/mc/...',     // Alternatively, define MC repository
-  #onWarningLog : true,                               // Handle Warnings and log message to Transcript
+  #onWarningLog : true,                               // Log Warning messages to Transcript
+  #failOn : [ #OCUndeclaredVariableWarning ],         // Fail build on provided list of Warnings
   #useLatestMetacello : true,                         // Upgrade Metacello before loading
   #load : [ 'default' ],                              // Define MC load attributes
   #platforms : [ #squeak, #pharo, #gemstone ],        // Define compatible platforms
@@ -449,7 +450,7 @@ OPTIONS:
   --clean             Clear cache and delete builds.
   -d | --debug        Enable debug mode.
   -h | --help         Show this help text.
-  --headfull          Open vm in headfull mode and do not close image.
+  --headful           Open vm in headful mode and do not close image.
   --install           Install symlink to this smalltalkCI instance.
   -s | --smalltalk    Overwrite Smalltalk image selection.
   --uninstall         Remove symlink to any smalltalkCI instance.

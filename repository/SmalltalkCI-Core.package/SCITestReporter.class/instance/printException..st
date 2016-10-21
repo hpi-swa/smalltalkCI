@@ -1,3 +1,3 @@
 printing
-printError: aResult
+printException: aResult
 	self subclassResponsibility
