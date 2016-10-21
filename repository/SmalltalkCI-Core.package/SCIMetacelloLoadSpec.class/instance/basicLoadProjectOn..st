@@ -15,9 +15,11 @@ basicLoadProjectOn: aSmalltalkCI
       [ metacello load: self load ]
         on: Warning
         do: [ :ex |
+          (self failOn includes: ex class name)
+            ifTrue: [
+              SmalltalkCI printToStdout: 'Build failed: ', ex description.
+              SmalltalkCI shutdown: false ].
           self onWarningLog
             ifTrue: [ Transcript cr; show: ex description ]. 
-          (self failOn includes: ex class name)
-            ifTrue: [ SmalltalkCI shutdown: false ].
           ex resume ] ].
   aSmalltalkCI performMetacelloLoad: loadBlock
