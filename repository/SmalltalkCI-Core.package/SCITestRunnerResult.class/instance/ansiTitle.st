@@ -1,7 +1,7 @@
 accessing
 ansiTitle
-	| symbol |
-	symbol := self passed
-		ifTrue: [ self class checkMark ]
+	| prefix |
+	prefix := self passed
+		ifTrue: [ self class checkMark, SmalltalkCI ansiReset ]
 		ifFalse: [ self class ballot ].
-	^ self color, ' ', symbol, ' ', self title, SmalltalkCI ansiReset
+	^ self color, ' ', prefix, ' ', self title, SmalltalkCI ansiReset

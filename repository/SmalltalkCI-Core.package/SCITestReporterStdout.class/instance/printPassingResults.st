@@ -1,7 +1,7 @@
 printing
 printPassingResults
 	| title |
-	self printTravisFold: 'passing_tests' action: 'start'.
+	self newLine; printTravisFold: 'passing_tests' action: 'start'.
 	title := '(', runner passingTests asString, ' tests passed)'.
 	self print: title; newLine.
 	

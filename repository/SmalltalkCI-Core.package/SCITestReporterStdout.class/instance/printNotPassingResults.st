@@ -1,6 +1,8 @@
 printing
 printNotPassingResults
-	self printNotPassingBanner.
+	| title |
+	title := (runner erroredTests + runner failedTests) asString, ' tests did not pass:'.
+	self printBanner: title color: SmalltalkCI ansiRed.
 	runner results keysAndValuesDo: [ :class :results | | notPassing |
 		notPassing := results select: [ :result | result passed not ].
 		notPassing ifNotEmpty: [
