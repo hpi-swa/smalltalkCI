@@ -1,6 +1,6 @@
 testing
 testTravisDetection
-	((SmalltalkCI getEnv: 'HAS_JOSH_K_SEAL_OF_APPROVAL') isNil and: [
+	((SmalltalkCI getEnv: 'HAS_JOSH_K_SEAL_OF_APPROVAL') notNil and: [
 				(SmalltalkCI platformClass imagePath findString: '/home/travis/') = 1 ])
 		ifTrue: [ self assert: SmalltalkCI isTravisBuild ]
 		ifFalse: [ self deny: SmalltalkCI isTravisBuild ].
