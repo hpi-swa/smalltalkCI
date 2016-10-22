@@ -52,10 +52,10 @@ way to load and test Smalltalk projects.
 
 You can use smalltalkCI to run your project's tests locally. Just [clone][clone]
 or [download][download] smalltalkCI and then you are able to initiate a local
-build in headfull-mode like this:
+build in headful mode like this:
 
 ```bash
-/path/to/smalltalkCI/run.sh --headfull /path/to/your/projects/.smalltalk.ston
+/path/to/smalltalkCI/run.sh --headful /path/to/your/projects/.smalltalk.ston
 ```
 
 `IMAGE` can be one of the [supported images](#images). You may also want to
@@ -457,7 +457,7 @@ OPTIONS:
   -v | --verbose      Enable 'set -x'.
 
 EXAMPLE:
-  run.sh -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
+  run.sh -s "Squeak-trunk" --headful /path/to/project/.smalltalk.ston
 ```
 
 ### Travis-specific Options
