@@ -30,8 +30,11 @@ print_error() {
 }
 
 print_error_and_exit() {
+  local error_code="${2:-1}" # 2nd parameter, 1 if not set
+
   print_error "$1"
-  exit "${2:-1}"  # Exit with value of 2nd parameter, if not set exit with 1
+  report_stats "${error_code}"
+  exit "${error_code}"
 }
 
 print_help() {
