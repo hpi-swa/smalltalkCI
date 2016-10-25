@@ -74,6 +74,8 @@ handle_error() {
   local error_line=$3
   local i
 
+  report_stats "${error_code}"
+
   printf "\n"
   print_notice "Error with status ${error_code} on line ${error_line} in \
 ${function_name}():"
