@@ -62,6 +62,7 @@ initialize() {
 
   # Load helpers
   source "${SMALLTALK_CI_HOME}/helpers.sh"
+  smalltalk_ci_start_time=$(timer_nanoseconds)
 }
 
 ################################################################################
@@ -343,6 +344,7 @@ check_build_status() {
     print_error_and_exit "Build failed before tests were performed correctly."
   fi
   build_status=$(cat "${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}")
+  report_stats "${build_status}"
   if is_nonzero "${build_status}"; then
     exit 1
   fi

@@ -267,6 +267,27 @@ upload_coverage_results() {
   fi
 }
 
+report_stats() {
+  local build_status=$1
+  local env_name
+  local duration=$(($(timer_nanoseconds)-$smalltalk_ci_start_time))
+  duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
+
+  if is_travis_build; then
+    env_name="TravisCI"
+  elif is_appveyor_build; then
+    env_name="AppVeyor"
+  else
+    return 0 # Only report stats when running on TravisCI or AppVeyor
+  fi
+
+  curl -s --header "X-BUILD-DURATION: ${duration}" \
+          --header "X-BUILD-ENV: ${env_name}" \
+          --header "X-BUILD-SMALLTALK: ${config_smalltalk}" \
+          --header "X-BUILD-STATUS: ${build_status}" \
+            "https://smalltalkci.fniephaus.com/api/" > /dev/null || true
+}
+
 
 ################################################################################
 # Travis-related helper functions (based on https://git.io/vzcTj).
@@ -291,7 +312,7 @@ timer_finish() {
   fi
 }
 
-function timer_nanoseconds() {
+timer_nanoseconds() {
   local cmd="date"
   local format="+%s%N"
   local os=$(uname)
