@@ -16,7 +16,7 @@ readonly BINTRAY_API="https://api.bintray.com/content"
 initialize() {
   local resolved_path
 
-  trap 'handle_error ${FUNCNAME} $? ${LINENO}' ERR
+  trap "handle_error ${FUNCNAME} $? ${LINENO}" ERR
   trap handle_interrupt INT
 
   # Fail if OS is not supported
@@ -74,7 +74,7 @@ handle_error() {
   local error_line=$3
   local i
 
-  report_stats "${error_code}"
+  report_build_metrics "${error_code}"
 
   printf "\n"
   print_notice "Error with status ${error_code} on line ${error_line} in \
@@ -267,6 +267,10 @@ parse_options() {
       install_script
       exit 0
       ;;
+    --no-tracking)
+      config_tracking="false"
+      shift
+      ;;
     -s | --smalltalk)
       config_smalltalk="${2:-}"
       shift 2
@@ -346,7 +350,7 @@ check_build_status() {
     print_error_and_exit "Build failed before tests were performed correctly."
   fi
   build_status=$(cat "${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}")
-  report_stats "${build_status}"
+  report_build_metrics "${build_status}"
   if is_nonzero "${build_status}"; then
     exit 1
   fi
@@ -578,6 +582,7 @@ main() {
   local config_clean="false"
   local config_debug="false"
   local config_headless="true"
+  local config_tracking="true"
   local config_verbose="false"
   local status=0
 

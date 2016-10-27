@@ -27,7 +27,7 @@ way to load and test Smalltalk projects.
 - Simple configuration via `.smalltalk.ston`, `.travis.yml`, and `appveyor.yml`
   ([see below for templates](#templates))
 - Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
-- Runs on Travis' [container-based infrastructure][cbi]
+- Runs on Travis CI's [container-based infrastructure][cbi]
   ([*"Builds start in seconds"*][bsis])
 - Supports Linux, macOS, and Windows and can be run locally (e.g. for debug purposes)
 - Exports test results in the JUnit XML format as part of the Travis build log
@@ -452,6 +452,7 @@ OPTIONS:
   -h | --help         Show this help text.
   --headful           Open vm in headful mode and do not close image.
   --install           Install symlink to this smalltalkCI instance.
+  --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
   -s | --smalltalk    Overwrite Smalltalk image selection.
   --uninstall         Remove symlink to any smalltalkCI instance.
   -v | --verbose      Enable 'set -x'.
@@ -459,6 +460,15 @@ OPTIONS:
 EXAMPLE:
   run.sh -s "Squeak-trunk" --headful /path/to/project/.smalltalk.ston
 ```
+
+### Collection Of Anonymous Build Metrics
+
+smalltalkCI collects anonymous build metrics (Smalltalk dialect, CI environment,
+build status, build duration) for public repositories when running on Travis CI
+or AppVeyor.
+This allows to identify build errors caused by smalltalkCI updates and
+therefore helps to improve the service. It is possible to opt-out by using the
+`--no-tracking` option.
 
 ### Travis-specific Options
 
