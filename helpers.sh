@@ -3,7 +3,8 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-COVERALLS_API='https://coveralls.io/api/v1/jobs'
+GITHUB_API="https://api.github.com"
+COVERALLS_API="https://coveralls.io/api/v1/jobs"
 
 ANSI_BOLD="\033[1m"
 ANSI_RED="\033[31m"
@@ -33,7 +34,7 @@ print_error_and_exit() {
   local error_code="${2:-1}" # 2nd parameter, 1 if not set
 
   print_error "$1"
-  report_stats "${error_code}"
+  report_build_metrics "${error_code}"
   exit "${error_code}"
 }
 
@@ -49,13 +50,14 @@ print_help() {
     -h | --help         Show this help text.
     --headful           Open vm in headful mode and do not close image.
     --install           Install symlink to this smalltalkCI instance.
+    --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
     -s | --smalltalk    Overwrite Smalltalk image selection.
     --uninstall         Remove symlink to any smalltalkCI instance.
     -v | --verbose      Enable 'set -x'.
 
   GEMSTONE OPTIONS:
     --gs-BRANCH=<branch-SHA-tag>
-                        Name of GsDevKit_home branch, SHA or tag. Default is 'master'.
+                        Name of GsDevKit_home branch, SHA, or tag. Default is 'master'.
 
                         Environment variable GSCI_DEVKIT_BRANCH may be used to 
                         specify <branch-SHA-tag>. Command line option overrides 
@@ -270,18 +272,32 @@ upload_coverage_results() {
   fi
 }
 
-report_stats() {
+report_build_metrics() {
   local build_status=$1
   local env_name
+  local project_slug
+  local api_url
+  local status_code
   local duration=$(($(timer_nanoseconds)-$smalltalk_ci_start_time))
   duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
+
+  if [[ "${config_tracking}" != "true" ]]; then
+    return 0
+  fi
 
   if is_travis_build; then
     env_name="TravisCI"
   elif is_appveyor_build; then
     env_name="AppVeyor"
   else
-    return 0 # Only report stats when running on TravisCI or AppVeyor
+    return 0 # Only report build metrics when running on TravisCI or AppVeyor
+  fi
+
+  project_slug="${TRAVIS_REPO_SLUG:-${APPVEYOR_PROJECT_SLUG:-}}"
+  api_url="${GITHUB_API}/repos/${project_slug}"
+  status_code=$(curl -w %{http_code} -s -o /dev/null "${api_url}")
+  if [[ "${status_code}" != "200" ]]; then
+    return 0 # Not a public repository
   fi
 
   curl -s --header "X-BUILD-DURATION: ${duration}" \
