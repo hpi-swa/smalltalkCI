@@ -107,6 +107,11 @@ pharo::prepare_vm() {
   local pharo_vm_folder="${SMALLTALK_CI_VMS}/${smalltalk_name}"
   local pharo_zeroconf="${pharo_vm_folder}/zeroconfig"
 
+  # Skip in case vm is already set up
+  if is_file "${SMALLTALK_CI_VM}"; then
+    return 0
+  fi
+
   if ! is_dir "${pharo_vm_folder}"; then
     travis_fold start download_vm "Downloading ${smalltalk_name} vm..."
       timer_start
