@@ -1,3 +1,3 @@
 initialize-release
 initialize
-	self ensureAuthor
+	self class ensureAuthor
