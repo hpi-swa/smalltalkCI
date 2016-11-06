@@ -41,7 +41,7 @@ matrix:
     - language: bash
       smalltalk:
       sudo: false
-      script: bash tests/all_tests.sh
+      script: tests/all_tests.sh
 
     # Test that smalltalkCI can fail
     - smalltalk: Squeak-5.0
