@@ -176,6 +176,11 @@ squeak::prepare_vm() {
   local download_url
   local target
 
+  # Skip in case vm is already set up
+  if is_file "${SMALLTALK_CI_VM}"; then
+    return 0
+  fi
+
   is_spur_image "${SMALLTALK_CI_IMAGE}" && require_spur=1
   vm_details=$(squeak::get_vm_details "$(uname -s)" "${require_spur}")
   set_vars vm_filename vm_path "${vm_details}"

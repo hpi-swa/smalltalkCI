@@ -9,5 +9,6 @@ runCase: aTestCase
 				result testError: err.
 				aTestCase shouldPass ifTrue: [self serializeError: result testError of: aTestCase].
 				result stack: (self stackTraceString: err of: aTestCase) ] ]).
+	self printProgress: result.
 	(results at: aTestCase class ifAbsentPut: [ OrderedCollection new ])
 		add: result

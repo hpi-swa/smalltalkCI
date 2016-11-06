@@ -190,6 +190,10 @@ select_smalltalk() {
                 GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6
                 Moose-trunk Moose-6.1 Moose-6.0"
 
+  if is_not_empty "${config_smalltalk}"; then
+    return
+  fi
+
   if is_travis_build || is_appveyor_build; then
     config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-${SMALLTALK}}"
     return
