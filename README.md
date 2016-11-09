@@ -431,7 +431,10 @@ SmalltalkCISpec {
     #classes : [ #MyProjectTestCase ],
     #categories : [ 'MyProject-*' ],
     #packages : [ 'MyProject.*' ],
-    #projects : [ 'BaselineOfMyProject' ]
+    #projects : [ 'BaselineOfMyProject' ],
+
+    // Other options
+    defaultTimeout : 30 // In seconds (Squeak-only)
   }
 }
 ```
