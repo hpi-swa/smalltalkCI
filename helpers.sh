@@ -293,7 +293,7 @@ report_build_metrics() {
     return 0 # Only report build metrics when running on TravisCI or AppVeyor
   fi
 
-  project_slug="${TRAVIS_REPO_SLUG:-${APPVEYOR_PROJECT_SLUG:-}}"
+  project_slug="${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-}}"
   api_url="${GITHUB_API}/repos/${project_slug}"
   status_code=$(curl -w %{http_code} -s -o /dev/null "${api_url}")
   if [[ "${status_code}" != "200" ]]; then
