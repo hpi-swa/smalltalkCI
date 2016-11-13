@@ -264,11 +264,15 @@ EOL
 }
 
 upload_coverage_results() {
+  local curl_status=0
   local coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"
 
   if is_file "${coverage_results}"; then
     print_info "Uploading coverage results to Coveralls..."
-    curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" > /dev/null
+    curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" > /dev/null || curl_status=$?
+    if is_nonzero "${curl_status}"; then
+      print_error "Failed to upload coverage results (curl error code #${curl_status})"
+    fi
   fi
 }
 
