@@ -1,5 +1,5 @@
-private
+compatibility
 explicitTestKeys
   "keys that take precedence over tests from loaded project"
 
-  ^ #(#'classes' #'categories' #'packages')
+  ^ super explicitTestKeys , #(#'projects')
