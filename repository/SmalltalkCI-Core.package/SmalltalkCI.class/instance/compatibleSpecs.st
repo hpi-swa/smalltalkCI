@@ -1,3 +1,3 @@
 external-deprecated
 compatibleSpecs 
-	^ self compatibleLoadSpecs
+	^ self spec compatibleLoadSpecs
