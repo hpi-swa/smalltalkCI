@@ -435,7 +435,7 @@ SmalltalkCISpec {
 
     // Other options
     #defaultTimeout : 30, // In seconds (Squeak-only)
-    #hidePassingResults : true // Hide passing tests when printing to stdout
+    #hidePassingTests : true // Hide passing tests when printing to stdout
   }
 }
 ```

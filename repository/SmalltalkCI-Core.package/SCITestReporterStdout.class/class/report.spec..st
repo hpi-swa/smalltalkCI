@@ -4,5 +4,5 @@ report: aSCITestRunner spec: aSCISpec
 		basicNew
 		initialize;
 		runner: aSCITestRunner;
-		hidePassingResults: aSCISpec hidePassingResults;
+		hidePassingTests: aSCISpec hidePassingTests;
 		report

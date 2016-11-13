@@ -1,4 +1,4 @@
 initialize-release
 initialize
 	stream := SmalltalkCI stdout.
-	hidePassingResults := false
+	hidePassingTests := false
