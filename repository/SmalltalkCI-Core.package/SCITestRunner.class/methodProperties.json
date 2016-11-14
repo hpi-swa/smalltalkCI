@@ -1,9 +1,11 @@
 {
 	"class" : {
 		"defaultSuiteName" : "fn 10/21/2016 22:43",
+		"errorExceptions" : "fn 11/14/2016 14:37",
 		"isTestMethod:" : "fn 6/30/2016 11:58",
 		"runClasses:named:" : "fn 10/21/2016 14:17",
-		"runSuite:" : "fn 6/30/2016 11:52" },
+		"runSuite:" : "fn 6/30/2016 11:52",
+		"skipExceptions" : "fn 11/14/2016 14:37" },
 	"instance" : {
 		"erroredTests" : "fn 7/1/2016 18:41",
 		"failedTests" : "fn 7/1/2016 18:41",
@@ -15,7 +17,7 @@
 		"results" : "fn 7/1/2016 18:03",
 		"run" : "fn 9/28/2016 13:07",
 		"runAll" : "fn 6/30/2016 12:00",
-		"runCase:" : "fn 11/3/2016 17:52",
+		"runCase:" : "fn 11/14/2016 15:39",
 		"serializeError:of:" : "fn 10/4/2016 17:29",
 		"setUp" : "fn 10/10/2016 00:49",
 		"stackTraceString:of:" : "fn 10/4/2016 17:30",
