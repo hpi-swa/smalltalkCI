@@ -566,9 +566,7 @@ run() {
 
   if debug_enabled; then
     travis_fold start display_config "Current configuration"
-      for var in ${!config_@}; do
-        print_config
-      done
+      print_config
     travis_fold end display_config
   fi
 
