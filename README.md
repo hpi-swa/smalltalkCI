@@ -518,6 +518,10 @@ problem.
 - [@dalehenrich](https://github.com/dalehenrich):
     [obex](https://github.com/dalehenrich/obex),
     [tode](https://github.com/dalehenrich/tode).
+- [@DuneSt](https://github.com/DuneSt):
+    [Heimdall](https://github.com/DuneSt/Heimdall),
+    [MaterialDesignLite](https://github.com/DuneSt/MaterialDesignLite),
+    [PrismCodeDisplayer](https://github.com/DuneSt/PrismCodeDisplayer).
 - [@dynacase](https://github.com/dynacase/):
     [borm-editor](https://github.com/dynacase/borm-editor),
     [borm-model](https://github.com/dynacase/borm-model),
