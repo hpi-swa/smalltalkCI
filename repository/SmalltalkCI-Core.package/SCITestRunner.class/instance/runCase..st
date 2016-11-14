@@ -3,12 +3,16 @@ runCase: aTestCase
 	| result |
 	result := SCITestRunnerResult new testCase: aTestCase; yourself.
 	result time: (SmalltalkCI timeToRun: [
-		[ aTestCase runCase ]
-			on: Halt , Error, TestFailure
+		[ [ aTestCase runCase ]
+			on: self class errorExceptions
 			do: [ :err |
 				result testError: err.
-				aTestCase shouldPass ifTrue: [self serializeError: result testError of: aTestCase].
-				result stack: (self stackTraceString: err of: aTestCase) ] ]).
+				aTestCase shouldPass ifTrue: [ self serializeError: result testError of: aTestCase].
+				result stack: (self stackTraceString: err of: aTestCase) ] ]
+					on: self class skipExceptions
+					do: [ :skip | result skipped: true ] ]).
 	self printProgress: result.
 	(results at: aTestCase class ifAbsentPut: [ OrderedCollection new ])
 		add: result
+		
+	

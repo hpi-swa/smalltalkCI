@@ -10,7 +10,8 @@
 		"testError",
 		"error",
 		"time",
-		"stack" ],
+		"stack",
+		"skipped" ],
 	"name" : "SCITestRunnerResult",
 	"pools" : [
 		 ],

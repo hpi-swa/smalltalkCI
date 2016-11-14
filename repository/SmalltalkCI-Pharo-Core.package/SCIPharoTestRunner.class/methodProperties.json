@@ -1,6 +1,6 @@
 {
 	"class" : {
-		 },
+		"skipExceptions" : "fn 11/14/2016 14:38" },
 	"instance" : {
 		"serializeError:of:" : "fn 10/4/2016 17:20",
 		"stackTraceString:of:" : "fn 10/4/2016 17:19" } }

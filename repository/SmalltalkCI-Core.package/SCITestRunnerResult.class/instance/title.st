@@ -1,5 +1,6 @@
 accessing
 title
-	| timeString |
+	| timeString skippedText |
 	timeString := SmalltalkCI stringFor: self time maxDecimalPlaces: 0.
-	^ self asString, ' (', timeString, 'ms)'
+	skippedText := self skipped ifTrue: [ 'skipped, ' ] ifFalse: [ '' ].
+	^ self asString, ' (', skippedText, timeString, 'ms)'
