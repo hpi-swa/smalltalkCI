@@ -440,6 +440,35 @@ SmalltalkCISpec {
 }
 ```
 
+#### Coverage Testing
+
+smalltalkCI supports coverage testing and sends coverage results automatically
+to [coveralls.io][coveralls] when the feature is enable and when running on
+Travis CI or AppVeyor.
+Make sure you have [coveralls][coveralls] enabled for your GitHub repository.
+In order to enable coverage testing in smalltalkCI, the `#testing` slot needs to
+contain a `#coverage` dictionary.
+This dictionary can contain `#packages` (recommended), `#classes`, or
+`#categories`.
+smalltalkCI immitates the `TestRunner`'s behavior when using `#packages`.
+On the other hand, `#classes` will be resolved to all methods of all classes
+specified (instance side), while `#categories` will be resolved
+to all classes' methods as well as their meta classes' methods.
+
+```javascript
+SmalltalkCISpec {
+  ...
+  #testing : {
+    ...
+    #coverage : {
+      #packages : [ 'Packages-To-Cover.*' ],
+      #classes : [ #ClassToCover, #'ClassToCover class' ],
+      #categories : [ 'Categories-To-Cover*' ]
+    }
+  }
+}
+```
+
 ### Command Line Options
 
 smalltalkCI has a couple of command line options that can be useful for
