@@ -1,0 +1,3 @@
+compatibility
+methodsUnderTestIn: packages
+	self subclassResponsibility

@@ -1,3 +1,0 @@
-setup
-coverageWrappersFor: classesToCover
-	self subclassResponsibility

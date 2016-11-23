@@ -7,6 +7,6 @@ run: aBlock spec: aSmalltalkCISpec in: aProjectDirectory
 	coverallsData := self readCoverallsData.
 	spec := aSmalltalkCISpec.
 	projectDirectory := aProjectDirectory.
-	self installCoverageWrappersFor: self classesToCover.
+	self installCoverageWrappers.
 	[ ^ aBlock value ] ensure:
 		[ self finishUp ]
