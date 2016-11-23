@@ -4,4 +4,4 @@ methodsToCover
 		addAll: self methodsToCoverForClasses;
 		addAll: self methodsToCoverForCategories;
 		addAll: self methodsToCoverForPackages;
-		yourself
+		asOrderedCollection
