@@ -1,0 +1,3 @@
+printing
+printException: aResult
+	self subclassResponsibility

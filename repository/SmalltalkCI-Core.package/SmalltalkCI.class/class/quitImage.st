@@ -1,3 +1,3 @@
 image-operations
 quitImage
-	SmalltalkCI platformClass closeImageWithExitCode: 0
+	SmalltalkCI platformClass quitImage

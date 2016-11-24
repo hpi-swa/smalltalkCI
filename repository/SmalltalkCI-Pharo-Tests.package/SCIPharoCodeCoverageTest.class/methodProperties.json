@@ -1,11 +1,5 @@
 {
 	"class" : {
-		"coverageTestFile" : "fn 4/15/2016 23:35" },
+		 },
 	"instance" : {
-		"deleteTestFile" : "fn 10/8/2016 16:51",
-		"inst" : "fn 10/8/2016 16:51",
-		"inst:" : "fn 10/8/2016 16:51",
-		"setUp" : "fn 10/8/2016 16:51",
-		"tearDown" : "fn 10/8/2016 16:52",
-		"testCoverageHelpers" : "fn 10/8/2016 16:51",
-		"testMethodReferenceForSelector" : "fn 10/8/2016 17:28" } }
+		"testMethodReferenceForSelector" : "fn 10/16/2016 17:42" } }

@@ -1,7 +1,3 @@
 printing
 printPass: aResult
-	self
-		setModeGreen;
-		print: ' ', self class checkMark, ' ';
-		resetMode;
-		printTestTitle: aResult
+	self print: aResult ansiTitle; newLine

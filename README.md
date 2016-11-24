@@ -27,11 +27,12 @@ way to load and test Smalltalk projects.
 - Simple configuration via `.smalltalk.ston`, `.travis.yml`, and `appveyor.yml`
   ([see below for templates](#templates))
 - Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
-- Runs on Travis' [container-based infrastructure][cbi]
+- Runs on Travis CI's [container-based infrastructure][cbi]
   ([*"Builds start in seconds"*][bsis])
 - Supports Linux, macOS, and Windows and can be run locally (e.g. for debug purposes)
 - Exports test results in the JUnit XML format as part of the Travis build log
-- Supports coverage testing and publishes results to [coveralls.io][coveralls]
+- Supports [coverage testing](#coverage-testing) and publishes results to
+  [coveralls.io][coveralls]
 
 
 <a name="how-to-travis"/>
@@ -52,10 +53,10 @@ way to load and test Smalltalk projects.
 
 You can use smalltalkCI to run your project's tests locally. Just [clone][clone]
 or [download][download] smalltalkCI and then you are able to initiate a local
-build in headfull-mode like this:
+build in headful mode like this:
 
 ```bash
-/path/to/smalltalkCI/run.sh --headfull /path/to/your/projects/.smalltalk.ston
+/path/to/smalltalkCI/run.sh --headful /path/to/your/projects/.smalltalk.ston
 ```
 
 `IMAGE` can be one of the [supported images](#images). You may also want to
@@ -350,7 +351,9 @@ SCIMetacelloLoadSpec {
   #configuration : 'MyProject',                       // Alternatively, define MC Configuration
   #directory : 'packages',                            // Path to packages if FileTree is used
   #repository : 'http://smalltalkhub.com/mc/...',     // Alternatively, define MC repository
-  #onWarningLog : true,                               // Handle Warnings and log message to Transcript
+  #onWarningLog : true,                               // Log Warning messages to Transcript
+  #failOn : [ #OCUndeclaredVariableWarning ],         // Fail build on provided list of Warnings
+  #useLatestMetacello : true,                         // Upgrade Metacello before loading
   #load : [ 'default' ],                              // Define MC load attributes
   #platforms : [ #squeak, #pharo, #gemstone ],        // Define compatible platforms
   #version : '1.0.0'                                  // Define MC version (for MC
@@ -429,7 +432,40 @@ SmalltalkCISpec {
     #classes : [ #MyProjectTestCase ],
     #categories : [ 'MyProject-*' ],
     #packages : [ 'MyProject.*' ],
-    #projects : [ 'BaselineOfMyProject' ]
+    #projects : [ 'BaselineOfMyProject' ],
+
+    // Other options
+    #defaultTimeout : 30, // In seconds (Squeak-only)
+    #hidePassingTests : true // Hide passing tests when printing to stdout
+  }
+}
+```
+
+#### Coverage Testing
+
+smalltalkCI supports coverage testing and sends coverage results automatically
+to [coveralls.io][coveralls] when the feature is enable and when running on
+Travis CI or AppVeyor.
+Make sure you have [coveralls][coveralls] enabled for your GitHub repository.
+In order to enable coverage testing in smalltalkCI, the `#testing` slot needs to
+contain a `#coverage` dictionary.
+This dictionary can contain `#packages` (recommended), `#classes`, or
+`#categories`.
+smalltalkCI immitates the `TestRunner`'s behavior when using `#packages`.
+On the other hand, `#classes` will be resolved to all methods of all classes
+specified (instance side), while `#categories` will be resolved
+to all classes' methods as well as their meta classes' methods.
+
+```javascript
+SmalltalkCISpec {
+  ...
+  #testing : {
+    ...
+    #coverage : {
+      #packages : [ 'Packages-To-Cover.*' ],
+      #classes : [ #ClassToCover, #'ClassToCover class' ],
+      #categories : [ 'Categories-To-Cover*' ]
+    }
   }
 }
 ```
@@ -448,15 +484,25 @@ OPTIONS:
   --clean             Clear cache and delete builds.
   -d | --debug        Enable debug mode.
   -h | --help         Show this help text.
-  --headfull          Open vm in headfull mode and do not close image.
+  --headful           Open vm in headful mode and do not close image.
   --install           Install symlink to this smalltalkCI instance.
+  --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
   -s | --smalltalk    Overwrite Smalltalk image selection.
   --uninstall         Remove symlink to any smalltalkCI instance.
   -v | --verbose      Enable 'set -x'.
 
 EXAMPLE:
-  run.sh -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
+  run.sh -s "Squeak-trunk" --headful /path/to/project/.smalltalk.ston
 ```
+
+### Collection Of Anonymous Build Metrics
+
+smalltalkCI collects anonymous build metrics (Smalltalk dialect, CI environment,
+build status, build duration) for public repositories when running on Travis CI
+or AppVeyor.
+This allows to identify build errors caused by smalltalkCI updates and
+therefore helps to improve the service. It is possible to opt-out by using the
+`--no-tracking` option.
 
 ### Travis-specific Options
 
@@ -502,6 +548,10 @@ problem.
 - [@dalehenrich](https://github.com/dalehenrich):
     [obex](https://github.com/dalehenrich/obex),
     [tode](https://github.com/dalehenrich/tode).
+- [@DuneSt](https://github.com/DuneSt):
+    [Heimdall](https://github.com/DuneSt/Heimdall),
+    [MaterialDesignLite](https://github.com/DuneSt/MaterialDesignLite),
+    [PrismCodeDisplayer](https://github.com/DuneSt/PrismCodeDisplayer).
 - [@dynacase](https://github.com/dynacase/):
     [borm-editor](https://github.com/dynacase/borm-editor),
     [borm-model](https://github.com/dynacase/borm-model),

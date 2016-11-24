@@ -17,7 +17,7 @@ testTravisFold
 	self assert: index > 0.
 	index := result findString: 'travis_time:end:stage_id_timer' startingAt: index.
 	self assert: index > 0.
-	index := result findString: ',duration=0' startingAt: index.
+	index := result findString: ',duration=' startingAt: index.
 	self assert: index > 0.
 	index := result findString: 'travis_fold:end:stage_id' startingAt: index.
 	self assert: index > 0

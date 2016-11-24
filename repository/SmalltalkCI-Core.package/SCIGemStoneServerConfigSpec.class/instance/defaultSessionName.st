@@ -1,0 +1,4 @@
+public-api
+defaultSessionName
+
+	^ defaultSessionName

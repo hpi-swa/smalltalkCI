@@ -1,4 +1,4 @@
-if [[ -z "${SMALLTALK_CI_HOME}" ]]; then
+if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
   export SMALLTALK_CI_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 fi
 
@@ -13,4 +13,6 @@ export SMALLTALK_CI_GIT="${SMALLTALK_CI_BUILD}/git_cache"
 export SMALLTALK_CI_IMAGE="${SMALLTALK_CI_BUILD}/TravisCI.image"
 export SMALLTALK_CI_CHANGES="${SMALLTALK_CI_BUILD}/TravisCI.changes"
 export SMALLTALK_CI_VMS="${SMALLTALK_CI_CACHE}/vms"
-export SMALLTALK_CI_VM="${SMALLTALK_CI_BUILD}/vm"
+if [[ ! -f "${SMALLTALK_CI_VM:-}" ]]; then
+  export SMALLTALK_CI_VM="${SMALLTALK_CI_BUILD}/vm"
+fi

@@ -12,7 +12,7 @@ loadVersion: aVersionName repository: aRepository
 			version := reader version.
 			[ version load ] on: Warning do: [ :ex |
 				Transcript cr; show: ex description.
-				SmalltalkCI platformClass isHeadless
+				SmalltalkCI isHeadless
 					ifTrue: [ ex resume ]
 					ifFalse: [ ex signal ]].
 			self addLoadedClassesFrom: reader definitions.

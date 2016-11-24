@@ -3,7 +3,8 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-COVERALLS_API='https://coveralls.io/api/v1/jobs'
+GITHUB_API="https://api.github.com"
+COVERALLS_API="https://coveralls.io/api/v1/jobs"
 
 ANSI_BOLD="\033[1m"
 ANSI_RED="\033[31m"
@@ -30,8 +31,11 @@ print_error() {
 }
 
 print_error_and_exit() {
+  local error_code="${2:-1}" # 2nd parameter, 1 if not set
+
   print_error "$1"
-  exit "${2:-1}"  # Exit with value of 2nd parameter, if not set exit with 1
+  report_build_metrics "${error_code}"
+  exit "${error_code}"
 }
 
 print_help() {
@@ -44,15 +48,16 @@ print_help() {
     --clean             Clear cache and delete builds.
     -d | --debug        Enable debug mode.
     -h | --help         Show this help text.
-    --headfull          Open vm in headfull mode and do not close image.
+    --headful           Open vm in headful mode and do not close image.
     --install           Install symlink to this smalltalkCI instance.
+    --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
     -s | --smalltalk    Overwrite Smalltalk image selection.
     --uninstall         Remove symlink to any smalltalkCI instance.
     -v | --verbose      Enable 'set -x'.
 
   GEMSTONE OPTIONS:
     --gs-BRANCH=<branch-SHA-tag>
-                        Name of GsDevKit_home branch, SHA or tag. Default is 'master'.
+                        Name of GsDevKit_home branch, SHA, or tag. Default is 'master'.
 
                         Environment variable GSCI_DEVKIT_BRANCH may be used to 
                         specify <branch-SHA-tag>. Command line option overrides 
@@ -78,6 +83,12 @@ print_help() {
     $(basename -- $0) -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
 
 EOF
+}
+
+print_config() {
+  for var in ${!config_@}; do
+    echo "${var}=${!var}"
+  done
 }
 
 is_empty() {
@@ -151,8 +162,18 @@ is_spur_image() {
   [[ $((image_format_number>>(spur_bit-1) & 1)) -eq 1 ]]
 }
 
+is_headless() {
+  [[ "${config_headless}" = "true" ]]
+}
+
 debug_enabled() {
   [[ "${config_debug}" = "true" ]]
+}
+
+conditional_debug_halt() {
+  if ! is_headless && debug_enabled; then
+    printf "self halt.\n"
+  fi
 }
 
 download_file() {
@@ -213,6 +234,8 @@ export_coveralls_data() {
     service_name="travis-ci"
   elif is_appveyor_build; then
     service_name="appveyor"
+  else
+    return 0 # Coverage testing only supported on TravisCI and AppVeyor
   fi
 
   cat >"${SMALLTALK_CI_BUILD}/coveralls_data.json" <<EOL
@@ -241,12 +264,51 @@ EOL
 }
 
 upload_coverage_results() {
+  local curl_status=0
   local coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"
 
   if is_file "${coverage_results}"; then
     print_info "Uploading coverage results to Coveralls..."
-    curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" > /dev/null
+    curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" > /dev/null || curl_status=$?
+    if is_nonzero "${curl_status}"; then
+      print_error "Failed to upload coverage results (curl error code #${curl_status})"
+    fi
   fi
+}
+
+report_build_metrics() {
+  local build_status=$1
+  local env_name
+  local project_slug
+  local api_url
+  local status_code
+  local duration=$(($(timer_nanoseconds)-$smalltalk_ci_start_time))
+  duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
+
+  if [[ "${config_tracking}" != "true" ]]; then
+    return 0
+  fi
+
+  if is_travis_build; then
+    env_name="TravisCI"
+  elif is_appveyor_build; then
+    env_name="AppVeyor"
+  else
+    return 0 # Only report build metrics when running on TravisCI or AppVeyor
+  fi
+
+  project_slug="${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-}}"
+  api_url="${GITHUB_API}/repos/${project_slug}"
+  status_code=$(curl -w %{http_code} -s -o /dev/null "${api_url}")
+  if [[ "${status_code}" != "200" ]]; then
+    return 0 # Not a public repository
+  fi
+
+  curl -s --header "X-BUILD-DURATION: ${duration}" \
+          --header "X-BUILD-ENV: ${env_name}" \
+          --header "X-BUILD-SMALLTALK: ${config_smalltalk}" \
+          --header "X-BUILD-STATUS: ${build_status}" \
+            "https://smalltalkci.fniephaus.com/api/" > /dev/null || true
 }
 
 
@@ -273,7 +335,7 @@ timer_finish() {
   fi
 }
 
-function timer_nanoseconds() {
+timer_nanoseconds() {
   local cmd="date"
   local format="+%s%N"
   local os=$(uname)

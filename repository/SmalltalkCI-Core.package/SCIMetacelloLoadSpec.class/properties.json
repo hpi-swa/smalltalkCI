@@ -9,10 +9,12 @@
 		"baseline",
 		"configuration",
 		"directory",
+		"failOn",
 		"load",
 		"onWarningLog",
 		"repository",
-		"version" ],
+		"version",
+		"useLatestMetacello" ],
 	"name" : "SCIMetacelloLoadSpec",
 	"pools" : [
 		 ],

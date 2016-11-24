@@ -1,3 +1,0 @@
-image-operations
-saveImageAndFail
-	self saveImageAndQuitWithExitCode: 1

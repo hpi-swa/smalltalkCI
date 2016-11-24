@@ -1,3 +1,4 @@
 executing
 prepareForTesting
-	self prepareForLoading
+	self prepareForLoading.
+	self adjustDefaultTimeoutIfRequested

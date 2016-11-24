@@ -12,4 +12,4 @@ debugError: anError
 	s flush.
 
 	"Close image and save it for debugging purposes"
-	SmalltalkCISqueak closeAndSaveImage
+	SmalltalkCI saveAndQuitImage

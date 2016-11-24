@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Squeak-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SmalltalkCISqueakTest",
+	"pools" : [
+		 ],
+	"super" : "TestCase",
+	"type" : "normal" }

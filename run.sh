@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
 set -o errexit
+set -o errtrace
 set -o pipefail
 set -o nounset
 
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
+readonly BUILD_STATUS_FILE="build_status.txt"
 readonly INSTALL_TARGET_OSX="/usr/local/bin"
 readonly BINTRAY_API="https://api.bintray.com/content"
 
@@ -14,7 +16,8 @@ readonly BINTRAY_API="https://api.bintray.com/content"
 initialize() {
   local resolved_path
 
-  trap interrupted INT
+  trap "handle_error ${FUNCNAME} $? ${LINENO}" ERR
+  trap handle_interrupt INT
 
   # Fail if OS is not supported
   case "$(uname -s)" in
@@ -59,12 +62,36 @@ initialize() {
 
   # Load helpers
   source "${SMALLTALK_CI_HOME}/helpers.sh"
+  smalltalk_ci_start_time=$(timer_nanoseconds)
 }
 
 ################################################################################
-# Print notice on interrupt.
+# Print error information and exit.
 ################################################################################
-interrupted() {
+handle_error() {
+  local function_name=$1
+  local error_code=$2
+  local error_line=$3
+  local i
+
+  report_build_metrics "${error_code}"
+
+  printf "\n"
+  print_notice "Error with status ${error_code} on line ${error_line} in \
+${function_name}():"
+  i=0
+  while caller $i;
+    do ((i++));
+  done
+  printf "====================================================================="
+  print_config
+  exit "${error_code}"
+}
+
+################################################################################
+# Print notice on interrupt and exit.
+################################################################################
+handle_interrupt() {
   print_notice $'\nsmalltalkCI has been interrupted. Exiting...'
   exit 1
 }
@@ -163,6 +190,10 @@ select_smalltalk() {
                 GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6
                 Moose-trunk Moose-6.1 Moose-6.0"
 
+  if is_not_empty "${config_smalltalk}"; then
+    return
+  fi
+
   if is_travis_build || is_appveyor_build; then
     config_smalltalk="${TRAVIS_SMALLTALK_VERSION:-${SMALLTALK}}"
     return
@@ -232,13 +263,17 @@ parse_options() {
       print_help
       exit 0
       ;;
-    --headfull)
+    --headful | --headfull)
       config_headless="false"
       shift
       ;;
     --install)
       install_script
       exit 0
+      ;;
+    --no-tracking)
+      config_tracking="false"
+      shift
       ;;
     -s | --smalltalk)
       config_smalltalk="${2:-}"
@@ -295,6 +330,34 @@ prepare_folders() {
   # Link project folder to git_cache
   project_home="$(dirname "${config_ston}")"
   ln -s "${project_home}" "${SMALLTALK_CI_GIT}"
+}
+
+################################################################################
+# Add environment variables for in-image use (with `SCIII_` prefix).
+################################################################################
+add_env_vars() {
+  export SCIII_SMALLTALK="${config_smalltalk}"
+  export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
+}
+
+################################################################################
+# Check build status and exit with non-zero exit code if necessary.
+# Locals:
+#   build_status
+# Globals:
+#   SMALLTALK_CI_BUILD
+################################################################################
+check_build_status() {
+  local build_status
+
+  if ! is_file "${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}"; then
+    print_error_and_exit "Build failed before tests were performed correctly."
+  fi
+  build_status=$(cat "${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}")
+  report_build_metrics "${build_status}"
+  if is_nonzero "${build_status}"; then
+    exit 1
+  fi
 }
 
 ################################################################################
@@ -503,9 +566,7 @@ run() {
 
   if debug_enabled; then
     travis_fold start display_config "Current configuration"
-      for var in ${!config_@}; do
-        echo "${var}=${!var}"
-      done
+      print_config
     travis_fold end display_config
   fi
 
@@ -523,6 +584,7 @@ main() {
   local config_clean="false"
   local config_debug="false"
   local config_headless="true"
+  local config_tracking="true"
   local config_verbose="false"
   local status=0
 
@@ -532,12 +594,11 @@ main() {
   ensure_ston_config_exists "${!#}"  # Use last argument for custom STON
   check_clean_up
   select_smalltalk
-  export config_smalltalk  # Make Smalltalk selection available in image
   validate_configuration
   prepare_folders
   export_coveralls_data
-
-  run "$@" || status=$?
+  add_env_vars
+  run "$@"
 
   if is_travis_build || is_appveyor_build; then
     upload_coverage_results
@@ -547,9 +608,7 @@ main() {
     deploy "${status}"
   fi
 
-  if is_nonzero "${status}"; then
-    exit "${status}"
-  fi
+  check_build_status
 }
 
 # Run main if script is not being tested

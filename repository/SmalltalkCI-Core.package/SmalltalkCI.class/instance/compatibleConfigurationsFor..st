@@ -1,3 +1,3 @@
-accessing
+external-deprecated
 compatibleConfigurationsFor: aPlatform
-	^ spec configuring select: [ :each | each isPlatformCompatible: aPlatform ]
+	^ spec compatibleConfigurationsFor: aPlatform

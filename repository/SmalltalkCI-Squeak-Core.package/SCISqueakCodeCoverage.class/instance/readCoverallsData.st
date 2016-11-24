@@ -6,6 +6,6 @@ readCoverallsData
 	[ data := STON fromStream: stream ]
 		on: STONReaderError do: [ :error |
 			SmalltalkCI printToStdout: 'Cannot read ', self class coverallsDataFilename, ':', Character cr, error asString.
-			SmalltalkCI saveImageAndFail ].
+			SmalltalkCI saveAndQuitImage ].
 	stream close.
 	^ data

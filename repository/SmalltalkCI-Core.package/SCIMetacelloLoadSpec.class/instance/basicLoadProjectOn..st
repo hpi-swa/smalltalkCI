@@ -1,7 +1,8 @@
 executing
 basicLoadProjectOn: aSmalltalkCI
-  | metacello baseBlock loadBlock |
+  | metacello loadBlock |
   aSmalltalkCI class requireMetacello.
+  self updateMetacelloIfRequested.
   metacello := (Smalltalk at: #'Metacello') new.
   metacello
     repository: (self loadRepositoryFor: aSmalltalkCI);
@@ -9,17 +10,16 @@ basicLoadProjectOn: aSmalltalkCI
     configuration: self configuration;
     version: self version.
   metacello copy get.	"compensate for older versions of Metacello"
-  baseBlock := [ metacello load: self load ].
-  loadBlock := self onWarningLog
-    ifTrue: [ 
-      loadBlock := [ 
+  loadBlock := [ 
       "compensate for older versions of Metacello"
-      baseBlock
+      [ metacello load: self load ]
         on: Warning
-        do: [ :ex | 
-          Transcript
-            cr;
-            show: ex description.
-          ex resume ] ] ]
-    ifFalse: [ baseBlock ].
+        do: [ :ex |
+          (self failOn includes: ex class name)
+            ifTrue: [
+              SmalltalkCI printToStdout: 'Build failed: ', ex description.
+              SmalltalkCI shutdown: false ].
+          self onWarningLog
+            ifTrue: [ Transcript cr; show: ex description ]. 
+          ex resume ] ].
   aSmalltalkCI performMetacelloLoad: loadBlock
