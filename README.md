@@ -444,7 +444,7 @@ SmalltalkCISpec {
 #### Coverage Testing
 
 smalltalkCI supports coverage testing and sends coverage results automatically
-to [coveralls.io][coveralls] when the feature is enable and when running on
+to [coveralls.io][coveralls] when the feature is enabled and when running on
 Travis CI or AppVeyor.
 Make sure you have [coveralls][coveralls] enabled for your GitHub repository.
 In order to enable coverage testing in smalltalkCI, the `#testing` slot needs to
