@@ -333,11 +333,34 @@ prepare_folders() {
 }
 
 ################################################################################
+# Set up build environment.
+################################################################################
+prepare_environment() {
+  add_env_vars
+  if is_travis_build && is_linux_build && is_sudo_enabled && \
+      vm_is_user_provided; then
+    raise_rtprio_limit
+  fi
+}
+
+################################################################################
 # Add environment variables for in-image use (with `SCIII_` prefix).
 ################################################################################
 add_env_vars() {
   export SCIII_SMALLTALK="${config_smalltalk}"
   export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
+}
+
+################################################################################
+# Raise RTPRIO of current bash for OpenSmalltalk VMs with threaded heartbeat.
+################################################################################
+raise_rtprio_limit() {
+  pushd $(mktemp -d) > /dev/null
+  print_info "Raising real-time priority..."
+  gcc -o "set_rtprio_limit" "${SMALLTALK_CI_HOME}/utils/set_rtprio_limit.c"
+  chmod +x "./set_rtprio_limit"
+  sudo "./set_rtprio_limit" $$
+  popd > /dev/null
 }
 
 ################################################################################
@@ -597,7 +620,7 @@ main() {
   validate_configuration
   prepare_folders
   export_coveralls_data
-  add_env_vars
+  prepare_environment
   run "$@"
 
   if is_travis_build || is_appveyor_build; then

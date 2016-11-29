@@ -141,8 +141,20 @@ is_appveyor_build() {
   [[ "${APPVEYOR:-}" = "True" ]]
 }
 
+is_linux_build() {
+  [[ $(uname -s) = "Linux" ]]
+}
+
 is_cygwin_build() {
   [[ $(uname -s) = "CYGWIN_NT-"* ]]
+}
+
+is_sudo_enabled() {
+  $(sudo -n true > /dev/null 2>&1)
+}
+
+vm_is_user_provided() {
+  [[ "${SMALLTALK_CI_VM}" != "${SMALLTALK_CI_BUILD}/vm" ]]
 }
 
 is_spur_image() {
