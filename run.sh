@@ -16,7 +16,7 @@ readonly BINTRAY_API="https://api.bintray.com/content"
 initialize() {
   local resolved_path
 
-  trap "handle_error ${FUNCNAME} $? ${LINENO}" ERR
+  trap handle_error ERR
   trap handle_interrupt INT
 
   # Fail if OS is not supported
@@ -69,21 +69,18 @@ initialize() {
 # Print error information and exit.
 ################################################################################
 handle_error() {
-  local function_name=$1
-  local error_code=$2
-  local error_line=$3
+  local error_code=$?
   local i
 
   report_build_metrics "${error_code}"
 
   printf "\n"
-  print_notice "Error with status ${error_code} on line ${error_line} in \
-${function_name}():"
+  print_notice "Error with status code ${error_code}:"
   i=0
   while caller $i;
     do ((i++));
   done
-  printf "====================================================================="
+  printf "===================================================================\n"
   print_config
   exit "${error_code}"
 }
