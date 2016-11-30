@@ -49,11 +49,13 @@ print_help() {
     -d | --debug        Enable debug mode.
     -h | --help         Show this help text.
     --headful           Open vm in headful mode and do not close image.
+    --image             Custom image for build (Squeak/Pharo).
     --install           Install symlink to this smalltalkCI instance.
     --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
     -s | --smalltalk    Overwrite Smalltalk image selection.
     --uninstall         Remove symlink to any smalltalkCI instance.
     -v | --verbose      Enable 'set -x'.
+    --vm                Custom VM for build (Squeak/Pharo).
 
   GEMSTONE OPTIONS:
     --gs-BRANCH=<branch-SHA-tag>
@@ -153,8 +155,21 @@ is_sudo_enabled() {
   $(sudo -n true > /dev/null 2>&1)
 }
 
+is_trunk_build() {
+  case "${config_smalltalk}" in
+    *"trunk"|*"Trunk"|*"latest"|*"Latest")
+      return 0
+      ;;
+  esac
+  return 1
+}
+
+image_is_user_provided() {
+  is_not_empty "${config_image}"
+}
+
 vm_is_user_provided() {
-  [[ "${SMALLTALK_CI_VM}" != "${SMALLTALK_CI_BUILD}/vm" ]]
+  is_not_empty "${config_vm}"
 }
 
 is_spur_image() {
@@ -176,6 +191,10 @@ is_spur_image() {
 
 is_headless() {
   [[ "${config_headless}" = "true" ]]
+}
+
+ston_includes_loading() {
+  grep -Fq "#loading" "${config_ston}"
 }
 
 debug_enabled() {

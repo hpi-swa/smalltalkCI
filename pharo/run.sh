@@ -217,15 +217,26 @@ pharo::prepare_moose_image() {
 }
 
 ################################################################################
+# Run a Smalltalk script.
+################################################################################
+pharo::run_script() {
+  local script=$1
+  local vm_flags=""
+  local resolved_vm="${config_vm:-${SMALLTALK_CI_VM}}"
+  local resolved_image="$(resolve_path "${config_image:-${SMALLTALK_CI_IMAGE}}")"
+
+  if ! is_travis_build && ! is_headless; then
+    vm_flags="--no-quit"
+  fi
+
+  travis_wait "${resolved_vm}" "${resolved_image}" eval ${vm_flags} "${script}"
+}
+
+################################################################################
 # Load project into Pharo image.
-# Globals:
-#   SMALLTALK_CI_HOME
-#   SMALLTALK_CI_IMAGE
-#   SMALLTALK_CI_VM
 ################################################################################
 pharo::load_project() {
-  travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
-      eval ${vm_flags} "
+  pharo::run_script "
     | smalltalkCI |
     $(conditional_debug_halt)
     [ Metacello new
@@ -241,15 +252,18 @@ pharo::load_project() {
 
 ################################################################################
 # Run tests for project.
-# Globals:
-#   SMALLTALK_CI_HOME
-#   SMALLTALK_CI_IMAGE
-#   SMALLTALK_CI_VM
 ################################################################################
 pharo::test_project() {
-  travis_wait "${SMALLTALK_CI_VM}" "$(resolve_path ${SMALLTALK_CI_IMAGE})" \
-      eval ${vm_flags} "
+  pharo::run_script "
     $(conditional_debug_halt)
+    smalltalkCI := Smalltalk at: #SmalltalkCI ifAbsent: [
+    [ Metacello new
+        baseline: 'SmalltalkCI';
+        repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
+        onConflict: [:ex | ex pass];
+        load ] on: Warning do: [:w | w resume ].
+        Smalltalk at: #SmalltalkCI
+    ].
     (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")'
   "
 }
@@ -258,22 +272,22 @@ pharo::test_project() {
 # Main entry point for Pharo builds.
 ################################################################################
 run_build() {
-  local vm_flags=""
-
-  if ! is_travis_build && ! is_headless; then
-    vm_flags="--no-quit"
+  if ! image_is_user_provided; then
+    case "${config_smalltalk}" in
+      Pharo*)
+        pharo::prepare_image "${config_smalltalk}"
+        ;;
+      Moose*)
+        pharo::prepare_moose_image "${config_smalltalk}"
+        ;;
+    esac
   fi
 
-  case "${config_smalltalk}" in
-    Pharo*)
-      pharo::prepare_image "${config_smalltalk}"
-      ;;
-    Moose*)
-      pharo::prepare_moose_image "${config_smalltalk}"
-      ;;
-  esac
-
-  pharo::prepare_vm "${config_smalltalk}"
-  pharo::load_project
+  if ! vm_is_user_provided; then
+    pharo::prepare_vm "${config_smalltalk}"
+  fi
+  if ston_includes_loading; then
+    pharo::load_project
+  fi
   pharo::test_project
 }

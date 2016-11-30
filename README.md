@@ -485,11 +485,13 @@ OPTIONS:
   -d | --debug        Enable debug mode.
   -h | --help         Show this help text.
   --headful           Open vm in headful mode and do not close image.
+  --image             Custom image for build (Squeak/Pharo).
   --install           Install symlink to this smalltalkCI instance.
   --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
   -s | --smalltalk    Overwrite Smalltalk image selection.
   --uninstall         Remove symlink to any smalltalkCI instance.
   -v | --verbose      Enable 'set -x'.
+  --vm                Custom VM for build (Squeak/Pharo).
 
 EXAMPLE:
   run.sh -s "Squeak-trunk" --headful /path/to/project/.smalltalk.ston
