@@ -16,7 +16,7 @@ readonly BINTRAY_API="https://api.bintray.com/content"
 initialize() {
   local resolved_path
 
-  trap "handle_error ${FUNCNAME} $? ${LINENO}" ERR
+  trap handle_error ERR
   trap handle_interrupt INT
 
   # Fail if OS is not supported
@@ -69,21 +69,18 @@ initialize() {
 # Print error information and exit.
 ################################################################################
 handle_error() {
-  local function_name=$1
-  local error_code=$2
-  local error_line=$3
+  local error_code=$?
   local i
 
   report_build_metrics "${error_code}"
 
   printf "\n"
-  print_notice "Error with status ${error_code} on line ${error_line} in \
-${function_name}():"
+  print_notice "Error with status code ${error_code}:"
   i=0
   while caller $i;
     do ((i++));
   done
-  printf "====================================================================="
+  printf "===================================================================\n"
   print_config
   exit "${error_code}"
 }
@@ -333,11 +330,34 @@ prepare_folders() {
 }
 
 ################################################################################
+# Set up build environment.
+################################################################################
+prepare_environment() {
+  add_env_vars
+  if is_travis_build && is_linux_build && is_sudo_enabled && \
+      vm_is_user_provided; then
+    raise_rtprio_limit
+  fi
+}
+
+################################################################################
 # Add environment variables for in-image use (with `SCIII_` prefix).
 ################################################################################
 add_env_vars() {
   export SCIII_SMALLTALK="${config_smalltalk}"
   export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
+}
+
+################################################################################
+# Raise RTPRIO of current bash for OpenSmalltalk VMs with threaded heartbeat.
+################################################################################
+raise_rtprio_limit() {
+  pushd $(mktemp -d) > /dev/null
+  print_info "Raising real-time priority..."
+  gcc -o "set_rtprio_limit" "${SMALLTALK_CI_HOME}/utils/set_rtprio_limit.c"
+  chmod +x "./set_rtprio_limit"
+  sudo "./set_rtprio_limit" $$
+  popd > /dev/null
 }
 
 ################################################################################
@@ -597,7 +617,7 @@ main() {
   validate_configuration
   prepare_folders
   export_coveralls_data
-  add_env_vars
+  prepare_environment
   run "$@"
 
   if is_travis_build || is_appveyor_build; then
