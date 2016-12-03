@@ -26,6 +26,7 @@ os:
 branches:
   except:
     - windows
+    - /^v[0-9]/
 
 install:
   # Move cache directory if it exists
