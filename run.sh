@@ -264,6 +264,13 @@ parse_options() {
       config_headless="false"
       shift
       ;;
+    --image)
+      config_image="${2:-}"
+      if ! is_file "${config_image}"; then
+        print_error_and_exit "${config_image} does not exist"
+      fi
+      shift 2
+      ;;
     --install)
       install_script
       exit 0
@@ -283,6 +290,13 @@ parse_options() {
     -v | --verbose)
       config_verbose="true"
       shift
+      ;;
+    --vm)
+      config_vm="${2:-}"
+      if ! is_file "${config_vm}"; then
+        print_error_and_exit "${config_vm} does not exist"
+      fi
+      shift 2
       ;;
     --)
       shift
@@ -604,8 +618,10 @@ main() {
   local config_clean="false"
   local config_debug="false"
   local config_headless="true"
+  local config_image=""
   local config_tracking="true"
   local config_verbose="false"
+  local config_vm=""
   local status=0
 
   initialize

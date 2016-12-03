@@ -7,19 +7,13 @@ readonly BASE_DOWNLOAD="https://dl.bintray.com/hpi-swa-lab/smalltalkCI"
 readonly VM_DOWNLOAD="${BASE_DOWNLOAD}/vms"
 
 ################################################################################
-# Prepare Squeak image and vm for build.
-# Argument:
-#   Smalltalk image name
+# Download Squeak image.
 ################################################################################
-squeak::prepare_build() {
+squeak::download_image() {
   local smalltalk_name=$1
   local download_name
 
   case "${smalltalk_name}" in
-    "Squeak-trunk"|"Squeak-Trunk"|"SqueakTrunk"|"Squeak-latest")
-      squeak::prepare_trunk_build
-      return
-      ;;
     "Squeak-5.1"|"Squeak5.1")
       download_name="Squeak-5.1.tar.gz"
       ;;
@@ -38,54 +32,10 @@ squeak::prepare_build() {
   esac
 
   squeak::download_prepared_image "${download_name}"
-  squeak::prepare_vm
-}
-
-squeak::prepare_trunk_build() {
-  local target="${SMALLTALK_CI_BUILD}/trunk.zip"
-  local status=0
-
-  travis_fold start download_image "Downloading ${config_smalltalk} image..."
-    timer_start
-
-    download_file "${BASE_DOWNLOAD}/Squeak-trunk.tar.gz" "${target}"
-    tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
-    mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_BUILD}/TravisCI.image"
-    mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_BUILD}/TravisCI.changes"
-
-    timer_finish
-  travis_fold end download_image
-
-  if ! is_file "${SMALLTALK_CI_IMAGE}"; then
-    print_error_and_exit "Unable to download image at '${SMALLTALK_CI_IMAGE}'."
-  fi
-
-  squeak::prepare_vm
-
-  travis_fold start prepare_image "Preparing ${config_smalltalk} image for CI..."
-    timer_start
-
-    cp "${SMALLTALK_CI_HOME}/squeak/prepare.st" \
-       "${SMALLTALK_CI_BUILD}/prepare.st"
-    squeak::run_script "prepare.st" || status=$?
-
-    timer_finish
-  travis_fold end prepare_image
-
-  if is_nonzero "${status}"; then
-    print_error_and_exit "Failed to prepare image for CI." "${status}"
-  fi
 }
 
 ################################################################################
 # Download image and extract it.
-# Globals:
-#   BASE_DOWNLOAD
-#   SMALLTALK_CI_CACHE
-#   SMALLTALK_CI_BUILD
-#   SMALLTALK_CI_IMAGE
-# Argument:
-#   download_name
 ################################################################################
 squeak::download_prepared_image() {
   local download_name=$1
@@ -109,10 +59,51 @@ squeak::download_prepared_image() {
 }
 
 ################################################################################
+# Download trunk image and extract it.
+################################################################################
+squeak::download_trunk_image() {
+  local target="${SMALLTALK_CI_BUILD}/trunk.zip"
+
+  travis_fold start download_image "Downloading ${config_smalltalk} image..."
+    timer_start
+
+    download_file "${BASE_DOWNLOAD}/Squeak-trunk.tar.gz" "${target}"
+    tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
+    mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_BUILD}/TravisCI.image"
+    mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_BUILD}/TravisCI.changes"
+
+    timer_finish
+  travis_fold end download_image
+
+  if ! is_file "${SMALLTALK_CI_IMAGE}"; then
+    print_error_and_exit "Unable to download image at '${SMALLTALK_CI_IMAGE}'."
+  fi
+}
+
+################################################################################
+# Ensure Metacello is installed and image is up-to-date.
+################################################################################
+squeak::prepare_image() {
+  local status=0
+  
+  travis_fold start prepare_image "Preparing ${config_smalltalk} image for CI..."
+    timer_start
+
+    cp "${SMALLTALK_CI_HOME}/squeak/prepare.st" \
+       "${SMALLTALK_CI_BUILD}/prepare.st"
+    squeak::run_script "prepare.st" || status=$?
+
+    timer_finish
+  travis_fold end prepare_image
+
+  if is_nonzero "${status}"; then
+    print_error_and_exit "Failed to prepare image for CI." "${status}"
+  fi
+}
+
+################################################################################
 # Get vm filename and path according to build environment. Exit with '1' if
 # environment is not supported.
-# Globals:
-#   SMALLTALK_CI_IMAGE
 # Arguments:
 #   os_name
 #   require_spur: '1' for Spur support
@@ -163,10 +154,6 @@ squeak::get_vm_details() {
 
 ################################################################################
 # Download and extract vm if necessary.
-# Globals:
-#   VM_DOWNLOAD
-#   SMALLTALK_CI_CACHE
-#   SMALLTALK_CI_VMS
 ################################################################################
 squeak::prepare_vm() {
   local require_spur=0
@@ -176,12 +163,7 @@ squeak::prepare_vm() {
   local download_url
   local target
 
-  # Skip in case vm is already set up
-  if is_file "${SMALLTALK_CI_VM}"; then
-    return 0
-  fi
-
-  is_spur_image "${SMALLTALK_CI_IMAGE}" && require_spur=1
+  is_spur_image "${config_image:-${SMALLTALK_CI_IMAGE}}" && require_spur=1
   vm_details=$(squeak::get_vm_details "$(uname -s)" "${require_spur}")
   set_vars vm_filename vm_path "${vm_details}"
   download_url="${VM_DOWNLOAD}/${vm_filename}"
@@ -238,6 +220,8 @@ squeak::determine_vm_flags() {
 squeak::run_script() {
   local script=$1
   local vm_flags="$(squeak::determine_vm_flags)"
+  local resolved_vm="${config_vm:-${SMALLTALK_CI_VM}}"
+  local resolved_image="$(resolve_path "${config_image:-${SMALLTALK_CI_IMAGE}}")"
 
   case "$(uname -s)" in
     "Linux"|"Darwin")
@@ -246,18 +230,11 @@ squeak::run_script() {
       ;;
   esac
 
-  travis_wait "${SMALLTALK_CI_VM}" ${vm_flags} \
-    "$(resolve_path "${SMALLTALK_CI_IMAGE}")" "${script}"
+  travis_wait "${resolved_vm}" ${vm_flags} "${resolved_image}" "${script}"
 }
 
 ################################################################################
-# Load project and save image.
-# Locals:
-#   config_headless
-#   config_ston
-# Globals:
-#   SMALLTALK_CI_IMAGE
-#   SMALLTALK_CI_VM
+# Load smalltalkCI and the project and save image.
 ################################################################################
 squeak::load_project() {
   cat >"${SMALLTALK_CI_BUILD}/load.st" <<EOL
@@ -268,7 +245,7 @@ squeak::load_project() {
     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
     onConflict: [:ex | ex pass];
     load ] on: Warning do: [:w | w resume ].
-  smalltalkCI := (Smalltalk at: #SmalltalkCI).
+  smalltalkCI := Smalltalk at: #SmalltalkCI.
   smalltalkCI load: '$(resolve_path "${config_ston}")'.
   smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
 EOL
@@ -277,18 +254,21 @@ EOL
 }
 
 ################################################################################
-# Test project.
-# Locals:
-#   config_headless
-#   config_ston
-# Globals:
-#   SMALLTALK_CI_IMAGE
-#   SMALLTALK_CI_VM
+# Ensure smalltalkCI is loaded and test project.
 ################################################################################
 squeak::test_project() {
   cat >"${SMALLTALK_CI_BUILD}/test.st" <<EOL
+  | smalltalkCI |
   $(conditional_debug_halt)
-  (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")'
+  smalltalkCI := Smalltalk at: #SmalltalkCI ifAbsent: [
+    [ Metacello new
+      baseline: 'SmalltalkCI';
+      repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
+      onConflict: [:ex | ex pass];
+      load ] on: Warning do: [:w | w resume ].
+      Smalltalk at: #SmalltalkCI
+  ].
+  smalltalkCI test: '$(resolve_path "${config_ston}")'
 EOL
 
   squeak::run_script "test.st"
@@ -300,7 +280,21 @@ EOL
 # Main entry point for Squeak builds.
 ################################################################################
 run_build() {
-  squeak::prepare_build "${config_smalltalk}"
-  squeak::load_project
+  if ! image_is_user_provided; then
+    if is_trunk_build; then
+      squeak::download_trunk_image
+    else
+      squeak::download_image "${config_smalltalk}"
+    fi
+  fi
+  if ! vm_is_user_provided; then
+    squeak::prepare_vm
+  fi
+  if is_trunk_build || image_is_user_provided; then
+    squeak::prepare_image
+  fi
+  if ston_includes_loading; then
+    squeak::load_project
+  fi
   squeak::test_project
 }
