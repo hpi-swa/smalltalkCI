@@ -5,5 +5,5 @@ serializeError: error of: aTestCase
 
 	context := error signalerContext.
 	testCaseMethodContext := context findContextSuchThat: [ :ctx |
-		ctx receiver == aTestCase and: [ ctx methodSelector == #performTest ]].
+		ctx receiver == aTestCase and: [ ctx selector == #performTest ]].
 	context := context copyTo: testCaseMethodContext
