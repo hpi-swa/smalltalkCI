@@ -1,4 +1,6 @@
 executing
 finishUpAfterLoading
 	SCISqueakTranscript uninstall.
-	SCISqueakToolSet unload
+	self class isHeadless ifTrue: [
+		ToolSet unregister: CommandLineToolSet.
+		ToolSet default: originalToolSet ]

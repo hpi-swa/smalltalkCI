@@ -1,5 +1,5 @@
 executing
 prepareForLoading
-	self class isHeadless
-		ifTrue: [ SCISqueakToolSet load ].
+	self class isHeadless ifTrue: [
+		originalToolSet := ToolSet default: CommandLineToolSet ].
 	SCISqueakTranscript install
