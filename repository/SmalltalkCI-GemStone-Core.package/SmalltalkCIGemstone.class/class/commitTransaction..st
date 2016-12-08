@@ -2,6 +2,13 @@ transactions
 commitTransaction: operationLabel
   [ 
   (Smalltalk at: #'System') commitTransaction
-    ifFalse: [ SmalltalkCI printToStdout: 'Commit failed ' , operationLabel ] ]
+    ifFalse: [ 
+      SmalltalkCI
+        printToStdout:
+          self ansiRed , 'Commit failed ' , operationLabel , self ansiReset ] ]
     on: Error
-    do: [ :ex | SmalltalkCI printToStdout: 'Error ' , operationLabel , ': ' , ex description ]
+    do: [ :ex | 
+      SmalltalkCI
+        printToStdout:
+          self ansiRed , 'Error ' , operationLabel , ': ' , ex description
+            , self ansiReset ]
