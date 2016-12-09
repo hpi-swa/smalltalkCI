@@ -1,8 +1,8 @@
 {
 	"class" : {
-		"failureFixture" : "fn 12/9/2016 16:55",
-		"successFixture" : "fn 12/9/2016 16:55" },
+		"failureFixture" : "fn 12/9/2016 17:23",
+		"successFixture" : "fn 12/9/2016 17:23" },
 	"instance" : {
-		"assert:matchesLines:" : "fn 12/9/2016 16:52",
-		"testReportFailure" : "fn 12/9/2016 16:51",
-		"testReportSuccess" : "fn 12/9/2016 16:51" } }
+		"assert:matches:" : "fn 12/9/2016 17:25",
+		"testReportFailure" : "fn 12/9/2016 17:23",
+		"testReportSuccess" : "fn 12/9/2016 17:23" } }
