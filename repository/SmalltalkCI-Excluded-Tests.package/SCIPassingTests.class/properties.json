@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Excluded-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCIPassingTests",
+	"pools" : [
+		 ],
+	"super" : "TestCase",
+	"type" : "normal" }
