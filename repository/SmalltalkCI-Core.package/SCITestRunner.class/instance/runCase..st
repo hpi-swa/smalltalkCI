@@ -1,6 +1,7 @@
 running
 runCase: aTestCase
 	| result |
+	SmalltalkCI printDebug: aTestCase asString.
 	result := SCITestRunnerResult new testCase: aTestCase; yourself.
 	result time: (SmalltalkCI timeToRun: [
 		[ [ aTestCase runCase ]

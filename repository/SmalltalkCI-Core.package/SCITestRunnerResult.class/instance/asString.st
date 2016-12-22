@@ -2,4 +2,4 @@ printing
 asString
   "note - both asString and printOn: need to be implemented for portability"
 
-  ^ self testCase printString
+  ^ '#', self testCase selector asString

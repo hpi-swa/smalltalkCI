@@ -1,0 +1,3 @@
+testing
+testThisIsAVeryLongMethodNameThatProbablyNeedsToBeContractedInOrderToBeDisplayedCorrectlyInATravisLog
+	self assert: false

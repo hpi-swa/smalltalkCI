@@ -8,7 +8,8 @@
 	"instvars" : [
 		"suite",
 		"suiteTime",
-		"results" ],
+		"results",
+		"failOnZeroTests" ],
 	"name" : "SCITestRunner",
 	"pools" : [
 		 ],

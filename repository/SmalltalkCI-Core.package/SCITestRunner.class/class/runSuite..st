@@ -1,5 +1,3 @@
 running
 runSuite: aTestSuite
-	^ self new
-		initializeOn: aTestSuite;
-		run
+	^ self runSuite: aTestSuite failOnZeroTests: true
