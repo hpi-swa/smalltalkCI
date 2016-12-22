@@ -8,4 +8,5 @@
 		"testFailure" : "fn 1/23/2016 19:13",
 		"testShouldFail" : "fn 1/23/2016 19:11",
 		"testShouldPass" : "fn 1/23/2016 19:14",
-		"testShouldPassUnexpectedly" : "fn 1/23/2016 19:14" } }
+		"testShouldPassUnexpectedly" : "fn 1/23/2016 19:14",
+		"testThisIsAVeryLongMethodNameThatProbablyNeedsToBeContractedInOrderToBeDisplayedCorrectlyInATravisLog" : "fn 12/22/2016 14:57" } }

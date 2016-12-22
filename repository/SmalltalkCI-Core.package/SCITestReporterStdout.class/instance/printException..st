@@ -3,7 +3,7 @@ printException: aResult
 	self
 		printTravisFold: aResult foldName action: 'start';
 		setModeBold;
-		print: aResult ansiTitle;
+		print: (aResult ansiTitleContractedTo: 70);
 		newLine;
 		setModeBold;
 		print: aResult testError asString;
