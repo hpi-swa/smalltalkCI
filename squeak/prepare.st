@@ -5,6 +5,7 @@ monitor := [ [
 
 "# Install Metacello/FileTree ================================================="
 
+(Smalltalk includesKey: #Metacello) ifFalse: [
 "Get the Metacello configuration (for Squeak users)"
 Installer gemsource
     project: 'metacello';
@@ -30,7 +31,7 @@ Installer gemsource
 (Smalltalk at: #Metacello) new
   baseline: 'Metacello';
   repository: 'github://dalehenrich/metacello-work:master/repository';
-  load: #('Cypress')."
+  load: #('Cypress')." ].
 
 "=============================================================================="
 
