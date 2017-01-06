@@ -18,6 +18,7 @@ way to load and test Smalltalk projects.
 - [List Of Supported Images](#images)
 - [Templates](#templates)
 - [Further Configuration](#further-configuration)
+- [Deploying Artifacts](#deploying-artifacts)
 - [Contributing](#contributing)
 - [Projects using smalltalkCI](#projects-using-smalltalkci)
 
@@ -534,6 +535,38 @@ smalltalk_edge:
   branch: dev
 ```
 
+##Deploying Artifacts
+
+There are many different options for uploading artifacts from your builds in Travis.
+For example deploying through Github releases is covered here: 
+<https://docs.travis-ci.com/user/deployment/releases/>.
+
+After reading their documentation you can get started by creating an Oauth token through
+the travis CLI (ie navigate to your repo locally and type: travis setup releases). If you
+don't have the travis CLI utility you can install it by following the instruction here: 
+<https://github.com/travis-ci/travis.rb#installation>.
+
+The utility will produce the Oauth token and a "deploy" skeleton for your .travis.yml,
+you will need to adjust it to your specific needs but here is an example that will
+upload your whole travis workspace for every "tagged" commit (and for every platform) 
+that was succefully build by travis:
+
+```javascript
+before_deploy: "PLATFORM_FILE=YOUR_PROJECT_NAME-`uname`.zip; zip -r $PLATFORM_FILE $SMALLTALK_CI_HOME"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: COPY_YOUR_OATH_TOKEN_HERE
+  file: $PLATFORM_FILE
+  skip_cleanup: true
+  on:
+    repo: USER/YOUR_REPO_NAME
+    tags: true 
+```
+
+From the above template you would of course need to change the user/repo, Oauth and project names, as well as 
+provide something more specific from your builds instead of the whole $SMALLTAK_CI_HOME.
 
 ## Contributing
 
