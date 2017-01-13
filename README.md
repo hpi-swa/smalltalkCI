@@ -546,6 +546,8 @@ problem.
 
 *In alphabetical order:*
 
+- [@ba-st](https://github.com/ba-st):
+    [RenoirSt](https://github.com/ba-st/RenoirSt)
 - [@Cormas](https://github.com/cormas):
     [Cormas](https://github.com/cormas/cormas).
 - [@dalehenrich](https://github.com/dalehenrich):
