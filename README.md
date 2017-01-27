@@ -547,7 +547,9 @@ problem.
 *In alphabetical order:*
 
 - [@ba-st](https://github.com/ba-st):
+    [Buoy](https://github.com/ba-st/Buoy).
     [RenoirSt](https://github.com/ba-st/RenoirSt).
+    [Willow](https://github.com/ba-st/Willow).
 - [@Cormas](https://github.com/cormas):
     [Cormas](https://github.com/cormas/cormas).
 - [@dalehenrich](https://github.com/dalehenrich):
