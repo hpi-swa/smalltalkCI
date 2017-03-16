@@ -39,8 +39,12 @@ Installer gemsource
 Smalltalk at: #MCMcmUpdater ifPresent: [ :updater |
   [[ (updater respondsTo: #doUpdate)
     ifTrue: [ updater doUpdate ]
-    ifFalse: [ (updater respondsTo: #updateFromDefaultRepository)
-                ifTrue: [ updater updateFromDefaultRepository ]] ]
+    ifFalse: [
+      (updater respondsTo: #updateFromDefaultRepository)
+        ifTrue: [ updater updateFromDefaultRepository ]
+        ifFalse: [ ((updater respondsTo: #default) and: [
+          updater default respondsTo: #doUpdate ])
+            ifTrue: [ updater default doUpdate ] ] ] ]
     on: Warning do: [ :ex | ex resume: true ]]
       on: Error do: [ :ex |
         FileStream stdout nextPutAll: ex asString.
