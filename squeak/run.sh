@@ -168,8 +168,6 @@ squeak::prepare_vm() {
   set_vars vm_filename vm_path "${vm_details}"
   download_url="${VM_DOWNLOAD}/${vm_filename}"
   target="${SMALLTALK_CI_CACHE}/${vm_filename}"
-  squeakssl_target="${SMALLTALK_CI_CACHE}/squeakssl.zip"
-  squeakssl_bin="${SMALLTALK_CI_CACHE}/linux32/SqueakSSL"
 
   if ! is_file "${target}"; then
     travis_fold start download_vm "Downloading virtual machine..."
@@ -186,6 +184,9 @@ squeak::prepare_vm() {
       print_error_and_exit "Unable to set vm up at '${vm_path}'."
     fi
     chmod +x "${vm_path}"
+    if is_cygwin_build; then
+      chmod +x "$(dirname ${vm_path})/"*.dll "$(dirname ${vm_path})/"*.DLL
+    fi
   fi
 
   echo "${vm_path} \"\$@\"" > "${SMALLTALK_CI_VM}"
