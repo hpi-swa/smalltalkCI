@@ -35,8 +35,7 @@ way to load and test Smalltalk projects.
   [coveralls.io][coveralls]
 
 
-<a name="how-to-travis"/>
-## How To Enable Travis CI For Your Smalltalk Project
+## <a name="how-to-travis"/>How To Enable Travis CI For Your Smalltalk Project
 
 1. Export your project in a [compatible format](#load-specs) (e.g.
    [FileTree][filetree]).
@@ -48,8 +47,7 @@ way to load and test Smalltalk projects.
 5. Push all of this to GitHub and enjoy your fast Smalltalk builds!
 
 
-<a name="how-to-local"/>
-## How To Test Your Smalltalk Project Locally
+## <a name="how-to-local"/>How To Test Your Smalltalk Project Locally
 
 You can use smalltalkCI to run your project's tests locally. Just [clone][clone]
 or [download][download] smalltalkCI and then you are able to initiate a local
@@ -67,8 +65,7 @@ directory. You may want to delete single or all builds if you don't need them as
 they can take up a lot of space on your drive.*
 
 
-<a name="images"/>
-## List Of Supported Images
+## <a name="images"/>List Of Supported Images
 
 | [Squeak][squeak] | [Pharo][pharo] | [GemStone][gemstone] | [Moose][moose] |
 | ---------------- | -------------- | -------------------- | -------------- |
@@ -81,8 +78,7 @@ they can take up a lot of space on your drive.*
 |                  |                |                      |                |
 
 
-<a name="templates"/>
-## Templates
+## <a name="templates"/>Templates
 
 ### Minimal `.smalltalk.ston` Template
 
@@ -306,8 +302,7 @@ test_script:
 
 ## Further Configuration
 
-<a name="SmalltalkCISpec"/>
-### Setting Up A Custom `.smalltalk.ston`
+### <a name="SmalltalkCISpec"/>Setting Up A Custom `.smalltalk.ston`
 
 smalltalkCI requires a `.smalltalk.ston` configuration file which can be
 customized for a project to cover various use cases.
@@ -328,8 +323,7 @@ SmalltalkCISpec {
 }
 ```
 
-<a name="load-specs"/>
-#### Project Loading Specifications
+#### <a name="load-specs"/>Project Loading Specifications
 smalltalkCI supports different formats for loading Smalltalk projects and for
 each, there is a loading specification.
 One or more of those loading specifications have to be provided in the
