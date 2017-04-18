@@ -639,6 +639,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [more_projects]: https://github.com/search?l=STON&q=SmalltalkCISpec&ref=advsearch&type=Code
 [pharo]: http://pharo.org/
 [pullRequests]: https://help.github.com/articles/using-pull-requests/
+[Roassal2]: https://github.com/ObjectProfile/Roassal2
 [squeak]: http://squeak.org/
 [ston]: https://github.com/svenvc/ston/blob/master/ston-paper.md#smalltalk-object-notation-ston
 [templates]:https://github.com/hpi-swa/smalltalkCI/wiki#templates
