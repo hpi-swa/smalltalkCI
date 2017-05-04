@@ -75,20 +75,39 @@ lastSuccessfulBuild/artifact/${moose_name}.zip"
 # Return:
 #   Pharo vm download url
 ################################################################################
+
+# get os
+pharo::get_os() {
+	local TMP_OS=`uname | tr "[:upper:]" "[:lower:]"`
+	if [[ "{$TMP_OS}" = *darwin* ]]; then
+	    echo "mac";
+	elif [[ "{$TMP_OS}" = *linux* ]]; then
+	    echo "linux";
+	elif [[ "{$TMP_OS}" = *win* ]]; then
+	    echo "win";
+	elif [[ "{$TMP_OS}" = *mingw* ]]; then
+	    echo "win";
+	else
+	    echo "Unsupported OS";
+	    exit 1;
+	fi
+}
+
+# get vm url
 pharo::get_vm_url() {
   local smalltalk_name=$1
-  local system="$(pharo::get_system)"
+  local os="$(pharo::get_os)"
   local heartbeat=""
   local latest=""
-  
+
   # variables: 
-  # 	PHARO_VM=stable*|latest|nightly_build
-  #		LINUX_HEARTBEAT=threaded*|itimer
+  #  PHARO_VM=stable*|latest
+  #  LINUX_HEARTBEAT=threaded*|itimer
   if [ "$PHARO_VM" = "latest" ]; then
 	  latest="Latest"
   fi
   # in linux, we use threaded hearbeat by default
-  if [ "$system" == "linux" ]; then
+  if [ "$os" == "linux" ]; then
 	if [ "$LINUX_HEARTBEAT" != "itimer" ]; then
 	  heartbeat="T"
 	fi
