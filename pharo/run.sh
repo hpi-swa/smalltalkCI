@@ -12,19 +12,20 @@
 ################################################################################
 pharo::get_image_url() {
   local smalltalk_name=$1
-
+  local arch=""
+  
+  if [ "PHARO_ARCH" == "x86_64" ]; then
+    arch="/64" 
+  fi
   case "${smalltalk_name}" in
     "Pharo-alpha")
-      echo "get.pharo.org/alpha"
+      echo "get.pharo.org$arch/alpha"
       ;;
     "Pharo-stable")
-      echo "get.pharo.org/stable"
-      ;;
-  	"Pharo-7.0")
-      echo "get.pharo.org/70"
+      echo "get.pharo.org$arch/stable"
       ;;
     "Pharo-6.0")
-      echo "get.pharo.org/60"
+      echo "get.pharo.org$arch/60"
       ;;
     "Pharo-5.0")
       echo "get.pharo.org/50"
@@ -94,17 +95,22 @@ pharo::get_os() {
 }
 
 # get vm url
+# variables: 
+#  PHARO_VM=stable*|latest
+#  PHARO_ARCH=i386*|x86_64
+#  LINUX_HEARTBEAT=threaded*|itimer
 pharo::get_vm_url() {
   local smalltalk_name=$1
   local os="$(pharo::get_os)"
   local heartbeat=""
   local latest=""
+  local arch=""
 
-  # variables: 
-  #  PHARO_VM=stable*|latest
-  #  LINUX_HEARTBEAT=threaded*|itimer
-  if [ "$PHARO_VM" = "latest" ]; then
-	  latest="Latest"
+  if [ "$PHARO_VM" == "latest" ]; then
+    latest="Latest"
+  fi
+  if [ "PHARO_ARCH" == "x86_64" ]; then
+    arch="/64" 
   fi
   # in linux, we use threaded hearbeat by default
   if [ "$os" == "linux" ]; then
@@ -116,10 +122,10 @@ pharo::get_vm_url() {
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
     "Pharo-alpha")
-      echo "get.pharo.org/vm${heartbeat}${latest}60"
+      echo "get.pharo.org$arch/vm${heartbeat}${latest}60"
       ;;
     "Pharo-6.0")
-      echo "get.pharo.org/vm${heartbeat}${latest}60"
+      echo "get.pharo.org$arch/vm${heartbeat}${latest}60"
       ;;
     "Pharo-stable"|"Pharo-5.0"|"Moose-6"*)
       echo "get.pharo.org/vm50"
