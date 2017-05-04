@@ -20,6 +20,9 @@ pharo::get_image_url() {
     "Pharo-stable")
       echo "get.pharo.org/stable"
       ;;
+  	"Pharo-7.0")
+      echo "get.pharo.org/70"
+      ;;
     "Pharo-6.0")
       echo "get.pharo.org/60"
       ;;
@@ -74,14 +77,30 @@ lastSuccessfulBuild/artifact/${moose_name}.zip"
 ################################################################################
 pharo::get_vm_url() {
   local smalltalk_name=$1
-
+  local system="$(pharo::get_system)"
+  local heartbeat=""
+  local latest=""
+  
+  # variables: 
+  # 	PHARO_VM=stable*|latest|nightly_build
+  #		LINUX_HEARTBEAT=threaded*|itimer
+  if [ "$PHARO_VM" = "latest" ]; then
+	  latest="Latest"
+  fi
+  # in linux, we use threaded hearbeat by default
+  if [ "$system" == "linux" ]; then
+	if [ "$LINUX_HEARTBEAT" != "itimer" ]; then
+	  heartbeat="T"
+	fi
+  fi
+  # 
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
     "Pharo-alpha")
-      echo "get.pharo.org/vmLatest60"
+      echo "get.pharo.org/vm${heartbeat}${latest}60"
       ;;
     "Pharo-6.0")
-      echo "get.pharo.org/vm60"
+      echo "get.pharo.org/vm${heartbeat}${latest}60"
       ;;
     "Pharo-stable"|"Pharo-5.0"|"Moose-6"*)
       echo "get.pharo.org/vm50"
