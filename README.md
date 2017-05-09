@@ -508,6 +508,18 @@ This allows to identify build errors caused by smalltalkCI updates and
 therefore helps to improve the service. It is possible to opt-out by using the
 `--no-tracking` option.
 
+### Pharo-specific Options
+
+Pharo added some specific options to customise its builds: 
+
+```yml
+env:
+  global:
+  - PHARO_VM=stable|latest 				# choose stable/latest VM (default: stable)
+  - PHARO_ARCH=i386|x86_64				# choose architecture (default: i386)
+  - LINUX_HEARTBEAT=threaded|itimer		# choose hearbeat on linux machines (default: threaded)
+```
+
 ### Travis-specific Options
 
 Jobs on Travis CI [timeout if they don't produce output for
