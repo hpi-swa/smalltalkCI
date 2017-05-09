@@ -24,6 +24,9 @@ pharo::get_image_url() {
     "Pharo-stable")
       echo "get.pharo.org$arch/stable"
       ;;
+    "Pharo-7.0")
+      echo "get.pharo.org$arch/70"
+      ;;
     "Pharo-6.0")
       echo "get.pharo.org$arch/60"
       ;;
@@ -122,12 +125,15 @@ pharo::get_vm_url() {
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
     "Pharo-alpha")
-      echo "get.pharo.org$arch/vm${heartbeat}${latest}60"
+      echo "get.pharo.org$arch/vm${heartbeat}${latest}70"
       ;;
-    "Pharo-6.0")
-      echo "get.pharo.org$arch/vm${heartbeat}${latest}60"
+    "Pharo-7.0")
+      echo "get.pharo.org$arch/vm${heartbeat}${latest}70"
       ;;
-    "Pharo-stable"|"Pharo-5.0"|"Moose-6"*)
+    "Pharo-stable"|"Pharo-6.0"|"Moose-7"*)
+      echo "get.pharo.org/vm${heartbeat}${latest}60"
+      ;;
+    "Pharo-5.0"|"Moose-6"*)
       echo "get.pharo.org/vm50"
       ;;
     "Pharo-4.0")

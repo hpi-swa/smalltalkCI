@@ -70,10 +70,11 @@ they can take up a lot of space on your drive.*
 | [Squeak][squeak] | [Pharo][pharo] | [GemStone][gemstone] | [Moose][moose] |
 | ---------------- | -------------- | -------------------- | -------------- |
 | `Squeak-trunk`   | `Pharo-alpha`  | `GemStone-3.3.x`     | `Moose-trunk`  |
-| `Squeak-5.1`     | `Pharo-stable` | `GemStone-3.2.x`     | `Moose-6.1`    |
-| `Squeak-5.0`     | `Pharo-6.0`    | `GemStone-3.1.0.x`   | `Moose-6.0`    |
-| `Squeak-4.6`     | `Pharo-5.0`    | `Gemstone-2.4.x`     |                |
-| `Squeak-4.5`     | `Pharo-4.0`    |                      |                |
+| `Squeak-5.1`     | `Pharo-stable` | `GemStone-3.2.x`     | `Moose-7.0`    |
+| `Squeak-5.0`     | `Pharo-7.0`    | `GemStone-3.1.0.x`   | `Moose-6.1`    |
+| `Squeak-4.6`     | `Pharo-6.0`    | `Gemstone-2.4.x`     | `Moose-6.0`    |
+| `Squeak-4.5`     | `Pharo-5.0`    |                      |                |
+|                  | `Pharo-4.0`    |                      |                |
 |                  | `Pharo-3.0`    |                      |                |
 |                  |                |                      |                |
 
@@ -120,6 +121,7 @@ smalltalk:
 
   - Pharo-alpha
   - Pharo-stable
+  - Pharo-7.0
   - Pharo-6.0
   - Pharo-5.0
   - Pharo-4.0
@@ -128,6 +130,10 @@ smalltalk:
   - GemStone-3.3.0
   - GemStone-3.2.12
   - GemStone-3.1.0.6
+
+  - Moose 7.0
+  - Moose 6.1
+  - Moose 6.0
 
 # Uncomment to enable caching (only useful for GemStone builds (3x faster))
 #cache:
@@ -149,6 +155,7 @@ environment:
     # Currently, only Squeak and Pharo images are supported on AppVeyor.
     - SMALLTALK: Squeak-trunk
     - SMALLTALK: Squeak-5.0
+    - SMALLTALK: Pharo-7.0
     - SMALLTALK: Pharo-6.0
     - SMALLTALK: Pharo-5.0
     # ...
