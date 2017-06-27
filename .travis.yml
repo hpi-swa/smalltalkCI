@@ -105,6 +105,6 @@ matrix:
       os: osx
   allow_failures:
     - smalltalk: Squeak-trunk
-    - smalltalk: Pharo-6.0
+    - smalltalk: Pharo-alpha
     - smalltalk: Moose-6.1
   fast_finish: true
