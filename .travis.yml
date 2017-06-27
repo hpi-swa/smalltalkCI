@@ -8,8 +8,8 @@ smalltalk:
   - Squeak-4.6
   - Squeak-4.5
 
-  # - Pharo-alpha   # identical to Pharo-6.0
-  # - Pharo-stable  # identical to Pharo-5.0
+  - Pharo-alpha
+  - Pharo-stable
   - Pharo-6.0
   - Pharo-5.0
   - Pharo-4.0
