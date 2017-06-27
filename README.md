@@ -84,8 +84,7 @@ they can take up a lot of space on your drive.*
 
 The following `SmalltalkCISpec` will load `BaselineOfMyProject` using
 Metacello/FileTree from the `./packages` directory in Squeak, Pharo, and
-GemStone. See below how you can [customize your `SmalltalkCISpec`.]
-(#SmalltalkCISpec)
+GemStone. See below how you can [customize your `SmalltalkCISpec`.](#SmalltalkCISpec)
 
 ```javascript
 SmalltalkCISpec {
