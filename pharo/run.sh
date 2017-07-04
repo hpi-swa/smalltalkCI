@@ -76,10 +76,13 @@ pharo::get_vm_url() {
   local smalltalk_name=$1
 
   case "${smalltalk_name}" in
-    "Pharo-alpha"|"Pharo-6.0")
+    "Pharo-alpha"|"Pharo-7.0")
+    echo "get.pharo.org/vm70"
+    ;;
+    "Pharo-stable"|"Pharo-6.0")
       echo "get.pharo.org/vm60"
       ;;
-    "Pharo-stable"|"Pharo-5.0"|"Moose-6"*)
+    "Pharo-5.0"|"Moose-6"*)
       echo "get.pharo.org/vm50"
       ;;
     "Pharo-4.0")
