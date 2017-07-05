@@ -20,6 +20,9 @@ pharo::get_image_url() {
     "Pharo-stable")
       echo "get.pharo.org/stable"
       ;;
+    "Pharo-7.0")
+      echo "get.pharo.org/70"
+      ;;
     "Pharo-6.0")
       echo "get.pharo.org/60"
       ;;
@@ -79,6 +82,9 @@ pharo::get_vm_url() {
     # NOTE: vmLatestXX should be updated every time new Pharo is released
     "Pharo-alpha")
       echo "get.pharo.org/vmLatest60"
+      ;;
+    "Pharo-7.0")
+      echo "get.pharo.org/vm70"
       ;;
     "Pharo-stable"|"Pharo-6.0")
       echo "get.pharo.org/vm60"
