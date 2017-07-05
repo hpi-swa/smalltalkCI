@@ -120,6 +120,7 @@ smalltalk:
 
   - Pharo-alpha
   - Pharo-stable
+  - Pharo-7.0
   - Pharo-6.0
   - Pharo-5.0
   - Pharo-4.0
