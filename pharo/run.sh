@@ -233,7 +233,7 @@ pharo::run_script() {
     vm_flags="--no-quit"
   fi
 
-  travis_wait "${resolved_vm}" "${resolved_image}" eval ${vm_flags} "${script}"
+  travis_wait "${resolved_vm}" "${resolved_image}" --no-default-preferences eval ${vm_flags} "${script}"
 }
 
 ################################################################################
