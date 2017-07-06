@@ -86,6 +86,9 @@ pharo::get_vm_url() {
     "Pharo-7.0")
       echo "get.pharo.org/vm70"
       ;;
+    "Pharo-7.0")
+      echo "get.pharo.org/vm70"
+      ;;
     "Pharo-stable"|"Pharo-6.0")
       echo "get.pharo.org/vm60"
       ;;
