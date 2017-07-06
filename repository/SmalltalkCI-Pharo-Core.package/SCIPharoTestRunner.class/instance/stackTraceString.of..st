@@ -8,7 +8,7 @@ stackTraceString: err of: aTestCase
 			(self class isTestMethod: context method)
 				ifTrue: [ | pcRange code |
 					pcRange := context debuggerMap rangeForPC: context pc contextIsActiveContext: false.
-					code := context method getSource asString copyFrom: pcRange first to: pcRange last.
+					code := context method sourceCode asString copyFrom: pcRange first to: pcRange last.
 					str nextPutAll: ' ...', code ].
 			str cr.
 			context := context sender ] ]
