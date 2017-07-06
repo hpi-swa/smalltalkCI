@@ -9,7 +9,8 @@ smalltalk:
   - Squeak-4.5
 
   - Pharo-alpha
-  - Pharo-stable
+  # - Pharo-stable  # identical to Pharo-6.0
+  - Pharo-7.0
   - Pharo-6.0
   - Pharo-5.0
   - Pharo-4.0

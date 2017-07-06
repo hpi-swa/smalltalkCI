@@ -81,7 +81,7 @@ pharo::get_vm_url() {
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
     "Pharo-alpha")
-      echo "get.pharo.org/vmLatest60"
+      echo "get.pharo.org/vmLatest70"
       ;;
     "Pharo-7.0")
       echo "get.pharo.org/vm70"
