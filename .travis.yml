@@ -16,6 +16,11 @@ smalltalk:
   - Pharo-4.0
   - Pharo-3.0
 
+  - Pharo64-alpha
+  # - Pharo64-stable  # identical to Pharo64-6.0
+  - Pharo64-7.0
+  - Pharo64-6.0
+
   # - Moose-trunk   # identical to Moose-6.1
   - Moose-6.1
   - Moose-6.0
