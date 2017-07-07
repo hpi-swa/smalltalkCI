@@ -268,6 +268,7 @@ pharo::load_project() {
 ################################################################################
 pharo::test_project() {
   pharo::run_script "
+    | smalltalkCI |
     $(conditional_debug_halt)
     smalltalkCI := Smalltalk at: #SmalltalkCI ifAbsent: [
     [ Metacello new
