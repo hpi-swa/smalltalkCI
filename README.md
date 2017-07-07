@@ -92,10 +92,13 @@ SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'MyProject',
-      #directory : 'packages',
+      #directory : './',
       #platforms : [ #squeak, #pharo, #gemstone ]
     }
   ]
+  #testing : {
+      #failOnZeroTests : false
+  }
 }
 ```
 
