@@ -14,6 +14,18 @@ pharo::get_image_url() {
   local smalltalk_name=$1
 
   case "${smalltalk_name}" in
+    "Pharo64-alpha")
+      echo "get.pharo.org/64/alpha"
+      ;;
+    "Pharo64-stable")
+      echo "get.pharo.org/64/stable"
+      ;;
+    "Pharo64-7.0")
+      echo "get.pharo.org/64/70"
+      ;;
+    "Pharo64-6.0")
+      echo "get.pharo.org/64/60"
+      ;;
     "Pharo-alpha")
       echo "get.pharo.org/alpha"
       ;;
@@ -80,11 +92,17 @@ pharo::get_vm_url() {
 
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
+    "Pharo64-alpha")
+      echo "get.pharo.org/64/vmLatest70"
+      ;;
+    "Pharo64-7.0")
+      echo "get.pharo.org/64/vm70"
+      ;;
+    "Pharo64-stable"|"Pharo64-6.0")
+      echo "get.pharo.org/64/vm60"
+      ;;
     "Pharo-alpha")
       echo "get.pharo.org/vmLatest70"
-      ;;
-    "Pharo-7.0")
-      echo "get.pharo.org/vm70"
       ;;
     "Pharo-7.0")
       echo "get.pharo.org/vm70"
