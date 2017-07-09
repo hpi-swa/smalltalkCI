@@ -13,13 +13,13 @@ basicLoadProjectOn: aSmalltalkCI
   loadBlock := [ 
       "compensate for older versions of Metacello"
       [ metacello load: self load ]
-        on: Warning
+        on: self loadWarnings
         do: [ :ex |
           (self failOn includes: ex class name)
             ifTrue: [
-              SmalltalkCI printToStdout: 'Build failed: ', ex description.
+              SmalltalkCI printErrorToStdout: 'Build failed: ', ex description.
               SmalltalkCI shutdown: false ].
           self onWarningLog
-            ifTrue: [ Transcript cr; show: ex description ]. 
-          ex resume ] ].
+            ifTrue: [ SmalltalkCI printWarningToStdout: ex description ].
+          ex pass ] ].
   aSmalltalkCI performMetacelloLoad: loadBlock

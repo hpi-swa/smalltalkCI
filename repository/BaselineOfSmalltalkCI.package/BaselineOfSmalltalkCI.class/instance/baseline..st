@@ -6,7 +6,8 @@ baseline: spec
     do: [ 
       spec
         package: 'SmalltalkCI-Core';
-        package: 'SmalltalkCI-Tests';
+        package: 'SmalltalkCI-Tests'
+          with: [ spec requires: 'SmalltalkCI-Core' ];
         package: 'SmalltalkCI-Package-Tests'
           with: [ spec requires: 'SmalltalkCI-Tests' ];
         package: 'SmalltalkCI-AllCases-Tests'
