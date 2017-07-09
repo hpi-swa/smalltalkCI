@@ -14,6 +14,17 @@ install:
 
 script: $SMALLTALK_CI_HOME/run.sh --debug
 
+aliases:
+  - &ensure-smalltalkci-can-fail
+    smalltalk_config: .smalltalk_fail.ston
+    script:
+      - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
+      - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
+  - &with-gemstone-cache-enabled
+    cache:
+      directories:
+            - $SMALLTALK_CI_CACHE
+
 jobs:
   include:
     - stage: "Prioritized jobs"
@@ -23,9 +34,7 @@ jobs:
     - smalltalk: Pharo-alpha
     - smalltalk: GemStone-3.3.2
       env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE
+      <<: *with-gemstone-cache-enabled
 
     - language: bash
       smalltalk:
@@ -42,30 +51,16 @@ jobs:
       os: osx
     - smalltalk: GemStone-3.3.2
       os: osx
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE
+      <<: *with-gemstone-cache-enabled
 
-    # Ensure that smalltalkCI can fail
     - smalltalk: Squeak-5.1
-      smalltalk_config: .smalltalk_fail.ston
-      script:
-        - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
-        - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
+      <<: *ensure-smalltalkci-can-fail
     - smalltalk: Pharo-stable
-      smalltalk_config: .smalltalk_fail.ston
-      script:
-        - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
-        - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
+      <<: *ensure-smalltalkci-can-fail
     - smalltalk: GemStone-3.3.2
-      smalltalk_config: .smalltalk_fail.ston
+      <<: *ensure-smalltalkci-can-fail
       env: GSCI_CLIENTS="Pharo-5.0 Pharo-3.0" # latest and oldest clients
-      script:
-        - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
-        - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE
+      <<: *with-gemstone-cache-enabled
 
     - stage: "Linux jobs"
       smalltalk: Squeak-5.0
@@ -80,13 +75,9 @@ jobs:
     # - smalltalk: Moose-6.1   # identical to Moose-trunk
     - smalltalk: Moose-6.0
     - smalltalk: GemStone-3.2.15
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE
+      <<: *with-gemstone-cache-enabled
     - smalltalk: GemStone-3.1.0.6
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE
+      <<: *with-gemstone-cache-enabled
 
     - stage: "Mac jobs"
       smalltalk: Squeak-5.0
