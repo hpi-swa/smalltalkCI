@@ -320,6 +320,7 @@ run_build() {
   fi
   if ston_includes_loading; then
     pharo::load_project
+    check_build_status
   fi
   pharo::test_project
 }

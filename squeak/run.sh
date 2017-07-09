@@ -296,6 +296,7 @@ run_build() {
   fi
   if ston_includes_loading; then
     squeak::load_project
+    check_build_status
   fi
   squeak::test_project
 }

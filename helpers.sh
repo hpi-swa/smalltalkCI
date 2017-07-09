@@ -3,16 +3,17 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-GITHUB_API="https://api.github.com"
-COVERALLS_API="https://coveralls.io/api/v1/jobs"
+readonly BUILD_STATUS_FILE="${SMALLTALK_CI_BUILD}/build_status.txt"
+readonly GITHUB_API="https://api.github.com"
+readonly COVERALLS_API="https://coveralls.io/api/v1/jobs"
 
-ANSI_BOLD="\033[1m"
-ANSI_RED="\033[31m"
-ANSI_GREEN="\033[32m"
-ANSI_YELLOW="\033[33m"
-ANSI_BLUE="\033[34m"
-ANSI_RESET="\033[0m"
-ANSI_CLEAR="\033[0K"
+readonly ANSI_BOLD="\033[1m"
+readonly ANSI_RED="\033[31m"
+readonly ANSI_GREEN="\033[32m"
+readonly ANSI_YELLOW="\033[33m"
+readonly ANSI_BLUE="\033[34m"
+readonly ANSI_RESET="\033[0m"
+readonly ANSI_CLEAR="\033[0K"
 
 print_info() {
   printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
@@ -199,6 +200,29 @@ ston_includes_loading() {
 
 debug_enabled() {
   [[ "${config_debug}" = "true" ]]
+}
+
+check_build_status() {
+  local build_status
+  if is_file "${BUILD_STATUS_FILE}"; then
+    build_status=$(cat "${BUILD_STATUS_FILE}")
+    if is_nonzero "${build_status}"; then
+      exit 1
+    fi
+  fi
+}
+
+check_final_build_status() {
+  local build_status
+
+  if ! is_file "${BUILD_STATUS_FILE}"; then
+    print_error_and_exit "Build failed before tests were performed correctly."
+  fi
+  build_status=$(cat "${BUILD_STATUS_FILE}")
+  report_build_metrics "${build_status}"
+  if is_nonzero "${build_status}"; then
+    exit 1
+  fi
 }
 
 conditional_debug_halt() {
