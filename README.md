@@ -92,7 +92,6 @@ SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'MyProject',
-      #directory : 'packages',
       #platforms : [ #squeak, #pharo, #gemstone ]
     }
   ]
