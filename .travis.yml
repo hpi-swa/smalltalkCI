@@ -28,6 +28,8 @@ aliases:
 jobs:
   include:
     - stage: "Prioritized jobs"
+      smalltalk: Squeak64-5.1
+    - smalltalk: Squeak64-trunk
       smalltalk: Squeak-5.1
     - smalltalk: Squeak-trunk
     - smalltalk: Pharo64-stable
@@ -43,6 +45,10 @@ jobs:
       sudo: false
       script: tests/all_tests.sh
 
+    - smalltalk: Squeak64-5.1
+      os: osx
+    - smalltalk: Squeak64-trunk
+      os: osx
     - smalltalk: Squeak-5.1
       os: osx
     - smalltalk: Squeak-trunk
@@ -108,7 +114,9 @@ jobs:
 ##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
 
   allow_failures:
+    - smalltalk: Squeak64-trunk
     - smalltalk: Squeak-trunk
+    - smalltalk: Pharo64-alpha
     - smalltalk: Pharo-alpha
     - smalltalk: Moose-trunk
   fast_finish: true

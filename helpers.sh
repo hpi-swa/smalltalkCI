@@ -173,6 +173,10 @@ vm_is_user_provided() {
   is_not_empty "${config_vm}"
 }
 
+is_64bit() {
+  [[ "${config_smalltalk}" == *"64-"* ]]
+}
+
 is_spur_image() {
   local image_path=$1
   local image_format_number

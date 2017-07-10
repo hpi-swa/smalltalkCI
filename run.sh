@@ -181,12 +181,13 @@ in ${project_home}."
 #   config_smalltalk
 ################################################################################
 select_smalltalk() {
-  local images="Squeak-trunk Squeak-5.1 Squeak-5.0 Squeak-4.6 Squeak-4.5
-                Pharo-stable Pharo-alpha Pharo-7.0 Pharo-6.0 Pharo-5.0 Pharo-4.0
-                Pharo-3.0
-                Pharo64-stable Pharo64-alpha Pharo64-7.0 Pharo64-6.0
-                GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6
-                Moose-trunk Moose-6.1 Moose-6.0"
+  local images="\
+      Squeak64-trunk Squeak64-5.1
+      Squeak-trunk Squeak-5.1 Squeak-5.0 Squeak-4.6 Squeak-4.5
+      Pharo64-stable Pharo64-alpha Pharo64-7.0 Pharo64-6.0
+      Pharo-stable Pharo-alpha Pharo-7.0 Pharo-6.0 Pharo-5.0 Pharo-4.0 Pharo-3.0
+      GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6
+      Moose-trunk Moose-6.1 Moose-6.0"
 
   if is_not_empty "${config_smalltalk}"; then
     return

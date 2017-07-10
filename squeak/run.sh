@@ -14,6 +14,9 @@ squeak::download_image() {
   local download_name
 
   case "${smalltalk_name}" in
+    "Squeak64-5.1")
+      download_name="Squeak64-5.1.tar.gz"
+      ;;
     "Squeak-5.1"|"Squeak5.1")
       download_name="Squeak-5.1.tar.gz"
       ;;
@@ -39,19 +42,23 @@ squeak::download_image() {
 ################################################################################
 squeak::download_prepared_image() {
   local download_name=$1
-  local download_url="${BASE_DOWNLOAD}/${download_name}"
   local target="${SMALLTALK_CI_CACHE}/${download_name}"
 
   if ! is_file "${target}"; then
     travis_fold start download_image "Downloading '${download_name}' testing image..."
       timer_start
-      download_file "${download_url}" "${target}"
+      download_file "${BASE_DOWNLOAD}/${download_name}" "${target}"
       timer_finish
     travis_fold end download_image
   fi
 
   print_info "Extracting image..."
   tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
+  # TODO: cleanup soon, some archives still include TravisCI.(image|changes)
+  if ! is_file "${SMALLTALK_CI_IMAGE}"; then 
+    mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_IMAGE}"
+    mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_CHANGES}"
+  fi
 
   if ! is_file "${SMALLTALK_CI_IMAGE}"; then
     print_error_and_exit "Failed to prepare image at '${SMALLTALK_CI_IMAGE}'."
@@ -62,15 +69,23 @@ squeak::download_prepared_image() {
 # Download trunk image and extract it.
 ################################################################################
 squeak::download_trunk_image() {
-  local target="${SMALLTALK_CI_BUILD}/trunk.zip"
+  local target
+  local download_name
+
+  if is_64bit; then
+    download_name="Squeak64-trunk.tar.gz"
+  else
+    download_name="Squeak-trunk.tar.gz"
+  fi
+  target="${SMALLTALK_CI_CACHE}/${download_name}"
 
   travis_fold start download_image "Downloading ${config_smalltalk} image..."
     timer_start
 
-    download_file "${BASE_DOWNLOAD}/Squeak-trunk.tar.gz" "${target}"
+    download_file "${BASE_DOWNLOAD}/${download_name}" "${target}"
     tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
-    mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_BUILD}/TravisCI.image"
-    mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_BUILD}/TravisCI.changes"
+    mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_IMAGE}"
+    mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_CHANGES}"
 
     timer_finish
   travis_fold end download_image
@@ -106,90 +121,89 @@ squeak::prepare_image() {
 # environment is not supported.
 # Arguments:
 #   os_name
-#   require_spur: '1' for Spur support
 # Prints:
-#   'vm_filename|vm_path' string
+#   'vm_filename|vm_path|vm_binary' string
 ################################################################################
 squeak::get_vm_details() {
-  local os_name=$1
-  local require_spur=$2
+  os_name=$1
+  local vm_binary
   local vm_filename
+  local vm_name_mac
+  local vm_os
   local vm_path
+  local vm_prefix
+
+  case "${config_smalltalk}" in
+    "Squeak-4"*|"Squeak4"*)
+      vm_prefix="Cog-4.5-3427"
+      vm_name_mac="Cog.app"
+      ;;
+    *)
+      vm_prefix="${config_smalltalk}"
+      vm_name_mac="CogSpur.app"
+      ;;
+  esac
 
   case "${os_name}" in
     "Linux")
-      if [[ "${require_spur}" -eq 1 ]]; then
-        vm_filename="cogspurlinux-15.33.3427.tgz"
-        vm_path="${SMALLTALK_CI_VMS}/cogspurlinux/squeak"
-      else
-        vm_filename="coglinux-15.33.3427.tgz"
-        vm_path="${SMALLTALK_CI_VMS}/coglinux/squeak"
-      fi
+      vm_os="Linux"
+      vm_binary="squeak"
       ;;
     "Darwin")
-      if [[ "${require_spur}" -eq 1 ]]; then
-        vm_filename="CogSpur.app-15.33.3427.tgz"
-        vm_path="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
-      else
-        vm_filename="Cog.app-15.33.3427.tgz"
-        vm_path="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
-      fi
+      vm_os="macOS"
+      vm_binary="${vm_name_mac}/Contents/MacOS/Squeak"
       ;;
     "CYGWIN_NT-"*)
-      if [[ "${require_spur}" -eq 1 ]]; then
-        vm_filename="cogspurwin-15.33.3427.tgz"
-        vm_path="${SMALLTALK_CI_VMS}/cogspurwin/SqueakConsole.exe"
-      else
-        vm_filename="cogwin-15.33.3427.tgz"
-        vm_path="${SMALLTALK_CI_VMS}/cogwin/SqueakConsole.exe"
-      fi
+      vm_os="Windows"
+      vm_binary="SqueakConsole.exe"
       ;;
     *)
       print_error_and_exit "Unsupported platform '${os_name}'."
       ;;
   esac
-
-  return_vars "${vm_filename}" "${vm_path}"
+  vm_filename="${vm_prefix}-VM-${vm_os}.zip"
+  vm_path="${SMALLTALK_CI_VMS}/${vm_prefix}"
+  return_vars "${vm_filename}" "${vm_path}" "${vm_path}/${vm_binary}"
 }
 
 ################################################################################
 # Download and extract vm if necessary.
 ################################################################################
 squeak::prepare_vm() {
-  local require_spur=0
+  local download_url
+  local target
+  local vm_bindary
   local vm_details
   local vm_filename
   local vm_path
-  local download_url
-  local target
 
-  is_spur_image "${config_image:-${SMALLTALK_CI_IMAGE}}" && require_spur=1
-  vm_details=$(squeak::get_vm_details "$(uname -s)" "${require_spur}")
-  set_vars vm_filename vm_path "${vm_details}"
+  vm_details=$(squeak::get_vm_details "$(uname -s)")
+  set_vars vm_filename vm_path vm_binary "${vm_details}"
   download_url="${VM_DOWNLOAD}/${vm_filename}"
-  target="${SMALLTALK_CI_CACHE}/${vm_filename}"
+  download_target="${SMALLTALK_CI_CACHE}/${vm_filename}"
 
-  if ! is_file "${target}"; then
+  if ! is_file "${download_target}"; then
     travis_fold start download_vm "Downloading virtual machine..."
       timer_start
-      download_file "${download_url}" "${target}"
+      download_file "${download_url}" "${download_target}"
       timer_finish
     travis_fold end download_vm
   fi
 
-  if ! is_file "${vm_path}"; then
+  if ! is_file "${vm_binary}"; then
     print_info "Extracting virtual machine..."
-    tar xzf "${target}" -C "${SMALLTALK_CI_VMS}"
-    if ! is_file "${vm_path}"; then
-      print_error_and_exit "Unable to set vm up at '${vm_path}'."
+    is_dir "${vm_path}" || mkdir "${vm_path}"
+    unzip -q "${download_target}" -d "${vm_path}"
+    if ! is_file "${vm_binary}"; then
+      print_error_and_exit "Unable to set vm up at '${vm_binary}'."
     fi
-    chmod +x "${vm_path}"
+    chmod +x "${vm_binary}"
     if is_cygwin_build; then
-      chmod +x "$(dirname ${vm_path})/"*.dll "$(dirname ${vm_path})/"*.DLL
+      chmod +x "$(dirname ${vm_binary})/"*.dll "$(dirname ${vm_binary})/"*.DLL
     fi
   fi
 
-  echo "${vm_path} \"\$@\"" > "${SMALLTALK_CI_VM}"
+  echo "${vm_binary} \"\$@\"" > "${SMALLTALK_CI_VM}"
   chmod +x "${SMALLTALK_CI_VM}"
 
   travis_fold start display_vm_version "Cog VM Information"
