@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "SCIMetacelloLoadSpec",
+	"category" : "SmalltalkCI-Squeak-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SCISqueakMetacelloLoadSpec",
+	"type" : "normal"
+}

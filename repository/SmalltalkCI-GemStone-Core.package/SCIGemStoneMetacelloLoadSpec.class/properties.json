@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "SCIMetacelloLoadSpec",
+	"category" : "SmalltalkCI-GemStone-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SCIGemStoneMetacelloLoadSpec",
+	"type" : "normal"
+}
