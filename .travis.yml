@@ -110,5 +110,6 @@ jobs:
   allow_failures:
     - smalltalk: Squeak-trunk
     - smalltalk: Pharo-alpha
+    - smalltalk: Pharo64-alpha
     - smalltalk: Moose-trunk
   fast_finish: true
