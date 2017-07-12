@@ -144,19 +144,17 @@ pharo::prepare_vm() {
   fi
 
   if ! is_dir "${pharo_vm_folder}"; then
+    is_dir "${pharo_vm_folder}" || mkdir "${pharo_vm_folder}"
+    pushd "${pharo_vm_folder}" > /dev/null
     travis_fold start download_vm "Downloading ${smalltalk_name} vm..."
       timer_start
-
-      mkdir "${pharo_vm_folder}"
-      pushd "${pharo_vm_folder}" > /dev/null
 
       download_file "${pharo_vm_url}" "${pharo_zeroconf}"
       bash "${pharo_zeroconf}"
 
-      popd > /dev/null
-
       timer_finish
     travis_fold end download_vm
+    popd > /dev/null
   fi
 
   if is_headless; then
@@ -182,30 +180,29 @@ pharo::prepare_vm() {
 pharo::prepare_image() {
   local smalltalk_name=$1
   local pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
-  local pharo_image_file="${smalltalk_name}.image"
-  local pharo_changes_file="${smalltalk_name}.changes"
-  local pharo_zeroconf="${SMALLTALK_CI_CACHE}/${smalltalk_name}_zeroconfig"
+  local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}"
+  local pharo_zeroconf="${target}/zeroconfig"
 
-  if ! is_file "${SMALLTALK_CI_CACHE}/${pharo_image_file}"; then
+  if ! is_file "${target}"; then
+    is_dir "${target}" || mkdir "${target}"
+    pushd "${target}" > /dev/null
     travis_fold start download_image "Downloading ${smalltalk_name} image..."
       timer_start
-
-      pushd "${SMALLTALK_CI_CACHE}" > /dev/null
 
       download_file "${pharo_image_url}" "${pharo_zeroconf}"
       bash "${pharo_zeroconf}"
 
-      mv "Pharo.image" "${pharo_image_file}"
-      mv "Pharo.changes" "${pharo_changes_file}"
-      popd > /dev/null
-
       timer_finish
     travis_fold end download_image
+    popd > /dev/null
   fi
 
   print_info "Preparing Pharo image..."
-  cp "${SMALLTALK_CI_CACHE}/${pharo_image_file}" "${SMALLTALK_CI_IMAGE}"
-  cp "${SMALLTALK_CI_CACHE}/${pharo_changes_file}" "${SMALLTALK_CI_CHANGES}"
+  cp "${target}/"*.image "${SMALLTALK_CI_IMAGE}"
+  cp "${target}/"*.changes "${SMALLTALK_CI_CHANGES}"
+  if ls "${target}/"*.sources 1> /dev/null 2>&1; then
+    cp "${target}/"*.sources "${SMALLTALK_CI_BUILD}"
+  fi
 }
 
 ################################################################################
