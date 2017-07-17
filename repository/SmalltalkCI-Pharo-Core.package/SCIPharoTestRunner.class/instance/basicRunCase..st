@@ -1,3 +1,5 @@
 running
 basicRunCase: aTestCase
-	aTestCase runCaseManaged
+	(self class environment hasClassNamed: #CurrentExecutionEnvironment) 
+		ifTrue: [ aTestCase runCaseManaged ]
+		ifFalse: [ super basicRunCase: aTestCase ]
