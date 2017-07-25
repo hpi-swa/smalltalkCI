@@ -67,16 +67,17 @@ they can take up a lot of space on your drive.*
 
 ## <a name="images"/>List Of Supported Images
 
-| [Squeak][squeak] | [Pharo][pharo] | [GemStone][gemstone] | [Moose][moose] |
-| ---------------- | -------------- | -------------------- | -------------- |
-| `Squeak-trunk`   | `Pharo-alpha`  | `GemStone-3.3.x`     | `Moose-trunk`  |
-| `Squeak-5.1`     | `Pharo-stable` | `GemStone-3.2.x`     | `Moose-7.0`    |
-| `Squeak-5.0`     | `Pharo-7.0`    | `GemStone-3.1.0.x`   | `Moose-6.1`    |
-| `Squeak-4.6`     | `Pharo-6.0`    | `Gemstone-2.4.x`     | `Moose-6.0`    |
-| `Squeak-4.5`     | `Pharo-5.0`    |                      |                |
-|                  | `Pharo-4.0`    |                      |                |
-|                  | `Pharo-3.0`    |                      |                |
-|                  |                |                      |                |
+| [Squeak][squeak] | [Pharo][pharo]     | [GemStone][gemstone] | [Moose][moose] |
+| ---------------- | ------------------ | -------------------- | -------------- |
+| `Squeak-trunk`   | `Pharo(64)-alpha`  | `GemStone-3.3.x`     | `Moose-trunk`  |
+| `Squeak-5.1`     | `Pharo(64)-stable` | `GemStone-3.2.x`     | `Moose-6.1`    |
+| `Squeak-5.0`     | `Pharo(64)-7.0`    | `GemStone-3.1.0.x`   | `Moose-6.0`    |
+| `Squeak-4.6`     | `Pharo(64)-6.1`    | `Gemstone-2.4.x`     |                |
+| `Squeak-4.5`     | `Pharo(64)-6.0`    |                      |                |
+|                  | `Pharo-5.0`        |                      |                |
+|                  | `Pharo-4.0`        |                      |                |
+|                  | `Pharo-3.0`        |                      |                |
+|                  |                    |                      |                |
 
 
 ## <a name="templates"/>Templates
@@ -85,15 +86,13 @@ they can take up a lot of space on your drive.*
 
 The following `SmalltalkCISpec` will load `BaselineOfMyProject` using
 Metacello/FileTree from the `./packages` directory in Squeak, Pharo, and
-GemStone. See below how you can [customize your `SmalltalkCISpec`.]
-(#SmalltalkCISpec)
+GemStone. See below how you can [customize your `SmalltalkCISpec`.](#SmalltalkCISpec)
 
 ```javascript
 SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'MyProject',
-      #directory : 'packages',
       #platforms : [ #squeak, #pharo, #gemstone ]
     }
   ]
@@ -122,10 +121,17 @@ smalltalk:
   - Pharo-alpha
   - Pharo-stable
   - Pharo-7.0
+  - Pharo-6.1
   - Pharo-6.0
   - Pharo-5.0
   - Pharo-4.0
   - Pharo-3.0
+
+  - Pharo64-alpha
+  - Pharo64-stable
+  - Pharo64-7.0
+  - Pharo64-6.1
+  - Pharo64-6.0
 
   - GemStone-3.3.0
   - GemStone-3.2.12

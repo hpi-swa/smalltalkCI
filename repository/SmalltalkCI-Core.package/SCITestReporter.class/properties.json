@@ -1,16 +1,15 @@
 {
-	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
+	"super" : "Object",
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
 	"instvars" : [
 		"runner",
 		"spec",
-		"stream" ],
+		"stream"
+	],
 	"name" : "SCITestReporter",
-	"pools" : [
-		 ],
-	"super" : "Object",
-	"type" : "normal" }
+	"type" : "normal"
+}

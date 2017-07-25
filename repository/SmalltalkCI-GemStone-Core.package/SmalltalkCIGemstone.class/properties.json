@@ -1,15 +1,14 @@
 {
-	"category" : "SmalltalkCI-GemStone-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
+	"super" : "SmalltalkCI",
+	"category" : "SmalltalkCI-GemStone-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
 	"instvars" : [
 		"produceXMLLog",
-		"xmlLogDirPath" ],
+		"xmlLogDirPath"
+	],
 	"name" : "SmalltalkCIGemstone",
-	"pools" : [
-		 ],
-	"super" : "SmalltalkCI",
-	"type" : "normal" }
+	"type" : "normal"
+}

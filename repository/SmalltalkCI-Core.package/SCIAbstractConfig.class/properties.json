@@ -1,15 +1,14 @@
 {
-	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
+	"super" : "Object",
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
 	"instvars" : [
 		"configName",
-		"platforms" ],
+		"platforms"
+	],
 	"name" : "SCIAbstractConfig",
-	"pools" : [
-		 ],
-	"super" : "Object",
-	"type" : "normal" }
+	"type" : "normal"
+}

@@ -6,7 +6,6 @@ set -o pipefail
 set -o nounset
 
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
-readonly BUILD_STATUS_FILE="build_status.txt"
 readonly INSTALL_TARGET_OSX="/usr/local/bin"
 readonly BINTRAY_API="https://api.bintray.com/content"
 
@@ -183,7 +182,9 @@ in ${project_home}."
 ################################################################################
 select_smalltalk() {
   local images="Squeak-trunk Squeak-5.1 Squeak-5.0 Squeak-4.6 Squeak-4.5
-                Pharo-stable Pharo-alpha Pharo-7.0 Pharo-6.0 Pharo-5.0 Pharo-4.0 Pharo-3.0
+                Pharo-stable Pharo-alpha Pharo-7.0 Pharo-6.1 Pharo-6.0 Pharo-5.0
+                Pharo-4.0 Pharo-3.0
+                Pharo64-stable Pharo64-alpha Pharo64-7.0 Pharo64-6.1 Pharo64-6.0
                 GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6
                 Moose-trunk Moose-7.0 Moose-6.1 Moose-6.0"
 
@@ -373,26 +374,6 @@ raise_rtprio_limit() {
   chmod +x "./set_rtprio_limit"
   sudo "./set_rtprio_limit" $$
   popd > /dev/null
-}
-
-################################################################################
-# Check build status and exit with non-zero exit code if necessary.
-# Locals:
-#   build_status
-# Globals:
-#   SMALLTALK_CI_BUILD
-################################################################################
-check_build_status() {
-  local build_status
-
-  if ! is_file "${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}"; then
-    print_error_and_exit "Build failed before tests were performed correctly."
-  fi
-  build_status=$(cat "${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}")
-  report_build_metrics "${build_status}"
-  if is_nonzero "${build_status}"; then
-    exit 1
-  fi
 }
 
 ################################################################################
@@ -645,7 +626,7 @@ main() {
     deploy "${status}"
   fi
 
-  check_build_status
+  check_final_build_status
 }
 
 # Run main if script is not being tested

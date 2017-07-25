@@ -1,28 +1,6 @@
 language: smalltalk
 sudo: false
 
-smalltalk:
-  - Squeak-trunk
-  - Squeak-5.1
-  - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
-
-  # - Pharo-alpha   # identical to Pharo-6.0
-  # - Pharo-stable  # identical to Pharo-5.0
-  - Pharo-6.0
-  - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
-
-  # - Moose-trunk   # identical to Moose-6.1
-  - Moose-6.1
-  - Moose-6.0
-
-os:
-  - linux
-  - osx
-
 branches:
   except:
     - windows
@@ -36,75 +14,102 @@ install:
 
 script: $SMALLTALK_CI_HOME/run.sh --debug
 
-matrix:
+aliases:
+  - &ensure-smalltalkci-can-fail
+    smalltalk_config: .smalltalk_fail.ston
+    script:
+      - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
+      - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
+  - &with-gemstone-cache-enabled
+    cache:
+      directories:
+            - $SMALLTALK_CI_CACHE
+
+jobs:
   include:
-    # Bash tests
+    - stage: "Prioritized jobs"
+      smalltalk: Squeak-5.1
+    - smalltalk: Squeak-trunk
+    - smalltalk: Pharo64-stable
+    - smalltalk: Pharo64-alpha
+    - smalltalk: Pharo-stable
+    - smalltalk: Pharo-alpha
+    - smalltalk: GemStone-3.3.2
+      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
+      <<: *with-gemstone-cache-enabled
+
     - language: bash
       smalltalk:
       sudo: false
       script: tests/all_tests.sh
 
-    # Test that smalltalkCI can fail
-    - smalltalk: Squeak-5.0
-      smalltalk_config: .smalltalk_fail.ston
-      os: linux
-      script:
-        - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
-        - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
+    - smalltalk: Squeak-5.1
+      os: osx
+    - smalltalk: Squeak-trunk
+      os: osx
     - smalltalk: Pharo-stable
-      smalltalk_config: .smalltalk_fail.ston
-      os: linux
-      script:
-        - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
-        - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
-
-    # GemStone Linux builds
-    - smalltalk: GemStone-3.3.2
-      os: linux
-      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
-    - smalltalk: GemStone-3.3.2
-      smalltalk_config: .smalltalk_fail.ston
-      os: linux
-      env: GSCI_CLIENTS="Pharo-5.0 Pharo-3.0" # latest and oldest clients
-      script:
-        - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
-        - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
-    - smalltalk: GemStone-3.2.15
-      os: linux
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
-    - smalltalk: GemStone-3.1.0.6
-      os: linux
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
-    # GemStone OS X builds
+      os: osx
+    - smalltalk: Pharo-alpha
+      os: osx
     - smalltalk: GemStone-3.3.2
       os: osx
-      cache:
-        directories:
-          - $SMALLTALK_CI_CACHE      # don't use dependency cache with nonstandard GSCI_DEVKIT_BRANCH
-##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
+      <<: *with-gemstone-cache-enabled
+
+    - smalltalk: Squeak-5.1
+      <<: *ensure-smalltalkci-can-fail
+    - smalltalk: Pharo-stable
+      <<: *ensure-smalltalkci-can-fail
+    - smalltalk: GemStone-3.3.2
+      <<: *ensure-smalltalkci-can-fail
+      env: GSCI_CLIENTS="Pharo-5.0 Pharo-3.0" # latest and oldest clients
+      <<: *with-gemstone-cache-enabled
+
+    - stage: "Linux jobs"
+      smalltalk: Squeak-5.0
+    - smalltalk: Squeak-4.6
+    - smalltalk: Squeak-4.5
+    - smalltalk: Pharo64-7.0
+    - smalltalk: Pharo64-6.0
+    - smalltalk: Pharo-7.0
+    - smalltalk: Pharo-6.0
+    - smalltalk: Pharo-5.0
+    - smalltalk: Pharo-4.0
+    - smalltalk: Pharo-3.0
+    - smalltalk: Moose-trunk
+    # - smalltalk: Moose-6.1   # identical to Moose-trunk
+    - smalltalk: Moose-6.0
+    - smalltalk: GemStone-3.2.15
+      <<: *with-gemstone-cache-enabled
+    - smalltalk: GemStone-3.1.0.6
+      <<: *with-gemstone-cache-enabled
+
+    - stage: "Mac jobs"
+      smalltalk: Squeak-5.0
+      os: osx
+    - smalltalk: Squeak-4.6
+      os: osx
+    - smalltalk: Squeak-4.5
+      os: osx
+    - smalltalk: Pharo-7.0
+      os: osx
+    - smalltalk: Pharo-6.0
+      os: osx
+    - smalltalk: Pharo-5.0
+      os: osx
+    - smalltalk: Pharo-4.0
+      os: osx
+    - smalltalk: Pharo-3.0
+      os: osx      
 #    - smalltalk: GemStone-3.2.14
 #      os: osx
 ##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
 #    - smalltalk: GemStone-3.1.0.6
 #      os: osx
 ##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
-  exclude:
-    - smalltalk: Moose-6.1
-      os: osx
-    - smalltalk: Moose-6.0
-      os: osx
+
   allow_failures:
     - smalltalk: Squeak-trunk
-    - smalltalk: Pharo-6.0
-    - smalltalk: Moose-6.1
+    - smalltalk: Pharo-alpha
+    - smalltalk: Pharo64-alpha
+    - smalltalk: Moose-trunk
   fast_finish: true

@@ -1,14 +1,11 @@
 {
-	"category" : "SmalltalkCI-GemStone-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
-	"instvars" : [
-		 ],
-	"name" : "SCIGemStoneMonticelloLoadSpec",
-	"pools" : [
-		 ],
 	"super" : "SCIMonticelloLoadSpec",
-	"type" : "normal" }
+	"category" : "SmalltalkCI-GemStone-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SCIGemStoneMonticelloLoadSpec",
+	"type" : "normal"
+}

@@ -12,23 +12,37 @@
 ################################################################################
 pharo::get_image_url() {
   local smalltalk_name=$1
-  local arch=""
   
-  if [ "PHARO_ARCH" == "x86_64" ]; then
-    arch="/64" 
-  fi
   case "${smalltalk_name}" in
+    "Pharo64-alpha")
+      echo "get.pharo.org/64/alpha"
+      ;;
+    "Pharo64-stable")
+      echo "get.pharo.org/64/stable"
+      ;;
+    "Pharo64-7.0")
+      echo "get.pharo.org/64/70"
+      ;;
+  	"Pharo64-6.1")
+      echo "get.pharo.org/64/61"
+      ;;
+    "Pharo64-6.0")
+      echo "get.pharo.org/64/60"
+      ;;
     "Pharo-alpha")
-      echo "get.pharo.org$arch/alpha"
+      echo "get.pharo.org/alpha"
       ;;
     "Pharo-stable")
-      echo "get.pharo.org$arch/stable"
+      echo "get.pharo.org/stable"
       ;;
     "Pharo-7.0")
-      echo "get.pharo.org$arch/70"
+      echo "get.pharo.org/70"
+      ;;
+    "Pharo-6.1")
+      echo "get.pharo.org/61"
       ;;
     "Pharo-6.0")
-      echo "get.pharo.org$arch/60"
+      echo "get.pharo.org/60"
       ;;
     "Pharo-5.0")
       echo "get.pharo.org/50"
@@ -100,40 +114,51 @@ pharo::get_os() {
 # get vm url
 # variables: 
 #  PHARO_VM=stable*|latest
-#  PHARO_ARCH=i386*|x86_64
 #  LINUX_HEARTBEAT=threaded*|itimer
 pharo::get_vm_url() {
   local smalltalk_name=$1
   local os="$(pharo::get_os)"
   local heartbeat=""
   local latest=""
-  local arch=""
 
   if [ "$PHARO_VM" == "latest" ]; then
     latest="Latest"
   fi
-  if [ "PHARO_ARCH" == "x86_64" ]; then
-    arch="/64" 
-  fi
   # in linux, we use threaded hearbeat by default
   if [ "$os" == "linux" ]; then
-	if [ "$LINUX_HEARTBEAT" != "itimer" ]; then
-	  heartbeat="T"
-	fi
+	case "${LINUX_HEARTBEAT}" in
+		"itimer") heartbeat="I" ;;
+		"threaded") heartbeat="T" ;;
+	esac
   fi
   # 
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
+    "Pharo64-alpha")
+      echo "get.pharo.org/64/vmLatest70"
+      ;;
+    "Pharo64-7.0")
+      echo "get.pharo.org/64/vm70"
+      ;;
+    "Pharo64-stable"|"Pharo64-6.1")
+      echo "get.pharo.org/64/vm61"
+      ;;
+    "Pharo64-6.0")
+      echo "get.pharo.org/64/vm60"
+      ;;
     "Pharo-alpha")
       echo "get.pharo.org$arch/vm${heartbeat}${latest}70"
       ;;
     "Pharo-7.0")
       echo "get.pharo.org$arch/vm${heartbeat}${latest}70"
       ;;
-    "Pharo-stable"|"Pharo-6.0"|"Moose-7"*)
-      echo "get.pharo.org/vm${heartbeat}${latest}60"
+    "Pharo-stable"|"Pharo-6.1"|"Moose-7"*)
+      echo "get.pharo.org/vm${heartbeat}61"
       ;;
-    "Pharo-5.0"|"Moose-6"*)
+    "Pharo-stable"|"Pharo-6.0"|"Moose-6.1"|"Moose-trunk")
+      echo "get.pharo.org/vm60"
+      ;;
+    "Pharo-5.0"|"Moose-6.0")
       echo "get.pharo.org/vm50"
       ;;
     "Pharo-4.0")
@@ -167,19 +192,17 @@ pharo::prepare_vm() {
   fi
 
   if ! is_dir "${pharo_vm_folder}"; then
+    is_dir "${pharo_vm_folder}" || mkdir "${pharo_vm_folder}"
+    pushd "${pharo_vm_folder}" > /dev/null
     travis_fold start download_vm "Downloading ${smalltalk_name} vm..."
       timer_start
-
-      mkdir "${pharo_vm_folder}"
-      pushd "${pharo_vm_folder}" > /dev/null
 
       download_file "${pharo_vm_url}" "${pharo_zeroconf}"
       bash "${pharo_zeroconf}"
 
-      popd > /dev/null
-
       timer_finish
     travis_fold end download_vm
+    popd > /dev/null
   fi
 
   if is_headless; then
@@ -205,30 +228,29 @@ pharo::prepare_vm() {
 pharo::prepare_image() {
   local smalltalk_name=$1
   local pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
-  local pharo_image_file="${smalltalk_name}.image"
-  local pharo_changes_file="${smalltalk_name}.changes"
-  local pharo_zeroconf="${SMALLTALK_CI_CACHE}/${smalltalk_name}_zeroconfig"
+  local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}"
+  local pharo_zeroconf="${target}/zeroconfig"
 
-  if ! is_file "${SMALLTALK_CI_CACHE}/${pharo_image_file}"; then
+  if ! is_file "${target}"; then
+    is_dir "${target}" || mkdir "${target}"
+    pushd "${target}" > /dev/null
     travis_fold start download_image "Downloading ${smalltalk_name} image..."
       timer_start
-
-      pushd "${SMALLTALK_CI_CACHE}" > /dev/null
 
       download_file "${pharo_image_url}" "${pharo_zeroconf}"
       bash "${pharo_zeroconf}"
 
-      mv "Pharo.image" "${pharo_image_file}"
-      mv "Pharo.changes" "${pharo_changes_file}"
-      popd > /dev/null
-
       timer_finish
     travis_fold end download_image
+    popd > /dev/null
   fi
 
   print_info "Preparing Pharo image..."
-  cp "${SMALLTALK_CI_CACHE}/${pharo_image_file}" "${SMALLTALK_CI_IMAGE}"
-  cp "${SMALLTALK_CI_CACHE}/${pharo_changes_file}" "${SMALLTALK_CI_CHANGES}"
+  cp "${target}/"*.image "${SMALLTALK_CI_IMAGE}"
+  cp "${target}/"*.changes "${SMALLTALK_CI_CHANGES}"
+  if ls "${target}/"*.sources 1> /dev/null 2>&1; then
+    cp "${target}/"*.sources "${SMALLTALK_CI_BUILD}"
+  fi
 }
 
 ################################################################################
@@ -283,7 +305,7 @@ pharo::run_script() {
     vm_flags="--no-quit"
   fi
 
-  travis_wait "${resolved_vm}" "${resolved_image}" eval ${vm_flags} "${script}"
+  travis_wait "${resolved_vm}" "${resolved_image}" --no-default-preferences eval ${vm_flags} "${script}"
 }
 
 ################################################################################
@@ -309,6 +331,7 @@ pharo::load_project() {
 ################################################################################
 pharo::test_project() {
   pharo::run_script "
+    | smalltalkCI |
     $(conditional_debug_halt)
     smalltalkCI := Smalltalk at: #SmalltalkCI ifAbsent: [
     [ Metacello new
@@ -342,6 +365,7 @@ run_build() {
   fi
   if ston_includes_loading; then
     pharo::load_project
+    check_build_status
   fi
   pharo::test_project
 }
