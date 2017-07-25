@@ -121,7 +121,7 @@ pharo::get_vm_url() {
   local heartbeat=""
   local latest=""
 
-  if [ "$PHARO_VM" == "latest" ]; then
+  if [ "${PHARO_VM}" == "latest" ]; then
     latest="Latest"
   fi
   # in linux, we use threaded hearbeat by default
