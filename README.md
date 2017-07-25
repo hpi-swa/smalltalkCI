@@ -522,7 +522,6 @@ Pharo added some specific options to customise its builds:
 env:
   global:
   - PHARO_VM=stable|latest              # choose stable/latest VM (default: stable)
-  - PHARO_ARCH=i386|x86_64              # choose architecture (default: i386)
   - LINUX_HEARTBEAT=threaded|itimer     # choose hearbeat on linux machines (default: threaded)
 ```
 
