@@ -121,12 +121,12 @@ pharo::get_vm_url() {
   local heartbeat=""
   local latest=""
 
-  if [ "${PHARO_VM}" == "latest" ]; then
+  if [ "${PHARO_VM:-}" == "latest" ]; then
     latest="Latest"
   fi
   # in linux, we use threaded hearbeat by default
   if [ "$os" == "linux" ]; then
-	case "${LINUX_HEARTBEAT}" in
+	case "${LINUX_HEARTBEAT:-}" in
 		"itimer") heartbeat="I" ;;
 		"threaded") heartbeat="T" ;;
 	esac
@@ -155,7 +155,7 @@ pharo::get_vm_url() {
     "Pharo-stable"|"Pharo-6.1"|"Moose-7"*)
       echo "get.pharo.org/vm${heartbeat}61"
       ;;
-    "Pharo-stable"|"Pharo-6.0"|"Moose-6.1"|"Moose-trunk")
+    "Pharo-6.0"|"Moose-6.1"|"Moose-trunk")
       echo "get.pharo.org/vm60"
       ;;
     "Pharo-5.0"|"Moose-6.0")
