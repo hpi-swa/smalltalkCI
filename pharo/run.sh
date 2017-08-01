@@ -12,7 +12,7 @@
 ################################################################################
 pharo::get_image_url() {
   local smalltalk_name=$1
-
+  
   case "${smalltalk_name}" in
     "Pharo64-alpha")
       echo "get.pharo.org/64/alpha"
@@ -22,6 +22,9 @@ pharo::get_image_url() {
       ;;
     "Pharo64-7.0")
       echo "get.pharo.org/64/70"
+      ;;
+  	"Pharo64-6.1")
+      echo "get.pharo.org/64/61"
       ;;
     "Pharo64-6.0")
       echo "get.pharo.org/64/60"
@@ -34,6 +37,9 @@ pharo::get_image_url() {
       ;;
     "Pharo-7.0")
       echo "get.pharo.org/70"
+      ;;
+    "Pharo-6.1")
+      echo "get.pharo.org/61"
       ;;
     "Pharo-6.0")
       echo "get.pharo.org/60"
@@ -87,9 +93,45 @@ lastSuccessfulBuild/artifact/${moose_name}.zip"
 # Return:
 #   Pharo vm download url
 ################################################################################
+
+# get os
+pharo::get_os() {
+	local TMP_OS=`uname | tr "[:upper:]" "[:lower:]"`
+	if [[ "{$TMP_OS}" = *darwin* ]]; then
+	    echo "mac";
+	elif [[ "{$TMP_OS}" = *linux* ]]; then
+	    echo "linux";
+	elif [[ "{$TMP_OS}" = *win* ]]; then
+	    echo "win";
+	elif [[ "{$TMP_OS}" = *mingw* ]]; then
+	    echo "win";
+	else
+	    echo "Unsupported OS";
+	    exit 1;
+	fi
+}
+
+# get vm url
+# variables: 
+#  PHARO_VM=stable*|latest
+#  LINUX_HEARTBEAT=threaded*|itimer
 pharo::get_vm_url() {
   local smalltalk_name=$1
+  local os="$(pharo::get_os)"
+  local heartbeat=""
+  local latest=""
 
+  if [ "${PHARO_VM:-}" == "latest" ]; then
+    latest="Latest"
+  fi
+  # in linux, we use threaded hearbeat by default
+  if [ "$os" == "linux" ]; then
+	case "${LINUX_HEARTBEAT:-}" in
+		"itimer") heartbeat="I" ;;
+		"threaded") heartbeat="T" ;;
+	esac
+  fi
+  # 
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
     "Pharo64-alpha")
@@ -98,16 +140,22 @@ pharo::get_vm_url() {
     "Pharo64-7.0")
       echo "get.pharo.org/64/vm70"
       ;;
-    "Pharo64-stable"|"Pharo64-6.0")
+    "Pharo64-stable"|"Pharo64-6.1")
+      echo "get.pharo.org/64/vm61"
+      ;;
+    "Pharo64-6.0")
       echo "get.pharo.org/64/vm60"
       ;;
     "Pharo-alpha")
-      echo "get.pharo.org/vmLatest70"
+      echo "get.pharo.org$arch/vm${heartbeat}${latest}70"
       ;;
     "Pharo-7.0")
-      echo "get.pharo.org/vm70"
+      echo "get.pharo.org$arch/vm${heartbeat}${latest}70"
       ;;
-    "Pharo-stable"|"Pharo-6.0"|"Moose-6.1"|"Moose-trunk")
+    "Pharo-stable"|"Pharo-6.1"|"Moose-7"*)
+      echo "get.pharo.org/vm${heartbeat}61"
+      ;;
+    "Pharo-6.0"|"Moose-6.1"|"Moose-trunk")
       echo "get.pharo.org/vm60"
       ;;
     "Pharo-5.0"|"Moose-6.0")

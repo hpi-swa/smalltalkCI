@@ -72,8 +72,9 @@ they can take up a lot of space on your drive.*
 | `Squeak-trunk`   | `Pharo(64)-alpha`  | `GemStone-3.3.x`     | `Moose-trunk`  |
 | `Squeak-5.1`     | `Pharo(64)-stable` | `GemStone-3.2.x`     | `Moose-6.1`    |
 | `Squeak-5.0`     | `Pharo(64)-7.0`    | `GemStone-3.1.0.x`   | `Moose-6.0`    |
-| `Squeak-4.6`     | `Pharo(64)-6.0`    | `Gemstone-2.4.x`     |                |
-| `Squeak-4.5`     | `Pharo-5.0`        |                      |                |
+| `Squeak-4.6`     | `Pharo(64)-6.1`    | `Gemstone-2.4.x`     |                |
+| `Squeak-4.5`     | `Pharo(64)-6.0`    |                      |                |
+|                  | `Pharo-5.0`        |                      |                |
 |                  | `Pharo-4.0`        |                      |                |
 |                  | `Pharo-3.0`        |                      |                |
 |                  |                    |                      |                |
@@ -120,6 +121,7 @@ smalltalk:
   - Pharo-alpha
   - Pharo-stable
   - Pharo-7.0
+  - Pharo-6.1
   - Pharo-6.0
   - Pharo-5.0
   - Pharo-4.0
@@ -128,11 +130,16 @@ smalltalk:
   - Pharo64-alpha
   - Pharo64-stable
   - Pharo64-7.0
+  - Pharo64-6.1
   - Pharo64-6.0
 
   - GemStone-3.3.0
   - GemStone-3.2.12
   - GemStone-3.1.0.6
+
+  - Moose 7.0
+  - Moose 6.1
+  - Moose 6.0
 
 # Uncomment to enable caching (only useful for GemStone builds (3x faster))
 #cache:
@@ -154,6 +161,7 @@ environment:
     # Currently, only Squeak and Pharo images are supported on AppVeyor.
     - SMALLTALK: Squeak-trunk
     - SMALLTALK: Squeak-5.0
+    - SMALLTALK: Pharo-7.0
     - SMALLTALK: Pharo-6.0
     - SMALLTALK: Pharo-5.0
     # ...
@@ -505,6 +513,17 @@ or AppVeyor.
 This allows to identify build errors caused by smalltalkCI updates and
 therefore helps to improve the service. It is possible to opt-out by using the
 `--no-tracking` option.
+
+### Pharo-specific Options
+
+Pharo added some specific options to customise its builds: 
+
+```yml
+env:
+  global:
+  - PHARO_VM=stable|latest              # choose stable/latest VM (default: stable)
+  - LINUX_HEARTBEAT=threaded|itimer     # choose hearbeat on linux machines (default: threaded)
+```
 
 ### Travis-specific Options
 
