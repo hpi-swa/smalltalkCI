@@ -112,4 +112,5 @@ jobs:
     - smalltalk: Pharo-alpha
     - smalltalk: Pharo64-alpha
     - smalltalk: Moose-trunk
+    - smalltalk: Moose-6.0
   fast_finish: true

@@ -1,7 +1,8 @@
 {
 	"instance" : {
 		"imageInfo" : "fn 10/21/2016 16:20",
-		"load" : "fn 6/13/2016 13:29",
+		"disableIcebergDuring:" : "MaxLeske 7/17/2017 21:02",
+		"load" : "MaxLeske 7/17/2017 19:35",
 		"readSTONSpec:" : "fn 10/16/2016 10:57"
 	},
 	"class" : {
