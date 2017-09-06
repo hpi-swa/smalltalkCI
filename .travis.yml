@@ -94,6 +94,8 @@ jobs:
       os: osx
     - smalltalk: Pharo-6.0
       os: osx
+    - smalltalk: Pharo-6.1
+      os: osx
     - smalltalk: Pharo-5.0
       os: osx
     - smalltalk: Pharo-4.0
