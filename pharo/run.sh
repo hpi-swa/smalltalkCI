@@ -10,6 +10,7 @@
 # Return:
 #   Pharo image download url
 ################################################################################
+
 pharo::get_image_url() {
   local smalltalk_name=$1
 
@@ -37,6 +38,9 @@ pharo::get_image_url() {
       ;;
     "Pharo-6.0")
       echo "get.pharo.org/60"
+      ;;
+    "Pharo-6.1")
+      echo "get.pharo.org/61"
       ;;
     "Pharo-5.0")
       echo "get.pharo.org/50"
@@ -107,7 +111,7 @@ pharo::get_vm_url() {
     "Pharo-7.0")
       echo "get.pharo.org/vm70"
       ;;
-    "Pharo-stable"|"Pharo-6.0"|"Moose-6.1"|"Moose-trunk")
+    "Pharo-stable"|"Pharo-6.0"|"Pharo-6.1"|"Moose-6.1"|"Moose-trunk")
       echo "get.pharo.org/vm60"
       ;;
     "Pharo-5.0"|"Moose-6.0")
