@@ -69,6 +69,7 @@ jobs:
     - smalltalk: Squeak-4.6
     - smalltalk: Squeak-4.5
     - smalltalk: Pharo64-7.0
+    - smalltalk: Pharo64-6.1
     - smalltalk: Pharo64-6.0
     - smalltalk: Pharo-7.0
     - smalltalk: Pharo-6.0
