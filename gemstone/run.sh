@@ -169,6 +169,10 @@ gemstone::prepare_optional_clients() {
         client_version="Pharo6.0"
         client_extension="Pharo6.0"
         ;;
+      "Pharo-6.1")
+        client_version="Pharo6.1"
+        client_extension="Pharo6.1"
+        ;;
       "Pharo-5.0")
         client_version="Pharo5.0"
         client_extension="Pharo5.0"

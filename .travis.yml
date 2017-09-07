@@ -72,6 +72,7 @@ jobs:
     - smalltalk: Pharo64-6.0
     - smalltalk: Pharo-7.0
     - smalltalk: Pharo-6.0
+    - smalltalk: Pharo-6.1
     - smalltalk: Pharo-5.0
     - smalltalk: Pharo-4.0
     - smalltalk: Pharo-3.0
@@ -93,6 +94,8 @@ jobs:
     - smalltalk: Pharo-7.0
       os: osx
     - smalltalk: Pharo-6.0
+      os: osx
+    - smalltalk: Pharo-6.1
       os: osx
     - smalltalk: Pharo-5.0
       os: osx
