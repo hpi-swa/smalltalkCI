@@ -72,11 +72,11 @@ they can take up a lot of space on your drive.*
 | `Squeak-trunk`   | `Pharo(64)-alpha`  | `GemStone-3.3.x`     | `Moose-trunk`  |
 | `Squeak-5.1`     | `Pharo(64)-stable` | `GemStone-3.2.x`     | `Moose-6.1`    |
 | `Squeak-5.0`     | `Pharo(64)-7.0`    | `GemStone-3.1.0.x`   | `Moose-6.0`    |
-| `Squeak-4.6`     | `Pharo(64)-6.0`    | `Gemstone-2.4.x`     |                |
-| `Squeak-4.5`     | `Pharo-5.0`        |                      |                |
+| `Squeak-4.6`     | `Pharo-6.1`        | `Gemstone-2.4.x`     |                |
+| `Squeak-4.5`     | `Pharo(64)-6.0`    |                      |                |
+|                  | `Pharo-5.0`        |                      |                |
 |                  | `Pharo-4.0`        |                      |                |
 |                  | `Pharo-3.0`        |                      |                |
-|                  |                    |                      |                |
 
 
 ## <a name="templates"/>Templates
