@@ -120,6 +120,7 @@ smalltalk:
   - Pharo-alpha
   - Pharo-stable
   - Pharo-7.0
+  - Pharo-6.1
   - Pharo-6.0
   - Pharo-5.0
   - Pharo-4.0
@@ -128,6 +129,7 @@ smalltalk:
   - Pharo64-alpha
   - Pharo64-stable
   - Pharo64-7.0
+  - Pharo64-6.1
   - Pharo64-6.0
 
   - GemStone-3.3.0
