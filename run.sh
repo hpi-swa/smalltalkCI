@@ -500,6 +500,8 @@ deploy() {
   local changes_name="${SMALLTALK_CI_BUILD}/${name}.changes"
   local publish=false
 
+  print_info "Deploy..."
+
   if is_empty "${BINTRAY_CREDENTIALS:-}" || \
       [[ "${TRAVIS_PULL_REQUEST}" != "false" ]]; then
     return
