@@ -536,11 +536,14 @@ deploy() {
     # curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.zip" \
     #     "${target}/${name}.zip" > /dev/null
 
-    echo "current dir"
+    echo "##############current dir"
     ls
 
-    echo "parent dir"
+    echo "##############parent dir"
     ls ../
+
+    echo "##############debug"
+    ls "${TRAVIS_BUILD_DIR}"
 
     # if [[ "${build_status}" -ne 0 ]]; then
     #   # Check for xml files and upload them
