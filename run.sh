@@ -532,7 +532,7 @@ deploy() {
     # tar czf "${name}.tar.gz" "${name}.image" "${name}.changes"
     # curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.tar.gz" \
     #     "${target}/${name}.tar.gz" > /dev/null
-    zip -q "${name}.zip" "${name}.image" "${name}.changes"
+    zip -q "travis-${name}.zip" "${name}.image" "${name}.changes"
     # curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.zip" \
     #     "${target}/${name}.zip" > /dev/null
 
