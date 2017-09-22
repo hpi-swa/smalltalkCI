@@ -290,7 +290,7 @@ pharo::load_project() {
 ################################################################################
 pharo::run_load_script() {
   local script=$1
-  echo script
+  echo "${script}"
   pharo::run_script "${script}"
 }
 
