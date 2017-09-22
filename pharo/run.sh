@@ -298,7 +298,7 @@ pharo::run_load_script() {
     vm_flags="--no-quit"
   fi
 
-  travis_wait "${resolved_vm}" "${resolved_image}" --no-default-preferences st "${script_file}"
+  travis_wait "${resolved_vm}" "${resolved_image}" --no-default-preferences st ${vm_flags} ${script_file}
 }
 
 
