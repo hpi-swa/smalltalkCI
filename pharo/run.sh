@@ -291,7 +291,10 @@ pharo::load_project() {
 pharo::run_load_script() {
   local script=$1
   echo "${script}"
-  pharo::run_script "${script}"
+
+  echo  $(printf '%s' $(cat "${script}"))
+
+  pharo::run_script  $(printf '%s' $(cat "${script}"))
 }
 
 
