@@ -536,7 +536,11 @@ deploy() {
     # curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.zip" \
     #     "${target}/${name}.zip" > /dev/null
 
+    echo "current dir"
     ls
+
+    echo "parent dir"
+    ls ../
 
     # if [[ "${build_status}" -ne 0 ]]; then
     #   # Check for xml files and upload them
