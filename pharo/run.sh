@@ -291,10 +291,8 @@ pharo::load_project() {
 pharo::run_load_script() {
   local script=$1
   echo "${script}"
-
-  echo "$(cat ${script})"
-
-  #pharo::run_script "$(cat ${script})"
+  #echo "$(cat ${script})"
+  pharo::run_script "$(cat ${script})"
 }
 
 
