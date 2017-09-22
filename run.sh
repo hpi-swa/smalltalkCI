@@ -526,7 +526,7 @@ deploy() {
 
     pushd "${SMALLTALK_CI_BUILD}" > /dev/null
 
-    print_info "Compressing and uploading image and changes files..."
+    print_info "Compressing image and changes files..."
     mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
     mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
     # tar czf "${name}.tar.gz" "${name}.image" "${name}.changes"
