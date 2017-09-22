@@ -286,6 +286,23 @@ pharo::load_project() {
 }
 
 ################################################################################
+# Load project into Pharo image.
+################################################################################
+pharo::run_load_script() {
+  local script_file=$1
+  local vm_flags=""
+  local resolved_vm="${config_vm:-${SMALLTALK_CI_VM}}"
+  local resolved_image="$(resolve_path "${config_image:-${SMALLTALK_CI_IMAGE}}")"
+
+  if ! is_travis_build && ! is_headless; then
+    vm_flags="--no-quit"
+  fi
+
+  travis_wait "${resolved_vm}" "${resolved_image}" --no-default-preferences st ${vm_flags} "${script_file}"
+}
+
+
+################################################################################
 # Run tests for project.
 ################################################################################
 pharo::test_project() {
@@ -324,6 +341,12 @@ run_build() {
   fi
   if ston_includes_loading; then
     pharo::load_project
+
+    for script_file in $( ls "${TRAVIS_BUILD_DIR}/build/" ); do
+      echo "${script_file}"
+    done
+
+    pharo::run_load_script "${TRAVIS_BUILD_DIR}/build"
     check_build_status
   fi
   pharo::test_project
