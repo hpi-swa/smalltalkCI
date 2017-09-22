@@ -292,9 +292,9 @@ pharo::run_load_script() {
   local script=$1
   echo "${script}"
 
-  echo  $(printf '%s' $(cat "${script}"))
+  echo  $(cat "${script}")
 
-  pharo::run_script  $(printf '%s' $(cat "${script}"))
+  #pharo::run_script  $(printf '%s' $(cat "${script}"))
 }
 
 
