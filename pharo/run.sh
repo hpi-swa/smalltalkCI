@@ -298,7 +298,7 @@ pharo::run_load_script() {
     vm_flags="--no-quit"
   fi
 
-  travis_wait "${resolved_vm}" "${resolved_image}" --no-default-preferences st ${vm_flags} "${script_file}"
+  travis_wait "${resolved_vm}" "${resolved_image}" --no-default-preferences st "${script_file}"
 }
 
 
@@ -346,7 +346,7 @@ run_build() {
       echo "${script_file}"
     done
 
-    pharo::run_load_script "${TRAVIS_BUILD_DIR}/build"
+    # pharo::run_load_script "${TRAVIS_BUILD_DIR}/build"
     check_build_status
   fi
   pharo::test_project
