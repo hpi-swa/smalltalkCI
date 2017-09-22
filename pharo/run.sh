@@ -342,11 +342,12 @@ run_build() {
   if ston_includes_loading; then
     pharo::load_project
 
-    for script_file in $( find "${TRAVIS_BUILD_DIR}/build/" -type f　); do
+    for script_file in $( ls "${TRAVIS_BUILD_DIR}/build/" ); do
       echo "${script_file}"
+      # pharo::run_load_script "${TRAVIS_BUILD_DIR}/build/${script_file}"
     done
 
-    # pharo::run_load_script "${TRAVIS_BUILD_DIR}/build"
+    
     check_build_status
   fi
   pharo::test_project
