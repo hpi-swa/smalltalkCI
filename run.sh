@@ -551,6 +551,9 @@ deploy() {
     #   curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
     # fi
 
+    is_dir image || mkdir image
+    cp "travis-${name}.zip" "image/travis-${name}.zip"
+
     popd > /dev/null
 
     timer_finish
