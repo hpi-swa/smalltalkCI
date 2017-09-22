@@ -335,6 +335,9 @@ run_build() {
   fi
   if ston_includes_loading; then
     pharo::load_project
+    
+    ln -s "${TRAVIS_BUILD_DIR}/pharo-repository" "${SMALLTALK_CI_BUILD}/pharo-repository"
+    ln -s "${TRAVIS_BUILD_DIR}/patch" "${SMALLTALK_CI_BUILD}/patch"
 
     print_info "Loading build script..."
     for script_file in $( ls "${TRAVIS_BUILD_DIR}/build/" ); do
