@@ -488,7 +488,7 @@ uninstall_script() {
 }
 
 ################################################################################
-# Deploy build artifacts to bintray if configured.
+# Deploy build
 ################################################################################
 deploy() {
   local build_status=$1
