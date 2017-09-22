@@ -270,7 +270,7 @@ pharo::run_script() {
 ################################################################################
 # Load project into Pharo image.
 ################################################################################
-pharo::load_project() {
+pharo::load_smalltalk_ci_project() {
   pharo::run_script "
     | smalltalkCI |
     $(conditional_debug_halt)
@@ -279,6 +279,14 @@ pharo::load_project() {
         repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
         onConflict: [:ex | ex pass];
         load ] on: Warning do: [:w | w resume ].
+    smalltalkCI := (Smalltalk at: #SmalltalkCI).
+    smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
+  "
+}
+
+pharo::load_project() {
+  pharo::run_script "
+    | smalltalkCI |
     smalltalkCI := (Smalltalk at: #SmalltalkCI).
     smalltalkCI load: '$(resolve_path "${config_ston}")'.
     smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
@@ -291,7 +299,6 @@ pharo::load_project() {
 pharo::run_load_script() {
   local script=$1
   echo "${script}"
-  #echo "$(cat ${script})"
   pharo::run_script "$(cat ${script})"
 }
 
@@ -334,6 +341,8 @@ run_build() {
     pharo::prepare_vm "${config_smalltalk}"
   fi
   if ston_includes_loading; then
+
+    pharo::load_smalltalk_ci_project
 
     if ! is_empty "${SMALLTALK_REPOSITORY}"; then
       smalltalk_repository="pharo-repository"
