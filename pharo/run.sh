@@ -289,16 +289,9 @@ pharo::load_project() {
 # Load project into Pharo image.
 ################################################################################
 pharo::run_load_script() {
-  local script_file=$1
-  local vm_flags=""
-  local resolved_vm="${config_vm:-${SMALLTALK_CI_VM}}"
-  local resolved_image="$(resolve_path "${config_image:-${SMALLTALK_CI_IMAGE}}")"
-
-  if ! is_travis_build && ! is_headless; then
-    vm_flags="--no-quit"
-  fi
-
-  travis_wait "${resolved_vm}" "${resolved_image}" --no-default-preferences st ${vm_flags} ${script_file}
+  local script=$1
+  echo script
+  pharo::run_script "${script}"
 }
 
 
