@@ -344,8 +344,8 @@ run_build() {
 
     print_info "Loading build script..."
     for script_file in $( ls "${TRAVIS_BUILD_DIR}/build/" ); do
-      echo "${TRAVIS_BUILD_DIR}/build/${script_file}"
-      # pharo::run_load_script "${TRAVIS_BUILD_DIR}/build/${script_file}"
+      echo "Loading --- ${TRAVIS_BUILD_DIR}/build/${script_file}"
+      pharo::run_load_script "${TRAVIS_BUILD_DIR}/build/${script_file}"
     done
 
     check_build_status
