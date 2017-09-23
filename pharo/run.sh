@@ -269,6 +269,7 @@ pharo::run_script() {
 
 ################################################################################
 # Load project into Pharo image.
+# UPDATED SORABITO Inc.
 ################################################################################
 pharo::load_smalltalk_ci_project() {
   pharo::run_script "
@@ -284,6 +285,10 @@ pharo::load_smalltalk_ci_project() {
   "
 }
 
+################################################################################
+# Load project into Pharo image.
+# UPDATED SORABITO Inc.
+################################################################################
 pharo::load_project() {
   pharo::run_script "
     | smalltalkCI |
@@ -295,6 +300,7 @@ pharo::load_project() {
 
 ################################################################################
 # Load project into Pharo image.
+# UPDATED SORABITO Inc.
 ################################################################################
 pharo::run_load_script() {
   local script=$1
@@ -344,9 +350,7 @@ run_build() {
 
     pharo::load_smalltalk_ci_project
 
-    if ! is_empty "${SMALLTALK_REPOSITORY}"; then
-      smalltalk_repository="pharo-repository"
-    fi
+    smalltalk_repository="${SMALLTALK_REPOSITORY:=pharo-repository}"
 
     ln -s "${TRAVIS_BUILD_DIR}/${smalltalk_repository}" "${SMALLTALK_CI_BUILD}/${smalltalk_repository}"
    
