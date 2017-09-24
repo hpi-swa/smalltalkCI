@@ -553,7 +553,7 @@ deploy() {
 
     is_dir image || mkdir image
     cp "travis-${name}.zip" "image/travis-${name}.zip"
-    cp -rf "travis-${name}.zip" "${project_name}-lastSuccessfulBuild-${config_smalltalk}"
+    cp -rf "travis-${name}.zip" "image/travis-${project_name}-lastSuccessfulBuild-${config_smalltalk}.zip"
 
     popd > /dev/null
 
