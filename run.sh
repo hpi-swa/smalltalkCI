@@ -495,7 +495,7 @@ deploy() {
   local target
   local version="${TRAVIS_BUILD_NUMBER}"
   local project_name="$(basename ${TRAVIS_BUILD_DIR})"
-  local name="${project_name}-${TRAVIS_JOB_NUMBER}-${config_smalltalk}"
+  local name="${project_name}-${TRAVIS_JOB_NUMBER}-${TRAVIS_COMMIT}-${config_smalltalk}"
   local image_name="${SMALLTALK_CI_BUILD}/${name}.image"
   local changes_name="${SMALLTALK_CI_BUILD}/${name}.changes"
   local publish=false
