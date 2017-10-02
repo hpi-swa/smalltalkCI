@@ -356,13 +356,19 @@ run_build() {
    
     ln -s "${TRAVIS_BUILD_DIR}/patch" "${SMALLTALK_CI_BUILD}/patch"
 
-    print_info "Loading build script..."
-    for script_file in $( ls "${TRAVIS_BUILD_DIR}/build/" ); do
-      echo "Loading --- ${TRAVIS_BUILD_DIR}/build/${script_file}"
-      pharo::run_load_script "${TRAVIS_BUILD_DIR}/build/${script_file}"
+    print_info "Loading build before script..."
+    for script_file in $( ls "${TRAVIS_BUILD_DIR}/build/before/" ); do
+      echo "Loading --- ${TRAVIS_BUILD_DIR}/build/before/${script_file}"
+      pharo::run_load_script "${TRAVIS_BUILD_DIR}/build/before/${script_file}"
     done
 
     pharo::load_project
+
+    print_info "Loading build after script..."
+    for script_file in $( ls "${TRAVIS_BUILD_DIR}/build/after/" ); do
+      echo "Loading --- ${TRAVIS_BUILD_DIR}/build/after/${script_file}"
+      pharo::run_load_script "${TRAVIS_BUILD_DIR}/build/after/${script_file}"
+    done
 
     check_build_status
   fi
