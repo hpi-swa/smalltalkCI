@@ -502,25 +502,6 @@ deploy() {
 
   print_info "Deploy..."
 
-  # if is_empty "${BINTRAY_CREDENTIALS:-}" || \
-  #     [[ "${TRAVIS_PULL_REQUEST}" != "false" ]]; then
-  #   return
-  # fi
-
-  # if [[ "${build_status}" -eq 0 ]]; then
-  #   if is_empty "${BINTRAY_RELEASE:-}" || \
-  #       [[ "${TRAVIS_BRANCH}" != "master" ]]; then
-  #     return
-  #   fi
-  #   target="${BINTRAY_API}/${BINTRAY_RELEASE}/${version}"
-  #   publish=true
-  # else
-  #   if is_empty "${BINTRAY_FAIL:-}"; then
-  #     return
-  #   fi
-  #   target="${BINTRAY_API}/${BINTRAY_FAIL}/${version}"
-  # fi
-
   travis_fold start deploy "Deploying to ..."
     timer_start
 
@@ -529,27 +510,7 @@ deploy() {
     print_info "Compressing image and changes files..."
     mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
     mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
-    # tar czf "${name}.tar.gz" "${name}.image" "${name}.changes"
-    # curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.tar.gz" \
-    #     "${target}/${name}.tar.gz" > /dev/null
     zip -q "travis-${name}.zip" "${name}.image" "${name}.changes"
-    # curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.zip" \
-    #     "${target}/${name}.zip" > /dev/null
-    # if [[ "${build_status}" -ne 0 ]]; then
-    #   # Check for xml files and upload them
-    #   if ls *.xml 1> /dev/null 2>&1; then
-    #     print_info "Compressing and uploading debugging files..."
-    #     mv "${TRAVIS_BUILD_DIR}/"*.fuel "${SMALLTALK_CI_BUILD}/" || true
-    #     find . -name "*.xml" -o -name "*.fuel" | tar czf "debug.tar.gz" -T -
-    #     curl -s -u "$BINTRAY_CREDENTIALS" \
-    #         -T "debug.tar.gz" "${target}/" > /dev/null
-    #   fi
-    # fi
-
-    # if "${publish}"; then
-    #   print_info "Publishing ${version}..."
-    #   curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
-    # fi
 
     is_dir image || mkdir image
     cp "travis-${name}.zip" "image/travis-${name}.zip"
