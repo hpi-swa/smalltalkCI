@@ -581,8 +581,8 @@ problem.
     [OSSubprocess](https://github.com/marianopeck/OSSubprocess),
     [FFICHeaderExtractor](https://github.com/marianopeck/FFICHeaderExtractor).
 - [@newapplesho](https://github.com/newapplesho):
-    [salesforce-smalltalk](https://github.com/newapplesho/salesforce-smalltalk).
-    [pardot-smalltalk](https://github.com/newapplesho/pardot-smalltalk).
+    [salesforce-smalltalk](https://github.com/newapplesho/salesforce-smalltalk),
+    [pardot-smalltalk](https://github.com/newapplesho/pardot-smalltalk),
     [Open Exchange Rates](https://github.com/newapplesho/oxr-smalltalk).
 - [@ObjectProfile](https://github.com/ObjectProfile):
     [Roassal2](https://github.com/ObjectProfile/Roassal2).
