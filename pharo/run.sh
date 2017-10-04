@@ -186,22 +186,29 @@ pharo::prepare_vm() {
 ################################################################################
 pharo::prepare_image() {
   local smalltalk_name=$1
-  local pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
   local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}"
-  local pharo_zeroconf="${target}/zeroconfig"
 
-  if ! is_file "${target}"; then
-    is_dir "${target}" || mkdir "${target}"
-    pushd "${target}" > /dev/null
-    travis_fold start download_image "Downloading ${smalltalk_name} image..."
-      timer_start
+  if [ -n "${SMALLTALK_CI_BASE_IMAGE_FOLDER+set}" ]; then
+    # Use given image as base image
+    cp -r "${SMALLTALK_CI_BASE_IMAGE_FOLDER}"/* "${target}/"
+  else
+    # Download new base image
+    local pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
+    local pharo_zeroconf="${target}/zeroconfig"
 
-      download_file "${pharo_image_url}" "${pharo_zeroconf}"
-      bash "${pharo_zeroconf}"
+    if ! is_file "${target}"; then
+      is_dir "${target}" || mkdir "${target}"
+      pushd "${target}" > /dev/null
+      travis_fold start download_image "Downloading ${smalltalk_name} image..."
+        timer_start
 
-      timer_finish
-    travis_fold end download_image
-    popd > /dev/null
+        download_file "${pharo_image_url}" "${pharo_zeroconf}"
+        bash "${pharo_zeroconf}"
+
+        timer_finish
+      travis_fold end download_image
+      popd > /dev/null
+    fi
   fi
 
   print_info "Preparing Pharo image..."
