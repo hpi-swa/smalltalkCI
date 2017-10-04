@@ -356,19 +356,23 @@ run_build() {
    
     ln -s "${TRAVIS_BUILD_DIR}/patch" "${SMALLTALK_CI_BUILD}/patch"
 
-    print_info "Loading build before script..."
-    for script_file in $( ls "${TRAVIS_BUILD_DIR}/build/before/" ); do
-      echo "Loading --- ${TRAVIS_BUILD_DIR}/build/before/${script_file}"
-      pharo::run_load_script "${TRAVIS_BUILD_DIR}/build/before/${script_file}"
-    done
+    print_info "Loading before build scripts..."
+    if [ -n "${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER+set}" ]; then
+      for script_file in $( ls "${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER}" ); do
+        echo "Loading --- ${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER}/${script_file}"
+        pharo::run_load_script "${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER}/${script_file}"
+      done
+    fi
 
     pharo::load_project
 
-    print_info "Loading build after script..."
-    for script_file in $( ls "${TRAVIS_BUILD_DIR}/build/after/" ); do
-      echo "Loading --- ${TRAVIS_BUILD_DIR}/build/after/${script_file}"
-      pharo::run_load_script "${TRAVIS_BUILD_DIR}/build/after/${script_file}"
-    done
+    print_info "Loading after build scripts..."
+    if [ -n "${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER+set}" ]; then
+      for script_file in $( ls "${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER}" ); do
+        echo "Loading --- ${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER}/${script_file}"
+        pharo::run_load_script "${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER}/${script_file}"
+      done
+    fi
 
     check_build_status
   fi
