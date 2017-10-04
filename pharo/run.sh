@@ -190,7 +190,8 @@ pharo::prepare_image() {
 
   if [ -n "${SMALLTALK_CI_BASE_IMAGE_FOLDER+set}" ]; then
     # Use given image as base image
-    cp -r "${SMALLTALK_CI_BASE_IMAGE_FOLDER}/*" "${target}/"
+    cp -r "${SMALLTALK_CI_BASE_IMAGE_FOLDER}/"*.image "${target}/"
+    cp -r "${SMALLTALK_CI_BASE_IMAGE_FOLDER}/"*.changes "${target}/"
   else
     # Download new base image
     local pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
