@@ -3,6 +3,5 @@ isPlatformCompatible
 	Smalltalk at: #'SystemVersion' ifPresent: [ :cl |
 		| versionString |
 		versionString := cl current version.
-		^ (versionString beginsWith: 'Pharo')
-			and: [ (versionString beginsWith: 'Pharo7.0') not ] ].
+		^ (versionString beginsWith: 'Pharo7.0') ].
 	^ false
