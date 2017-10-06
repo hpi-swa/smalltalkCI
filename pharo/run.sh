@@ -115,8 +115,8 @@ pharo::get_vm_url() {
       echo "get.pharo.org/vm70"
       ;;
     "Pharo-stable"|"Pharo-6.1")
-    echo "get.pharo.org/vm61"
-    ;;
+      echo "get.pharo.org/vm61"
+      ;;
     "Pharo-6.0"|"Moose-trunk"|"Moose-6.1")
       echo "get.pharo.org/vm60"
       ;;
