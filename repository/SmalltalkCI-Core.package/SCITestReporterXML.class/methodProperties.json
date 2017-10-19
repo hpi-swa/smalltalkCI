@@ -1,11 +1,11 @@
 {
 	"instance" : {
-		"encode:" : "fn 7/1/2016 20:36",
-		"initialize" : "fn 10/10/2016 00:49",
-		"printException:" : "fn 10/21/2016 15:44",
-		"printEnd" : "fn 9/29/2016 16:08",
-		"printStart" : "fn 10/10/2016 00:49",
-		"printResult:" : "fn 12/3/2016 22:23"
+		"encode:" : "MaxLeske 7/17/2017 19:09:41",
+		"initialize" : "MaxLeske 7/17/2017 19:09:41",
+		"printException:" : "MaxLeske 7/17/2017 19:09:41",
+		"printEnd" : "MaxLeske 7/17/2017 19:09:41",
+		"printStart" : "MaxLeske 7/17/2017 19:09:41",
+		"printResult:" : "MaxLeske 7/17/2017 19:09:41"
 	},
 	"class" : { }
 }

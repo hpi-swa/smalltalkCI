@@ -1,11 +1,12 @@
 {
-	"class" : {
-		 },
 	"instance" : {
-		"setUp" : "fniep 1/11/2016 23:35",
-		"spec" : "fniep 1/10/2016 23:51",
-		"spec:" : "fniep 1/10/2016 23:51",
-		"testAddSpecs" : "fn 1/31/2016 19:51",
-		"testClassesToTest" : "fn 11/13/2016 22:30",
-		"testFromStream" : "fn 4/14/2016 21:04",
-		"testSimple" : "fn 4/14/2016 20:46" } }
+		"spec" : "FabioNiephaus 12/22/2016 15:12:30",
+		"testFromStream" : "FabioNiephaus 12/22/2016 15:12:30",
+		"spec:" : "FabioNiephaus 12/22/2016 15:12:30",
+		"testAddSpecs" : "FabioNiephaus 12/22/2016 15:12:30",
+		"setUp" : "FabioNiephaus 12/22/2016 15:12:30",
+		"testClassesToTest" : "FabioNiephaus 12/22/2016 15:12:30",
+		"testSimple" : "FabioNiephaus 12/22/2016 15:12:30"
+	},
+	"class" : { }
+}
