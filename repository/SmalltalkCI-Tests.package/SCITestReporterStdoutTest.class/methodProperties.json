@@ -1,10 +1,13 @@
 {
-	"class" : {
-		"failureFixture" : "fn 12/9/2016 17:55",
-		"failureFixtureNonTravis" : "fn 12/22/2016 15:08",
-		"failureFixtureTravis" : "fn 12/22/2016 15:09",
-		"successFixture" : "fn 12/22/2016 14:44" },
 	"instance" : {
-		"assert:matches:" : "fn 12/9/2016 18:03",
-		"testReportFailure" : "fn 12/9/2016 17:23",
-		"testReportSuccess" : "fn 12/9/2016 17:23" } }
+		"testReportFailure" : "FabioNiephaus 12/22/2016 15:12:30",
+		"assert:matches:" : "FabioNiephaus 12/22/2016 15:12:30",
+		"testReportSuccess" : "FabioNiephaus 12/22/2016 15:12:30"
+	},
+	"class" : {
+		"successFixture" : "FabioNiephaus 12/22/2016 15:12:30",
+		"failureFixture" : "FabioNiephaus 12/22/2016 15:12:30",
+		"failureFixtureNonTravis" : "FabioNiephaus 12/22/2016 15:12:30",
+		"failureFixtureTravis" : "FabioNiephaus 12/22/2016 15:12:30"
+	}
+}

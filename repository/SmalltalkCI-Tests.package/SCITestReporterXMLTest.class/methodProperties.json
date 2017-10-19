@@ -1,6 +1,7 @@
 {
-	"class" : {
-		 },
 	"instance" : {
-		"testReportFailure" : "fn 10/16/2016 11:30",
-		"testReportSuccess" : "fn 10/16/2016 11:26" } }
+		"testReportFailure" : "FabioNiephaus 12/22/2016 15:12:30",
+		"testReportSuccess" : "FabioNiephaus 12/22/2016 15:12:30"
+	},
+	"class" : { }
+}

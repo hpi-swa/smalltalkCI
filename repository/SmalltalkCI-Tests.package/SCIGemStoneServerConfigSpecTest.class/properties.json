@@ -1,14 +1,11 @@
 {
-	"category" : "SmalltalkCI-Tests",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
-	"instvars" : [
-		 ],
-	"name" : "SCIGemStoneServerConfigSpecTest",
-	"pools" : [
-		 ],
 	"super" : "SCIAbstractConfigTest",
-	"type" : "normal" }
+	"category" : "SmalltalkCI-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SCIGemStoneServerConfigSpecTest",
+	"type" : "normal"
+}
