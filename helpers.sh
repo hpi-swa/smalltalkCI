@@ -288,10 +288,10 @@ git_log() {
 
 
 export_coveralls_data() {
-  local service_name
-  local branch_name
-  local url
-  local job_id
+  local service_name=""
+  local branch_name=""
+  local url=""
+  local job_id=""
 
   if is_travis_build; then
     service_name="travis-ci"
@@ -308,8 +308,6 @@ export_coveralls_data() {
     branch_name="${CI_COMMIT_REF_NAME}"
     url="${CI_PROJECT_URL}"
     job_id="${CI_PIPELINE_ID}.${CI_JOB_ID}"
-  else
-    return 0 # Coverage testing only supported on TravisCI, AppVeyor, and GitLab CI
   fi
 
   cat >"${SMALLTALK_CI_BUILD}/coveralls_data.json" <<EOL
