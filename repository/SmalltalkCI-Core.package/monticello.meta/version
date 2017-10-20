@@ -1,5 +1,2 @@
-(name 'SmalltalkCI-Core-PeterUhnak.208' message 'Enabled coverage testing for GitLab CI' id '86855b1e-4618-0d00-a9d8-b0d3060bcf15' date '19 October 2017' time '1:08:53.33031 pm' author 'PeterUhnak' ancestors ((name 'SmalltalkCI-Core-PeterUhnak.208' message 'Enable coverage testing for GitLabCI' id '6680adf6-4518-0d00-a9d6-382b060bcf15' date '19 October 2017' time '12:57:47.61431 pm' author 'PeterUhnak' ancestors ((name 'SmalltalkCI-Core-PeterUhnak.1507315773' message 'Enable coverage testing for GitLabCI' id '0e15a4d7-4518-0d00-881b-be89003bc4f2' date '19 October 2017' time '12:49:06.90331 pm' author 'PeterUhnak' ancestors ((name 'SmalltalkCI-Core-GitHub.1507315772' message 'Merge pull request #320 from guillep/vm61
-
-Fix vm download URL as for issue #319
-
-Closes #319' id 'ea89e328-9fce-518d-89c0-eaf23e698397' date '6 October 2017' time '8:49:32 pm' author 'GitHub' ancestors () stepChildren ())) stepChildren ())) stepChildren ())) stepChildren ())
+(name 'SmalltalkCI-Core-PeterUhnak.209' message 'Assume that we want to export coverage when coverage is enabled.' id '28d130c5-5918-0d00-815a-095a053de356' date '20 October 2017' time '12:35:36.705842 pm' author 'PeterUhnak' ancestors ((name 'SmalltalkCI-Core-PeterUhnak.1508495512' message 'renamed coverage upload to coveralls upload
+' id 'b48d5703-bf7a-5363-acf6-3e9d40feca2a' date '20 October 2017' time '12:31:52 pm' author 'PeterUhnak' ancestors () stepChildren ())) stepChildren ())
