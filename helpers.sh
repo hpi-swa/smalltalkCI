@@ -337,13 +337,9 @@ export_coveralls_data() {
 EOL
 }
 
-upload_coverage_results() {
+upload_coveralls_results() {
   local curl_status=0
   local coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"
-
-  if is_gitlabci_build; then
-    return 0 # Uploading results is not supported for GitLab CI
-  fi
 
   if is_file "${coverage_results}"; then
     print_info "Uploading coverage results to Coveralls..."
