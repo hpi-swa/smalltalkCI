@@ -288,10 +288,10 @@ git_log() {
 
 
 export_coveralls_data() {
-  local service_name=""
-  local branch_name=""
-  local url=""
-  local job_id=""
+  local service_name="unknown"
+  local branch_name="unknown"
+  local url="unknown"
+  local job_id="unknown"
 
   if is_travis_build; then
     service_name="travis-ci"
