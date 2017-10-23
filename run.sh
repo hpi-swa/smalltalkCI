@@ -519,9 +519,7 @@ deploy() {
     target="${BINTRAY_API}/${BINTRAY_FAIL}/${version}"
   fi
 
-  travis_fold start deploy "Deploying to bintray.com..."
-    timer_start
-
+  fold_start deploy "Deploying to bintray.com..."
     pushd "${SMALLTALK_CI_BUILD}" > /dev/null
 
     print_info "Compressing and uploading image and changes files..."
@@ -551,9 +549,7 @@ deploy() {
     fi
 
     popd > /dev/null
-
-    timer_finish
-  travis_fold end deploy
+  fold_end deploy
 }
 
 ################################################################################
@@ -581,9 +577,9 @@ run() {
   esac
 
   if debug_enabled; then
-    travis_fold start display_config "Current configuration"
+    fold_start display_config "Current configuration"
       print_config
-    travis_fold end display_config
+    fold_end display_config
   fi
 
   run_build "$@"
