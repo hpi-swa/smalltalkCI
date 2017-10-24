@@ -388,25 +388,6 @@ report_build_metrics() {
 # Travis-related helper functions (based on https://git.io/vzcTj).
 ################################################################################
 
-timer_start() {
-  timer_start_time=$(timer_nanoseconds)
-  if is_travis_build; then
-    travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
-    echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
-  fi
-}
-
-timer_finish() {
-  local timer_end_time=$(timer_nanoseconds)
-  local duration=$(($timer_end_time-$timer_start_time))
-  if is_travis_build; then
-    echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
-  else
-    duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
-    printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
-  fi
-}
-
 timer_nanoseconds() {
   local cmd="date"
   local format="+%s%N"
@@ -469,17 +450,31 @@ travis_jigger() {
   kill -9 $cmd_pid
 }
 
-
-travis_fold() {
-  local action=$1
-  local name=$2
-  local title="${3:-}"
+fold_start() {
+  local identifier=$1
+  local title=$2
   local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
 
+  timer_start_time=$(timer_nanoseconds)
+  travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
   if is_travis_build; then
-    echo -en "travis_fold:${action}:${prefix}${name}\r${ANSI_CLEAR}"
+    echo -en "travis_fold:start:${prefix}${identifier}\r${ANSI_CLEAR}"
+    echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
   fi
-  if is_not_empty "${title}"; then
-    echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
+  echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
+}
+
+fold_end() {
+  local identifier=$1
+  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
+  local timer_end_time=$(timer_nanoseconds)
+  local duration=$(($timer_end_time-$timer_start_time))
+
+  if is_travis_build; then
+    echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
+    echo -en "travis_fold:end:${prefix}${identifier}\r${ANSI_CLEAR}"
+  else
+    duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
+    printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
   fi
 }

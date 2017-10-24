@@ -43,11 +43,9 @@ squeak::download_prepared_image() {
   local target="${SMALLTALK_CI_CACHE}/${download_name}"
 
   if ! is_file "${target}"; then
-    travis_fold start download_image "Downloading '${download_name}' testing image..."
-      timer_start
+    fold_start download_image "Downloading '${download_name}' testing image..."
       download_file "${download_url}" "${target}"
-      timer_finish
-    travis_fold end download_image
+    fold_end download_image
   fi
 
   print_info "Extracting image..."
@@ -64,16 +62,12 @@ squeak::download_prepared_image() {
 squeak::download_trunk_image() {
   local target="${SMALLTALK_CI_BUILD}/trunk.zip"
 
-  travis_fold start download_image "Downloading ${config_smalltalk} image..."
-    timer_start
-
+  fold_start download_image "Downloading ${config_smalltalk} image..."
     download_file "${BASE_DOWNLOAD}/Squeak-trunk.tar.gz" "${target}"
     tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
     mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_BUILD}/TravisCI.image"
     mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_BUILD}/TravisCI.changes"
-
-    timer_finish
-  travis_fold end download_image
+  fold_end download_image
 
   if ! is_file "${SMALLTALK_CI_IMAGE}"; then
     print_error_and_exit "Unable to download image at '${SMALLTALK_CI_IMAGE}'."
@@ -86,15 +80,11 @@ squeak::download_trunk_image() {
 squeak::prepare_image() {
   local status=0
   
-  travis_fold start prepare_image "Preparing ${config_smalltalk} image for CI..."
-    timer_start
-
+  fold_start prepare_image "Preparing ${config_smalltalk} image for CI..."
     cp "${SMALLTALK_CI_HOME}/squeak/prepare.st" \
        "${SMALLTALK_CI_BUILD}/prepare.st"
     squeak::run_script "prepare.st" || status=$?
-
-    timer_finish
-  travis_fold end prepare_image
+  fold_end prepare_image
 
   if is_nonzero "${status}"; then
     print_error_and_exit "Failed to prepare image for CI." "${status}"
@@ -170,11 +160,9 @@ squeak::prepare_vm() {
   target="${SMALLTALK_CI_CACHE}/${vm_filename}"
 
   if ! is_file "${target}"; then
-    travis_fold start download_vm "Downloading virtual machine..."
-      timer_start
+    fold_start download_vm "Downloading virtual machine..."
       download_file "${download_url}" "${target}"
-      timer_finish
-    travis_fold end download_vm
+    fold_end download_vm
   fi
 
   if ! is_file "${vm_path}"; then
@@ -192,9 +180,9 @@ squeak::prepare_vm() {
   echo "${vm_path} \"\$@\"" > "${SMALLTALK_CI_VM}"
   chmod +x "${SMALLTALK_CI_VM}"
 
-  travis_fold start display_vm_version "Cog VM Information"
+  fold_start display_vm_version "Cog VM Information"
     "${SMALLTALK_CI_VM}" -version
-  travis_fold end display_vm_version
+  fold_end display_vm_version
 }
 
 ################################################################################
