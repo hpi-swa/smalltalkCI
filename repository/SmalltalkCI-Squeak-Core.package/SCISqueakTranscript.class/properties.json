@@ -1,13 +1,14 @@
 {
-	"commentStamp" : "",
-	"super" : "TranscriptStream",
 	"category" : "SmalltalkCI-Squeak-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
 	"instvars" : [
-		"originalTranscript"
-	],
+		"originalTranscript" ],
 	"name" : "SCISqueakTranscript",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "TranscriptStream",
+	"type" : "normal" }

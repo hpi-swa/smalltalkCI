@@ -1,7 +1,7 @@
 helpers
-md5ForFile: aFilename 
+md5Of: aFilePath 
 	| fr loc |
-	fr := aFilename asFileReference readStream.
+	fr := aFilePath asFileReference readStream.
 	loc := (MD5 hashMessage: fr contents) hex.
 	fr close.
 	^ loc

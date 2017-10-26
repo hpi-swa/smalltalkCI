@@ -1,12 +1,9 @@
 {
-	"instance" : {
-		"linesForFile:" : "fn 10/8/2016 14:55",
-		"readCoverallsData" : "fn 10/11/2016 21:34",
-		"md5ForFile:" : "fn 10/8/2016 14:55"
-	},
 	"class" : {
-		"packageNameForClass:" : "fn 10/8/2016 15:11",
 		"methodReferenceFor:selector:" : "fn 10/8/2016 15:11",
-		"methodsUnderTestIn:" : "fn 11/23/2016 15:05"
-	}
-}
+		"methodsUnderTestIn:" : "fn 11/23/2016 15:05",
+		"packageNameForClass:" : "fn 10/8/2016 15:11" },
+	"instance" : {
+		"linesOf:" : "fn 10/26/2017 09:12",
+		"md5Of:" : "fn 10/26/2017 09:12",
+		"readCoverallsData" : "fn 10/11/2016 21:34" } }

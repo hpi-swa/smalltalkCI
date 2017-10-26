@@ -1,24 +1,21 @@
 {
+	"class" : {
+		"fromStream:" : "fn 1/31/2016 22:15",
+		"writeOn:" : "fn 7/11/2016 16:11" },
 	"instance" : {
 		"addLoadSpec:" : "EstebanLorenzano 1/26/2016 17:41",
 		"classesToTest" : "fn 11/13/2016 22:29",
-		"coverageEnabled" : "fn 11/13/2016 22:17",
+		"compatibleConfigurationsFor:" : "fn 11/13/2016 22:30",
+		"compatibleLoadSpecs" : "fn 11/13/2016 22:26",
 		"configuring" : "dkh 4/1/2016 11:03",
-		"specName" : "dkh 02/05/2016 16:36",
+		"configuring:" : "dkh 4/1/2016 11:02",
+		"coverageDictionary" : "fn 11/23/2016 15:32",
+		"coverageEnabled" : "fn 11/13/2016 22:17",
 		"failOnZeroTests" : "fn 12/22/2016 14:25",
 		"hidePassingTests" : "fn 11/13/2016 23:52",
-		"testing" : "fniep 1/12/2016 22:15",
-		"configuring:" : "dkh 4/1/2016 11:02",
-		"specName:" : "dkh 02/05/2016 16:36",
-		"compatibleLoadSpecs" : "fn 11/13/2016 22:26",
+		"loading" : "fn 1/19/2016 18:24",
 		"loading:" : "fn 1/19/2016 18:19",
-		"compatibleConfigurationsFor:" : "fn 11/13/2016 22:30",
-		"coverageDictionary" : "fn 11/23/2016 15:32",
-		"testing:" : "fniep 1/12/2016 22:15",
-		"loading" : "fn 1/19/2016 18:24"
-	},
-	"class" : {
-		"writeOn:" : "fn 7/11/2016 16:11",
-		"fromStream:" : "fn 1/31/2016 22:15"
-	}
-}
+		"specName" : "dkh 02/05/2016 16:36",
+		"specName:" : "dkh 02/05/2016 16:36",
+		"testing" : "fniep 1/12/2016 22:15",
+		"testing:" : "fniep 1/12/2016 22:15" } }
