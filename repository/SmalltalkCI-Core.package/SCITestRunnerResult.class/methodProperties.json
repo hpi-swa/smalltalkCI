@@ -1,29 +1,26 @@
 {
+	"class" : {
+		"ballot" : "fn 10/21/2016 15:47",
+		"checkMark" : "fn 10/21/2016 15:47" },
 	"instance" : {
-		"time" : "fn 10/21/2016 15:52",
-		"foldName" : "fn 11/9/2016 14:47",
-		"ansiTitleContractedTo:" : "fn 12/22/2016 14:57",
-		"color" : "fn 10/21/2016 17:38",
-		"stack" : "fn 10/21/2016 15:52",
-		"passed" : "fn 7/2/2016 15:40",
-		"time:" : "fn 10/21/2016 15:38",
-		"asString" : "fn 12/22/2016 14:43",
-		"testError:" : "fn 7/1/2016 18:24",
-		"failed" : "fn 7/1/2016 18:50",
-		"stack:" : "fn 10/21/2016 15:52",
-		"testError" : "fn 7/1/2016 18:26",
-		"title" : "fn 11/14/2016 14:47",
-		"passedUnexpectedly" : "fn 7/1/2016 18:49",
-		"testCase:" : "fn 7/1/2016 18:24",
-		"skipped:" : "fn 11/14/2016 15:36",
 		"ansiTitle" : "fn 10/21/2016 17:38",
-		"testCase" : "fn 7/1/2016 18:24",
+		"ansiTitleContractedTo:" : "fn 12/22/2016 14:57",
+		"asString" : "fn 12/22/2016 14:43",
+		"color" : "fn 10/21/2016 17:38",
+		"errored" : "fn 7/1/2016 18:51",
+		"failed" : "fn 7/1/2016 18:50",
+		"foldName" : "fn 11/9/2016 14:47",
+		"passed" : "fn 7/2/2016 15:40",
+		"passedUnexpectedly" : "fn 7/1/2016 18:49",
 		"printOn:" : "dkh 12/07/2016 17:24",
 		"skipped" : "fn 11/14/2016 14:50",
-		"errored" : "fn 7/1/2016 18:51"
-	},
-	"class" : {
-		"checkMark" : "fn 10/21/2016 15:47",
-		"ballot" : "fn 10/21/2016 15:47"
-	}
-}
+		"skipped:" : "fn 11/14/2016 15:36",
+		"stack" : "fn 10/21/2016 15:52",
+		"stack:" : "fn 10/21/2016 15:52",
+		"testCase" : "fn 7/1/2016 18:24",
+		"testCase:" : "fn 7/1/2016 18:24",
+		"testError" : "fn 7/1/2016 18:26",
+		"testError:" : "fn 7/1/2016 18:24",
+		"time" : "fn 10/21/2016 15:52",
+		"time:" : "fn 10/21/2016 15:38",
+		"title" : "fn 11/14/2016 14:47" } }

@@ -10,6 +10,6 @@ testCoverageHelpers
 	
 	[ self createTestFile.
 	cc := SmalltalkCI codeCoverageClass new.
-	self assert: 2 equals: (cc linesForFile: self class coverageTestFile).
-	self assert: 'ac52b72be23970e756614f929e640fba' equals: (cc md5ForFile: self class coverageTestFile) ]
+	self assert: 2 equals: (cc linesOf: self class coverageTestFile).
+	self assert: 'ac52b72be23970e756614f929e640fba' equals: (cc md5Of: self class coverageTestFile) ]
 		ensure: [ self deleteTestFile ]

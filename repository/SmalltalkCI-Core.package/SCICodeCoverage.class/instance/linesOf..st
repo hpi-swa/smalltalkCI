@@ -1,3 +1,3 @@
 helpers
-md5ForFile: aFilename
+linesOf: aFilePath
 	self subclassResponsibility

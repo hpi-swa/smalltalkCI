@@ -1,7 +1,6 @@
 {
+	"class" : {
+		 },
 	"instance" : {
 		"serializeError:of:" : "fn 12/8/2016 18:06",
-		"stackTraceString:of:" : "fn 12/2/2016 11:41"
-	},
-	"class" : { }
-}
+		"stackTraceString:of:" : "fn 12/2/2016 11:41" } }
