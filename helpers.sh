@@ -43,7 +43,7 @@ print_help() {
   cat <<EOF
   USAGE: $(basename -- $0) [options] /path/to/project/your_smalltalk.ston
 
-  This program prepares Smalltalk images/vms, loads projects and runs tests.
+  This program prepares Smalltalk images/vms, loads projects, and runs tests.
 
   OPTIONS:
     --clean             Clear cache and delete builds.
@@ -52,7 +52,7 @@ print_help() {
     --headful           Open vm in headful mode and do not close image.
     --image             Custom image for build (Squeak/Pharo).
     --install           Install symlink to this smalltalkCI instance.
-    --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
+    --no-tracking       Disable collection of anonymous build metrics (TravisCI & AppVeyor only).
     -s | --smalltalk    Overwrite Smalltalk image selection.
     --uninstall         Remove symlink to any smalltalkCI instance.
     -v | --verbose      Enable 'set -x'.

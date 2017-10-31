@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
+  readonly SMALLTALK_CI_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd)"
+fi
+
+"${SMALLTALK_CI_HOME}/run.sh" "$@"

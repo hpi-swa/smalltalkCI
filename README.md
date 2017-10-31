@@ -54,7 +54,7 @@ or [download][download] smalltalkCI and then you are able to initiate a local
 build in headful mode like this:
 
 ```bash
-/path/to/smalltalkCI/run.sh --headful /path/to/your/projects/.smalltalk.ston
+bin/smalltalkci --headful /path/to/your/project/.smalltalk.ston
 ```
 
 `IMAGE` can be one of the [supported images](#images). You may also want to
@@ -136,16 +136,15 @@ smalltalk:
   - GemStone-3.2.12
   - GemStone-3.1.0.6
 
+# Override `script` to customize smalltalkCI invocation, e.g.:
+#script:
+#  - smalltalkci .mysmalltalk1.ston
+#  - travis_wait smalltalkci .mysmalltalk2.ston
+
 # Uncomment to enable caching (only useful for GemStone builds (3x faster))
 #cache:
 #  directories:
 #    - $SMALLTALK_CI_CACHE
-
-# Uncomment to override automatic smalltalkCI execution
-#script:
-#  - "$SMALLTALK_CI_HOME/run.sh"
-#  - "$SMALLTALK_CI_HOME/run.sh" .mysmalltalk.ston
-#  - travis_wait "$SMALLTALK_CI_HOME/run.sh"
 
 ```
 
@@ -158,7 +157,7 @@ environment:
   CYG_CACHE: C:\cygwin\var\cache\setup
   CYG_EXE: C:\cygwin\setup-x86.exe
   CYG_MIRROR: http://cygwin.mirror.constant.com
-  SCI_RUN: /cygdrive/c/smalltalkCI-master/run.sh
+  SCI_RUN: /cygdrive/c/smalltalkCI-master/bin/smalltalkci
   matrix:
     # Currently, only Squeak and Pharo images are supported on AppVeyor.
     - SMALLTALK: Squeak-trunk
@@ -278,7 +277,7 @@ environment:
   CYG_CACHE: C:\cygwin\var\cache\setup
   CYG_EXE: C:\cygwin\setup-x86.exe
   CYG_MIRROR: http://cygwin.mirror.constant.com
-  SCI_RUN: /cygdrive/c/SMALLTALKCI-master/run.sh
+  SCI_RUN: /cygdrive/c/SMALLTALKCI-master/bin/smalltalkci
 
   matrix:
     - SMALLTALK: Squeak-5.1
@@ -522,7 +521,7 @@ smalltalkCI has a couple of command line options that can be useful for
 debugging purposes or when used locally:
 
 ```
-USAGE: run.sh [options] /path/to/project/your_smalltalk.ston
+USAGE: bin/smalltalkci [options] /path/to/project/your_smalltalk.ston
 
 This program prepares Smalltalk images/vms, loads projects and runs tests.
 
@@ -540,7 +539,7 @@ OPTIONS:
   --vm                Custom VM for build (Squeak/Pharo).
 
 EXAMPLE:
-  run.sh -s "Squeak-trunk" --headful /path/to/project/.smalltalk.ston
+  bin/smalltalkci -s "Squeak-trunk" --headful /path/to/project/.smalltalk.ston
 ```
 
 ### Collection Of Anonymous Build Metrics

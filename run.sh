@@ -6,11 +6,10 @@ set -o pipefail
 set -o nounset
 
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
-readonly INSTALL_TARGET_OSX="/usr/local/bin"
 readonly BINTRAY_API="https://api.bintray.com/content"
 
 ################################################################################
-# Determine $SMALLTALK_CI_HOME and load helpers.
+# Locate $SMALLTALK_CI_HOME and load helpers.
 ################################################################################
 initialize() {
   local resolved_path
@@ -272,10 +271,6 @@ parse_options() {
       fi
       shift 2
       ;;
-    --install)
-      install_script
-      exit 0
-      ;;
     --no-tracking)
       config_tracking="false"
       shift
@@ -283,10 +278,6 @@ parse_options() {
     -s | --smalltalk)
       config_smalltalk="${2:-}"
       shift 2
-      ;;
-    --uninstall)
-      uninstall_script
-      exit 0
       ;;
     -v | --verbose)
       config_verbose="true"
@@ -420,65 +411,6 @@ clean_up() {
     rm -rf "${SMALLTALK_CI_BUILD_BASE}"
   fi
   print_info "Done."
-}
-
-################################################################################
-# Install 'smalltalkCI' command by symlinking current instance.
-# Globals:
-#   INSTALL_TARGET_OSX
-################################################################################
-install_script() {
-  local target
-
-  case "$(uname -s)" in
-    "Linux")
-      print_notice "Not yet implemented."
-      ;;
-    "Darwin")
-      target="${INSTALL_TARGET_OSX}"
-      if ! is_dir "${target}"; then
-        local message = "'${target}' does not exist. Do you want to create it?
-                         (y/N): "
-        read -p "${message}" user_input
-        if [[ "${user_input}" = "y" ]]; then
-          sudo mkdir "target"
-        else
-          print_error_and_exit "'${target}' has not been created."
-        fi
-      fi
-      if ! is_file "${target}/smalltalkCI"; then
-        ln -s "${SMALLTALK_CI_HOME}/run.sh" "${target}/smalltalkCI"
-        print_info "The command 'smalltalkCI' has been installed successfully."
-      else
-        print_error_and_exit "'${target}/smalltalkCI' already exists."
-      fi
-      ;;
-  esac
-}
-
-################################################################################
-# Uninstall 'smalltalkCI' command by removing any symlink to smalltalkCI.
-# Globals:
-#   INSTALL_TARGET_OSX
-################################################################################
-uninstall_script() {
-  local target
-
-  case "$(uname -s)" in
-    "Linux")
-      print_notice "Not yet implemented."
-      ;;
-    "Darwin")
-      target="${INSTALL_TARGET_OSX}"
-      if is_file "${target}/smalltalkCI"; then
-        rm -f "${target}/smalltalkCI"
-        print_info "The command 'smalltalkCI' has been uninstalled
-                    successfully."
-      else
-        print_error_and_exit "'${target}/smalltalkCI' does not exists."
-      fi
-      ;;
-  esac
 }
 
 ################################################################################
