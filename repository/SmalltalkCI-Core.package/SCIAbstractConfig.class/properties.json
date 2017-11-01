@@ -6,10 +6,9 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"configName",
-		"platforms" ],
+		"configName" ],
 	"name" : "SCIAbstractConfig",
 	"pools" : [
 		 ],
-	"super" : "Object",
+	"super" : "SCIPlatformDependent",
 	"type" : "normal" }

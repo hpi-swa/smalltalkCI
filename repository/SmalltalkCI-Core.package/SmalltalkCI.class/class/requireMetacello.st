@@ -4,4 +4,4 @@ requireMetacello
     	
 	self installMetacello.
 	self isMetacelloInstalled
-		ifFalse: [ self error: 'Metacelo could not be loaded.' ]
+		ifFalse: [ self error: 'Metacello could not be loaded.' ]

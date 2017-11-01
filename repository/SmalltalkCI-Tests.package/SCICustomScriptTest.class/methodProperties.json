@@ -1,0 +1,9 @@
+{
+	"class" : {
+		"testFileDirectory" : "fn 11/1/2017 14:14",
+		"testFileName" : "fn 11/1/2017 14:14",
+		"testFilePath" : "fn 11/1/2017 14:15" },
+	"instance" : {
+		"createTestFile" : "fn 11/1/2017 14:18",
+		"deleteTestFile" : "fn 11/1/2017 14:10",
+		"testFileInFrom" : "fn 11/1/2017 14:21" } }

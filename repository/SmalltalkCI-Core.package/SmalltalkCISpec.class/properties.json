@@ -9,7 +9,11 @@
 		"specName",
 		"loading",
 		"testing",
-		"configuring" ],
+		"configuring",
+		"preLoading",
+		"postLoading",
+		"preTesting",
+		"postTesting" ],
 	"name" : "SmalltalkCISpec",
 	"pools" : [
 		 ],

@@ -1,7 +1,7 @@
 {
 	"class" : {
-		"coverageTestFile" : "fn 10/16/2016 16:32" },
+		"testFilePath" : "fn 11/1/2017 14:09" },
 	"instance" : {
-		"createTestFile" : "fn 10/16/2016 16:05",
-		"deleteTestFile" : "fn 10/16/2016 15:59",
-		"testCoverageHelpers" : "fn 10/26/2017 09:13" } }
+		"createTestFile" : "fn 11/1/2017 14:09",
+		"deleteTestFile" : "fn 11/1/2017 14:10",
+		"testCoverageHelpers" : "fn 11/1/2017 14:10" } }
