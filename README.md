@@ -490,7 +490,7 @@ SmalltalkCISpec {
   ],
   #preTesting : SCICustomScript {
     #path : 'scripts/preTesting.st',
-    #platforms : [ #squeak, #pharo ]
+    #platforms : [ #squeak, #pharo, #gemstone ]
   },
   #testing : ...,
   #postTesting : [
