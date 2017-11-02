@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-GemStone-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCIGemStoneCustomScript",
+	"pools" : [
+		 ],
+	"super" : "SCICustomScript",
+	"type" : "normal" }

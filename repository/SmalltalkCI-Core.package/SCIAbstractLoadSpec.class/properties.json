@@ -6,9 +6,9 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"platforms" ],
+		 ],
 	"name" : "SCIAbstractLoadSpec",
 	"pools" : [
 		 ],
-	"super" : "Object",
+	"super" : "SCIPlatformDependent",
 	"type" : "normal" }

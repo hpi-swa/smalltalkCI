@@ -1,13 +1,14 @@
 {
-	"commentStamp" : "",
-	"super" : "SCITestReporterXML",
 	"category" : "SmalltalkCI-GemStone-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
 	"instvars" : [
-		"xmlLogDirPath"
-	],
+		"xmlLogDirPath" ],
 	"name" : "SCIGemStoneTestReporterXML",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "SCITestReporterXML",
+	"type" : "normal" }

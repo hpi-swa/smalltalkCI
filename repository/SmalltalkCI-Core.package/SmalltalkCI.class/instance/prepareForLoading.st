@@ -1,4 +1,3 @@
 executing
 prepareForLoading
-	"pass"
-	
+	self fileInCompatibleCustomScripts: 'preLoading'

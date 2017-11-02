@@ -472,6 +472,40 @@ SmalltalkCISpec {
 }
 ```
 
+#### Custom Scripts
+
+It is possible to run custom scripts before and after the loading and
+testing phases (`preLoading`, `postLoading`, `preTesting`, `postTesting`).
+smalltalkCI is able to *file in* single files, lists of files, and
+`SCICustomScript`s which can be used to only run certain scripts on certain
+platforms.
+
+```javascript
+SmalltalkCISpec {
+  #preLoading : 'scripts/preLoading.st',
+  #loading : ...,
+  #postLoading : [
+    'scripts/postLoading1.st',
+    'scripts/postLoading2.st'
+  ],
+  #preTesting : SCICustomScript {
+    #path : 'scripts/preTesting.st',
+    #platforms : [ #squeak, #pharo ]
+  },
+  #testing : ...,
+  #postTesting : [
+    SCICustomScript {
+      #path : 'scripts/postTestingSqueak.st',
+      #platforms : [ #squeak ]
+    },
+    SCICustomScript {
+      #path : 'scripts/postTestingPharo.st',
+      #platforms : [ #pharo ]
+    }
+  ]
+}
+```
+
 ### Command Line Options
 
 smalltalkCI has a couple of command line options that can be useful for

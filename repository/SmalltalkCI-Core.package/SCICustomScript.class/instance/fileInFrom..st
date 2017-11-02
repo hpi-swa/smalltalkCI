@@ -1,0 +1,3 @@
+executing
+fileInFrom: aDirectory
+	self subclassResponsibility
