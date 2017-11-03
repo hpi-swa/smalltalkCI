@@ -1,4 +1,4 @@
 reporting
 fileInCompatibleCustomScripts: aPhase
-	(self spec compatibleCustomScripts: 'postLoading')
+	(self spec compatibleCustomScripts: aPhase)
 		do: [ :each | each fileInFrom: self projectDirectory ]
