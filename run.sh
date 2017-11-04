@@ -322,11 +322,8 @@ parse_options() {
 #   SMALLTALK_CI_BUILD_BASE
 #   SMALLTALK_CI_VMS
 #   SMALLTALK_CI_BUILD
-#   SMALLTALK_CI_GIT
 ################################################################################
 prepare_folders() {
-  local project_home
-
   print_info "Preparing folders..."
   is_dir "${SMALLTALK_CI_CACHE}" || mkdir "${SMALLTALK_CI_CACHE}"
   is_dir "${SMALLTALK_CI_BUILD_BASE}" || mkdir "${SMALLTALK_CI_BUILD_BASE}"
@@ -338,10 +335,6 @@ prepare_folders() {
   else
     mkdir "${SMALLTALK_CI_BUILD}"
   fi
-
-  # Link project folder to git_cache
-  project_home="$(dirname "${config_ston}")"
-  ln -s "${project_home}" "${SMALLTALK_CI_GIT}"
 }
 
 ################################################################################
@@ -362,6 +355,7 @@ add_env_vars() {
   export SCIII_SMALLTALK="${config_smalltalk}"
   export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
   export SCIII_DEBUG="${config_debug}"
+  export SCIII_PROJECT_DIR="$(resolve_path "$(dirname "${config_ston}")")"
 }
 
 ################################################################################
