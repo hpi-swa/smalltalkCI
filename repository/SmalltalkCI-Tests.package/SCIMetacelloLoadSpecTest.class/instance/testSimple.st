@@ -1,8 +1,9 @@
 testing
 testSimple
-	| smalltalkCI |
+	| smalltalkCI originalProjectDirectory |
 	smalltalkCI := SmalltalkCI basicNew initialize.
-	SmalltalkCI projectDirectory: '/dir/to/project'.
+	originalProjectDirectory := SmalltalkCI projectDirectory.
+	[ SmalltalkCI projectDirectory: '/dir/to/project'.
 	self assert: '' equals: self spec directory.
 	self assert: #() equals: self spec load.
 	self deny: self spec onWarningLog.
@@ -25,4 +26,5 @@ testSimple
 			equals: self spec loadRepository.
 		
 	self spec repository: 'repo'.	
-	self assert: 'repo' equals: self spec loadRepository
+	self assert: 'repo' equals: self spec loadRepository ]
+		ensure: [ SmalltalkCI projectDirectory: originalProjectDirectory ]
