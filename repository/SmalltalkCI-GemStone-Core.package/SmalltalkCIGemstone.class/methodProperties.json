@@ -5,6 +5,7 @@
 		"codeCoverageClass" : "fn 10/8/2016 18:20",
 		"commitTransaction:" : "dkh 12/07/2016 17:12",
 		"deleteFile:" : "fn 11/1/2017 15:35",
+		"deprecated" : "fn 11/7/2017 16:11",
 		"explicitTestKeys" : "fn 11/13/2016 22:23",
 		"fileExists:" : "fn 11/1/2017 15:31",
 		"forceNewFileNamed:" : "fn 10/4/2016 18:03",
