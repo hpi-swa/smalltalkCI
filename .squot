@@ -1,0 +1,14 @@
+OrderedDictionary {
+	'repository\/BaselineOfSmalltalkCI.package' : #SquotCypressCodeSerializer,
+	'repository\/STON-Core.package' : #SquotCypressCodeSerializer,
+	'repository\/STON-Tests.package' : #SquotCypressCodeSerializer,
+	'repository\/SmalltalkCI-Core.package' : #SquotCypressCodeSerializer,
+	'repository\/SmalltalkCI-Excluded-Tests.package' : #SquotCypressCodeSerializer,
+	'repository\/SmalltalkCI-GemStone-Core.package' : #SquotCypressCodeSerializer,
+	'repository\/SmalltalkCI-GemStone-Tests.package' : #SquotCypressCodeSerializer,
+	'repository\/SmalltalkCI-Pharo-Core.package' : #SquotCypressCodeSerializer,
+	'repository\/SmalltalkCI-Pharo-Tests.package' : #SquotCypressCodeSerializer,
+	'repository\/SmalltalkCI-Squeak-Core.package' : #SquotCypressCodeSerializer,
+	'repository\/SmalltalkCI-Squeak-Tests.package' : #SquotCypressCodeSerializer,
+	'repository\/SmalltalkCI-Tests.package' : #SquotCypressCodeSerializer
+}
