@@ -114,7 +114,10 @@ pharo::get_vm_url() {
     "Pharo-7.0")
       echo "get.pharo.org/vm70"
       ;;
-    "Pharo-stable"|"Pharo-6.1"|"Pharo-6.0"|"Moose-trunk"|"Moose-6.1")
+    "Pharo-stable"|"Pharo-6.1"|"Moose-trunk"|"Moose-6.1")
+      echo "get.pharo.org/vm61"
+      ;;
+    "Pharo-6.0")
       echo "get.pharo.org/vm60"
       ;;
     "Pharo-5.0"|"Moose-6.0")
@@ -153,14 +156,10 @@ pharo::prepare_vm() {
   if ! is_dir "${pharo_vm_folder}"; then
     is_dir "${pharo_vm_folder}" || mkdir "${pharo_vm_folder}"
     pushd "${pharo_vm_folder}" > /dev/null
-    travis_fold start download_vm "Downloading ${smalltalk_name} vm..."
-      timer_start
-
+    fold_start download_vm "Downloading ${smalltalk_name} vm..."
       download_file "${pharo_vm_url}" "${pharo_zeroconf}"
       bash "${pharo_zeroconf}"
-
-      timer_finish
-    travis_fold end download_vm
+    fold_end download_vm
     popd > /dev/null
   fi
 
@@ -193,14 +192,10 @@ pharo::prepare_image() {
   if ! is_file "${target}"; then
     is_dir "${target}" || mkdir "${target}"
     pushd "${target}" > /dev/null
-    travis_fold start download_image "Downloading ${smalltalk_name} image..."
-      timer_start
-
+    fold_start download_image "Downloading ${smalltalk_name} image..."
       download_file "${pharo_image_url}" "${pharo_zeroconf}"
       bash "${pharo_zeroconf}"
-
-      timer_finish
-    travis_fold end download_image
+    fold_end download_image
     popd > /dev/null
   fi
 
@@ -226,9 +221,7 @@ pharo::prepare_moose_image() {
   local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}.zip"
 
   if ! is_file "${target}"; then
-    travis_fold start download_image "Downloading ${smalltalk_name} image..."
-      timer_start
-
+    fold_start download_image "Downloading ${smalltalk_name} image..."
       set +e
       download_file "${moose_image_url}" "${target}"
       if [[ ! $? -eq 0 ]]; then
@@ -236,9 +229,7 @@ pharo::prepare_moose_image() {
         print_error_and_exit "Download failed."
       fi
       set -e
-
-      timer_finish
-    travis_fold end download_image
+    fold_end download_image
   fi
 
   print_info "Extracting and preparing ${smalltalk_name} image..."

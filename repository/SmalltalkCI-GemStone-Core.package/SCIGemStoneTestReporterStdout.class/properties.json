@@ -1,11 +1,14 @@
 {
-	"commentStamp" : "",
-	"super" : "SCITestReporterStdout",
 	"category" : "SmalltalkCI-GemStone-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
-	"instvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
 	"name" : "SCIGemStoneTestReporterStdout",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "SCITestReporterStdout",
+	"type" : "normal" }

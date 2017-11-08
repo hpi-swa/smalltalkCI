@@ -9,7 +9,7 @@ finishUp
 			collect: [ :loadspec |
 				projectDirectory, SmalltalkCI pathNameDelimiter, loadspec directory ])
 			detect: [ :dir |
-				SmalltalkCI platformClass fileExists: (self fileNameFor: wrapper in: dir)]
+				SmalltalkCI platformClass fileExists: (self filePathFor: wrapper in: dir)]
 			ifNone: [].
 		directory ifNotNil: [
 			sourceFiles add: (self coverageDictFor: wrapper in: directory) ] ].

@@ -10,8 +10,9 @@ test
 				ifTrue: [ self class codeCoverageClass
 							run: [ runner := self runTests ]
 							spec: self spec
-							in: self projectDirectory ]
-				ifFalse: [ runner := self runTests ] ].
+							in: self class projectDirectory ]
+				ifFalse: [ runner := self runTests ].
+			self finishUpAfterTesting ].
 
 	self reportResults: runner.
 	SmalltalkCI shutdown: runner isSuccessful

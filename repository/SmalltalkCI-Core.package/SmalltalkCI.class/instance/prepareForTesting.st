@@ -1,4 +1,3 @@
 executing
 prepareForTesting
-	"pass"
-	
+	self fileInCompatibleCustomScripts: 'preTesting'

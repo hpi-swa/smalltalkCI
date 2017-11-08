@@ -6,10 +6,10 @@ testCoverageHelpers
 		[ SmalltalkCI platformSymbol = #pharo ])
 			ifFalse: [ ^ self ].
 	
-	self assert: false equals: (SmalltalkCI platformClass fileExists: self class coverageTestFile).
+	self assert: false equals: (SmalltalkCI platformClass fileExists: self class testFilePath).
 	
 	[ self createTestFile.
 	cc := SmalltalkCI codeCoverageClass new.
-	self assert: 2 equals: (cc linesForFile: self class coverageTestFile).
-	self assert: 'ac52b72be23970e756614f929e640fba' equals: (cc md5ForFile: self class coverageTestFile) ]
+	self assert: 2 equals: (cc linesOf: self class testFilePath).
+	self assert: 'ac52b72be23970e756614f929e640fba' equals: (cc md5Of: self class testFilePath) ]
 		ensure: [ self deleteTestFile ]

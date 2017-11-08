@@ -1,3 +1,4 @@
 external-deprecated
-compatibleSpecs 
+compatibleSpecs
+	SmalltalkCI deprecated.
 	^ self spec compatibleLoadSpecs

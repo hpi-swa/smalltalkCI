@@ -1,13 +1,14 @@
 {
-	"commentStamp" : "",
-	"super" : "SCITestReporter",
 	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
 	"instvars" : [
-		"hidePassingTests"
-	],
+		"hidePassingTests" ],
 	"name" : "SCITestReporterStdout",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "SCITestReporter",
+	"type" : "normal" }

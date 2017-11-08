@@ -6,11 +6,10 @@ set -o pipefail
 set -o nounset
 
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
-readonly INSTALL_TARGET_OSX="/usr/local/bin"
 readonly BINTRAY_API="https://api.bintray.com/content"
 
 ################################################################################
-# Determine $SMALLTALK_CI_HOME and load helpers.
+# Locate $SMALLTALK_CI_HOME and load helpers.
 ################################################################################
 initialize() {
   local resolved_path
@@ -272,10 +271,6 @@ parse_options() {
       fi
       shift 2
       ;;
-    --install)
-      install_script
-      exit 0
-      ;;
     --no-tracking)
       config_tracking="false"
       shift
@@ -283,10 +278,6 @@ parse_options() {
     -s | --smalltalk)
       config_smalltalk="${2:-}"
       shift 2
-      ;;
-    --uninstall)
-      uninstall_script
-      exit 0
       ;;
     -v | --verbose)
       config_verbose="true"
@@ -322,11 +313,8 @@ parse_options() {
 #   SMALLTALK_CI_BUILD_BASE
 #   SMALLTALK_CI_VMS
 #   SMALLTALK_CI_BUILD
-#   SMALLTALK_CI_GIT
 ################################################################################
 prepare_folders() {
-  local project_home
-
   print_info "Preparing folders..."
   is_dir "${SMALLTALK_CI_CACHE}" || mkdir "${SMALLTALK_CI_CACHE}"
   is_dir "${SMALLTALK_CI_BUILD_BASE}" || mkdir "${SMALLTALK_CI_BUILD_BASE}"
@@ -338,10 +326,6 @@ prepare_folders() {
   else
     mkdir "${SMALLTALK_CI_BUILD}"
   fi
-
-  # Link project folder to git_cache
-  project_home="$(dirname "${config_ston}")"
-  ln -s "${project_home}" "${SMALLTALK_CI_GIT}"
 }
 
 ################################################################################
@@ -362,6 +346,7 @@ add_env_vars() {
   export SCIII_SMALLTALK="${config_smalltalk}"
   export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
   export SCIII_DEBUG="${config_debug}"
+  export SCIII_PROJECT_DIR="$(resolve_path "$(dirname "${config_ston}")")"
 }
 
 ################################################################################
@@ -429,65 +414,6 @@ clean_up() {
 }
 
 ################################################################################
-# Install 'smalltalkCI' command by symlinking current instance.
-# Globals:
-#   INSTALL_TARGET_OSX
-################################################################################
-install_script() {
-  local target
-
-  case "$(uname -s)" in
-    "Linux")
-      print_notice "Not yet implemented."
-      ;;
-    "Darwin")
-      target="${INSTALL_TARGET_OSX}"
-      if ! is_dir "${target}"; then
-        local message = "'${target}' does not exist. Do you want to create it?
-                         (y/N): "
-        read -p "${message}" user_input
-        if [[ "${user_input}" = "y" ]]; then
-          sudo mkdir "target"
-        else
-          print_error_and_exit "'${target}' has not been created."
-        fi
-      fi
-      if ! is_file "${target}/smalltalkCI"; then
-        ln -s "${SMALLTALK_CI_HOME}/run.sh" "${target}/smalltalkCI"
-        print_info "The command 'smalltalkCI' has been installed successfully."
-      else
-        print_error_and_exit "'${target}/smalltalkCI' already exists."
-      fi
-      ;;
-  esac
-}
-
-################################################################################
-# Uninstall 'smalltalkCI' command by removing any symlink to smalltalkCI.
-# Globals:
-#   INSTALL_TARGET_OSX
-################################################################################
-uninstall_script() {
-  local target
-
-  case "$(uname -s)" in
-    "Linux")
-      print_notice "Not yet implemented."
-      ;;
-    "Darwin")
-      target="${INSTALL_TARGET_OSX}"
-      if is_file "${target}/smalltalkCI"; then
-        rm -f "${target}/smalltalkCI"
-        print_info "The command 'smalltalkCI' has been uninstalled
-                    successfully."
-      else
-        print_error_and_exit "'${target}/smalltalkCI' does not exists."
-      fi
-      ;;
-  esac
-}
-
-################################################################################
 # Deploy build artifacts to bintray if configured.
 ################################################################################
 deploy() {
@@ -519,9 +445,7 @@ deploy() {
     target="${BINTRAY_API}/${BINTRAY_FAIL}/${version}"
   fi
 
-  travis_fold start deploy "Deploying to bintray.com..."
-    timer_start
-
+  fold_start deploy "Deploying to bintray.com..."
     pushd "${SMALLTALK_CI_BUILD}" > /dev/null
 
     print_info "Compressing and uploading image and changes files..."
@@ -551,9 +475,7 @@ deploy() {
     fi
 
     popd > /dev/null
-
-    timer_finish
-  travis_fold end deploy
+  fold_end deploy
 }
 
 ################################################################################
@@ -581,9 +503,9 @@ run() {
   esac
 
   if debug_enabled; then
-    travis_fold start display_config "Current configuration"
+    fold_start display_config "Current configuration"
       print_config
-    travis_fold end display_config
+    fold_end display_config
   fi
 
   run_build "$@"
@@ -619,7 +541,7 @@ main() {
   run "$@"
 
   if is_travis_build || is_appveyor_build; then
-    upload_coverage_results
+    upload_coveralls_results
   fi
 
   if is_travis_build; then

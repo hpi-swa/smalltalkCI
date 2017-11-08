@@ -1,13 +1,14 @@
 {
-	"commentStamp" : "",
-	"super" : "SmalltalkCI",
 	"category" : "SmalltalkCI-Squeak-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
 	"instvars" : [
-		"originalToolSet"
-	],
+		"originalToolSet" ],
 	"name" : "SmalltalkCISqueak",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "SmalltalkCI",
+	"type" : "normal" }

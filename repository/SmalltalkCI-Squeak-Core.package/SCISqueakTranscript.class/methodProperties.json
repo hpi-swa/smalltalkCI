@@ -1,17 +1,14 @@
 {
-	"instance" : {
-		"install" : "fn 4/15/2016 22:41",
-		"originalTranscript" : "fn 1/31/2016 18:32",
-		"cr" : "fn 9/27/2016 20:39",
-		"showln:" : "fn 9/27/2016 20:39",
-		"originalTranscript:" : "fn 1/31/2016 18:32",
-		"show:" : "fn 9/27/2016 20:39",
-		"uninstall" : "fn 1/31/2016 18:46",
-		"crlf" : "fn 9/29/2016 16:01"
-	},
 	"class" : {
 		"install" : "fn 4/15/2016 21:54",
 		"isInstalled" : "fn 4/15/2016 21:54",
-		"uninstall" : "fn 4/15/2016 22:43"
-	}
-}
+		"uninstall" : "fn 4/15/2016 22:43" },
+	"instance" : {
+		"cr" : "fn 9/27/2016 20:39",
+		"crlf" : "fn 9/29/2016 16:01",
+		"install" : "fn 4/15/2016 22:41",
+		"originalTranscript" : "fn 1/31/2016 18:32",
+		"originalTranscript:" : "fn 1/31/2016 18:32",
+		"show:" : "fn 9/27/2016 20:39",
+		"showln:" : "fn 9/27/2016 20:39",
+		"uninstall" : "fn 1/31/2016 18:46" } }

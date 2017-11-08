@@ -1,5 +1,3 @@
 accessing
 isCoverageTestingEnabled
-	^ SmalltalkCI platformSymbol ~= #gemstone and:
-		[ (SmalltalkCI isTravisBuild or: [ SmalltalkCI isAppVeyorBuild ]) and:
-			[ self spec coverageEnabled ] ]
+	^ SmalltalkCI platformSymbol ~= #gemstone and: [ self spec coverageEnabled ]
