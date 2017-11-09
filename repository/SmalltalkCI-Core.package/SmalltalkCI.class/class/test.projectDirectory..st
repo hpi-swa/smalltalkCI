@@ -1,4 +1,6 @@
 public-api
-test: aFilenameString projectDirectory: aDirectoryPathString
-	ProjectDirectory := aDirectoryPathString.
-	^ self test: aFilenameString
+test: fullPathToConfig projectDirectory: aDirectoryPathString
+	^ self
+		test: fullPathToConfig
+		named: nil
+		projectDirectory: aDirectoryPathString

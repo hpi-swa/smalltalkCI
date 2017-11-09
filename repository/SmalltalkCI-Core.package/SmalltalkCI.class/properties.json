@@ -2,8 +2,7 @@
 	"category" : "SmalltalkCI-Core",
 	"classinstvars" : [
 		"PlatformClass",
-		"TravisID",
-		"ProjectDirectory" ],
+		"TravisID" ],
 	"classvars" : [
 		 ],
 	"commentStamp" : "",

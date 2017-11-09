@@ -10,7 +10,7 @@ test
 				ifTrue: [ self class codeCoverageClass
 							run: [ runner := self runTests ]
 							spec: self spec
-							in: self class projectDirectory ]
+							in: self projectDirectory ]
 				ifFalse: [ runner := self runTests ].
 			self finishUpAfterTesting ].
 

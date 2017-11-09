@@ -346,7 +346,6 @@ add_env_vars() {
   export SCIII_SMALLTALK="${config_smalltalk}"
   export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
   export SCIII_DEBUG="${config_debug}"
-  export SCIII_PROJECT_DIR="$(resolve_path "$(dirname "${config_ston}")")"
 }
 
 ################################################################################

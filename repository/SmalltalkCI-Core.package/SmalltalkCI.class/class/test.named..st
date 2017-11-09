@@ -1,6 +1,6 @@
 public-api
-test: aFilenameString named: aString
-	^ self newInstance
-		readSTONSpec: aFilenameString;
-		suiteName: aString;
-		test
+test: fullPathToConfig named: aName
+	^ self
+		test: fullPathToConfig
+		named: aName
+		projectDirectory: (self dirname: fullPathToConfig)

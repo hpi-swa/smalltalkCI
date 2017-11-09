@@ -485,9 +485,6 @@ testing phases (`preLoading`, `postLoading`, `preTesting`, `postTesting`).
 smalltalkCI is able to *file in* single files, lists of files, and
 `SCICustomScript`s which can be used to only run certain scripts on certain
 platforms.
-The path to the project directory is available via
-`SmalltalkCI projectDirectory` if you need to access other project resources in
-a custom script.
 
 ```javascript
 SmalltalkCISpec {

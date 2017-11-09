@@ -1,5 +1,5 @@
 public-api
-load: aFilenameString
-	^ self newInstance
-		readSTONSpec: aFilenameString;
-		load
+load: fullPathToConfig
+	^ self
+		load: fullPathToConfig
+		projectDirectory: (self dirname: fullPathToConfig)

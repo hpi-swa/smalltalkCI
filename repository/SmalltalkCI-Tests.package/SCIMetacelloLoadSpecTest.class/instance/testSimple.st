@@ -1,9 +1,8 @@
 testing
 testSimple
-	| smalltalkCI originalProjectDirectory |
+	| smalltalkCI |
 	smalltalkCI := SmalltalkCI basicNew initialize.
-	originalProjectDirectory := SmalltalkCI projectDirectory.
-	[ SmalltalkCI projectDirectory: '/dir/to/project'.
+	smalltalkCI projectDirectory: '/dir/to/project'.
 	self assert: '' equals: self spec directory.
 	self assert: #() equals: self spec load.
 	self deny: self spec onWarningLog.
@@ -23,8 +22,7 @@ testSimple
 		assert: self spec onWarningLog;
 		deny: self spec useLatestMetacello;
 		assert: ('filetree:///dir/to/project', SmalltalkCI pathNameDelimiter, 'foodir')
-			equals: self spec loadRepository.
+			equals: (self spec loadRepositoryFrom: smalltalkCI projectDirectory).
 		
 	self spec repository: 'repo'.	
-	self assert: 'repo' equals: self spec loadRepository ]
-		ensure: [ SmalltalkCI projectDirectory: originalProjectDirectory ]
+	self assert: 'repo' equals: (self spec loadRepositoryFrom: smalltalkCI projectDirectory)

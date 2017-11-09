@@ -1,4 +1,4 @@
 deprecated
 loadRepositoryFor: aSmalltalkCI
 	SmalltalkCI deprecated.
-	^ self loadRepository
+	^ self loadRepositoryFrom: aSmalltalkCI projectDirectory
