@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
+if [[ -z "${SMALLTALK_CI_HOME:-}" || "$@" = *--self-test* ]]; then
   readonly SMALLTALK_CI_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd)"
 fi
 

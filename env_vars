@@ -7,7 +7,6 @@ if [[ -z "${TRAVIS:-${APPVEYOR:-}}" ]]; then
   export SMALLTALK_CI_BUILD="${SMALLTALK_CI_BUILD_BASE}/$(date "+%Y_%m_%d_%H_%M_%S")"
 else
   export SMALLTALK_CI_BUILD="${SMALLTALK_CI_BUILD_BASE}"
-  readonly INSTALL_TARGET="/usr/local/bin/stci"
 fi
 export SMALLTALK_CI_CACHE="${SMALLTALK_CI_HOME}/_cache"
 export SMALLTALK_CI_IMAGE="${SMALLTALK_CI_BUILD}/TravisCI.image"

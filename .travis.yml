@@ -9,18 +9,13 @@ branches:
 install:
   # Move cache directory if it exists
   - "[[ ! -d ${SMALLTALK_CI_CACHE} ]] || mv ${SMALLTALK_CI_CACHE} $(pwd)"
-  # Make sure to use smalltalkci from this branch
-  - source env_vars
-  - export PATH="$(pwd)/bin:${PATH}"
 
-script:
-  - echo "${PATH}"
-  - smalltalkci --debug
+script: bin/smalltalkci --self-test
 
 aliases:
   - &ensure-smalltalkci-can-fail
     smalltalk_config: .smalltalk_fail.ston
-    script: "! smalltalkci --debug"
+    script: "! bin/smalltalkci --self-test"
   - &with-gemstone-cache-enabled
     cache:
       directories:

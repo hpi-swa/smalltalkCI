@@ -27,6 +27,13 @@ initialize() {
       ;;
   esac
 
+  if [[ "$@" = *--self-test* ]]; then
+    # Unset all `SMALLTALK_CI_*` environment variables for self testing
+    for var in ${!SMALLTALK_CI_@}; do
+      unset "${var}"
+    done
+  fi
+
   if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
     # Try to determine absolute path to smalltalkCI
     SMALLTALK_CI_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -290,7 +297,7 @@ parse_options() {
       fi
       shift 2
       ;;
-    --)
+    -- | --self-test)
       shift
       break
       ;;
@@ -527,7 +534,7 @@ main() {
   local config_vm=""
   local status=0
 
-  initialize
+  initialize "$@"
   parse_options "$@"
   [[ "${config_verbose}" = "true" ]] && set -o xtrace
   ensure_ston_config_exists "${!#}"  # Use last argument for custom STON
