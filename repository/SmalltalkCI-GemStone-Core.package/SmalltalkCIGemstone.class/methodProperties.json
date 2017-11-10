@@ -37,6 +37,6 @@
 		"initialize" : "fn 10/4/2016 14:00",
 		"performMetacelloLoad:" : "dkh 04/11/2016 09:56",
 		"produceXMLLog:" : "fn 10/4/2016 13:59",
-		"readSTONSpec:" : "fn 11/4/2017 20:36",
+		"readSTONSpec:" : "fn 11/10/2017 19:14",
 		"reportResults:" : "fn 10/4/2016 17:14",
 		"xmlLogDirPath:" : "fn 10/4/2016 13:26" } }
