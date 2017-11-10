@@ -13,6 +13,7 @@
 		"coverageDictionary" : "fn 11/23/2016 15:32",
 		"coverageEnabled" : "fn 11/13/2016 22:17",
 		"customScripts:" : "fn 11/1/2017 13:59",
+		"failOnSCIDeprecationWarnings" : "fn 11/10/2017 13:41",
 		"failOnZeroTests" : "fn 12/22/2016 14:25",
 		"hidePassingTests" : "fn 11/13/2016 23:52",
 		"loading" : "fn 1/19/2016 18:24",

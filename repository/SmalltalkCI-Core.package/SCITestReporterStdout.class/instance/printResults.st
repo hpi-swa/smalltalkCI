@@ -2,5 +2,6 @@ printing
 printResults
 	(runner passingTests > 0 and: [ self hidePassingTests not ])
 		ifTrue: [ self printPassingResults ].
-	runner isSuccessful
-		ifFalse: [ self printNotPassingResults ]
+	(runner isSuccessful not and: [ runner passingTests < runner totalTests])
+		ifTrue: [ self printNotPassingResults ].
+  self printDeprecationWarnings.

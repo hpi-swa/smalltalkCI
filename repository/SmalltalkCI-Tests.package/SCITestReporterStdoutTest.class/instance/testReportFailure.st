@@ -1,8 +1,13 @@
 testing
 testReportFailure
-	| runner reporter stream result |
-	runner := SmalltalkCI testRunnerClass runClasses: {SCIExcludedTests} named: 'SCIExcludedTests'.
+	| warnings runner reporter stream result |
+	warnings := SmalltalkCI deprecationWarnings.
+	[ SmalltalkCI deprecatedReset.
+	runner := SmalltalkCI testRunnerClass
+		runSpec: (SCIDummySpec forClass: SCIExcludedTests) 
+		named: 'Stdout-testReportFailure'.
 	stream := WriteStream on: (String new: 1000).
 	reporter := SCITestReporterStdout report: runner on: stream.
 	result := stream contents.
-	self assert: self class failureFixture matches: result
+	self assert: self class failureFixture matches: result ]
+		ensure: [ SmalltalkCI deprecationWarnings: warnings ]

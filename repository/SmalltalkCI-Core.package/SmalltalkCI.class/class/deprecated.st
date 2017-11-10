@@ -1,3 +1,3 @@
 helpers
 deprecated
-	self platformClass deprecated
+	self deprecationWarnings add: self platformClass deprecationWarning

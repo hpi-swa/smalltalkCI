@@ -2,7 +2,8 @@
 	"category" : "SmalltalkCI-Core",
 	"classinstvars" : [
 		"PlatformClass",
-		"TravisID" ],
+		"TravisID",
+		"DeprecationWarnings" ],
 	"classvars" : [
 		 ],
 	"commentStamp" : "",

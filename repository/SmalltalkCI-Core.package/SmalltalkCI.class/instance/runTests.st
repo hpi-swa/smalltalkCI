@@ -1,6 +1,5 @@
 executing
 runTests
 	^ self class testRunnerClass
-		runClasses: self spec classesToTest
+		runSpec: self spec
 		named: self suiteName
-		failOnZeroTests: self spec failOnZeroTests

@@ -1,3 +1,4 @@
-running
+running-deprecated
 runClasses: aCollectionOfClasses named: aSuiteName
-  ^ self runClasses: aCollectionOfClasses named: aSuiteName failOnZeroTests: true
+	SmalltalkCI deprecated.
+	^ self runClasses: aCollectionOfClasses named: aSuiteName failOnZeroTests: true

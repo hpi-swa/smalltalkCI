@@ -1,3 +1,3 @@
-running
+running-deprecated
 runSuite: aTestSuite
-	^ self runSuite: aTestSuite failOnZeroTests: true
+	^ self runSuite: aTestSuite spec: SmalltalkCISpec new

@@ -1,7 +1,9 @@
 testing
 testReportSuccess
 	| runner reporter stream result |
-	runner := SmalltalkCI testRunnerClass runClasses: {SCIPassingTests} named: 'MyRunnerName'.
+	runner := SmalltalkCI testRunnerClass
+		runSpec: (SCIDummySpec forClass: SCIPassingTests) 
+		named: 'Stdout-testReportSuccess'.
 	stream := WriteStream on: (String new: 1000).
 	reporter := SCITestReporterStdout report: runner on: stream.
 	result := stream contents.

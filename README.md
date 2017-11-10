@@ -444,6 +444,7 @@ SmalltalkCISpec {
     // Other options
     #defaultTimeout : 30, // In seconds (Squeak-only)
     #hidePassingTests : true, // Hide passing tests when printing to stdout
+    #failOnSCIDeprecationWarnings : false, // Fail if a deprecated smalltalkCI API is used
     #failOnZeroTests : false // Pass builds that did not run any tests
   }
 }

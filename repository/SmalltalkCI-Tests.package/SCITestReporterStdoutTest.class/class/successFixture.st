@@ -2,7 +2,7 @@ fixtures
 successFixture
 	^ '
 [1m[34m#############
-[1m[34m# MyRunnerName#
+[1m[34m# Stdout-testReportSuccess#
 [1m[34m# 5 Tests with 0 Failures and 0 Errors in s #
 [1m[34m#############
 [0m
