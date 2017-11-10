@@ -1,4 +1,4 @@
-as yet unclassified
+executing
 report: aSCITestRunner spec: aSCISpec
 	self
 		basicNew

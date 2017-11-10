@@ -1,6 +1,7 @@
 public-api
-load: aFilenameString projectDirectory: aProjectDirectory
+test: aFilenameString named: aName projectDirectory: aProjectDirectory
 	^ self newInstance
 		readSTONSpec: aFilenameString;
+		suiteName: aName;
 		projectDirectory: aProjectDirectory;
-		load
+		test

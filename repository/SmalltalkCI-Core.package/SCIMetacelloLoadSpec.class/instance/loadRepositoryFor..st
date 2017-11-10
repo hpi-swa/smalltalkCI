@@ -1,4 +1,4 @@
-executing
+deprecated
 loadRepositoryFor: aSmalltalkCI
-	^ self repository
-		ifNil: [ 'filetree://', aSmalltalkCI projectDirectory, SmalltalkCI pathNameDelimiter, self directory ]
+	SmalltalkCI deprecated.
+	^ self loadRepositoryFrom: aSmalltalkCI projectDirectory

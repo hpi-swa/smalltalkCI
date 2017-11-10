@@ -37,9 +37,6 @@ test_prepare_folders() {
   if [[ -d "${SMALLTALK_CI_BUILD}" ]]; then
     fail "${SMALLTALK_CI_BUILD} should not exist."
   fi
-  if [[ -d "${SMALLTALK_CI_GIT}" ]]; then
-    fail "${SMALLTALK_CI_GIT} should not exist."
-  fi
 
   prepare_folders > "/dev/null"
 
@@ -54,9 +51,6 @@ test_prepare_folders() {
   fi
   if [[ ! -d "${SMALLTALK_CI_BUILD}" ]]; then
     fail "${SMALLTALK_CI_BUILD} should exist."
-  fi
-  if [[ ! -d "${SMALLTALK_CI_GIT}" ]]; then
-    fail "${SMALLTALK_CI_GIT} should exist."
   fi
 
   rm -rf "${SMALLTALK_CI_CACHE}" "${SMALLTALK_CI_BUILD_BASE}"

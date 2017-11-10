@@ -8,22 +8,18 @@ branches:
 
 install:
   # Move cache directory if it exists
-  - if [[ -d "${SMALLTALK_CI_CACHE}" ]]; then mv $SMALLTALK_CI_CACHE "$(pwd)"; fi
-  # Make sure to use smalltalkCI from this branch
-  - if [[ -n "${SMALLTALK_CI_HOME}" ]]; then rm -rf $SMALLTALK_CI_HOME && ln -s "$(pwd)" $SMALLTALK_CI_HOME && source $SMALLTALK_CI_HOME/env_vars; fi
+  - "[[ ! -d ${SMALLTALK_CI_CACHE} ]] || mv ${SMALLTALK_CI_CACHE} $(pwd)"
 
-script: $SMALLTALK_CI_HOME/run.sh --debug
+script: bin/smalltalkci --self-test
 
 aliases:
   - &ensure-smalltalkci-can-fail
     smalltalk_config: .smalltalk_fail.ston
-    script:
-      - $SMALLTALK_CI_HOME/run.sh --debug || export SMALLTALK_CI_FAIL="true"
-      - if [[ "${SMALLTALK_CI_FAIL}" != "true" ]]; then false; fi
+    script: "! bin/smalltalkci --self-test"
   - &with-gemstone-cache-enabled
     cache:
       directories:
-            - $SMALLTALK_CI_CACHE
+        - ${SMALLTALK_CI_CACHE}
 
 jobs:
   include:
