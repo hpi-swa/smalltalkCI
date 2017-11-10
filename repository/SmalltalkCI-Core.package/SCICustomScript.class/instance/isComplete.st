@@ -1,0 +1,3 @@
+testing
+isComplete
+	^ path notNil
