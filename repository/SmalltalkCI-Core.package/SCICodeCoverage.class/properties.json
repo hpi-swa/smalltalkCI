@@ -1,16 +1,17 @@
 {
-	"commentStamp" : "",
-	"super" : "Object",
 	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
 	"instvars" : [
 		"coverageWrappers",
 		"coverallsData",
 		"projectDirectory",
-		"spec"
-	],
+		"spec" ],
 	"name" : "SCICodeCoverage",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }
