@@ -1,6 +1,9 @@
 {
 	"class" : {
-		"forClass:" : "fn 11/10/2017 13:59" },
+		"forClass:" : "fn 11/10/2017 13:59",
+		"forClass:withSuiteName:" : "fn 11/11/2017 14:54" },
 	"instance" : {
-		"classesToTest" : "fn 11/10/2017 14:00",
-		"classesToTest:" : "fn 11/10/2017 13:59" } }
+		"classesToTest" : "fn 11/11/2017 14:57",
+		"classesToTest:" : "fn 11/10/2017 13:59",
+		"suiteName" : "fn 11/11/2017 14:57",
+		"suiteName:" : "fn 11/11/2017 14:54" } }

@@ -1,13 +1,14 @@
 {
 	"class" : {
-		"defaultSuiteName" : "PeterUhnak 10/19/2017 12:46",
 		"errorExceptions" : "fn 11/14/2016 14:37",
 		"isTestMethod:" : "fn 6/30/2016 11:58",
-		"runClasses:named:" : "fn 11/10/2017 14:00",
-		"runClasses:named:failOnZeroTests:" : "fn 11/10/2017 13:46",
-		"runSpec:named:" : "fn 11/10/2017 13:50",
+		"runClasses:" : "fn 11/11/2017 14:52",
+		"runClasses:named:" : "fn 11/11/2017 15:04",
+		"runClasses:named:failOnZeroTests:" : "fn 11/11/2017 15:02",
+		"runClasses:spec:" : "fn 11/11/2017 15:05",
+		"runSpec:" : "fn 11/11/2017 14:52",
 		"runSuite:" : "fn 11/10/2017 13:51",
-		"runSuite:failOnZeroTests:" : "fn 11/10/2017 14:34",
+		"runSuite:failOnZeroTests:" : "fn 11/11/2017 15:04",
 		"runSuite:spec:" : "fn 11/10/2017 13:45",
 		"skipExceptions" : "fn 11/14/2016 14:37" },
 	"instance" : {

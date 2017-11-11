@@ -1,9 +1,10 @@
 testing
 testReportFailure
 	| runner reporter stream result expectedTests index |
-	runner := SmalltalkCI testRunnerClass
-		runSpec: (SCIDummySpec forClass: SCIExcludedTests)
-		named: 'XML-testReportFailure'.
+	runner := SmalltalkCI testRunnerClass runSpec: (
+		SCIDummySpec
+			forClass: SCIExcludedTests 
+			withSuiteName: 'XML-testReportFailure').
 	stream := WriteStream on: (String new: 1000).
 	reporter := SCITestReporterXML report: runner on: stream.
 	result := stream contents.

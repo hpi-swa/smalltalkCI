@@ -1,4 +1,4 @@
 external-deprecated
 testCI
-	SmalltalkCI deprecated.
+	SmalltalkCI deprecated: 'Use SmalltalkCI>>test instead'.
 	self test

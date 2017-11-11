@@ -6,7 +6,6 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"specName",
 		"loading",
 		"testing",
 		"configuring",

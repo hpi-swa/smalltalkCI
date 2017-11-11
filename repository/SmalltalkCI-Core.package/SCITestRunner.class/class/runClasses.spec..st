@@ -1,8 +1,8 @@
 running
-runSpec: aSCISpec named: aSuiteName
+runClasses: aCollectionOfClasses spec: aSCISpec
   | suite classes |
-  suite := TestSuite named: (aSuiteName ifNil: [ self defaultSuiteName ]).
-  classes := (aSCISpec classesToTest
+  suite := TestSuite named: aSCISpec suiteName.
+  classes := (aCollectionOfClasses
     select: [ :each | (each includesBehavior: TestCase) and: [ each isAbstract not ] ])
       asSortedCollection: [ :a :b | a name <= b name ].
   classes

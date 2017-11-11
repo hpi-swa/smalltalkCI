@@ -2,15 +2,12 @@ testing
 testRunSpecNamed
 	| runner |
 	runner := SmalltalkCI testRunnerClass
-		runSpec: (SCIDummySpec forClass: SmalltalkCITest)
-		named: 'testRunSpecNamed: SmalltalkCITest'.
+		runSpec: (SCIDummySpec forClass: SmalltalkCITest).
 	self assert: runner isSuccessful.
 	runner := SmalltalkCI testRunnerClass
-		runSpec: (SCIDummySpec forClass: SCIExcludedTests)
-		named: 'testRunSpecNamed: SmalltalkCI-Excluded'.
+		runSpec: (SCIDummySpec forClass: SCIExcludedTests).
 	self deny: runner isSuccessful.
 	runner := SmalltalkCI testRunnerClass
-		runSpec: (SCIDummySpec forClass: SmalltalkCI)
-		named: 'testRunSpecNamed: SmalltalkCI'.
+		runSpec: (SCIDummySpec forClass: SmalltalkCI).
 	self assert: 0 equals: runner totalTests.
 	self deny: runner isSuccessful.

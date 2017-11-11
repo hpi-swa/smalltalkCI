@@ -1,6 +1,4 @@
-public-api
+public-api-deprecated
 test: fullPathToConfig named: aName
-	^ self
-		test: fullPathToConfig
-		named: aName
-		projectDirectory: (self dirname: fullPathToConfig)
+	self deprecated: 'Custom name no longer supported, use SmalltalkCI class>>test: instead.'.
+	^ self test: fullPathToConfig

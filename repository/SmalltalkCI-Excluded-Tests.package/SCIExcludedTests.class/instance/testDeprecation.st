@@ -1,3 +1,3 @@
 testing
 testDeprecation
-	SmalltalkCI deprecated
+	SmalltalkCI deprecated: 'This is just a test'

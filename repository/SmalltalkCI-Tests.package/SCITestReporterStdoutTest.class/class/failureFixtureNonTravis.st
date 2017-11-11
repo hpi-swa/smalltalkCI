@@ -35,7 +35,7 @@ SCIExcludedTests
 [33m ✗ #testShouldPassUnexpectedly (ms)[0m
 [33m ✗ #testThisIsAVeryLongMethodNameThatProbablyNeedsToBeContractedInOrderToBeDisplayedCorrectlyInATravisLog (ms)[0m
 [1m[31msmalltalkCI Deprecation Warnings[0m
- - SCIExcludedTests>>testDeprecation
+ - SCIExcludedTests>>testDeprecation (This is just a test)
 
 
 [1m[31m  Executed 8 Tests with 4 Failures and 1 Errors in s.[0m

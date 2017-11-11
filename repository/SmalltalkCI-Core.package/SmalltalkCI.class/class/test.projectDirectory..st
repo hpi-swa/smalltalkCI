@@ -1,6 +1,6 @@
 public-api
 test: fullPathToConfig projectDirectory: aDirectoryPathString
-	^ self
-		test: fullPathToConfig
-		named: nil
-		projectDirectory: aDirectoryPathString
+	 ^ self newInstance
+    readSTONSpec: fullPathToConfig;
+    projectDirectory: aDirectoryPathString;
+    test

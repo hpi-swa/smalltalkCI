@@ -1,5 +1,6 @@
 {
 	"class" : {
+		"defaultSuiteName" : "fn 11/11/2017 14:50",
 		"fromStream:" : "fn 1/31/2016 22:15",
 		"writeOn:" : "fn 7/11/2016 16:11" },
 	"instance" : {
@@ -26,7 +27,6 @@
 		"preLoading:" : "fn 11/1/2017 11:45",
 		"preTesting" : "fn 11/1/2017 11:45",
 		"preTesting:" : "fn 11/1/2017 11:45",
-		"specName" : "dkh 02/05/2016 16:36",
-		"specName:" : "dkh 02/05/2016 16:36",
+		"suiteName" : "fn 11/11/2017 14:50",
 		"testing" : "fniep 1/12/2016 22:15",
 		"testing:" : "fniep 1/12/2016 22:15" } }

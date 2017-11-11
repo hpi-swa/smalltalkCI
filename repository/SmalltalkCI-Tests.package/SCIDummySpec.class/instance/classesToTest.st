@@ -1,4 +1,4 @@
 accessing
 classesToTest
 
-	^ classesToTest
+	^ classesToTest ifNil: [ super classesToTest ]
