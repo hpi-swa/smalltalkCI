@@ -14,8 +14,9 @@
 		"onWarningLog",
 		"repository",
 		"version",
-		"useLatestMetacello"
-	],
+		"useLatestMetacello" ],
 	"name" : "SCIMetacelloLoadSpec",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "SCIAbstractLoadSpec",
+	"type" : "normal" }
