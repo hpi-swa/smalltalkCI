@@ -5,7 +5,8 @@ basicLoadProjectOn: aSmalltalkCI
   self updateMetacelloIfRequested.
   metacello := (Smalltalk at: #'Metacello') new.
   metacello
-    repository: (self loadRepositoryFor: aSmalltalkCI);
+    repository: (self repository ifNil: [
+	self filetreeRepositoryIn: aSmalltalkCI projectDirectory ]);
     baseline: self baseline;
     configuration: self configuration;
     version: self version.
