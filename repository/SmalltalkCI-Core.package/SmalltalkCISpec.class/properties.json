@@ -13,8 +13,9 @@
 		"preLoading",
 		"postLoading",
 		"preTesting",
-		"postTesting"
-	],
+		"postTesting" ],
 	"name" : "SmalltalkCISpec",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }
