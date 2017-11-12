@@ -146,6 +146,12 @@ smalltalk:
 #  directories:
 #    - $SMALLTALK_CI_CACHE
 
+# Uncomment to override automatic smalltalkCI execution
+#script:
+#  - "$SMALLTALK_CI_HOME/run.sh"
+#  - "$SMALLTALK_CI_HOME/run.sh" .mysmalltalk.ston
+#  - travis_wait "$SMALLTALK_CI_HOME/run.sh"
+
 ```
 
 ### `appveyor.yml` Template
