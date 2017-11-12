@@ -1,6 +1,6 @@
 {
 	"class" : {
-		"defaultSuiteName" : "fn 11/11/2017 14:50",
+		"defaultName" : "fn 11/12/2017 23:33",
 		"fromStream:" : "fn 1/31/2016 22:15",
 		"writeOn:" : "fn 7/11/2016 16:11" },
 	"instance" : {
@@ -19,6 +19,8 @@
 		"hidePassingTests" : "fn 11/13/2016 23:52",
 		"loading" : "fn 1/19/2016 18:24",
 		"loading:" : "fn 1/19/2016 18:19",
+		"name" : "fn 11/12/2017 23:29",
+		"name:" : "fn 11/12/2017 23:34",
 		"postLoading" : "fn 11/1/2017 11:45",
 		"postLoading:" : "fn 11/1/2017 11:45",
 		"postTesting" : "fn 11/1/2017 11:45",
@@ -27,6 +29,5 @@
 		"preLoading:" : "fn 11/1/2017 11:45",
 		"preTesting" : "fn 11/1/2017 11:45",
 		"preTesting:" : "fn 11/1/2017 11:45",
-		"suiteName" : "fn 11/11/2017 14:50",
 		"testing" : "fniep 1/12/2016 22:15",
 		"testing:" : "fniep 1/12/2016 22:15" } }

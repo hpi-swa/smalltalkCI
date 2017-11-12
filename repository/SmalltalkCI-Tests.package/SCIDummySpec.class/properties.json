@@ -6,8 +6,7 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"classesToTest",
-		"suiteName" ],
+		"classesToTest" ],
 	"name" : "SCIDummySpec",
 	"pools" : [
 		 ],

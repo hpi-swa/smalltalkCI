@@ -5,8 +5,8 @@ testReportFailure
 	[ SmalltalkCI deprecatedReset.
 	runner := SmalltalkCI testRunnerClass runSpec: (
 		SCIDummySpec
-			forClass: SCIExcludedTests 
-			withSuiteName: 'Stdout-testReportFailure').
+			named: 'Stdout-testReportFailure'
+			forClass: SCIExcludedTests).
 	stream := WriteStream on: (String new: 1000).
 	reporter := SCITestReporterStdout report: runner on: stream.
 	result := stream contents.

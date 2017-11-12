@@ -12,7 +12,9 @@
 		"preLoading",
 		"postLoading",
 		"preTesting",
-		"postTesting" ],
+		"postTesting",
+		"name",
+		"specName" ],
 	"name" : "SmalltalkCISpec",
 	"pools" : [
 		 ],

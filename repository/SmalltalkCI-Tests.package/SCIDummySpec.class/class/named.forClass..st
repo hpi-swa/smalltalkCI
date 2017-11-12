@@ -1,6 +1,6 @@
 instance creation
-forClass: aClass withSuiteName: aName
+named: aName forClass: aClass
 	^ self new
+		name: aName;
 		classesToTest: {aClass};
-		suiteName: aName;
 		yourself
