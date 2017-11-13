@@ -509,7 +509,7 @@ deploy() {
     print_info "Compressing image and changes files..."
     mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
     mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
-    touch "${TRAVIS_COMMIT}.revision"
+    touch "${TRAVIS_COMMIT}.REVISION"
     zip -q "travis-${name}.zip" "${name}.image" "${name}.changes" "${TRAVIS_COMMIT}.txt"
 
     is_dir image || mkdir image
