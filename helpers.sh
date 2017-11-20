@@ -206,26 +206,42 @@ debug_enabled() {
   [[ "${config_debug}" = "true" ]]
 }
 
-check_build_status() {
-  local build_status
-  if is_file "${BUILD_STATUS_FILE}"; then
-    build_status=$(cat "${BUILD_STATUS_FILE}")
-    if is_nonzero "${build_status}"; then
-      exit 1
-    fi
-  fi
+signals_error() {
+  local build_status_value=$1
+  [[ "${build_status_value}" != "[success]" ]]
 }
 
-check_final_build_status() {
+check_and_consume_build_status_file() {
   local build_status
-
   if ! is_file "${BUILD_STATUS_FILE}"; then
-    print_error_and_exit "Build failed before tests were performed correctly."
+    print_error_and_exit "Build was unable to report intermediate build status."
   fi
   build_status=$(cat "${BUILD_STATUS_FILE}")
-  report_build_metrics "${build_status}"
-  if is_nonzero "${build_status}"; then
-    exit 1
+  if signals_error "${build_status}"; then
+    print_error_and_exit "${build_status}"
+  fi
+  rm -f "${BUILD_STATUS_FILE}"
+}
+
+finalize() {
+  local build_status
+
+  if is_travis_build || is_appveyor_build; then
+    upload_coveralls_results
+  fi
+
+  if ! is_file "${BUILD_STATUS_FILE}"; then
+    print_error_and_exit "Build was unable to report final build status."
+  fi
+  build_status=$(cat "${BUILD_STATUS_FILE}")
+  if is_travis_build; then
+    deploy "${build_status}"
+  fi
+  if signals_error "${build_status}"; then
+    print_error_and_exit "${build_status}"
+  else
+    report_build_metrics "0"
+    exit "0"
   fi
 }
 
@@ -381,6 +397,71 @@ report_build_metrics() {
           --header "X-BUILD-SMALLTALK: ${config_smalltalk}" \
           --header "X-BUILD-STATUS: ${build_status}" \
             "https://smalltalkci.fniephaus.com/api/" > /dev/null || true
+}
+
+################################################################################
+# Deploy build artifacts to bintray if configured.
+################################################################################
+deploy() {
+  local build_status_value=$1
+  local target
+  local version="${TRAVIS_BUILD_NUMBER}"
+  local project_name="$(basename ${TRAVIS_BUILD_DIR})"
+  local name="${project_name}-${TRAVIS_JOB_NUMBER}-${config_smalltalk}"
+  local image_name="${SMALLTALK_CI_BUILD}/${name}.image"
+  local changes_name="${SMALLTALK_CI_BUILD}/${name}.changes"
+  local publish=false
+
+  if is_empty "${BINTRAY_CREDENTIALS:-}" || \
+      [[ "${TRAVIS_PULL_REQUEST}" != "false" ]]; then
+    return
+  fi
+
+  if ! signals_error "${build_status_value}"; then
+    if is_empty "${BINTRAY_RELEASE:-}" || \
+        [[ "${TRAVIS_BRANCH}" != "master" ]]; then
+      return
+    fi
+    target="${BINTRAY_API}/${BINTRAY_RELEASE}/${version}"
+    publish=true
+  else
+    if is_empty "${BINTRAY_FAIL:-}"; then
+      return
+    fi
+    target="${BINTRAY_API}/${BINTRAY_FAIL}/${version}"
+  fi
+
+  fold_start deploy "Deploying to bintray.com..."
+    pushd "${SMALLTALK_CI_BUILD}" > /dev/null
+
+    print_info "Compressing and uploading image and changes files..."
+    mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
+    mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
+    tar czf "${name}.tar.gz" "${name}.image" "${name}.changes"
+    curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.tar.gz" \
+        "${target}/${name}.tar.gz" > /dev/null
+    zip -q "${name}.zip" "${name}.image" "${name}.changes"
+    curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.zip" \
+        "${target}/${name}.zip" > /dev/null
+
+    if signals_error "${build_status_value}"; then
+      # Check for xml files and upload them
+      if ls *.xml 1> /dev/null 2>&1; then
+        print_info "Compressing and uploading debugging files..."
+        mv "${TRAVIS_BUILD_DIR}/"*.fuel "${SMALLTALK_CI_BUILD}/" || true
+        find . -name "*.xml" -o -name "*.fuel" | tar czf "debug.tar.gz" -T -
+        curl -s -u "$BINTRAY_CREDENTIALS" \
+            -T "debug.tar.gz" "${target}/" > /dev/null
+      fi
+    fi
+
+    if "${publish}"; then
+      print_info "Publishing ${version}..."
+      curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
+    fi
+
+    popd > /dev/null
+  fold_end deploy
 }
 
 

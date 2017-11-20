@@ -420,71 +420,6 @@ clean_up() {
 }
 
 ################################################################################
-# Deploy build artifacts to bintray if configured.
-################################################################################
-deploy() {
-  local build_status=$1
-  local target
-  local version="${TRAVIS_BUILD_NUMBER}"
-  local project_name="$(basename ${TRAVIS_BUILD_DIR})"
-  local name="${project_name}-${TRAVIS_JOB_NUMBER}-${config_smalltalk}"
-  local image_name="${SMALLTALK_CI_BUILD}/${name}.image"
-  local changes_name="${SMALLTALK_CI_BUILD}/${name}.changes"
-  local publish=false
-
-  if is_empty "${BINTRAY_CREDENTIALS:-}" || \
-      [[ "${TRAVIS_PULL_REQUEST}" != "false" ]]; then
-    return
-  fi
-
-  if [[ "${build_status}" -eq 0 ]]; then
-    if is_empty "${BINTRAY_RELEASE:-}" || \
-        [[ "${TRAVIS_BRANCH}" != "master" ]]; then
-      return
-    fi
-    target="${BINTRAY_API}/${BINTRAY_RELEASE}/${version}"
-    publish=true
-  else
-    if is_empty "${BINTRAY_FAIL:-}"; then
-      return
-    fi
-    target="${BINTRAY_API}/${BINTRAY_FAIL}/${version}"
-  fi
-
-  fold_start deploy "Deploying to bintray.com..."
-    pushd "${SMALLTALK_CI_BUILD}" > /dev/null
-
-    print_info "Compressing and uploading image and changes files..."
-    mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
-    mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
-    tar czf "${name}.tar.gz" "${name}.image" "${name}.changes"
-    curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.tar.gz" \
-        "${target}/${name}.tar.gz" > /dev/null
-    zip -q "${name}.zip" "${name}.image" "${name}.changes"
-    curl -s -u "$BINTRAY_CREDENTIALS" -T "${name}.zip" \
-        "${target}/${name}.zip" > /dev/null
-
-    if [[ "${build_status}" -ne 0 ]]; then
-      # Check for xml files and upload them
-      if ls *.xml 1> /dev/null 2>&1; then
-        print_info "Compressing and uploading debugging files..."
-        mv "${TRAVIS_BUILD_DIR}/"*.fuel "${SMALLTALK_CI_BUILD}/" || true
-        find . -name "*.xml" -o -name "*.fuel" | tar czf "debug.tar.gz" -T -
-        curl -s -u "$BINTRAY_CREDENTIALS" \
-            -T "debug.tar.gz" "${target}/" > /dev/null
-      fi
-    fi
-
-    if "${publish}"; then
-      print_info "Publishing ${version}..."
-      curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
-    fi
-
-    popd > /dev/null
-  fold_end deploy
-}
-
-################################################################################
 # Load platform-specific package and run the build.
 # Locals:
 #   config_smalltalk
@@ -532,7 +467,6 @@ main() {
   local config_tracking="true"
   local config_verbose="false"
   local config_vm=""
-  local status=0
 
   initialize "$@"
   parse_options "$@"
@@ -545,16 +479,7 @@ main() {
   export_coveralls_data
   prepare_environment
   run "$@"
-
-  if is_travis_build || is_appveyor_build; then
-    upload_coveralls_results
-  fi
-
-  if is_travis_build; then
-    deploy "${status}"
-  fi
-
-  check_final_build_status
+  finalize
 }
 
 # Run main if script is not being tested

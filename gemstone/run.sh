@@ -189,6 +189,7 @@ gemstone::prepare_client() {
   fold_start "create_${client_name}" "Creating client ${client_name}..."
     ${GS_HOME}/bin/createClient -t pharo "${client_name}" -v ${client_version} -s "${STONE_NAME}" -z "${config_ston}"
   fold_end "create_${client_name}"
+  check_and_consume_build_status_file
 }
 
 ################################################################################
@@ -226,25 +227,9 @@ EOF
   if is_nonzero "${status}"; then
     print_error_and_exit "Failed to load project."
   fi
+  check_and_consume_build_status_file
 }
 
-################################################################################
-# Check intermediate build status and update build_status if necessary.
-# Locals:
-#   intermediate_build_status
-# Globals:
-#   build_status
-################################################################################
-gemstone::check_intermediate_build_status() {
-  local intermediate_build_status
-
-  if is_file "${build_status_file}"; then
-    intermediate_build_status=$(cat "${build_status_file}")
-    if is_nonzero "${intermediate_build_status}"; then
-      build_status=1
-    fi
-  fi
-}
 
 ################################################################################
 # Run tests.
@@ -257,7 +242,6 @@ gemstone::check_intermediate_build_status() {
 gemstone::test_project() {
   local status=0
   local build_status=0
-  local build_status_file="${SMALLTALK_CI_BUILD}/${BUILD_STATUS_FILE}"
 
   travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
     iferr 1 stk
@@ -274,7 +258,7 @@ EOF
   if is_nonzero "${status}"; then
     print_error_and_exit "Error while testing server project."
   fi
-  gemstone::check_intermediate_build_status
+  check_and_consume_build_status_file
 
   if is_not_empty  "${DEVKIT_CLIENT_NAMES:-}"; then
     for client_name in "${DEVKIT_CLIENT_NAMES[@]}"
@@ -284,14 +268,12 @@ EOF
       if is_nonzero "${status}"; then
         print_error_and_exit "Error while testing client project ${client_name}."
       fi
-      gemstone::check_intermediate_build_status
+      check_and_consume_build_status_file
     done
   fi
 
-  # Overwrite build status file if tests failed on the server or on a client
-  if is_nonzero "${build_status}"; then
-    echo 1 > "${build_status_file}"
-  fi
+  # Signal successful build for `finalize` step
+  echo "[success]" > "${BUILD_STATUS_FILE}"
 
   fold_start stop_stone "Stopping stone..."
     ${GS_HOME}/bin/stopStone -b "${STONE_NAME}"

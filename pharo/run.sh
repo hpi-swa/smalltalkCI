@@ -291,7 +291,7 @@ pharo::test_project() {
         load ] on: Warning do: [:w | w resume ].
         Smalltalk at: #SmalltalkCI
     ].
-    (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")'
+    smalltalkCI test: '$(resolve_path "${config_ston}")'
   "
 }
 
@@ -315,7 +315,7 @@ run_build() {
   fi
   if ston_includes_loading; then
     pharo::load_project
-    check_build_status
+    check_and_consume_build_status_file
   fi
   pharo::test_project
 }
