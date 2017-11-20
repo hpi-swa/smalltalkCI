@@ -299,7 +299,7 @@ git_log() {
   local format_value=$1
   local output
   output=$(git --no-pager log -1 --pretty=format:"${format_value}")
-  echo "${output/\"/\\\"}" # Escape double quotes
+  echo "${output//\"/\\\"}" # Escape double quotes
 }
 
 
