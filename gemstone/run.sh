@@ -269,7 +269,7 @@ EOF
         print_error_and_exit "Error while testing client project ${client_name}."
       fi
       # Check and consume intermediate build status and keep going
-      if is_nonzero "$(current_build_status)"; then
+      if current_build_status_signals_error; then
         failing_clients+=("${client_name}")
       fi
       consume_build_status_file

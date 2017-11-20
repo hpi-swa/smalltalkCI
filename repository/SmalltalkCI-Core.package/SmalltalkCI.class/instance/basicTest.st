@@ -15,4 +15,4 @@ basicTest
 			self finishUpAfterTesting ].
 	self reportResults: runner.
 	runner isSuccessful
-		ifFalse: [ SCIError signal: 'Test run failed' ]
+		ifFalse: [ SCIError signal: '[test failure]' ]

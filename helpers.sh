@@ -32,11 +32,8 @@ print_error() {
 }
 
 print_error_and_exit() {
-  local error_code="${2:-1}" # 2nd parameter, 1 if not set
-
   print_error "$1"
-  report_build_metrics "${error_code}"
-  exit "${error_code}"
+  exit "${2:-1}" # 2nd parameter, 1 if not set
 }
 
 print_help() {
@@ -207,19 +204,18 @@ debug_enabled() {
 }
 
 signals_error() {
-  local build_status_value=$1
-  [[ "${build_status_value}" != "[success]" ]]
+  [[ $1 != "[success]" ]]
 }
 
-current_build_status() {
+current_build_status_signals_error() {
   if ! is_file "${BUILD_STATUS_FILE}"; then
     print_error "Build was unable to report intermediate build status."
-    return 1
+    return 0
   fi
   if signals_error "$(cat "${BUILD_STATUS_FILE}")"; then
-    return 1
+    return 0
   fi
-  return 0
+  return 1
 }
 
 consume_build_status_file() {
@@ -227,8 +223,14 @@ consume_build_status_file() {
 }
 
 check_and_consume_build_status_file() {
-  if is_nonzero "$(current_build_status)" ; then
-    print_error_and_exit "$(cat "${BUILD_STATUS_FILE}")"
+  local build_status
+
+  if current_build_status_signals_error; then
+    build_status="$(cat "${BUILD_STATUS_FILE}")"
+    if [[ "${build_status}" == "[test failure]" ]]; then
+      exit 1
+    fi
+    print_error_and_exit "${build_status}"
   fi
   consume_build_status_file
 }
@@ -248,10 +250,12 @@ finalize() {
     deploy "${build_status}"
   fi
   if signals_error "${build_status}"; then
-    print_error_and_exit "${build_status}"
+    if [[ "${build_status}" != "[test failure]" ]]; then
+      print_error_and_exit "${build_status}"
+    fi
+    exit 1
   else
-    report_build_metrics "0"
-    exit "0"
+   exit 0
   fi
 }
 

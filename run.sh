@@ -14,6 +14,7 @@ readonly BINTRAY_API="https://api.bintray.com/content"
 initialize() {
   local resolved_path
 
+  trap handle_exit EXIT
   trap handle_error ERR
   trap handle_interrupt INT
 
@@ -71,13 +72,20 @@ initialize() {
 }
 
 ################################################################################
+# Exit handler.
+################################################################################
+handle_exit() {
+  local error_code=$?
+  report_build_metrics "${error_code}"
+  exit "${error_code}"
+}
+
+################################################################################
 # Print error information and exit.
 ################################################################################
 handle_error() {
   local error_code=$?
   local i
-
-  report_build_metrics "${error_code}"
 
   printf "\n"
   print_notice "Error with status code ${error_code}:"
