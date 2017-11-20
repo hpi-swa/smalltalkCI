@@ -1,18 +1,13 @@
 executing
 test
-	| runner |
-	self class
-		stage: 'Testing project...'
-		id: 'test_project'
-		block: [
-			self prepareForTesting.
-			self isCoverageTestingEnabled
-				ifTrue: [ self class codeCoverageClass
-							run: [ runner := self runTests ]
-							spec: self spec
-							in: self projectDirectory ]
-				ifFalse: [ runner := self runTests ].
-			self finishUpAfterTesting ].
+	| hasThrownError |
+	"self class withBuildStatusReportingDo: [ self basicTest ]"
 
-	self reportResults: runner.
-	SmalltalkCI shutdown: runner isSuccessful
+	"test should not shutdown image in the future (see #242), the below is a terrible workaround and only to keep the behavior for GsDevKit compatibility"
+	hasThrownError := false.
+	self class withBuildStatusReportingDo: [
+		[ self basicTest ] on: SCIError do: [ :e | 
+			hasThrownError := true.
+			"Create new error, GemStone does not allow to signal an exception twice"
+			SCIError signal: e messageText ]].
+	SmalltalkCI shutdown: hasThrownError not

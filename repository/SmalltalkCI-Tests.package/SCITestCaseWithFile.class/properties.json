@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCITestCaseWithFile",
+	"pools" : [
+		 ],
+	"super" : "TestCase",
+	"type" : "normal" }

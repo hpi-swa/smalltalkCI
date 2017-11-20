@@ -1,0 +1,3 @@
+constants
+testFileName
+	self subclassResponsibility

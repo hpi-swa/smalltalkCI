@@ -3,7 +3,7 @@ defaultName
 	| result |
 	result := SmalltalkCI smalltalkSelection ifNil: [ 'unknown' ].
 	SmalltalkCI isTravisBuild ifTrue: [
-		^ result, ' on TravisCI (', (SmalltalkCI getEnv: 'TRAVIS_JOB_NUMBER') asString, ')' ].
+		^ result, ' on Travis CI (', (SmalltalkCI getEnv: 'TRAVIS_JOB_NUMBER') asString, ')' ].
 	SmalltalkCI isAppVeyorBuild ifTrue: [
 		^ result, ' on AppVeyor (', (SmalltalkCI getEnv: 'APPVEYOR_JOB_NAME') asString, ')' ].
 	SmalltalkCI isGitLabCIBuild ifTrue: [ 

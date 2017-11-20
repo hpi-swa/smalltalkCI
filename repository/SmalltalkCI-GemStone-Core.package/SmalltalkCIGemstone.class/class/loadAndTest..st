@@ -2,6 +2,6 @@ public-api
 loadAndTest: aFilenameString
   ^ self
 	basicNew initialize;
-	readSTONSpec: aFilenameString;
+	spec: (SmalltalkCISpec fromFile: aFilenameString);
 	load;
 	test
