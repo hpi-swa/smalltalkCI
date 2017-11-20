@@ -241,7 +241,7 @@ EOF
 ################################################################################
 gemstone::test_project() {
   local status=0
-  local build_status=0
+  local failing_clients=()
 
   travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
     iferr 1 stk
@@ -268,12 +268,20 @@ EOF
       if is_nonzero "${status}"; then
         print_error_and_exit "Error while testing client project ${client_name}."
       fi
-      check_and_consume_build_status_file
+      # Check and consume intermediate build status and keep going
+      if is_nonzero "$(current_build_status)"; then
+        failing_clients+=("${client_name}")
+      fi
+      consume_build_status_file
     done
   fi
 
-  # Signal successful build for `finalize` step
-  echo "[success]" > "${BUILD_STATUS_FILE}"
+  # Create build status file for `finalize` step
+  if is_nonzero "${#failing_clients[@]}"; then
+    echo "Error in the following client(s): ${failing_clients[*]}." > "${build_status_file}"
+  else
+    echo "[success]" > "${BUILD_STATUS_FILE}"
+  fi
 
   fold_start stop_stone "Stopping stone..."
     ${GS_HOME}/bin/stopStone -b "${STONE_NAME}"

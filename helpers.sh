@@ -211,16 +211,26 @@ signals_error() {
   [[ "${build_status_value}" != "[success]" ]]
 }
 
-check_and_consume_build_status_file() {
-  local build_status
+current_build_status() {
   if ! is_file "${BUILD_STATUS_FILE}"; then
-    print_error_and_exit "Build was unable to report intermediate build status."
+    print_error "Build was unable to report intermediate build status."
+    return 1
   fi
-  build_status=$(cat "${BUILD_STATUS_FILE}")
-  if signals_error "${build_status}"; then
-    print_error_and_exit "${build_status}"
+  if signals_error "$(cat "${BUILD_STATUS_FILE}")"; then
+    return 1
   fi
+  return 0
+}
+
+consume_build_status_file() {
   rm -f "${BUILD_STATUS_FILE}"
+}
+
+check_and_consume_build_status_file() {
+  if is_nonzero "$(current_build_status)" ; then
+    print_error_and_exit "$(cat "${BUILD_STATUS_FILE}")"
+  fi
+  consume_build_status_file
 }
 
 finalize() {
