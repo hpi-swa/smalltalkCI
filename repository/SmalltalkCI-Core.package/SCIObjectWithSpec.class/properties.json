@@ -6,10 +6,9 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"runner",
-		"stream" ],
-	"name" : "SCITestReporter",
+		"spec" ],
+	"name" : "SCIObjectWithSpec",
 	"pools" : [
 		 ],
-	"super" : "SCIObjectWithSpec",
+	"super" : "Object",
 	"type" : "normal" }

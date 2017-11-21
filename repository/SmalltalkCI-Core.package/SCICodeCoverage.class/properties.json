@@ -8,10 +8,9 @@
 	"instvars" : [
 		"coverageWrappers",
 		"coverallsData",
-		"projectDirectory",
-		"spec" ],
+		"projectDirectory" ],
 	"name" : "SCICodeCoverage",
 	"pools" : [
 		 ],
-	"super" : "Object",
+	"super" : "SCIObjectWithSpec",
 	"type" : "normal" }
