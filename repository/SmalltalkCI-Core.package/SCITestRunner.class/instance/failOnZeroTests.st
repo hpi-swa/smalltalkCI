@@ -1,4 +1,0 @@
-accessing
-failOnZeroTests
-
-	^ failOnZeroTests

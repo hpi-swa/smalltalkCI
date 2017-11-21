@@ -6,11 +6,10 @@ set -o pipefail
 set -o nounset
 
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
-readonly INSTALL_TARGET_OSX="/usr/local/bin"
 readonly BINTRAY_API="https://api.bintray.com/content"
 
 ################################################################################
-# Determine $SMALLTALK_CI_HOME and load helpers.
+# Locate $SMALLTALK_CI_HOME and load helpers.
 ################################################################################
 initialize() {
   local resolved_path
@@ -27,6 +26,13 @@ initialize() {
       exit 1
       ;;
   esac
+
+  if [[ "$@" = *--self-test* ]]; then
+    # Unset all `SMALLTALK_CI_*` environment variables for self testing
+    for var in ${!SMALLTALK_CI_@}; do
+      unset "${var}"
+    done
+  fi
 
   if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
     # Try to determine absolute path to smalltalkCI
@@ -272,10 +278,6 @@ parse_options() {
       fi
       shift 2
       ;;
-    --install)
-      install_script
-      exit 0
-      ;;
     --no-tracking)
       config_tracking="false"
       shift
@@ -283,10 +285,6 @@ parse_options() {
     -s | --smalltalk)
       config_smalltalk="${2:-}"
       shift 2
-      ;;
-    --uninstall)
-      uninstall_script
-      exit 0
       ;;
     -v | --verbose)
       config_verbose="true"
@@ -299,7 +297,7 @@ parse_options() {
       fi
       shift 2
       ;;
-    --)
+    -- | --self-test)
       shift
       break
       ;;
@@ -322,11 +320,8 @@ parse_options() {
 #   SMALLTALK_CI_BUILD_BASE
 #   SMALLTALK_CI_VMS
 #   SMALLTALK_CI_BUILD
-#   SMALLTALK_CI_GIT
 ################################################################################
 prepare_folders() {
-  local project_home
-
   print_info "Preparing folders..."
   is_dir "${SMALLTALK_CI_CACHE}" || mkdir "${SMALLTALK_CI_CACHE}"
   is_dir "${SMALLTALK_CI_BUILD_BASE}" || mkdir "${SMALLTALK_CI_BUILD_BASE}"
@@ -338,10 +333,6 @@ prepare_folders() {
   else
     mkdir "${SMALLTALK_CI_BUILD}"
   fi
-
-  # Link project folder to git_cache
-  project_home="$(dirname "${config_ston}")"
-  ln -s "${project_home}" "${SMALLTALK_CI_GIT}"
 }
 
 ################################################################################
@@ -429,66 +420,7 @@ clean_up() {
 }
 
 ################################################################################
-# Install 'smalltalkCI' command by symlinking current instance.
-# Globals:
-#   INSTALL_TARGET_OSX
-################################################################################
-install_script() {
-  local target
-
-  case "$(uname -s)" in
-    "Linux")
-      print_notice "Not yet implemented."
-      ;;
-    "Darwin")
-      target="${INSTALL_TARGET_OSX}"
-      if ! is_dir "${target}"; then
-        local message = "'${target}' does not exist. Do you want to create it?
-                         (y/N): "
-        read -p "${message}" user_input
-        if [[ "${user_input}" = "y" ]]; then
-          sudo mkdir "target"
-        else
-          print_error_and_exit "'${target}' has not been created."
-        fi
-      fi
-      if ! is_file "${target}/smalltalkCI"; then
-        ln -s "${SMALLTALK_CI_HOME}/run.sh" "${target}/smalltalkCI"
-        print_info "The command 'smalltalkCI' has been installed successfully."
-      else
-        print_error_and_exit "'${target}/smalltalkCI' already exists."
-      fi
-      ;;
-  esac
-}
-
-################################################################################
-# Uninstall 'smalltalkCI' command by removing any symlink to smalltalkCI.
-# Globals:
-#   INSTALL_TARGET_OSX
-################################################################################
-uninstall_script() {
-  local target
-
-  case "$(uname -s)" in
-    "Linux")
-      print_notice "Not yet implemented."
-      ;;
-    "Darwin")
-      target="${INSTALL_TARGET_OSX}"
-      if is_file "${target}/smalltalkCI"; then
-        rm -f "${target}/smalltalkCI"
-        print_info "The command 'smalltalkCI' has been uninstalled
-                    successfully."
-      else
-        print_error_and_exit "'${target}/smalltalkCI' does not exists."
-      fi
-      ;;
-  esac
-}
-
-################################################################################
-# Deploy build
+# Deploy build artifacts to bintray if configured.
 ################################################################################
 deploy() {
   local build_status=$1
@@ -501,25 +433,22 @@ deploy() {
 
   print_info "Deploy..."
 
-  travis_fold start deploy "Deploying to ..."
-    timer_start
+  fold_start deploy "Deploying to ..."
 
-    pushd "${SMALLTALK_CI_BUILD}" > /dev/null
+  pushd "${SMALLTALK_CI_BUILD}" > /dev/null
 
-    print_info "Compressing image and changes files..."
-    mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
-    mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
-    touch "${TRAVIS_COMMIT}.REVISION"
-    zip -q "travis-${name}.zip" "${name}.image" "${name}.changes" "${TRAVIS_COMMIT}.txt"
+  print_info "Compressing image and changes files..."
+  mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
+  mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
+  touch "${TRAVIS_COMMIT}.REVISION"
+  zip -q "travis-${name}.zip" "${name}.image" "${name}.changes" "${TRAVIS_COMMIT}.txt"
 
-    is_dir image || mkdir image
-    cp "travis-${name}.zip" "image/travis-${name}.zip"
-    cp -rf "travis-${name}.zip" "image/travis-${project_name}-lastSuccessfulBuild-${config_smalltalk}.zip"
+  is_dir image || mkdir image
+  cp "travis-${name}.zip" "image/travis-${name}.zip"
+  cp -rf "travis-${name}.zip" "image/travis-${project_name}-lastSuccessfulBuild-${config_smalltalk}.zip"
 
-    popd > /dev/null
-
-    timer_finish
-  travis_fold end deploy
+  popd > /dev/null
+  fold_end deploy
 }
 
 ################################################################################
@@ -547,9 +476,9 @@ run() {
   esac
 
   if debug_enabled; then
-    travis_fold start display_config "Current configuration"
+    fold_start display_config "Current configuration"
       print_config
-    travis_fold end display_config
+    fold_end display_config
   fi
 
   run_build "$@"
@@ -572,7 +501,7 @@ main() {
   local config_vm=""
   local status=0
 
-  initialize
+  initialize "$@"
   parse_options "$@"
   [[ "${config_verbose}" = "true" ]] && set -o xtrace
   ensure_ston_config_exists "${!#}"  # Use last argument for custom STON
@@ -585,7 +514,7 @@ main() {
   run "$@"
 
   if is_travis_build || is_appveyor_build; then
-    upload_coverage_results
+    upload_coveralls_results
   fi
 
   if is_travis_build; then

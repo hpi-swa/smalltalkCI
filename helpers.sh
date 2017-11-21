@@ -43,7 +43,7 @@ print_help() {
   cat <<EOF
   USAGE: $(basename -- $0) [options] /path/to/project/your_smalltalk.ston
 
-  This program prepares Smalltalk images/vms, loads projects and runs tests.
+  This program prepares Smalltalk images/vms, loads projects, and runs tests.
 
   OPTIONS:
     --clean             Clear cache and delete builds.
@@ -52,7 +52,7 @@ print_help() {
     --headful           Open vm in headful mode and do not close image.
     --image             Custom image for build (Squeak/Pharo).
     --install           Install symlink to this smalltalkCI instance.
-    --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
+    --no-tracking       Disable collection of anonymous build metrics (TravisCI & AppVeyor only).
     -s | --smalltalk    Overwrite Smalltalk image selection.
     --uninstall         Remove symlink to any smalltalkCI instance.
     -v | --verbose      Enable 'set -x'.
@@ -142,6 +142,10 @@ is_travis_build() {
 
 is_appveyor_build() {
   [[ "${APPVEYOR:-}" = "True" ]]
+}
+
+is_gitlabci_build() {
+  [[ "${GITLAB_CI:-}" = "true" ]]
 }
 
 is_linux_build() {
@@ -282,21 +286,34 @@ git_log() {
   echo "${output/\"/\\\"}" # Escape double quotes
 }
 
+
 export_coveralls_data() {
-  local service_name
+  local service_name="unknown"
+  local branch_name="unknown"
+  local url="unknown"
+  local job_id="unknown"
 
   if is_travis_build; then
     service_name="travis-ci"
+    branch_name="${TRAVIS_BRANCH}"
+    url="https://github.com/${TRAVIS_REPO_SLUG}.git"
+    job_id="${TRAVIS_JOB_ID}"
   elif is_appveyor_build; then
     service_name="appveyor"
-  else
-    return 0 # Coverage testing only supported on TravisCI and AppVeyor
+    branch_name="${APPVEYOR_REPO_BRANCH}"
+    url="https://github.com/${APPVEYOR_REPO_NAME}.git"
+    job_id="${APPVEYOR_BUILD_ID}"
+  elif is_gitlabci_build; then
+    service_name="gitlab-ci"
+    branch_name="${CI_COMMIT_REF_NAME}"
+    url="${CI_PROJECT_URL}"
+    job_id="${CI_PIPELINE_ID}.${CI_JOB_ID}"
   fi
 
   cat >"${SMALLTALK_CI_BUILD}/coveralls_data.json" <<EOL
 {
   "git": {
-    "branch": "${TRAVIS_BRANCH:-${APPVEYOR_REPO_BRANCH:-}}",
+    "branch": "${branch_name}",
     "head": {
       "author_email": "$(git_log "%ae")",
       "author_name": "$(git_log "%aN")",
@@ -307,18 +324,18 @@ export_coveralls_data() {
     },
     "remotes": [
       {
-        "url": "https://github.com/${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-}}.git",
+        "url": "${url}",
         "name": "origin"
       }
     ]
   },
-  "service_job_id": "${TRAVIS_JOB_ID:-${APPVEYOR_BUILD_ID:-}}",
+  "service_job_id": "${job_id}",
   "service_name": "${service_name}"
 }
 EOL
 }
 
-upload_coverage_results() {
+upload_coveralls_results() {
   local curl_status=0
   local coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"
 
@@ -370,25 +387,6 @@ report_build_metrics() {
 ################################################################################
 # Travis-related helper functions (based on https://git.io/vzcTj).
 ################################################################################
-
-timer_start() {
-  timer_start_time=$(timer_nanoseconds)
-  if is_travis_build; then
-    travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
-    echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
-  fi
-}
-
-timer_finish() {
-  local timer_end_time=$(timer_nanoseconds)
-  local duration=$(($timer_end_time-$timer_start_time))
-  if is_travis_build; then
-    echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
-  else
-    duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
-    printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
-  fi
-}
 
 timer_nanoseconds() {
   local cmd="date"
@@ -452,17 +450,31 @@ travis_jigger() {
   kill -9 $cmd_pid
 }
 
-
-travis_fold() {
-  local action=$1
-  local name=$2
-  local title="${3:-}"
+fold_start() {
+  local identifier=$1
+  local title=$2
   local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
 
+  timer_start_time=$(timer_nanoseconds)
+  travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
   if is_travis_build; then
-    echo -en "travis_fold:${action}:${prefix}${name}\r${ANSI_CLEAR}"
+    echo -en "travis_fold:start:${prefix}${identifier}\r${ANSI_CLEAR}"
+    echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
   fi
-  if is_not_empty "${title}"; then
-    echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
+  echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
+}
+
+fold_end() {
+  local identifier=$1
+  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
+  local timer_end_time=$(timer_nanoseconds)
+  local duration=$(($timer_end_time-$timer_start_time))
+
+  if is_travis_build; then
+    echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
+    echo -en "travis_fold:end:${prefix}${identifier}\r${ANSI_CLEAR}"
+  else
+    duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
+    printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
   fi
 }

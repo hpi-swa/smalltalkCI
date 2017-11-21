@@ -1,6 +1,7 @@
-running
+running-deprecated
 runSuite: aTestSuite failOnZeroTests: failOnZeroTests
-	^ self new
-		initializeOn: aTestSuite;
-		failOnZeroTests: failOnZeroTests;
-		run
+	| spec |
+	SmalltalkCI deprecated: 'Use SCITestRunner>>runSuite:spec: instead'.
+	spec := SmalltalkCISpec new.
+	spec testing at: #failOnZeroTests put: failOnZeroTests.
+	^ self runSuite: aTestSuite spec: spec

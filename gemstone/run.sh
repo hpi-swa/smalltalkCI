@@ -20,9 +20,7 @@ local USE_DEFAULT_HOME="true"
 ################################################################################
 gemstone::prepare_gsdevkit_home() {
   if [[ "${USE_DEFAULT_HOME}" = "true" ]]; then
-    travis_fold start clone_gsdevkit "Cloning GsDevKit..."
-      timer_start
-
+    fold_start clone_gsdevkit "Cloning GsDevKit..."
       pushd "${SMALLTALK_CI_BUILD}"
         git clone -b "${DEVKIT_BRANCH}" --depth 1 "${DEVKIT_DOWNLOAD}"
         cd "${GS_HOME}"
@@ -40,9 +38,7 @@ gemstone::prepare_gsdevkit_home() {
         ln -s ${SMALLTALK_CI_HOME} ${GS_HOME}/shared/repos/smalltalkCI
 
       popd
-
-      timer_finish
-    travis_fold end clone_gsdevkit
+    fold_end clone_gsdevkit
 
     export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
 
@@ -62,13 +58,9 @@ gemstone::prepare_stone() {
   local gemstone_cached_extent_file="${SMALLTALK_CI_CACHE}/gemstone/extents/${gemstone_version}_extent0.tode.dbf"
 
   if [[ "${USE_DEFAULT_HOME}" = "true" ]]; then
-    travis_fold start install_server "Installing server..."
-      timer_start
-
+    fold_start install_server "Installing server..."
       ${GS_HOME}/bin/installServer
-
-      timer_finish
-    travis_fold end install_server
+    fold_end install_server
   fi
 
   if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone"; then
@@ -86,8 +78,7 @@ gemstone::prepare_stone() {
        [[ "${GS_HOME}" != "${DEFAULT_GS_HOME}" ]]; then
     print_info "Travis dependency cache not being used"
   else
-    travis_fold start prepare_cache "Preparing Travis caches..."
-      timer_start
+    fold_start prepare_cache "Preparing Travis caches..."
       if ! is_dir "${SMALLTALK_CI_VMS}/Pharo-3.0"; then
         mkdir "${SMALLTALK_CI_VMS}/Pharo-3.0"
         print_info "Downloading Pharo-3.0 vm to cache" 
@@ -119,14 +110,10 @@ gemstone::prepare_stone() {
           cp "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.changes" ${GS_HOME}/shared/pharo/
         fi
       fi
-  
-      timer_finish
-    travis_fold end prepare_cache
+    fold_end prepare_cache
   fi
 
-  travis_fold start create_stone "Creating stone..."
-    timer_start
-
+  fold_start create_stone "Creating stone..."
     if is_file "${GS_HOME}/bin/.smalltalkCI_create_arg_supported"; then
       config_stone_create_arg="-z ${config_ston}"
     fi
@@ -145,9 +132,7 @@ gemstone::prepare_stone() {
         cp ${GS_HOME}/shared/pharo/gsDevKitCommandLine.* "${SMALLTALK_CI_CACHE}/gemstone/pharo/"
       fi
     fi
-
-    timer_finish
-  travis_fold end create_stone
+  fold_end create_stone
 }
 
 ################################################################################
@@ -201,13 +186,9 @@ gemstone::prepare_client() {
   local client_version=$1
   local client_name=$2
 
- travis_fold start "create_${client_name}" "Creating client ${client_name}..."
-    timer_start
-
+  fold_start "create_${client_name}" "Creating client ${client_name}..."
     ${GS_HOME}/bin/createClient -t pharo "${client_name}" -v ${client_version} -s "${STONE_NAME}" -z "${config_ston}"
-
-    timer_finish
-  travis_fold end "create_${client_name}"
+  fold_end "create_${client_name}"
 }
 
 ################################################################################
@@ -221,9 +202,7 @@ gemstone::prepare_client() {
 gemstone::load_project() {
   local status=0
 
-  travis_fold start load_server_project "Loading server project..."
-    timer_start
-
+  fold_start load_server_project "Loading server project..."
     travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
       iferr 1 stk
       iferr 2 stack
@@ -242,10 +221,7 @@ gemstone::load_project() {
       logout
       exit 0
 EOF
-
-    timer_finish
-
-  travis_fold end load_server_project
+  fold_end load_server_project
 
   if is_nonzero "${status}"; then
     print_error_and_exit "Failed to load project."
@@ -317,9 +293,9 @@ EOF
     echo 1 > "${build_status_file}"
   fi
 
-  travis_fold start stop_stone "Stopping stone..."
-  ${GS_HOME}/bin/stopStone -b "${STONE_NAME}"
-  travis_fold end stop_stone
+  fold_start stop_stone "Stopping stone..."
+    ${GS_HOME}/bin/stopStone -b "${STONE_NAME}"
+  fold_end stop_stone
 }
 
 ################################################################################

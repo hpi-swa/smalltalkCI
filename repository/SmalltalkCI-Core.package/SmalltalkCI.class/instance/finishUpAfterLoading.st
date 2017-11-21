@@ -1,4 +1,3 @@
 executing
 finishUpAfterLoading
-	"pass"
-	
+	self fileInCompatibleCustomScripts: 'postLoading'

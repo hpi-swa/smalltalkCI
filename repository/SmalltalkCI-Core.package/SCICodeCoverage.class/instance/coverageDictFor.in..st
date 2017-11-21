@@ -1,9 +1,9 @@
 helpers
 coverageDictFor: aCompiledMethod in: aDirectoryName
-	| fileName coverageSymbol |
-	fileName := (self fileNameFor: aCompiledMethod in: aDirectoryName).
+	| filePath coverageSymbol |
+	filePath := (self filePathFor: aCompiledMethod in: aDirectoryName).
 	coverageSymbol := aCompiledMethod hasRun ifTrue: [ 1 ] ifFalse: [ 0 ].
 	^ Dictionary newFrom: {
-			('name' -> fileName).
-			('source_digest' -> (self md5ForFile: fileName)).
-			('coverage' -> (Array new: (self linesForFile: fileName) withAll: coverageSymbol))}
+			('name' -> (self relativePathOf: filePath)).
+			('source_digest' -> (self md5Of: filePath)).
+			('coverage' -> (Array new: (self linesOf: filePath) withAll: coverageSymbol))}

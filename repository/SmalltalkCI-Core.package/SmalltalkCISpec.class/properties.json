@@ -1,16 +1,22 @@
 {
-	"commentStamp" : "",
-	"super" : "Object",
 	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
 	"instvars" : [
-		"specName",
 		"loading",
 		"testing",
-		"configuring"
-	],
+		"configuring",
+		"preLoading",
+		"postLoading",
+		"preTesting",
+		"postTesting",
+		"name",
+		"specName" ],
 	"name" : "SmalltalkCISpec",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }

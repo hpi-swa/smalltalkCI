@@ -1,0 +1,3 @@
+constants
+testFileDirectory
+	^  SmalltalkCI workingDirectory

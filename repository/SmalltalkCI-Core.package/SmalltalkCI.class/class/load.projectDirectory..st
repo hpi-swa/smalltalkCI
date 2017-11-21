@@ -1,6 +1,6 @@
 public-api
-load: aFilenameString projectDirectory: aDirectoryPathString
+load: aFilenameString projectDirectory: aProjectDirectory
 	^ self newInstance
 		readSTONSpec: aFilenameString;
-		projectDirectory: aDirectoryPathString;
+		projectDirectory: aProjectDirectory;
 		load

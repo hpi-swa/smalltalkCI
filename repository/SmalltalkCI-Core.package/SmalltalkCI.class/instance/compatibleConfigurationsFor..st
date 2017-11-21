@@ -1,3 +1,4 @@
 external-deprecated
 compatibleConfigurationsFor: aPlatform
-	^ spec compatibleConfigurationsFor: aPlatform
+	SmalltalkCI deprecated: 'Use "spec compatibleConfigurationsFor:" instead'.
+	^ self spec compatibleConfigurationsFor: aPlatform

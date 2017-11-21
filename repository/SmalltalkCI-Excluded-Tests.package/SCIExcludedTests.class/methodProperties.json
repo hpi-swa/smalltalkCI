@@ -4,6 +4,7 @@
 	"instance" : {
 		"expectedFailures" : "fn 1/23/2016 19:14",
 		"testAssertError" : "fn 4/29/2016 17:23",
+		"testDeprecation" : "fn 11/10/2017 19:16",
 		"testError" : "fn 4/29/2016 17:23",
 		"testFailure" : "fn 1/23/2016 19:13",
 		"testShouldFail" : "fn 1/23/2016 19:11",
