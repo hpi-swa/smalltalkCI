@@ -1,4 +1,0 @@
-accessing
-hidePassingTests
-
-	^ hidePassingTests

@@ -6,7 +6,7 @@
 		"deleteFile:" : "fn 10/16/2016 16:14",
 		"deprecationWarning" : "fn 11/10/2017 14:15",
 		"fileExists:" : "fn 4/14/2016 00:55",
-		"forceNewFileNamed:" : "fn 10/4/2016 17:56",
+		"forceNewFileNamed:do:" : "fn 11/21/2017 11:55",
 		"getAuthor" : "fn 1/31/2016 21:37",
 		"getEnv:" : "fn 10/9/2016 21:32",
 		"getEnvUnix:" : "fn 10/9/2016 21:43",

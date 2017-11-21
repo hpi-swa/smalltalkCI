@@ -1,5 +1,6 @@
 executing
 basicLoad
+	self ensureSpecIsValid.
 	self reportImageInfo.
 	self class
 		stage: 'Loading project...'

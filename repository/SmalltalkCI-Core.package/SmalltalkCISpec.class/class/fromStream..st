@@ -1,3 +1,9 @@
 instance creation
 fromStream: aStream
-	^ (Smalltalk at: #STON) fromStream: aStream  	
+	| result |
+	^ [ result := (Smalltalk at: #STON) fromStream: aStream.
+		(result isKindOf: self)
+			ifTrue: [ result ]
+			ifFalse: [ SmalltalkCIInvalidSpec new ]]
+				on: STONReaderError
+					do: [ :e | SmalltalkCIInvalidSpec withError: e ]

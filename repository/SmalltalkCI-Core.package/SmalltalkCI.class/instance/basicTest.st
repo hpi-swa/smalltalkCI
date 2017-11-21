@@ -1,6 +1,7 @@
 executing
 basicTest
 	| runner |
+	self ensureSpecIsValid.
 	self class
 		stage: 'Testing project...'
 		id: 'test_project'

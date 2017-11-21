@@ -6,9 +6,9 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		 ],
-	"name" : "SCITestReporterStdout",
+		"originalError" ],
+	"name" : "SmalltalkCIInvalidSpec",
 	"pools" : [
 		 ],
-	"super" : "SCITestReporter",
+	"super" : "SmalltalkCISpec",
 	"type" : "normal" }
