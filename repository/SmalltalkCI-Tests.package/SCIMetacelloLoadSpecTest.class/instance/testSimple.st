@@ -22,7 +22,7 @@ testSimple
 		assert: self spec onWarningLog;
 		deny: self spec useLatestMetacello;
 		assert: ('filetree:///dir/to/project', SmalltalkCI pathNameDelimiter, 'foodir')
-			equals: (self spec loadRepositoryFor: smalltalkCI).
+			equals: (self spec filetreeRepositoryIn: smalltalkCI projectDirectory).
 		
 	self spec repository: 'repo'.	
-	self assert: 'repo' equals: (self spec loadRepositoryFor: smalltalkCI)
+	self assert: 'repo' equals: (self spec repository)

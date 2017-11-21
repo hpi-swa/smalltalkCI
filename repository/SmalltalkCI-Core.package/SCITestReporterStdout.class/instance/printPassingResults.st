@@ -8,6 +8,6 @@ printPassingResults
 	[ runner results keysAndValuesDo: [ :class :results | | passing |
 		passing := results select: [ :result | result passed ].
 		passing ifNotEmpty: [
-			self printClassTitle: class.
+			self printTitle: class asString.
 			passing do: [ :result | self printPass: result ] ] ]
 	] ensure: [ self printTravisFold: 'passing_tests' action: 'end' ]

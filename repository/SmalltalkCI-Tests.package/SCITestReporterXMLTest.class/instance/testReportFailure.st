@@ -1,7 +1,10 @@
 testing
 testReportFailure
 	| runner reporter stream result expectedTests index |
-	runner := SmalltalkCI testRunnerClass runClasses: {SCIExcludedTests} named: 'MyRunnerName'.
+	runner := SmalltalkCI testRunnerClass runSpec: (
+		SCIDummySpec
+			named: 'XML-testReportFailure'
+			forClass: SCIExcludedTests).
 	stream := WriteStream on: (String new: 1000).
 	reporter := SCITestReporterXML report: runner on: stream.
 	result := stream contents.
@@ -9,7 +12,7 @@ testReportFailure
 	"Check content and respect order"
 	index := result findString: '<?xml version="1.0" encoding="UTF-8"?>'.
 	self assert: index = 1.
-	index := result findString: '<testsuite name="MyRunnerName"' startingAt: index.
+	index := result findString: '<testsuite name="XML-testReportFailure"' startingAt: index.
 	self assert: index > 0.
 	index := result findString: 'tests="', expectedTests size asString, '"' startingAt: index.
 	self assert: index > 0.

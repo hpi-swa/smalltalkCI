@@ -1,3 +1,0 @@
-helpers
-linesForFile: aFilename
-	self subclassResponsibility

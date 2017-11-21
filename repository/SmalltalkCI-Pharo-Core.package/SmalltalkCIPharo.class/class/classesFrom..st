@@ -1,4 +1,4 @@
-private helpers
+helpers
 classesFrom: aDictionary
 	| classes |
 

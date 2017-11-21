@@ -1,11 +1,14 @@
 {
-	"commentStamp" : "",
-	"super" : "SCITestRunner",
 	"category" : "SmalltalkCI-Squeak-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
-	"instvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
 	"name" : "SCISqueakTestRunner",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "SCITestRunner",
+	"type" : "normal" }

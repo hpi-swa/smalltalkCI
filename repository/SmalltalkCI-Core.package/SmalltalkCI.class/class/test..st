@@ -1,3 +1,5 @@
 public-api
-test: aFilenameString
-	^ self test: aFilenameString named: nil
+test: fullPathToConfig
+	^ self
+    test: fullPathToConfig
+    projectDirectory: (self dirname: fullPathToConfig)

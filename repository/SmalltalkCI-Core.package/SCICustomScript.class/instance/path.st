@@ -1,0 +1,4 @@
+accessing
+path
+
+	^ path

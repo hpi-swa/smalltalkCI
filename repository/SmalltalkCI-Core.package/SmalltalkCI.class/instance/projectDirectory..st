@@ -1,3 +1,4 @@
 accessing
-projectDirectory: aDirectoryPathString
-  projectDirectory := aDirectoryPathString
+projectDirectory: anObject
+
+	projectDirectory := anObject

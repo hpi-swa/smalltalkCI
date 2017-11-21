@@ -35,4 +35,4 @@ install:
 # build which causes failures as certain functions attempt to redirect
 # default file handles. Ensure a dummy file descriptor is opened with 'exec'.
 test_script:
-  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; ./run.sh"'
+  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; bin/smalltalkci"'

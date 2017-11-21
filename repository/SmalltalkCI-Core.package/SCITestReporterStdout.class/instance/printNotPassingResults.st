@@ -6,7 +6,7 @@ printNotPassingResults
 	runner results keysAndValuesDo: [ :class :results | | notPassing |
 		notPassing := results select: [ :result | result passed not ].
 		notPassing ifNotEmpty: [
-			self printClassTitle: class.
+			self printTitle: class asString.
 			notPassing do: [ :result | self printException: result ] ] ].
 	SmalltalkCI isTravisBuild
 		ifFalse: [ self printNotPassingSummary ]

@@ -2,14 +2,15 @@ fixtures
 failureFixtureNonTravis
 	^ '
 [1m[34m###############
-[1m[34m# SCIExcludedTests#
-[1m[34m# 7 Tests with 4 Failures and 1 Errors in s #
+[1m[34m# Stdout-testReportFailure#
+[1m[34m# 8 Tests with 4 Failures and 1 Errors in s #
 [1m[34m###############
 [0m
-(2 tests passed)
+(3 tests passed)
 [1m
 SCIExcludedTests
-[0m[32m ✓[0m #testShouldFail (ms)[0m
+[0m[32m ✓[0m #testDeprecation (ms)[0m
+[32m ✓[0m #testShouldFail (ms)[0m
 [32m ✓[0m #testShouldPass (ms)[0m
 
 [1m[31m#########################
@@ -33,8 +34,10 @@ SCIExcludedTests
 [33m ✗ #testFailure (ms)[0m
 [33m ✗ #testShouldPassUnexpectedly (ms)[0m
 [33m ✗ #testThisIsAVeryLongMethodNameThatProbablyNeedsToBeContractedInOrderToBeDisplayedCorrectlyInATravisLog (ms)[0m
+[1m[31msmalltalkCI Deprecation Warnings[0m
+ - SCIExcludedTests>>testDeprecation (This is just a test)
 
 
-[1m[31m  Executed 7 Tests with 4 Failures and 1 Errors in s.[0m
+[1m[31m  Executed 8 Tests with 4 Failures and 1 Errors in s.[0m
 
 '

@@ -1,0 +1,3 @@
+executing
+basicLoadProjectOn: aSmalltalkCI
+	self fileInFrom: aSmalltalkCI projectDirectory
