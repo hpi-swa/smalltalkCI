@@ -433,7 +433,7 @@ deploy() {
 
   print_info "Deploy..."
 
-  travis_fold start deploy "Deploying to ..."
+  fold_start deploy "Deploying to ..."
 
   pushd "${SMALLTALK_CI_BUILD}" > /dev/null
 
