@@ -53,7 +53,7 @@ jobs:
       env: GSCI_CLIENTS="Pharo-5.0 Pharo-3.0" # latest and oldest clients
       <<: *with-gemstone-cache-enabled
 
-    - stage: "Allowed to fail"
+    - stage: "Allowed failures"
       smalltalk: Squeak-trunk
     - smalltalk: Pharo64-alpha
     - smalltalk: Pharo-alpha
