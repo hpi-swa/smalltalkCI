@@ -106,8 +106,12 @@ jobs:
 
   allow_failures:
     - smalltalk: Squeak-trunk
-    - smalltalk: Pharo64-stable
     - smalltalk: Pharo64-alpha
     - smalltalk: Pharo-alpha
     - smalltalk: Moose-trunk
+    # Temporarily allow 64bit images to fail (see #331)
+    - smalltalk: Pharo64-stable
+    - smalltalk: Pharo64-7.0
+    - smalltalk: Pharo64-6.1
+    - smalltalk: Pharo64-6.0
   fast_finish: true
