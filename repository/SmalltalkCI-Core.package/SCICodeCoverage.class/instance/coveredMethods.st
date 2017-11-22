@@ -1,0 +1,4 @@
+accessing
+coveredMethods
+
+	^ coveredMethods

@@ -340,7 +340,7 @@ export_coveralls_data() {
     job_id="${CI_PIPELINE_ID}.${CI_JOB_ID}"
   fi
 
-  cat >"${SMALLTALK_CI_BUILD}/coveralls_data.json" <<EOL
+  cat >"${SMALLTALK_CI_BUILD}/coveralls_build_data.json" <<EOL
 {
   "git": {
     "branch": "${branch_name}",

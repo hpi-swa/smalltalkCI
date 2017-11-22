@@ -1,3 +1,3 @@
 compatibility
 fileExists: aFilename
-	self subclassResponsibility
+	^ self platformClass fileExists: aFilename

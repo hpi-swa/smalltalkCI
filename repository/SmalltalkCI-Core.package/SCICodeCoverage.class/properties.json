@@ -6,9 +6,10 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"coverageWrappers",
-		"coverallsData",
-		"projectDirectory" ],
+		"includedMethods",
+		"excludedMethods",
+		"coveredMethods",
+		"coverageWrappers" ],
 	"name" : "SCICodeCoverage",
 	"pools" : [
 		 ],

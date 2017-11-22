@@ -1,18 +1,6 @@
 setup
 finishUp
-	| sourceFiles |
-	sourceFiles := OrderedCollection new.
-
-	coverageWrappers do: [ :wrapper | | directory |
-		wrapper uninstall.
-		directory := (spec loading
-			collect: [ :loadspec |
-				projectDirectory, SmalltalkCI pathNameDelimiter, loadspec directory ])
-			detect: [ :dir |
-				SmalltalkCI platformClass fileExists: (self filePathFor: wrapper in: dir)]
-			ifNone: [].
-		directory ifNotNil: [
-			sourceFiles add: (self coverageDictFor: wrapper in: directory) ] ].
-	
-	coverallsData at: 'source_files' put: sourceFiles asArray.
-	self exportResults
+	coverageWrappers do: [ :wrapper | wrapper uninstall ].
+	coveredMethods := (coverageWrappers
+		select: [ :each | each hasRun ])
+		collect: [ :each | each reference ]

@@ -1,9 +1,9 @@
 {
 	"class" : {
+		"coverallsBuildData" : "fn 11/22/2017 14:51",
+		"linesOf:" : "fn 11/22/2017 14:42",
+		"md5Of:" : "fn 11/22/2017 14:42",
 		"methodReferenceFor:selector:" : "fn 10/8/2016 15:11",
-		"methodsUnderTestIn:" : "fn 11/23/2016 15:05",
 		"packageNameForClass:" : "fn 10/8/2016 15:11" },
 	"instance" : {
-		"linesOf:" : "fn 10/26/2017 09:12",
-		"md5Of:" : "fn 10/26/2017 09:12",
-		"readCoverallsData" : "fn 10/11/2016 21:34" } }
+		 } }

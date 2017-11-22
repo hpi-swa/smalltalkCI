@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Test-Assets",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCICodeCoverageTestTarget",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }

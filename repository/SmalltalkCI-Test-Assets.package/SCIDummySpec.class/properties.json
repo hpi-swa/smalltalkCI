@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Test-Assets",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"classesToTest" ],
+	"name" : "SCIDummySpec",
+	"pools" : [
+		 ],
+	"super" : "SmalltalkCISpec",
+	"type" : "normal" }

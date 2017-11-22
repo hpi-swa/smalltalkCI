@@ -1,6 +1,11 @@
 {
 	"class" : {
+		"classNamesNotUnderTest" : "fn 11/22/2017 15:15",
+		"endToEndSpec" : "fn 11/22/2017 13:28",
 		"testFileContents" : "fn 11/20/2017 13:54",
 		"testFileName" : "fn 11/20/2017 14:07" },
 	"instance" : {
-		"testCoverageHelpers" : "fn 11/20/2017 14:00" } }
+		"platformSupportsCoverageTesting" : "fn 11/22/2017 11:25",
+		"testCoverageHelpers" : "fn 11/22/2017 14:43",
+		"testEndToEnd" : "fn 11/22/2017 14:11",
+		"testMethodReferences" : "fn 11/22/2017 14:39" } }

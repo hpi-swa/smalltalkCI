@@ -1,3 +1,3 @@
 compatibility
 deleteFile: aFilename
-	self subclassResponsibility
+	self platformClass deleteFile: aFilename

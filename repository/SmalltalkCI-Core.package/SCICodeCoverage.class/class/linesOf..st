@@ -1,0 +1,3 @@
+compatibility
+linesOf: aFilePath
+	self subclassResponsibility

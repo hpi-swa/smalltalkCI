@@ -6,19 +6,15 @@ baseline: spec
     do: [ 
       spec
         package: 'SmalltalkCI-Core';
+        package: 'SmalltalkCI-Excluded-Tests';
+        package: 'SmalltalkCI-Test-Assets';
         package: 'SmalltalkCI-Tests'
-          with: [ spec requires: 'SmalltalkCI-Core' ];
-        package: 'SmalltalkCI-Package-Tests'
-          with: [ spec requires: 'SmalltalkCI-Tests' ];
-        package: 'SmalltalkCI-AllCases-Tests'
-          with: [ spec requires: 'SmalltalkCI-Tests' ];
-        package: 'SmalltalkCI-Excluded-Tests'
+          with: [ spec requires: #('SmalltalkCI-Core' 'SmalltalkCI-Excluded-Tests' 'SmalltalkCI-Test-Assets') ];
         yourself.
       spec
-        group: 'default' with: #('Core');
-        group: 'Core' with: #('SmalltalkCI-Core');
-	  group: 'tests'
-          with: #('SmalltalkCI-Tests' 'SmalltalkCI-Excluded-Tests');
+        group: 'default' with: #('SmalltalkCI-Core');
+        group: 'Core' with: #('SmalltalkCI-Core'); "kept for GsDevKit compatibility"
+        group: 'tests' with: #('SmalltalkCI-Tests' );
         yourself ].
   spec
     for: #'squeak'
