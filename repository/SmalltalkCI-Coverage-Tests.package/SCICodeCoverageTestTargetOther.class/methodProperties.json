@@ -1,0 +1,5 @@
+{
+	"class" : {
+		"someClassMethod" : "fn 11/22/2017 17:45" },
+	"instance" : {
+		"someInstanceMethod" : "fn 11/22/2017 17:43" } }

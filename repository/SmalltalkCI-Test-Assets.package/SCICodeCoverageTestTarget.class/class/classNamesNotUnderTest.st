@@ -1,3 +1,0 @@
-test-methods
-classNamesNotUnderTest
-	^ #('SCICodeCoverageTestNoTarget')

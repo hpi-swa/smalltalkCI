@@ -1,0 +1,9 @@
+{
+	"class" : {
+		"classNamesNotUnderTest" : "fn 11/22/2017 17:57",
+		"packageNamesUnderTest" : "fn 11/22/2017 17:49",
+		"someAbstractClassMethod" : "fn 11/22/2017 11:44",
+		"someClassMethod" : "fn 11/22/2017 11:44" },
+	"instance" : {
+		"someAbstractInstanceMethod" : "fn 11/22/2017 11:45",
+		"someInstanceMethod" : "fn 11/22/2017 11:44" } }
