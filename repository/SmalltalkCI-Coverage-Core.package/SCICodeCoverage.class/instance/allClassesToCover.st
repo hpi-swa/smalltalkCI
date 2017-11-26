@@ -1,27 +1,15 @@
 helpers
 allClassesToCover
-	| classes classesNotUnderTest |
-	classes := Set new
-		addAll: self classesToCover;
-		addAll: self classesToCoverForCategories;
-		addAll: self classesToCoverForPackages;
-		yourself.
-
-	"Add packagesUnderTest"
-	classes addAll: ((classes
-		select: [ :class | class theMetaClass includesSelector: #packageNamesUnderTest])
-		gather: [ :class | class theNonMetaClass packageNamesUnderTest
-			gather: [ :packageName | SmalltalkCI classesInPackage: packageName ]]).
-
+	| classes ignoredClasses |
+	classes := self allClassesFromSpec.
+	classes addAll: (self allPackagesUnderTestOf: classes).
 	"Expand set so that it includes classes and their metaclasses"
 	classes := self classesAndMetaclassesOf: classes.
+	
+	ignoredClasses := (self allClassesNotUnderTestOf: classes) asSet.
+	"Ignore system classes to avoid infinite recursions during coverage testing"
+	ignoredClasses addAll: (SmalltalkCI classesForPackages: self class ignoredPackages).
 
-	"Remove classesNotUnderTest"
-	classesNotUnderTest := ((classes
-		select: [ :class | class theMetaClass includesSelector: #classNamesNotUnderTest])
-		gather: [ :class | class theNonMetaClass classNamesNotUnderTest
-			collect: [ :className | Smalltalk classNamed: className ]])
-				reject: [ :ea | ea isNil ].
-	classes removeAllFoundIn: (self classesAndMetaclassesOf: classesNotUnderTest asSet).
+	classes removeAllFoundIn: (self classesAndMetaclassesOf: ignoredClasses).
 
 	^ classes
