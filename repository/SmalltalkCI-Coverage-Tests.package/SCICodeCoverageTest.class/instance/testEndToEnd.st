@@ -6,7 +6,8 @@ testEndToEnd
 	block := [
 		self assert: SCICodeCoverageTestTarget new someInstanceMethod].
 	coverage := SmalltalkCI codeCoverageClass new
-		run: block spec: self class endToEndSpec;
+		spec: self class endToEndSpec;
+		run: block;
 		yourself.
 	self assert: 1 equals: coverage coveredMethods size.
 	self

@@ -1,5 +1,6 @@
 executing
 run: aBlock spec: aSmalltalkCISpec in: projectDirectory
 	^ self new
-		run: aBlock spec: aSmalltalkCISpec;
+		spec: aSmalltalkCISpec;
+		run: aBlock;
 		exportCoverallsResultsIn: projectDirectory

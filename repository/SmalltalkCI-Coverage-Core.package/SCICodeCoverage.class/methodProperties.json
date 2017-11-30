@@ -16,7 +16,7 @@
 		"methodReferencesFor:" : "fn 11/22/2017 13:46",
 		"packageNameForClass:" : "fn 10/8/2016 15:11",
 		"relativePathOf:to:" : "fn 11/22/2017 14:44",
-		"run:spec:in:" : "fn 11/22/2017 12:58" },
+		"run:spec:in:" : "fn 11/30/2017 14:41" },
 	"instance" : {
 		"allClassesFromSpec" : "fn 11/26/2017 23:23",
 		"allClassesNotUnderTestOf:" : "fn 11/26/2017 23:26",
@@ -35,6 +35,6 @@
 		"exportCoverallsResultsIn:" : "fn 11/22/2017 14:52",
 		"finishUp" : "fn 11/22/2017 13:57",
 		"includedMethods" : "fn 11/22/2017 13:58",
-		"run:spec:" : "fn 11/22/2017 13:53",
+		"run:" : "fn 11/30/2017 14:42",
 		"startUp" : "fn 11/22/2017 13:56",
 		"uncoveredMethods" : "fn 11/22/2017 14:30" } }
