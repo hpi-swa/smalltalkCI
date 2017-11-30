@@ -80,7 +80,7 @@
 		"resolve:with:" : "fn 6/22/2016 09:42",
 		"resolveAll:with:" : "fn 6/22/2016 09:42",
 		"resolvedPackageNames:" : "fn 11/23/2016 11:16",
-		"run:spec:in:" : "fn 11/30/2017 13:45",
+		"run:spec:in:" : "fn 11/30/2017 17:01",
 		"saveAndQuitImage" : "fn 10/11/2016 21:34",
 		"saveImage" : "fn 7/2/2016 17:21",
 		"setAuthor:" : "fn 11/3/2016 18:22",
@@ -125,7 +125,6 @@
 		"readSTONSpec:" : "fn 11/20/2017 13:49",
 		"reportImageInfo" : "fn 10/21/2016 16:18",
 		"reportResults:" : "fn 11/21/2017 12:08",
-		"run:spec:in:" : "fn 11/30/2017 13:43",
 		"runTests" : "fn 11/10/2017 19:28",
 		"test" : "fn 11/20/2017 11:56",
 		"testCI" : "fn 11/11/2017 15:02" } }
