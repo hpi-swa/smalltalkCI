@@ -7,12 +7,10 @@ basicTest
 		id: 'test_project'
 		block: [
 			self prepareForTesting.
-			self isCoverageTestingEnabled
-				ifTrue: [ self class codeCoverageClass
-							run: [ runner := self runTests ]
-							spec: self spec
-							in: self projectDirectory ]
-				ifFalse: [ runner := self runTests ].
+			self executionClass
+				run: [ runner := self runTests ]
+				spec: self spec
+				in: self projectDirectory.
 			self finishUpAfterTesting ].
 	self reportResults: runner.
 	runner isSuccessful
