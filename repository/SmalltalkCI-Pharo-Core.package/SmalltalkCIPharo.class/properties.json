@@ -6,7 +6,7 @@
 		"StdOut" ],
 	"commentStamp" : "",
 	"instvars" : [
-		 ],
+		"suiteName" ],
 	"name" : "SmalltalkCIPharo",
 	"pools" : [
 		 ],

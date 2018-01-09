@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Coverage-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCICodeCoverageTest",
+	"pools" : [
+		 ],
+	"super" : "SCITestCaseWithFile",
+	"type" : "normal" }

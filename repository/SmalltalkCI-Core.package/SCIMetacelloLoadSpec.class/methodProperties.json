@@ -3,7 +3,7 @@
 		"isPlatformCompatible" : "MaxLeske 7/11/2017 22:10",
 		"new" : "MaxLeske 7/11/2017 22:10",
 		"platformClass" : "MaxLeske 7/11/2017 22:10",
-		"updateMetacello" : "fn 10/13/2016 16:14" },
+		"updateMetacello" : "fn 12/7/2017 11:33" },
 	"instance" : {
 		"baseline" : "fn 1/10/2016 11:44",
 		"baseline:" : "fn 1/10/2016 11:44",
@@ -32,4 +32,4 @@
 		"version" : "fn 2/20/2016 21:25",
 		"version:" : "fn 2/20/2016 21:25",
 		"withExceptionHandlerDo:" : "MaxLeske 7/11/2017 22:07",
-		"withLoadWarningsHandlerDo:" : "MaxLeske 7/11/2017 22:13" } }
+		"withLoadWarningsHandlerDo:" : "fn 11/20/2017 11:59" } }

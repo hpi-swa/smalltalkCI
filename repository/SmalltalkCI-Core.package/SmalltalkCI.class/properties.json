@@ -8,12 +8,10 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"spec",
 		"projectDirectory",
-		"coverageWrappers",
-		"suiteName" ],
+		"coverageWrappers" ],
 	"name" : "SmalltalkCI",
 	"pools" : [
 		 ],
-	"super" : "Object",
+	"super" : "SCIObjectWithSpec",
 	"type" : "normal" }

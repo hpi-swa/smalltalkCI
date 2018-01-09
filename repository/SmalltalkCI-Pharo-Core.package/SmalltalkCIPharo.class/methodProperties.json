@@ -7,7 +7,7 @@
 		"deleteFile:" : "fn 10/16/2016 15:56",
 		"deprecationWarning" : "fn 11/10/2017 14:15",
 		"fileExists:" : "fn 4/14/2016 00:56",
-		"forceNewFileNamed:" : "fn 10/4/2016 18:02",
+		"forceNewFileNamed:do:" : "fn 11/21/2017 11:55",
 		"getAuthor" : "fn 6/13/2016 13:49",
 		"getEnv:" : "fn 10/9/2016 21:32",
 		"hash:maxLength:" : "fn 10/16/2016 17:25",
@@ -19,14 +19,16 @@
 		"pathNameDelimiter" : "fn 6/25/2016 00:21",
 		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:36",
 		"quitImage" : "fn 10/11/2016 18:43",
+		"readOnlyFileNamed:do:" : "fn 11/20/2017 13:31",
 		"saveImage" : "fn 10/4/2016 16:34",
 		"stdout" : "fn 3/13/2017 17:05",
 		"stringFor:maxDecimalPlaces:" : "fn 9/28/2016 11:48",
 		"testRunnerClass" : "fn 10/4/2016 17:21",
 		"workingDirectory" : "fn 10/16/2016 16:28" },
 	"instance" : {
+		"basicLoad" : "fn 11/20/2017 11:37",
 		"disableIcebergDuring:" : "MaxLeske 7/17/2017 21:02",
 		"imageInfo" : "fn 10/21/2016 16:20",
-		"load" : "MaxLeske 7/17/2017 19:35",
-		"readSTONSpec:" : "fn 11/13/2017 16:48",
-		"suiteName:" : "fn 11/12/2017 23:34" } }
+		"readSTONSpec:" : "fn 11/20/2017 13:49",
+		"spec:" : "fn 11/20/2017 21:07",
+		"suiteName:" : "fn 11/20/2017 21:07" } }

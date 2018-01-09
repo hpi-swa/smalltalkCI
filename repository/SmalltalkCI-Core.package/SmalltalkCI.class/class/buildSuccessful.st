@@ -1,3 +1,0 @@
-constants
-buildSuccessful
-	^ $0

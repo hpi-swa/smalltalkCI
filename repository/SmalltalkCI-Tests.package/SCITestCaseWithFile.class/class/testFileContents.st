@@ -1,0 +1,3 @@
+constants
+testFileContents
+	self subclassResponsibility

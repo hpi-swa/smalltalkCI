@@ -1,0 +1,3 @@
+compatibility
+coverallsBuildData
+	self subclassResponsibility

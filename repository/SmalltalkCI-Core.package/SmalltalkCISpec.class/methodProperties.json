@@ -1,7 +1,8 @@
 {
 	"class" : {
-		"defaultName" : "fn 11/12/2017 23:33",
-		"fromStream:" : "fn 1/31/2016 22:15",
+		"defaultName" : "fn 11/20/2017 12:53",
+		"fromFile:" : "fn 11/20/2017 13:35",
+		"fromStream:" : "fn 11/21/2017 11:00",
 		"writeOn:" : "fn 7/11/2016 16:11" },
 	"instance" : {
 		"addLoadSpec:" : "EstebanLorenzano 1/26/2016 17:41",
@@ -17,6 +18,7 @@
 		"failOnSCIDeprecationWarnings" : "fn 11/10/2017 13:41",
 		"failOnZeroTests" : "fn 12/22/2016 14:25",
 		"hidePassingTests" : "fn 11/13/2016 23:52",
+		"isValid" : "fn 11/21/2017 10:52",
 		"loading" : "fn 1/19/2016 18:24",
 		"loading:" : "fn 1/19/2016 18:19",
 		"name" : "fn 11/12/2017 23:29",

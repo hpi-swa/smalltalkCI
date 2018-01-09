@@ -1,4 +1,6 @@
-public-api-deprecated
-test: aFilenameString named: aName projectDirectory: aProjectDirectory
-	self deprecated: 'Custom name no longer supported, use SmalltalkCI class>>test:projectDirectory: instead.'.
-	^ self test: aFilenameString projectDirectory: aProjectDirectory
+public-api
+test: fullPathToConfig named: aName projectDirectory: aProjectDirectory
+	| instance |
+	instance := self newInstanceFor: fullPathToConfig projectDirectory: aProjectDirectory.
+	instance spec name: aName.
+	^ instance test

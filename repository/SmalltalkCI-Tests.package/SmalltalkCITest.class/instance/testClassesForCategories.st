@@ -8,7 +8,7 @@ testClassesForCategories
 	self deny: (classes includes: SmalltalkCISpecTest).
 	self assert: classes size equals: (SmalltalkCI classesInCategory: 'SmalltalkCI-Core') size.
 	
-	classes := SmalltalkCI classesForCategories: #('SmalltalkCI-C.*' 'SmalltalkCI-T*').
+	classes := SmalltalkCI classesForCategories: #('SmalltalkCI-Cor.*' 'SmalltalkCI-T.*').
 	self assert: (classes includes: SmalltalkCI).
 	self assert: (classes includes: SmalltalkCISpec).
 	self assert: (classes includes: SmalltalkCITest).

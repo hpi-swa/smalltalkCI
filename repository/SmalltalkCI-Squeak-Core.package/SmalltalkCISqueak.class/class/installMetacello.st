@@ -14,11 +14,11 @@ installMetacello
   (Smalltalk at: #Metacello) new
     configuration: 'MetacelloPreview';
     version: #stable;
-    repository: 'github://dalehenrich/metacello-work:configuration';
+    repository: 'github://Metacello/metacello:configuration';
     load.
 
   "Now load latest version of Metacello"
   (Smalltalk at: #Metacello) new
     baseline: 'Metacello';
-    repository: 'github://dalehenrich/metacello-work:master/repository';
+    repository: 'github://Metacello/metacello:master/repository';
     get.

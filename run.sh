@@ -14,6 +14,7 @@ readonly BINTRAY_API="https://api.bintray.com/content"
 initialize() {
   local resolved_path
 
+  trap handle_exit EXIT
   trap handle_error ERR
   trap handle_interrupt INT
 
@@ -71,13 +72,20 @@ initialize() {
 }
 
 ################################################################################
+# Exit handler.
+################################################################################
+handle_exit() {
+  local error_code=$?
+  report_build_metrics "${error_code}"
+  exit "${error_code}"
+}
+
+################################################################################
 # Print error information and exit.
 ################################################################################
 handle_error() {
   local error_code=$?
   local i
-
-  report_build_metrics "${error_code}"
 
   printf "\n"
   print_notice "Error with status code ${error_code}:"
@@ -499,7 +507,6 @@ main() {
   local config_tracking="true"
   local config_verbose="false"
   local config_vm=""
-  local status=0
 
   initialize "$@"
   parse_options "$@"
@@ -513,15 +520,11 @@ main() {
   prepare_environment
   run "$@"
 
-  if is_travis_build || is_appveyor_build; then
-    upload_coveralls_results
-  fi
-
   if is_travis_build; then
     deploy "${status}"
   fi
 
-  check_final_build_status
+  finalize
 }
 
 # Run main if script is not being tested

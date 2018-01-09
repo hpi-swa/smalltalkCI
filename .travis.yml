@@ -25,11 +25,7 @@ jobs:
   include:
     - stage: "Prioritized jobs"
       smalltalk: Squeak-5.1
-    - smalltalk: Squeak-trunk
-    - smalltalk: Pharo64-stable
-    - smalltalk: Pharo64-alpha
     - smalltalk: Pharo-stable
-    - smalltalk: Pharo-alpha
     - smalltalk: GemStone-3.3.2
       env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
       <<: *with-gemstone-cache-enabled
@@ -41,11 +37,7 @@ jobs:
 
     - smalltalk: Squeak-5.1
       os: osx
-    - smalltalk: Squeak-trunk
-      os: osx
     - smalltalk: Pharo-stable
-      os: osx
-    - smalltalk: Pharo-alpha
       os: osx
     - smalltalk: GemStone-3.3.2
       os: osx
@@ -60,6 +52,13 @@ jobs:
       env: GSCI_CLIENTS="Pharo-5.0 Pharo-3.0" # latest and oldest clients
       <<: *with-gemstone-cache-enabled
 
+    - stage: "Allowed failures"
+      smalltalk: Squeak-trunk
+    - smalltalk: Pharo64-stable
+    - smalltalk: Pharo64-alpha
+    - smalltalk: Pharo-alpha
+    - smalltalk: Moose-trunk
+
     - stage: "Linux jobs"
       smalltalk: Squeak-5.0
     - smalltalk: Squeak-4.6
@@ -73,8 +72,6 @@ jobs:
     - smalltalk: Pharo-5.0
     - smalltalk: Pharo-4.0
     - smalltalk: Pharo-3.0
-    - smalltalk: Moose-trunk
-    # - smalltalk: Moose-6.1   # identical to Moose-trunk
     - smalltalk: Moose-6.0
     - smalltalk: GemStone-3.2.15
       <<: *with-gemstone-cache-enabled
@@ -109,8 +106,12 @@ jobs:
 
   allow_failures:
     - smalltalk: Squeak-trunk
-    - smalltalk: Pharo-alpha
     - smalltalk: Pharo64-alpha
+    - smalltalk: Pharo-alpha
     - smalltalk: Moose-trunk
-    - smalltalk: Moose-6.0
+    # Temporarily allow 64bit images to fail (see #331)
+    - smalltalk: Pharo64-stable
+    - smalltalk: Pharo64-7.0
+    - smalltalk: Pharo64-6.1
+    - smalltalk: Pharo64-6.0
   fast_finish: true

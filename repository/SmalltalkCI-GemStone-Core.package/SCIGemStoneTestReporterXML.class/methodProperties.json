@@ -1,8 +1,7 @@
 {
 	"class" : {
-		"report:xmlLogDirPath:" : "fn 10/4/2016 13:27" },
+		"report:spec:xmlLogDirPath:" : "fn 11/21/2017 12:25",
+		"report:xmlLogDirPath:" : "fn 11/21/2017 12:26",
+		"xmlFileNamed:in:" : "fn 11/21/2017 12:19" },
 	"instance" : {
-		"initialize" : "fn 9/27/2016 15:35",
-		"writeToFile" : "fn 10/4/2016 13:45",
-		"xmlFilePath" : "fn 10/10/2016 00:48",
-		"xmlLogDirPath:" : "fn 10/4/2016 13:27" } }
+		 } }

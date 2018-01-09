@@ -1,10 +1,4 @@
-executing
+executing-deprecated
 report: aSCITestRunner xmlLogDirPath: xmlLogDirPath
-	self
-		basicNew
-		runner: aSCITestRunner;
-		xmlLogDirPath: xmlLogDirPath;
-		initialize;
-		report;
-		writeToFile
-	
+	SmalltalkCI deprecated: 'Use report:spec:xmlLogDirPath: instead'.
+	self report: aSCITestRunner spec: SmalltalkCISpec new xmlLogDirPath: xmlLogDirPath

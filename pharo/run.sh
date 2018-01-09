@@ -25,7 +25,7 @@ pharo::get_image_url() {
       echo "get.pharo.org/64/70"
       ;;
     "Pharo64-6.1")
-      echo "get.pharo.org/64/60"
+      echo "get.pharo.org/64/61"
       ;;
     "Pharo64-6.0")
       echo "get.pharo.org/64/60"
@@ -105,7 +105,10 @@ pharo::get_vm_url() {
     "Pharo64-7.0")
       echo "get.pharo.org/64/vm70"
       ;;
-    "Pharo64-stable"|"Pharo64-6.1"|"Pharo64-6.0")
+    "Pharo64-stable"|"Pharo64-6.1")
+      echo "get.pharo.org/64/vm61"
+      ;;
+    "Pharo64-6.0")
       echo "get.pharo.org/64/vm60"
       ;;
     "Pharo-alpha")
@@ -332,7 +335,7 @@ pharo::test_project() {
         load ] on: Warning do: [:w | w resume ].
         Smalltalk at: #SmalltalkCI
     ].
-    (Smalltalk at: #SmalltalkCI) test: '$(resolve_path "${config_ston}")'
+    smalltalkCI test: '$(resolve_path "${config_ston}")'
   "
 }
 
@@ -382,7 +385,7 @@ run_build() {
       done
     fi
 
-    check_build_status
+    check_and_consume_build_status_file
   fi
   pharo::test_project
 }

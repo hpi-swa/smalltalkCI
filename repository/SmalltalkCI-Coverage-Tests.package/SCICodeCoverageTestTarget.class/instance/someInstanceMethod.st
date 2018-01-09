@@ -1,0 +1,3 @@
+test-methods
+someInstanceMethod
+	^ true

@@ -1,7 +1,0 @@
-{
-	"class" : {
-		"testFilePath" : "fn 11/1/2017 14:09" },
-	"instance" : {
-		"createTestFile" : "fn 11/1/2017 14:09",
-		"deleteTestFile" : "fn 11/1/2017 14:10",
-		"testCoverageHelpers" : "fn 11/1/2017 14:10" } }

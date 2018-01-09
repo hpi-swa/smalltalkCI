@@ -10,5 +10,5 @@
 	"name" : "SCICustomScriptTest",
 	"pools" : [
 		 ],
-	"super" : "TestCase",
+	"super" : "SCITestCaseWithFile",
 	"type" : "normal" }

@@ -5,9 +5,7 @@ withLoadWarningsHandlerDo: aBlock
 		on: self loadWarnings
 		do: [ :ex |
 			(self failOn includes: ex class name)
-				ifTrue: [
-					SmalltalkCI printErrorToStdout: 'Build failed: ', ex description.
-					SmalltalkCI shutdown: false ].
+				ifTrue: [ SCIError signal: ex description ].
 			self onWarningLog
 				ifTrue: [ SmalltalkCI printWarningToStdout: ex description ].
 			ex pass ]

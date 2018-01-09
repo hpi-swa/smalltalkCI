@@ -3,5 +3,5 @@ test: aFilenameString xmlLogDirPath: aString
   ^ self basicNew
     initialize;
     xmlLogDirPath: aString;
-    readSTONSpec: aFilenameString;
+    spec: (SmalltalkCISpec fromFile: aFilenameString);
     test

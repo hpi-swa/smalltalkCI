@@ -1,8 +1,3 @@
 executing
 report: aSCITestRunner on: aStream
-	self
-		basicNew
-		runner: aSCITestRunner;
-		initialize;
-		stream: aStream;
-		report
+	self	 report: aSCITestRunner spec: SmalltalkCISpec new on: aStream

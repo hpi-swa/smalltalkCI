@@ -8,10 +8,9 @@
 	"instvars" : [
 		"suite",
 		"suiteTime",
-		"results",
-		"spec" ],
+		"results" ],
 	"name" : "SCITestRunner",
 	"pools" : [
 		 ],
-	"super" : "Object",
+	"super" : "SCIObjectWithSpec",
 	"type" : "normal" }

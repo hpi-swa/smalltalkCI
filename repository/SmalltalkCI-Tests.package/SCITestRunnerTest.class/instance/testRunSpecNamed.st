@@ -10,4 +10,4 @@ testRunSpecNamed
 	runner := SmalltalkCI testRunnerClass
 		runSpec: (SCIDummySpec forClass: SmalltalkCI).
 	self assert: 0 equals: runner totalTests.
-	self deny: runner isSuccessful.
+	self assert: runner isSuccessful.

@@ -1,0 +1,3 @@
+test-methods
+someAbstractInstanceMethod
+	self subclassResponsibility

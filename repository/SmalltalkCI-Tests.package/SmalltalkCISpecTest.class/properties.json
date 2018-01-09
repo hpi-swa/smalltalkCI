@@ -10,5 +10,5 @@
 	"name" : "SmalltalkCISpecTest",
 	"pools" : [
 		 ],
-	"super" : "TestCase",
+	"super" : "SCITestCaseWithFile",
 	"type" : "normal" }

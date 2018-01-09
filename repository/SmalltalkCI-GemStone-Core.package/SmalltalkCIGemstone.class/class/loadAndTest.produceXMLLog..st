@@ -2,7 +2,7 @@ public-api
 loadAndTest: aFilenameString produceXMLLog: produceXMLLog
   ^ self basicNew
     initialize;
-    readSTONSpec: aFilenameString;
+    spec: (SmalltalkCISpec fromFile: aFilenameString);
     produceXMLLog: produceXMLLog
     load;
     test

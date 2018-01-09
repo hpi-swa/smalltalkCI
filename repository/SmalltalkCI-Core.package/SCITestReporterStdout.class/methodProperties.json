@@ -1,10 +1,7 @@
 {
 	"class" : {
-		"report:spec:" : "fn 11/13/2016 23:53" },
+		"report:spec:" : "fn 11/21/2017 12:10" },
 	"instance" : {
-		"hidePassingTests" : "fn 11/13/2016 23:53",
-		"hidePassingTests:" : "fn 11/13/2016 23:53",
-		"initialize" : "fn 11/13/2016 23:53",
 		"printBanner:color:" : "fn 10/21/2016 17:46",
 		"printBanner:subtitle:color:" : "fn 10/21/2016 17:46",
 		"printDeprecationWarnings" : "fn 11/10/2017 14:52",
@@ -14,7 +11,7 @@
 		"printNotPassingSummary" : "fn 11/10/2017 14:51",
 		"printPass:" : "fn 10/21/2016 15:48",
 		"printPassingResults" : "fn 11/10/2017 14:29",
-		"printResults" : "fn 11/13/2016 23:53",
+		"printResults" : "fn 11/21/2017 12:12",
 		"printStart" : "fn 10/21/2016 17:46",
 		"printTitle:" : "fn 11/10/2017 14:28",
 		"printTravisFold:action:" : "fn 10/7/2016 23:58",

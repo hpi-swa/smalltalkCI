@@ -17,7 +17,7 @@
 		"failedTests" : "fn 7/1/2016 18:41",
 		"initialize" : "fn 9/27/2016 20:33",
 		"initializeOn:" : "fn 9/26/2016 21:28",
-		"isSuccessful" : "fn 11/10/2017 14:19",
+		"isSuccessful" : "fn 11/21/2017 18:48",
 		"passingTests" : "fn 9/27/2016 14:23",
 		"printProgress:" : "fn 11/3/2016 17:52",
 		"results" : "fn 7/1/2016 18:03",
@@ -26,7 +26,6 @@
 		"runCase:" : "7/17/2017 19:03:22",
 		"serializeError:of:" : "fn 10/4/2016 17:29",
 		"setUp" : "fn 10/10/2016 00:49",
-		"spec:" : "fn 11/10/2017 13:47",
 		"stackTraceString:of:" : "fn 10/4/2016 17:30",
 		"suite" : "fn 6/30/2016 11:56",
 		"suite:" : "fn 6/30/2016 11:56",
@@ -35,5 +34,5 @@
 		"suiteTimeInSeconds" : "fn 6/30/2016 12:20",
 		"suiteTimeString" : "fn 10/8/2016 13:05",
 		"summary" : "fn 10/8/2016 13:14",
-		"tearDown" : "fn 10/10/2016 00:49",
+		"tearDown" : "fn 11/21/2017 18:49",
 		"totalTests" : "fn 9/27/2016 14:07" } }

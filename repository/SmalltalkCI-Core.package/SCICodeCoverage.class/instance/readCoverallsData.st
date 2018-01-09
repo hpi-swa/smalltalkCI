@@ -1,3 +1,0 @@
-helpers
-readCoverallsData
-	self subclassResponsibility

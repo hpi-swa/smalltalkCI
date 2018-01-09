@@ -1,7 +1,4 @@
-executing
+executing-deprecated
 report: aSCITestRunner
-	self
-		basicNew
-		runner: aSCITestRunner;
-		initialize;
-		report
+	SmalltalkCI deprecated: 'Use report:spec: instead'.
+	self	 report: aSCITestRunner spec: SmalltalkCISpec new
