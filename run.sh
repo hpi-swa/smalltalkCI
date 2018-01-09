@@ -428,6 +428,38 @@ clean_up() {
 }
 
 ################################################################################
+# Deploy build artifacts to bintray if configured.
+################################################################################
+deploy() {
+  local build_status=$1
+  local target
+  local project_name="$(basename ${TRAVIS_BUILD_DIR})"
+  local name="${project_name}-${TRAVIS_COMMIT}-${config_smalltalk}"
+  local image_name="${SMALLTALK_CI_BUILD}/${name}.image"
+  local changes_name="${SMALLTALK_CI_BUILD}/${name}.changes"
+  local publish=false
+
+  print_info "Deploy..."
+
+  fold_start deploy "Deploying to ..."
+
+  pushd "${SMALLTALK_CI_BUILD}" > /dev/null
+
+  print_info "Compressing image and changes files..."
+  mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
+  mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
+  touch "${TRAVIS_COMMIT}.REVISION"
+  zip -q "travis-${name}.zip" "${name}.image" "${name}.changes" "${TRAVIS_COMMIT}.REVISION"
+
+  is_dir image || mkdir image
+  cp "travis-${name}.zip" "image/travis-${name}.zip"
+  cp -rf "travis-${name}.zip" "image/travis-${project_name}-lastSuccessfulBuild-${config_smalltalk}.zip"
+
+  popd > /dev/null
+  fold_end deploy
+}
+
+################################################################################
 # Load platform-specific package and run the build.
 # Locals:
 #   config_smalltalk
@@ -487,6 +519,11 @@ main() {
   export_coveralls_data
   prepare_environment
   run "$@"
+
+  if is_travis_build; then
+    deploy "${status}"
+  fi
+
   finalize
 }
 

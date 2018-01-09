@@ -188,18 +188,35 @@ pharo::prepare_vm() {
 ################################################################################
 pharo::prepare_image() {
   local smalltalk_name=$1
-  local pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
   local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}"
-  local pharo_zeroconf="${target}/zeroconfig"
 
-  if ! is_file "${target}"; then
-    is_dir "${target}" || mkdir "${target}"
-    pushd "${target}" > /dev/null
-    fold_start download_image "Downloading ${smalltalk_name} image..."
-      download_file "${pharo_image_url}" "${pharo_zeroconf}"
-      bash "${pharo_zeroconf}"
-    fold_end download_image
-    popd > /dev/null
+  if [ -n "${SMALLTALK_CI_BASE_IMAGE_FOLDER+set}" ]; then
+    # Use given image as base image
+    mkdir -p ${target}
+    cp "${SMALLTALK_CI_BASE_IMAGE_FOLDER}/"*.image "${target}/"
+    cp "${SMALLTALK_CI_BASE_IMAGE_FOLDER}/"*.changes "${target}/"
+  else
+    # Download new base image
+    local pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
+    local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}"
+    local pharo_zeroconf="${target}/zeroconfig"
+
+    if ! is_file "${target}"; then
+      is_dir "${target}" || mkdir "${target}"
+      pushd "${target}" > /dev/null
+      fold_start download_image "Downloading ${smalltalk_name} image..."
+        download_file "${pharo_image_url}" "${pharo_zeroconf}"
+        bash "${pharo_zeroconf}"
+      fold_end download_image
+      popd > /dev/null
+    fi
+
+    print_info "Preparing Pharo image..."
+    cp "${target}/"*.image "${SMALLTALK_CI_IMAGE}"
+    cp "${target}/"*.changes "${SMALLTALK_CI_CHANGES}"
+    if ls "${target}/"*.sources 1> /dev/null 2>&1; then
+      cp "${target}/"*.sources "${SMALLTALK_CI_BUILD}"
+    fi
   fi
 
   print_info "Preparing Pharo image..."
@@ -263,8 +280,9 @@ pharo::run_script() {
 
 ################################################################################
 # Load project into Pharo image.
+# UPDATED SORABITO Inc.
 ################################################################################
-pharo::load_project() {
+pharo::load_smalltalk_ci_project() {
   pharo::run_script "
     | smalltalkCI |
     $(conditional_debug_halt)
@@ -274,10 +292,33 @@ pharo::load_project() {
         onConflict: [:ex | ex pass];
         load ] on: Warning do: [:w | w resume ].
     smalltalkCI := (Smalltalk at: #SmalltalkCI).
+    smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
+  "
+}
+
+################################################################################
+# Load project into Pharo image.
+# UPDATED SORABITO Inc.
+################################################################################
+pharo::load_project() {
+  pharo::run_script "
+    | smalltalkCI |
+    smalltalkCI := (Smalltalk at: #SmalltalkCI).
     smalltalkCI load: '$(resolve_path "${config_ston}")'.
     smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
   "
 }
+
+################################################################################
+# Load project into Pharo image.
+# UPDATED SORABITO Inc.
+################################################################################
+pharo::run_load_script() {
+  local script=$1
+  echo "${script}"
+  pharo::run_script "$(cat ${script})"
+}
+
 
 ################################################################################
 # Run tests for project.
@@ -317,7 +358,33 @@ run_build() {
     pharo::prepare_vm "${config_smalltalk}"
   fi
   if ston_includes_loading; then
+
+    pharo::load_smalltalk_ci_project
+
+    smalltalk_repository="${SMALLTALK_REPOSITORY:=pharo-repository}"
+
+    ln -s "${TRAVIS_BUILD_DIR}/${smalltalk_repository}" "${SMALLTALK_CI_BUILD}/${smalltalk_repository}"
+   
+    ln -s "${TRAVIS_BUILD_DIR}/patch" "${SMALLTALK_CI_BUILD}/patch"
+
+    print_info "Loading before build scripts..."
+    if [ -n "${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER+set}" ]; then
+      for script_file in $( ls "${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER}" ); do
+        echo "Loading --- ${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER}/${script_file}"
+        pharo::run_load_script "${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER}/${script_file}"
+      done
+    fi
+
     pharo::load_project
+
+    print_info "Loading after build scripts..."
+    if [ -n "${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER+set}" ]; then
+      for script_file in $( ls "${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER}" ); do
+        echo "Loading --- ${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER}/${script_file}"
+        pharo::run_load_script "${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER}/${script_file}"
+      done
+    fi
+
     check_and_consume_build_status_file
   fi
   pharo::test_project
