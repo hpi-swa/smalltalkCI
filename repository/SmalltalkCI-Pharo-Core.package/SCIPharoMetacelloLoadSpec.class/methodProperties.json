@@ -1,5 +1,10 @@
 {
-	"class" : {
-		"isPlatformCompatible" : "MaxLeske 7/11/2017 22:19" },
 	"instance" : {
-		"withLoadWarningsHandlerDo:" : "MaxLeske 7/11/2017 22:14" } }
+		"withLoadWarningsHandlerDo:" : "MaxLeske 7/11/2017 22:14",
+		"repositoryIn:" : "smalltalkCI 1/25/2018 17:44",
+		"repositoryIn:format:" : "smalltalkCI 1/25/2018 17:44"
+	},
+	"class" : {
+		"isPlatformCompatible" : "MaxLeske 7/11/2017 22:19"
+	}
+}
