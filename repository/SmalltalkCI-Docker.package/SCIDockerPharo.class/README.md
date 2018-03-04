@@ -1,0 +1,1 @@
+I represent a system for creating and managing Docker images for Pharo.

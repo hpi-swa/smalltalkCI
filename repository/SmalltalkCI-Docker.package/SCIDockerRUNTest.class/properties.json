@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "SCIDockerfileInstructionTest",
+	"category" : "SmalltalkCI-Docker-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SCIDockerRUNTest",
+	"type" : "normal"
+}

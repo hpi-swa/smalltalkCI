@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "SeanDeNigris 3/4/2018 12:39",
+	"super" : "Object",
+	"category" : "SmalltalkCI-Docker",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [
+		"LocalClone"
+	],
+	"instvars" : [ ],
+	"name" : "SCIDockerPharo",
+	"type" : "normal"
+}

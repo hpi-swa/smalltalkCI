@@ -1,0 +1,1 @@
+Usually, I operate much like a bash script comment. NB: Line continuation characters are not supported in comments. See docs: https://docs.docker.com/engine/reference/builder/#format

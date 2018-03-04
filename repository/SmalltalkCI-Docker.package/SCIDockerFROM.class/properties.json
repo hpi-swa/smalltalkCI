@@ -1,0 +1,15 @@
+{
+	"commentStamp" : "SeanDeNigris 3/3/2018 12:40",
+	"super" : "Object",
+	"category" : "SmalltalkCI-Docker",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"baseImage",
+		"tagOrDigest",
+		"name"
+	],
+	"name" : "SCIDockerFROM",
+	"type" : "normal"
+}

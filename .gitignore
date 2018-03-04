@@ -8,3 +8,4 @@ Session.vim
 *~
 images
 *.fuel
+.DS_Store
