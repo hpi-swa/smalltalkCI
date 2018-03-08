@@ -11,6 +11,7 @@ RUN dpkg --add-architecture i386
 RUN apt-get -qq update && apt-get -qq install \
     ca-certificates \
     curl \
+    git \
     libcurl3:i386 \
     libfontconfig1:i386 \
     libfreetype6:i386 \
