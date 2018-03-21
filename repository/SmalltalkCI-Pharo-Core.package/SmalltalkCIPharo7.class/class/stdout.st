@@ -1,6 +1,6 @@
 compatibility
 stdout
-	^ ZnCrPortableWriteStream on:
+	^ ZnNewLineWriterStream on:
 			(ZnCharacterWriteStream
 				on: Stdio stdout
 				encoding: 'utf8')
