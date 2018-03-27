@@ -1,7 +1,6 @@
 {
 	"class" : {
 		"classNamesNotUnderTest" : "fn 11/22/2017 18:05",
-		"coverageClass" : "fn 3/22/2018 10:34",
 		"coverallsAPI" : "fn 10/8/2016 16:27",
 		"coverallsBuildData" : "fn 11/22/2017 14:52",
 		"coverallsBuildDataFilename" : "fn 11/22/2017 14:17",
@@ -37,5 +36,5 @@
 		"finishUp" : "fn 11/22/2017 13:57",
 		"includedMethods" : "fn 11/22/2017 13:58",
 		"run:" : "fn 11/30/2017 14:42",
-		"startUp" : "fn 3/22/2018 10:34",
+		"startUp" : "fn 3/26/2018 14:57",
 		"uncoveredMethods" : "fn 11/22/2017 14:30" } }
