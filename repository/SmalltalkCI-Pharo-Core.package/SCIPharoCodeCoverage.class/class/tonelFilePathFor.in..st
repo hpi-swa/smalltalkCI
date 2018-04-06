@@ -1,5 +1,8 @@
 private
 tonelFilePathFor: class in: aDirectoryName
-	| packageName |
+	| packageName packagePath |
 	packageName := self packageNameForClass: class.
-	^ aDirectoryName , SmalltalkCI pathNameDelimiter , packageName , SmalltalkCI pathNameDelimiter , class name , '.class.st'
+	packagePath := aDirectoryName , SmalltalkCI pathNameDelimiter , packageName.
+	^ (SmalltalkCI fileExists: packagePath)
+		ifTrue: [ packagePath , SmalltalkCI pathNameDelimiter , class name , '.class.st' ]
+		ifFalse: [ packagePath , SmalltalkCI pathNameDelimiter , class name , '.extension.st' ]
