@@ -1,10 +1,12 @@
 private
 tonelCoverallsSourceFileFor: classToCover in: projectDirectory
-	| sourceDirectory filePath |
+	^ [ | sourceDirectory filePath |
 	sourceDirectory := self tonelSourceDirectoryFor: projectDirectory.
 	filePath := self class tonelFilePathFor: classToCover in: sourceDirectory.
-	^ Dictionary
+	Dictionary
 		newFrom:
 			{('name' -> (self class relativePathOf: filePath to: projectDirectory)).
 			('source_digest' -> (self class md5Of: filePath)).
-			('coverage' -> (self tonelCoverageFor: classToCover in: filePath))}
+			('coverage' -> (self tonelCoverageFor: classToCover in: filePath))} ]
+		on: NotFound
+		do: [ :signal | signal return: Dictionary new ]
