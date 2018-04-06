@@ -1,9 +1,12 @@
 {
+	"instance" : { },
 	"class" : {
-		"coverallsBuildData" : "fn 11/22/2017 14:52",
-		"linesOf:" : "fn 11/22/2017 14:41",
+		"isInTonelFormatCodeLocatedAt:" : "GabrielOmarCotelli 4/6/2018 13:13",
 		"md5Of:" : "fn 11/22/2017 14:42",
 		"methodReferenceFor:selector:" : "fn 11/22/2016 18:16",
-		"packageNameForClass:" : "fn 10/8/2016 15:12" },
-	"instance" : {
-		 } }
+		"linesOf:" : "fn 11/22/2017 14:41",
+		"filePathFor:in:" : "GabrielOmarCotelli 4/6/2018 13:16",
+		"coverallsBuildData" : "fn 11/22/2017 14:52",
+		"packageNameForClass:" : "fn 10/8/2016 15:12"
+	}
+}
