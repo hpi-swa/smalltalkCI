@@ -5,7 +5,7 @@ tonelMethodCoverageStatusFor: methodDeclarationLine
 	| selector methodDeclarationParts actualClassName |
 	methodDeclarationParts := methodDeclarationLine substrings: '>>'.
 	actualClassName := methodDeclarationParts first trimBoth.
-	selector := TonelParser new extractSelector: (methodDeclarationLine last copyWithout: $]).
+	selector := (Smalltalk globals at: #TonelParser) new extractSelector: (methodDeclarationParts last copyWithout: $]).
 
 	"Coveralls: 
  	  If the method is excluded -> nil
