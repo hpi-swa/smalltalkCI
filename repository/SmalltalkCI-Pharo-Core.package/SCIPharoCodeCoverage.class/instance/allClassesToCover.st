@@ -1,4 +1,3 @@
 accessing
 allClassesToCover
-	allClassesToCover ifNil: [ allClassesToCover := super allClassesToCover asArray ].
-	^ allClassesToCover
+	^ allClassesToCover ifNil: [ allClassesToCover := super allClassesToCover asArray ]
