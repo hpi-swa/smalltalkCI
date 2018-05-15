@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o errtrace
+
+if [[ -z "${SMALLTALK}" ]]; then
+  echo 'Please specify a Smalltalk image via the ${SMALLTALK} environment variable.'
+  exit 1
+fi
+
+echo "Downloading and extracting smalltalkCI..."
+pushd ~/ > /dev/null
+curl -sSL -o smalltalkCI.tar.gz https://github.com/hpi-swa/smalltalkCI/archive/master.tar.gz
+tar -xzf smalltalkCI.tar.gz; cd smalltalkCI-*; source env_vars
+popd > /dev/null
+
+"${SMALLTALK_CI_HOME}/bin/smalltalkci" -s "${SMALLTALK}"
