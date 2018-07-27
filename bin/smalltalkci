@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ -z "${SMALLTALK_CI_HOME:-}" || "$@" = *--self-test* ]]; then
-  readonly SMALLTALK_CI_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd)"
+  readonly SMALLTALK_CI_HOME="$(cd "$(dirname "$(readlink "${BASH_SOURCE[0]}")")/../" && pwd)"
 fi
 
 "${SMALLTALK_CI_HOME}/run.sh" "$@"
