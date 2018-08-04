@@ -1,8 +1,8 @@
 # smalltalkCI [![Build Status][travis_b]][travis_url] [![AppVeyor status][appveyor_b]][appveyor_url] [![Coverage Status][coveralls_b]][coveralls_url]
 
 Community-supported framework for testing Smalltalk projects on Linux, OS X, and
-Windows with built-in support for [Travis CI][travisCI] and
-[AppVeyor][appveyor].
+Windows with built-in support for [Travis CI][travisCI], [AppVeyor][appveyor],
+and [GitLab CI/CD][gitlab_ci_cd].
 
 It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy
 way to load and test Smalltalk projects.
@@ -24,12 +24,14 @@ way to load and test Smalltalk projects.
 
 ## Features
 
-- Simple configuration via `.smalltalk.ston`, `.travis.yml`, and `appveyor.yml`
-  ([see below for templates](#templates))
+- Simple configuration via [`.smalltalk.ston`](#minimal-smalltalkston-template),
+  [`.travis.yml`](#travisyml-template), [`appveyor.yml`](#appveyoryml-template),
+  and [`.gitlab-ci.yml`](#gitlab-ciyml-template)
 - Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
 - Runs on Travis CI's [container-based infrastructure][cbi]
   ([*"Builds start in seconds"*][bsis])
-- Supports Linux, macOS, and Windows and can be run locally (e.g. for debug purposes)
+- Supports Linux, macOS, and Windows and can be run locally (e.g. for debug
+  purposes)
 - Exports test results in the JUnit XML format as part of the Travis build log
 - Supports [coverage testing](#coverage-testing) and publishes results to
   [coveralls.io][coveralls]
@@ -85,7 +87,8 @@ they can take up a lot of space on your drive.*
 
 The following `SmalltalkCISpec` will load `BaselineOfMyProject` using
 Metacello/FileTree from the `./packages` directory in Squeak, Pharo, and
-GemStone. See below how you can [customize your `SmalltalkCISpec`.](#SmalltalkCISpec)
+GemStone. See below how you can
+[customize your `SmalltalkCISpec`.](#SmalltalkCISpec)
 
 ```javascript
 SmalltalkCISpec {
@@ -178,6 +181,26 @@ build: false
 
 test_script:
   - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN"'
+```
+
+### `.gitlab-ci.yml` Template
+
+```yml
+image: hpiswa/smalltalkci
+
+SqueakTrunk:
+  script: smalltalkci -s "Squeak-trunk"
+
+Squeak5.1:
+  script: smalltalkci -s "Squeak-5.1"
+
+PharoAlpha:
+  script: smalltalkci -s "Pharo-alpha"
+  
+Pharo7.0:
+  script: smalltalkci -s "Pharo-7.0"
+
+# ...
 ```
 
 ### Advanced Templates
@@ -682,6 +705,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [esug_logo]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/logo.png
 [filetree]: https://github.com/dalehenrich/filetree
 [gemstone]: https://gemtalksystems.com/
+[gitlab_ci_cd]: https://about.gitlab.com/features/gitlab-ci-cd/
 [gofer]: http://www.lukas-renggli.ch/blog/gofer
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
 [issues]: https://github.com/hpi-swa/smalltalkCI/issues
