@@ -176,7 +176,7 @@ squeak::prepare_vm() {
     fi
     chmod +x "${vm_path}"
     if is_cygwin_build; then
-      chmod +x "$(dirname ${vm_path})/"*.dll "$(dirname ${vm_path})/"*.DLL
+      chmod +x "$(dirname ${vm_path})/"*.dll
     fi
   fi
 
