@@ -196,7 +196,7 @@ squeak::determine_vm_flags() {
   if is_travis_build || is_headless; then
     case "$(uname -s)" in
       "Linux")
-        vm_flags="-nosound -nodisplay"
+        vm_flags="-nosound -vm-display-null"
         ;;
       "Darwin"|"CYGWIN_NT-"*)
         vm_flags="-headless"
