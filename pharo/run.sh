@@ -148,17 +148,16 @@ pharo::get_vm_url() {
 pharo::prepare_vm() {
   local smalltalk_name=$1
   local pharo_vm_url="$(pharo::get_vm_url "${smalltalk_name}")"
-  local pharo_vm_folder="${SMALLTALK_CI_VMS}/${smalltalk_name}"
-  local pharo_zeroconf="${pharo_vm_folder}/zeroconfig"
+  local pharo_zeroconf="${config_vm_dir}/zeroconfig"
 
   # Skip in case vm is already set up
   if is_file "${SMALLTALK_CI_VM}"; then
     return 0
   fi
 
-  if ! is_dir "${pharo_vm_folder}"; then
-    is_dir "${pharo_vm_folder}" || mkdir "${pharo_vm_folder}"
-    pushd "${pharo_vm_folder}" > /dev/null
+  if ! is_dir "${config_vm_dir}"; then
+    is_dir "${config_vm_dir}" || mkdir -p "${config_vm_dir}"
+    pushd "${config_vm_dir}" > /dev/null
     fold_start download_vm "Downloading ${smalltalk_name} vm..."
       download_file "${pharo_vm_url}" "${pharo_zeroconf}"
       bash "${pharo_zeroconf}"
@@ -167,9 +166,9 @@ pharo::prepare_vm() {
   fi
 
   if is_headless; then
-    echo "${pharo_vm_folder}/pharo \"\$@\"" > "${SMALLTALK_CI_VM}"
+    echo "${config_vm_dir}/pharo \"\$@\"" > "${SMALLTALK_CI_VM}"
   else
-    echo "${pharo_vm_folder}/pharo-ui \"\$@\"" > "${SMALLTALK_CI_VM}"
+    echo "${config_vm_dir}/pharo-ui \"\$@\"" > "${SMALLTALK_CI_VM}"
   fi
   chmod +x "${SMALLTALK_CI_VM}"
 

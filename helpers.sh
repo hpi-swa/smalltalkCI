@@ -284,6 +284,21 @@ download_file() {
   fi
 }
 
+extract_file() {
+  local path=$1
+  local target=$2
+
+  if [[ "${path}" == *".tar.gz" ]]; then
+    tar xzf "${path}" -C "${target}"
+  elif [[ "${path}" == *".zip" ]]; then
+    unzip "${path}" -d "${target}"
+  elif [[ "${path}" == *".dmg" ]]; then
+    readonly VOLUME=$(hdiutil attach "${path}" | tail -1 | awk '{print $3}')
+    cp -R "${VOLUME}/"* "${target}/"
+    diskutil unmount "${VOLUME}"
+  fi
+}
+
 resolve_path() {
   local path=$1
 

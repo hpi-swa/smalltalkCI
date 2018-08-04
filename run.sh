@@ -327,14 +327,12 @@ parse_options() {
 # Globals:
 #   SMALLTALK_CI_CACHE
 #   SMALLTALK_CI_BUILD_BASE
-#   SMALLTALK_CI_VMS
 #   SMALLTALK_CI_BUILD
 ################################################################################
 prepare_folders() {
   print_info "Preparing folders..."
   is_dir "${SMALLTALK_CI_CACHE}" || mkdir "${SMALLTALK_CI_CACHE}"
   is_dir "${SMALLTALK_CI_BUILD_BASE}" || mkdir "${SMALLTALK_CI_BUILD_BASE}"
-  is_dir "${SMALLTALK_CI_VMS}" || mkdir "${SMALLTALK_CI_VMS}"
 
   # Create folder for this build
   if is_dir "${SMALLTALK_CI_BUILD}"; then
@@ -476,6 +474,7 @@ main() {
   local config_tracking="true"
   local config_verbose="false"
   local config_vm=""
+  local config_vm_dir
 
   initialize "$@"
   parse_options "$@"
@@ -484,6 +483,7 @@ main() {
   check_clean_up
   select_smalltalk
   validate_configuration
+  config_vm_dir="${SMALLTALK_CI_VMS}/${config_smalltalk}"
   prepare_folders
   export_coveralls_data
   prepare_environment

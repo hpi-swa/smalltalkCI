@@ -3,7 +3,10 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-readonly BASE_DOWNLOAD="${GITHUB_REPO_URL}/releases/download/v2.7.5"
+readonly BASE_DOWNLOAD="${GITHUB_REPO_URL}/releases/download"
+readonly BASE_DOWNLOAD_IMAGE="${BASE_DOWNLOAD}/v2.7.5"
+readonly BASE_DOWNLOAD_VM="${BASE_DOWNLOAD}/v2.8.0"
+readonly OSVM_VERSION="201807260206"
 
 ################################################################################
 # Download Squeak image.
@@ -38,7 +41,7 @@ squeak::download_image() {
 ################################################################################
 squeak::download_prepared_image() {
   local download_name=$1
-  local download_url="${BASE_DOWNLOAD}/${download_name}"
+  local download_url="${BASE_DOWNLOAD_IMAGE}/${download_name}"
   local target="${SMALLTALK_CI_CACHE}/${download_name}"
 
   if ! is_file "${target}"; then
@@ -48,7 +51,7 @@ squeak::download_prepared_image() {
   fi
 
   print_info "Extracting image..."
-  tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
+  extract_file "${target}" "${SMALLTALK_CI_BUILD}"
 
   if ! is_file "${SMALLTALK_CI_IMAGE}"; then
     print_error_and_exit "Failed to prepare image at '${SMALLTALK_CI_IMAGE}'."
@@ -59,11 +62,11 @@ squeak::download_prepared_image() {
 # Download trunk image and extract it.
 ################################################################################
 squeak::download_trunk_image() {
-  local target="${SMALLTALK_CI_BUILD}/trunk.zip"
+  local target="${SMALLTALK_CI_BUILD}/trunk.tar.gz"
 
   fold_start download_image "Downloading ${config_smalltalk} image..."
-    download_file "${BASE_DOWNLOAD}/Squeak-trunk.tar.gz" "${target}"
-    tar xzf "${target}" -C "${SMALLTALK_CI_BUILD}"
+    download_file "${BASE_DOWNLOAD_IMAGE}/Squeak-trunk.tar.gz" "${target}"
+    extract_file "${target}" "${SMALLTALK_CI_BUILD}"
     mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_BUILD}/TravisCI.image"
     mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_BUILD}/TravisCI.changes"
   fold_end download_image
@@ -102,41 +105,41 @@ squeak::prepare_image() {
 squeak::get_vm_details() {
   local os_name=$1
   local require_spur=$2
+  local vm_arch
+  local vm_file_ext
   local vm_filename
   local vm_path
 
   case "${os_name}" in
     "Linux")
+      vm_arch="linux32x86"
+      vm_file_ext="tar.gz"
       if [[ "${require_spur}" -eq 1 ]]; then
-        vm_filename="squeak.cog.spur_linux32x86_15.33.3427.tar.gz"
-        vm_path="${SMALLTALK_CI_VMS}/cogspurlinux/squeak"
+        vm_path="${config_vm_dir}/sqcogspurlinuxht/squeak"
       else
-        vm_filename="squeak.cog.v3_linux32x86_15.33.3427.tar.gz"
-        vm_path="${SMALLTALK_CI_VMS}/coglinux/squeak"
+        vm_path="${config_vm_dir}/sqcoglinuxht/squeak"
       fi
       ;;
     "Darwin")
-      if [[ "${require_spur}" -eq 1 ]]; then
-        vm_filename="squeak.cog.spur_macos32x86_15.33.3427.tar.gz"
-        vm_path="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
-      else
-        vm_filename="squeak.cog.v3_macos32x86_15.33.3427.tar.gz"
-        vm_path="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
-      fi
+      vm_arch="macos32x86"
+      vm_file_ext="dmg"
+      vm_path="${config_vm_dir}/Squeak.app/Contents/MacOS/Squeak"
       ;;
     "CYGWIN_NT-"*)
-      if [[ "${require_spur}" -eq 1 ]]; then
-        vm_filename="squeak.cog.spur_win32x86_15.33.3427.tar.gz"
-        vm_path="${SMALLTALK_CI_VMS}/cogspurwin/SqueakConsole.exe"
-      else
-        vm_filename="squeak.cog.v3_win32x86_15.33.3427.tar.gz"
-        vm_path="${SMALLTALK_CI_VMS}/cogwin/SqueakConsole.exe"
-      fi
+      vm_arch="win32x86"
+      vm_file_ext="zip"
+      vm_path="${config_vm_dir}/SqueakConsole.exe"
       ;;
     *)
       print_error_and_exit "Unsupported platform '${os_name}'."
       ;;
   esac
+
+  if [[ "${require_spur}" -eq 1 ]]; then
+    vm_filename="squeak.cog.spur_${vm_arch}_${OSVM_VERSION}.${vm_file_ext}"
+  else
+    vm_filename="squeak.cog.v3_${vm_arch}_${OSVM_VERSION}.${vm_file_ext}"
+  fi
 
   return_vars "${vm_filename}" "${vm_path}"
 }
@@ -155,7 +158,7 @@ squeak::prepare_vm() {
   is_spur_image "${config_image:-${SMALLTALK_CI_IMAGE}}" && require_spur=1
   vm_details=$(squeak::get_vm_details "$(uname -s)" "${require_spur}")
   set_vars vm_filename vm_path "${vm_details}"
-  download_url="${BASE_DOWNLOAD}/${vm_filename}"
+  download_url="${BASE_DOWNLOAD_VM}/${vm_filename}"
   target="${SMALLTALK_CI_CACHE}/${vm_filename}"
 
   if ! is_file "${target}"; then
@@ -165,8 +168,9 @@ squeak::prepare_vm() {
   fi
 
   if ! is_file "${vm_path}"; then
+    is_dir "${config_vm_dir}" || mkdir -p "${config_vm_dir}"
     print_info "Extracting virtual machine..."
-    tar xzf "${target}" -C "${SMALLTALK_CI_VMS}"
+    extract_file "${target}" "${config_vm_dir}"
     if ! is_file "${vm_path}"; then
       print_error_and_exit "Unable to set vm up at '${vm_path}'."
     fi

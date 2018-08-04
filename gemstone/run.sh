@@ -80,7 +80,7 @@ gemstone::prepare_stone() {
   else
     fold_start prepare_cache "Preparing Travis caches..."
       if ! is_dir "${SMALLTALK_CI_VMS}/Pharo-3.0"; then
-        mkdir "${SMALLTALK_CI_VMS}/Pharo-3.0"
+        mkdir -p "${SMALLTALK_CI_VMS}/Pharo-3.0"
         print_info "Downloading Pharo-3.0 vm to cache" 
         pushd "${SMALLTALK_CI_VMS}/Pharo-3.0" > /dev/null
           download_file "get.pharo.org/vm30" "$(pwd)/zeroconfig"
