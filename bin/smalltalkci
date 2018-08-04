@@ -2,10 +2,12 @@
 
 if [[ -z "${SMALLTALK_CI_HOME:-}" || "$@" = *--self-test* ]]; then
   smalltalkci="${BASH_SOURCE[0]}" # start from this very file
-  [ -L "$smalltalkci" ] && smalltalkci="$(readlink "$smalltalkci")" # if it's a symlink, resolve it
-  smalltalkci="$( cd "$(dirname "$smalltalkci")" && pwd -P )" # resolve to physical path
+  if [[ -L "${smalltalkci}" ]]; then # if it is a symlink, resolve it
+    smalltalkci="$(readlink "${smalltalkci}")"
+  fi
+  bin_directory="$(cd "$(dirname "${smalltalkci}")" && pwd -P)"
 
-  readonly SMALLTALK_CI_HOME="$(dirname "$smalltalkci")"
+  readonly SMALLTALK_CI_HOME="$(dirname "${bin_directory}")"
 fi
 
 "${SMALLTALK_CI_HOME}/run.sh" "$@"
