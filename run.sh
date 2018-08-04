@@ -5,8 +5,9 @@ set -o errtrace
 set -o pipefail
 set -o nounset
 
-readonly DEFAULT_STON_CONFIG="smalltalk.ston"
 readonly BINTRAY_API="https://api.bintray.com/content"
+readonly DEFAULT_STON_CONFIG="smalltalk.ston"
+readonly GITHUB_REPO_URL="https://github.com/hpi-swa/smalltalkCI"
 
 ################################################################################
 # Locate $SMALLTALK_CI_HOME and load helpers.

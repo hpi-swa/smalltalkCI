@@ -3,8 +3,7 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-readonly BASE_DOWNLOAD="https://dl.bintray.com/hpi-swa-lab/smalltalkCI"
-readonly VM_DOWNLOAD="${BASE_DOWNLOAD}/vms"
+readonly BASE_DOWNLOAD="${GITHUB_REPO_URL}/releases/download/v2.7.5"
 
 ################################################################################
 # Download Squeak image.
@@ -109,28 +108,28 @@ squeak::get_vm_details() {
   case "${os_name}" in
     "Linux")
       if [[ "${require_spur}" -eq 1 ]]; then
-        vm_filename="cogspurlinux-15.33.3427.tgz"
+        vm_filename="squeak.cog.spur_linux32x86_15.33.3427.tar.gz"
         vm_path="${SMALLTALK_CI_VMS}/cogspurlinux/squeak"
       else
-        vm_filename="coglinux-15.33.3427.tgz"
+        vm_filename="squeak.cog.v3_linux32x86_15.33.3427.tar.gz"
         vm_path="${SMALLTALK_CI_VMS}/coglinux/squeak"
       fi
       ;;
     "Darwin")
       if [[ "${require_spur}" -eq 1 ]]; then
-        vm_filename="CogSpur.app-15.33.3427.tgz"
+        vm_filename="squeak.cog.spur_macos32x86_15.33.3427.tar.gz"
         vm_path="${SMALLTALK_CI_VMS}/CogSpur.app/Contents/MacOS/Squeak"
       else
-        vm_filename="Cog.app-15.33.3427.tgz"
+        vm_filename="squeak.cog.v3_macos32x86_15.33.3427.tar.gz"
         vm_path="${SMALLTALK_CI_VMS}/Cog.app/Contents/MacOS/Squeak"
       fi
       ;;
     "CYGWIN_NT-"*)
       if [[ "${require_spur}" -eq 1 ]]; then
-        vm_filename="cogspurwin-15.33.3427.tgz"
+        vm_filename="squeak.cog.spur_win32x86_15.33.3427.tar.gz"
         vm_path="${SMALLTALK_CI_VMS}/cogspurwin/SqueakConsole.exe"
       else
-        vm_filename="cogwin-15.33.3427.tgz"
+        vm_filename="squeak.cog.v3_win32x86_15.33.3427.tar.gz"
         vm_path="${SMALLTALK_CI_VMS}/cogwin/SqueakConsole.exe"
       fi
       ;;
@@ -156,7 +155,7 @@ squeak::prepare_vm() {
   is_spur_image "${config_image:-${SMALLTALK_CI_IMAGE}}" && require_spur=1
   vm_details=$(squeak::get_vm_details "$(uname -s)" "${require_spur}")
   set_vars vm_filename vm_path "${vm_details}"
-  download_url="${VM_DOWNLOAD}/${vm_filename}"
+  download_url="${BASE_DOWNLOAD}/${vm_filename}"
   target="${SMALLTALK_CI_CACHE}/${vm_filename}"
 
   if ! is_file "${target}"; then
