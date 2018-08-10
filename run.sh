@@ -347,8 +347,7 @@ prepare_folders() {
 ################################################################################
 prepare_environment() {
   add_env_vars
-  if is_travis_build && is_linux_build && is_sudo_enabled && \
-      vm_is_user_provided; then
+  if is_linux_build && is_sudo_enabled; then
     raise_rtprio_limit
   fi
 }
@@ -366,12 +365,13 @@ add_env_vars() {
 # Raise RTPRIO of current bash for OpenSmalltalk VMs with threaded heartbeat.
 ################################################################################
 raise_rtprio_limit() {
+  fold_start set_rtprio_limit "Raising real-time priority for OpenSmalltalk VMs with threaded heartbeat..."
   pushd $(mktemp -d) > /dev/null
-  print_info "Raising real-time priority..."
   gcc -o "set_rtprio_limit" "${SMALLTALK_CI_HOME}/utils/set_rtprio_limit.c"
   chmod +x "./set_rtprio_limit"
   sudo "./set_rtprio_limit" $$
   popd > /dev/null
+  fold_end set_rtprio_limit
 }
 
 ################################################################################
