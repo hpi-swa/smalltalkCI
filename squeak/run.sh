@@ -112,12 +112,12 @@ squeak::get_vm_details() {
 
   case "${os_name}" in
     "Linux")
-      vm_arch="linux32x86"
+      vm_arch="linux32x86_itimer"
       vm_file_ext="tar.gz"
       if [[ "${require_spur}" -eq 1 ]]; then
-        vm_path="${config_vm_dir}/sqcogspurlinuxht/squeak"
+        vm_path="${config_vm_dir}/sqcogspurlinux/squeak"
       else
-        vm_path="${config_vm_dir}/sqcoglinuxht/squeak"
+        vm_path="${config_vm_dir}/sqcoglinux/squeak"
       fi
       ;;
     "Darwin")
