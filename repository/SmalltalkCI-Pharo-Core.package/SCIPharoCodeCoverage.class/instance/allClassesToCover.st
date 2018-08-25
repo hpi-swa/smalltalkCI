@@ -1,3 +1,3 @@
 accessing
 allClassesToCover
-	^ allClassesToCover ifNil: [ allClassesToCover := super allClassesToCover asArray ]
+	^ allClassesToCover ifNil: [ allClassesToCover := super allClassesToCover reject: #isTrait as: Array ]
