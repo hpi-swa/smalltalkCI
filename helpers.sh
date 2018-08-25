@@ -33,7 +33,7 @@ print_error() {
 
 print_error_and_exit() {
   print_error "$1"
-  exit "${2:-1}" # 2nd parameter, 1 if not set
+  exit "${2:-$1}" # 2nd parameter, 1 if not set
 }
 
 print_help() {
@@ -281,6 +281,21 @@ download_file() {
       "wget failed to download ${url} to '${target}'."
   else
     print_error_and_exit "Please install curl or wget."
+  fi
+}
+
+extract_file() {
+  local path=$1
+  local target=$2
+
+  if [[ "${path}" == *".tar.gz" ]]; then
+    tar xzf "${path}" -C "${target}"
+  elif [[ "${path}" == *".zip" ]]; then
+    unzip "${path}" -d "${target}"
+  elif [[ "${path}" == *".dmg" ]]; then
+    readonly VOLUME=$(hdiutil attach "${path}" | tail -1 | awk '{print $3}')
+    cp -R "${VOLUME}/"* "${target}/"
+    diskutil unmount "${VOLUME}"
   fi
 }
 

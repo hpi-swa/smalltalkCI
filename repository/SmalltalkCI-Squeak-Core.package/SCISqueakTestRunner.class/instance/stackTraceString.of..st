@@ -7,7 +7,17 @@ stackTraceString: err of: aTestCase
 			str print: context.
 			(self class isTestMethod: context method)
 				ifTrue: [ | pcRange code |
-					pcRange := context debuggerMap rangeForPC: context pc contextIsActiveContext: false.
+					pcRange := [
+						context debuggerMap
+							rangeForPC: context pc
+							in: context method
+							contextIsActiveContext: false ]
+								on: MessageNotUnderstood
+								do: [
+									"fallback for Squeak < 5.2"
+									context debuggerMap
+										rangeForPC: context pc
+										contextIsActiveContext: false ].
 					code := context method getSource asString copyFrom: pcRange first to: pcRange last.
 					str nextPutAll: ' ...', code ].
 			str cr.

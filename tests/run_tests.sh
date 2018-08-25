@@ -46,9 +46,6 @@ test_prepare_folders() {
   if [[ ! -d "${SMALLTALK_CI_BUILD_BASE}" ]]; then
     fail "${SMALLTALK_CI_BUILD_BASE} should exist."
   fi
-  if [[ ! -d "${SMALLTALK_CI_VMS}" ]]; then
-    fail "${SMALLTALK_CI_VMS} should exist."
-  fi
   if [[ ! -d "${SMALLTALK_CI_BUILD}" ]]; then
     fail "${SMALLTALK_CI_BUILD} should exist."
   fi

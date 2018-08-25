@@ -5,8 +5,9 @@ set -o errtrace
 set -o pipefail
 set -o nounset
 
-readonly DEFAULT_STON_CONFIG="smalltalk.ston"
 readonly BINTRAY_API="https://api.bintray.com/content"
+readonly DEFAULT_STON_CONFIG="smalltalk.ston"
+readonly GITHUB_REPO_URL="https://github.com/hpi-swa/smalltalkCI"
 
 ################################################################################
 # Locate $SMALLTALK_CI_HOME and load helpers.
@@ -326,14 +327,12 @@ parse_options() {
 # Globals:
 #   SMALLTALK_CI_CACHE
 #   SMALLTALK_CI_BUILD_BASE
-#   SMALLTALK_CI_VMS
 #   SMALLTALK_CI_BUILD
 ################################################################################
 prepare_folders() {
   print_info "Preparing folders..."
   is_dir "${SMALLTALK_CI_CACHE}" || mkdir "${SMALLTALK_CI_CACHE}"
   is_dir "${SMALLTALK_CI_BUILD_BASE}" || mkdir "${SMALLTALK_CI_BUILD_BASE}"
-  is_dir "${SMALLTALK_CI_VMS}" || mkdir "${SMALLTALK_CI_VMS}"
 
   # Create folder for this build
   if is_dir "${SMALLTALK_CI_BUILD}"; then
@@ -348,8 +347,7 @@ prepare_folders() {
 ################################################################################
 prepare_environment() {
   add_env_vars
-  if is_travis_build && is_linux_build && is_sudo_enabled && \
-      vm_is_user_provided; then
+  if is_linux_build && is_sudo_enabled; then
     raise_rtprio_limit
   fi
 }
@@ -367,12 +365,13 @@ add_env_vars() {
 # Raise RTPRIO of current bash for OpenSmalltalk VMs with threaded heartbeat.
 ################################################################################
 raise_rtprio_limit() {
+  fold_start set_rtprio_limit "Raising real-time priority for OpenSmalltalk VMs with threaded heartbeat..."
   pushd $(mktemp -d) > /dev/null
-  print_info "Raising real-time priority..."
   gcc -o "set_rtprio_limit" "${SMALLTALK_CI_HOME}/utils/set_rtprio_limit.c"
   chmod +x "./set_rtprio_limit"
   sudo "./set_rtprio_limit" $$
   popd > /dev/null
+  fold_end set_rtprio_limit
 }
 
 ################################################################################
@@ -475,6 +474,7 @@ main() {
   local config_tracking="true"
   local config_verbose="false"
   local config_vm=""
+  local config_vm_dir
 
   initialize "$@"
   parse_options "$@"
@@ -483,6 +483,7 @@ main() {
   check_clean_up
   select_smalltalk
   validate_configuration
+  config_vm_dir="${SMALLTALK_CI_VMS}/${config_smalltalk}"
   prepare_folders
   export_coveralls_data
   prepare_environment
