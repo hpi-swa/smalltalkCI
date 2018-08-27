@@ -1,0 +1,19 @@
+{
+	"class" : {
+		"on:spec:" : "fn 8/27/2018 20:09" },
+	"instance" : {
+		"add:for:" : "fn 8/27/2018 19:50",
+		"erroredTests" : "fn 8/27/2018 19:46",
+		"failedTests" : "fn 8/27/2018 19:46",
+		"initialize" : "fn 8/27/2018 20:08",
+		"passingTests" : "fn 8/27/2018 19:46",
+		"results" : "fn 8/27/2018 19:51",
+		"successful" : "fn 8/27/2018 19:58",
+		"suite:" : "fn 8/27/2018 19:56",
+		"suiteName" : "fn 8/27/2018 19:47",
+		"suiteTime" : "fn 8/27/2018 19:46",
+		"suiteTime:" : "fn 8/27/2018 19:55",
+		"suiteTimeInSeconds" : "fn 8/27/2018 19:46",
+		"suiteTimeString" : "fn 8/27/2018 19:46",
+		"summary" : "fn 8/27/2018 19:52",
+		"totalTests" : "fn 8/27/2018 20:09" } }

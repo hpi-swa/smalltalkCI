@@ -1,3 +1,3 @@
 executing
-report: aSCITestRunner on: aStream
-	self	 report: aSCITestRunner spec: SmalltalkCISpec new on: aStream
+report: aSCITestResult on: aStream
+	self	 report: aSCITestResult spec: SmalltalkCISpec new on: aStream

@@ -265,16 +265,9 @@ pharo::run_script() {
 ################################################################################
 pharo::load_project() {
   pharo::run_script "
-    | smalltalkCI |
     $(conditional_debug_halt)
-    [ Metacello new
-        baseline: 'SmalltalkCI';
-        repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-        onConflict: [:ex | ex pass];
-        load ] on: Warning do: [:w | w resume ].
-    smalltalkCI := (Smalltalk at: #SmalltalkCI).
-    smalltalkCI load: '$(resolve_path "${config_ston}")'.
-    smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
+    $(ensure_loaded)
+    (Smalltalk at: #SmalltalkCI) loadAndQuit: '$(resolve_path "${config_ston}")'
   "
 }
 
@@ -283,17 +276,9 @@ pharo::load_project() {
 ################################################################################
 pharo::test_project() {
   pharo::run_script "
-    | smalltalkCI |
     $(conditional_debug_halt)
-    smalltalkCI := Smalltalk at: #SmalltalkCI ifAbsent: [
-    [ Metacello new
-        baseline: 'SmalltalkCI';
-        repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-        onConflict: [:ex | ex pass];
-        load ] on: Warning do: [:w | w resume ].
-        Smalltalk at: #SmalltalkCI
-    ].
-    smalltalkCI test: '$(resolve_path "${config_ston}")'
+    $(ensure_loaded)
+    (Smalltalk at: #SmalltalkCI) testAndQuit: '$(resolve_path "${config_ston}")'
   "
 }
 

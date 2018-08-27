@@ -1,3 +1,3 @@
 executing
-report: aSCITestRunner spec: aSCISpec
-	self report: aSCITestRunner spec: aSCISpec on: SmalltalkCI stdout
+report: aSCITestResult spec: aSCISpec
+	self report: aSCITestResult spec: aSCISpec on: SmalltalkCI stdout

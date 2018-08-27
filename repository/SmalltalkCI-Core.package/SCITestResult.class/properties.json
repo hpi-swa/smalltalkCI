@@ -6,14 +6,11 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"testCase",
-		"testError",
-		"error",
-		"time",
-		"stack",
-		"skipped" ],
-	"name" : "SCITestRunnerResult",
+		"suite",
+		"suiteTime",
+		"results" ],
+	"name" : "SCITestResult",
 	"pools" : [
 		 ],
-	"super" : "Object",
+	"super" : "SCIObjectWithSpec",
 	"type" : "normal" }

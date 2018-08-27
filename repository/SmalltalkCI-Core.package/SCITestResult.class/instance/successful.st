@@ -1,5 +1,5 @@
 accessing
-isSuccessful
+successful
 	| deprecationWarningCheck |
 	deprecationWarningCheck := spec failOnSCIDeprecationWarnings
 		ifTrue: [ SmalltalkCI deprecationWarnings isEmpty ]

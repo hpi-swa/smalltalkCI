@@ -1,7 +1,7 @@
 executing
-report: aSCITestRunner spec: aSCISpec on: aStream
+report: aSCITestResult spec: aSCISpec on: aStream
 	self	 new
-		runner: aSCITestRunner;
+		result: aSCITestResult;
 		spec: aSCISpec;
 		stream: aStream;
 		report

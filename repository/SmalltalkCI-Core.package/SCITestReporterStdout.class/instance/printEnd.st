@@ -1,13 +1,13 @@
 printing
 printEnd
 	self newLine; newLine; setModeBold.
-	runner erroredTests > 0
+	result erroredTests > 0
 		ifTrue: [ self setModeRed ]
 		ifFalse: [
-			runner failedTests > 0
+			result failedTests > 0
 				ifTrue: [ self setModeYellow ]
 				ifFalse: [ self setModeGreen ] ].
 
 	self
-		print: '  Executed ', runner summary, '.';
+		print: '  Executed ', result summary, '.';
 		resetMode; newLine; newLine

@@ -1,6 +1,5 @@
 executing
 basicTest
-	| runner |
 	self ensureSpecIsValid.
 	self class
 		stage: 'Testing project...'
@@ -8,10 +7,9 @@ basicTest
 		block: [
 			self prepareForTesting.
 			self executionClass
-				run: [ runner := self runTests ]
+				run: [ result := self runTests ]
 				spec: self spec
 				in: self projectDirectory.
 			self finishUpAfterTesting ].
-	self reportResults: runner.
-	runner isSuccessful
-		ifFalse: [ SCIError signal: '[test failure]' ]
+	self reportResults: result.
+	result successful ifFalse: [ SCIError signal: '[test failure]' ]

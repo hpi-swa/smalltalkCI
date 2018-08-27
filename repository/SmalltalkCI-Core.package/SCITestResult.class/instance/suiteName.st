@@ -1,4 +1,3 @@
 accessing
 suiteName
-
 	^ suite name

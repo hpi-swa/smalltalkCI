@@ -54,6 +54,7 @@
 		"isTravisBuild" : "fn 10/9/2016 21:43",
 		"load:" : "fn 11/9/2017 11:56",
 		"load:projectDirectory:" : "fn 11/20/2017 13:40",
+		"loadAndQuit:" : "fn 8/27/2018 20:37",
 		"methodDictOf:" : "fn 10/4/2016 17:26",
 		"new" : "fn 6/13/2016 15:14",
 		"newInstance" : "fn 10/9/2016 18:31",
@@ -94,6 +95,7 @@
 		"test:named:" : "fn 11/20/2017 13:45",
 		"test:named:projectDirectory:" : "fn 11/20/2017 13:45",
 		"test:projectDirectory:" : "fn 11/20/2017 13:40",
+		"testAndQuit:" : "fn 8/27/2018 20:36",
 		"testRunnerClass" : "fn 10/4/2016 17:21",
 		"timeToRun:" : "fn 9/28/2016 13:03",
 		"travisFold:action:" : "fn 10/10/2016 23:35",
@@ -105,7 +107,7 @@
 		"workingDirectory" : "fn 10/16/2016 16:28" },
 	"instance" : {
 		"basicLoad" : "fn 11/21/2017 11:10",
-		"basicTest" : "fn 11/30/2017 13:47",
+		"basicTest" : "fn 8/27/2018 20:03",
 		"compatibleConfigurationsFor:" : "fn 11/11/2017 15:03",
 		"compatibleSpecs" : "fn 11/11/2017 15:03",
 		"ensureSpecIsValid" : "fn 11/21/2017 11:10",
@@ -126,5 +128,5 @@
 		"reportImageInfo" : "fn 10/21/2016 16:18",
 		"reportResults:" : "fn 11/21/2017 12:08",
 		"runTests" : "fn 11/10/2017 19:28",
-		"test" : "fn 11/20/2017 11:56",
+		"test" : "fn 8/27/2018 20:04",
 		"testCI" : "fn 11/11/2017 15:02" } }

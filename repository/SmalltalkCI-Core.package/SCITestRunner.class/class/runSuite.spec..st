@@ -1,6 +1,5 @@
 running
 runSuite: aTestSuite spec: aSCISpec
 	^ self new
-		initializeOn: aTestSuite;
-		spec: aSCISpec;
+		initializeOn: aTestSuite spec: aSCISpec;
 		run

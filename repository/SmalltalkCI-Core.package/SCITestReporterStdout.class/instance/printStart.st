@@ -1,3 +1,3 @@
 printing
 printStart
-	self printBanner: runner suiteName subtitle: runner summary color: SmalltalkCI ansiBlue
+	self printBanner: result suiteName subtitle: result summary color: SmalltalkCI ansiBlue

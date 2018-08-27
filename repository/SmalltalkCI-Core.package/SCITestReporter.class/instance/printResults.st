@@ -1,5 +1,5 @@
 printing
 printResults
-	runner results keysAndValuesDo: [ :class :results |
+	result results keysAndValuesDo: [ :class :results |
 		results do: [ :result |
 			self printResult: result ] ]

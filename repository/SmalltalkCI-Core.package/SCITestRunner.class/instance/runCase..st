@@ -1,19 +1,18 @@
 running
 runCase: aTestCase
-	| result |
+	| testCaseResult |
 	SmalltalkCI printDebug: aTestCase asString.
-	result := SCITestRunnerResult new testCase: aTestCase; yourself.
-	result time: (SmalltalkCI timeToRun: [
+	testCaseResult := SCITestCaseResult new testCase: aTestCase; yourself.
+	testCaseResult time: (SmalltalkCI timeToRun: [
 		[ [ self basicRunCase: aTestCase ]
 			on: self class errorExceptions
 			do: [ :err |
-				result testError: err.
-				aTestCase shouldPass ifTrue: [ self serializeError: result testError of: aTestCase].
-				result stack: (self stackTraceString: err of: aTestCase) ] ]
+				testCaseResult testError: err.
+				aTestCase shouldPass ifTrue: [ self serializeError: testCaseResult testError of: aTestCase].
+				testCaseResult stack: (self stackTraceString: err of: aTestCase) ] ]
 					on: self class skipExceptions
-					do: [ :skip | result skipped: true ] ]).
-	self printProgress: result.
-	(results at: aTestCase class ifAbsentPut: [ OrderedCollection new ])
-		add: result
+					do: [ :skip | testCaseResult skipped: true ] ]).
+	self printProgress: testCaseResult.
+	result add: testCaseResult for: aTestCase.
 		
 	

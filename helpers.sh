@@ -259,6 +259,14 @@ finalize() {
   fi
 }
 
+ensure_loaded() {
+  echo "[ Metacello new
+    baseline: 'SmalltalkCI';
+    repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
+    onConflict: [:ex | ex pass];
+    load ] on: Warning do: [:w | w resume ]."
+}
+
 conditional_debug_halt() {
   if ! is_headless && debug_enabled; then
     printf "self halt.\n"
