@@ -1,8 +1,7 @@
 private
 testAndQuit: fullPathToConfig
-	| result |
 	"Convenience method for Bash integration"
-	[ result := self test: fullPathToConfig ]
-		ensure: [ | successful |
-			successful := result ifNotNil: [ result successful ] ifNil: [ false ].
-			SmalltalkCI shutdown: successful ]
+	| successful |
+	successful := false.
+	[ successful := self test: fullPathToConfig ]
+		ensure: [ SmalltalkCI shutdown: successful ]

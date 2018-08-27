@@ -260,11 +260,11 @@ finalize() {
 }
 
 ensure_loaded() {
-  echo "[ Metacello new
+  echo "Smalltalk at: #SmalltalkCI ifAbsent: [ [ Metacello new
     baseline: 'SmalltalkCI';
     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
     onConflict: [:ex | ex pass];
-    load ] on: Warning do: [:w | w resume ]."
+    load ] on: Warning do: [:w | w resume ] ]."
 }
 
 conditional_debug_halt() {

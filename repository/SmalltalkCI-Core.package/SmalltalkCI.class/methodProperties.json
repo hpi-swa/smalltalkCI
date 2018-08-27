@@ -103,7 +103,7 @@
 		"travisFold:id:on:block:" : "fn 10/7/2016 23:55",
 		"travisID" : "fn 10/10/2016 23:33",
 		"travisTime:foldName:on:block:" : "fn 12/8/2016 09:53",
-		"withBuildStatusReportingDo:" : "fn 11/20/2017 12:55",
+		"withBuildStatusReportingDo:" : "fn 8/27/2018 21:55",
 		"workingDirectory" : "fn 10/16/2016 16:28" },
 	"instance" : {
 		"basicLoad" : "fn 11/21/2017 11:10",
@@ -118,7 +118,7 @@
 		"imageInfo" : "fn 10/21/2016 16:18",
 		"initialize" : "fn 11/3/2016 18:27",
 		"isCoverageTestingEnabled" : "PeterUhnak 10/20/2017 12:33",
-		"load" : "fn 11/20/2017 11:56",
+		"load" : "fn 8/27/2018 21:56",
 		"performMetacelloLoad:" : "fn 4/15/2016 10:47",
 		"prepareForLoading" : "fn 11/1/2017 13:47",
 		"prepareForTesting" : "fn 11/1/2017 13:47",
@@ -128,5 +128,5 @@
 		"reportImageInfo" : "fn 10/21/2016 16:18",
 		"reportResults:" : "fn 11/21/2017 12:08",
 		"runTests" : "fn 11/10/2017 19:28",
-		"test" : "fn 8/27/2018 20:04",
+		"test" : "fn 8/27/2018 21:57",
 		"testCI" : "fn 11/11/2017 15:02" } }
