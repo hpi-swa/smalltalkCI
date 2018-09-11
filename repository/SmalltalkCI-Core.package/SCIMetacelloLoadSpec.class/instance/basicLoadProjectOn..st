@@ -10,6 +10,7 @@ basicLoadProjectOn: aSmalltalkCI
     baseline: self baseline;
     configuration: self configuration;
     version: self version.
+  self onConflictUseLoaded ifTrue:[ metacello onConflictUseLoaded ].
   metacello copy get.	"compensate for older versions of Metacello"
   
   self withExceptionHandlerDo: [
