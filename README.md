@@ -470,7 +470,7 @@ SmalltalkCISpec {
     #failOnSCIDeprecationWarnings : false, // Fail if a deprecated smalltalkCI API is used
     #failOnZeroTests : false, // Pass builds that did not run any tests
     #hidePassingTests : true, // Hide passing tests when printing to stdout
-    #disableFuel: true // Disable serialization of failing testcase with Fuel
+    #disableSerializeError: true // Disable serialization of failing testcase (e.g. with Fuel in Pharo)
   }
 }
 ```
