@@ -8,8 +8,8 @@ runCase: aTestCase
 			on: self class errorExceptions
 			do: [ :err |
 				result testError: err.
-				(aTestCase shouldPass & (self spec testing at: #disableFuel ifAbsent:[false]) not) 
-					ifTrue: [ self serializeError: result testError of: aTestCase].
+				(aTestCase shouldPass & (self spec testing at: #disableFuel ifAbsent:[ false ]) not) 
+					ifTrue: [ self serializeError: result testError of: aTestCase ].
 				result stack: (self stackTraceString: err of: aTestCase) ] ]
 					on: self class skipExceptions
 					do: [ :skip | result skipped: true ] ]).
