@@ -1,14 +1,15 @@
 {
+	"commentStamp" : "",
+	"super" : "SCIAbstractLoadSpec",
 	"category" : "SmalltalkCI-Core",
 	"classinstvars" : [
-		"PlatformClass" ],
-	"classvars" : [
-		 ],
-	"commentStamp" : "",
+		"PlatformClass"
+	],
+	"pools" : [ ],
+	"classvars" : [ ],
 	"instvars" : [
-		"path" ],
+		"path"
+	],
 	"name" : "SCICustomScript",
-	"pools" : [
-		 ],
-	"super" : "SCIAbstractLoadSpec",
-	"type" : "normal" }
+	"type" : "normal"
+}
