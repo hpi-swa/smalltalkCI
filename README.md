@@ -383,6 +383,8 @@ SCIMetacelloLoadSpec {
   #directory : 'packages',                            // Path to packages if FileTree is used
   #repository : 'http://smalltalkhub.com/mc/...',     // Alternatively, define MC repository
   #onWarningLog : true,                               // Log Warning messages to Transcript
+  #onConflict : #useIncoming,                         // When there is a conflict between loaded sources and incoming sources (can be #useIncoming|#useLoaded)
+  #onUpgrade : #useIncoming,                          // When loaded sources are an older version than incoming sources (can be #useIncoming|#useLoaded)
   #failOn : [ #OCUndeclaredVariableWarning ],         // Fail build on provided list of Warnings
   #useLatestMetacello : true,                         // Upgrade Metacello before loading
   #load : [ 'default' ],                              // Define MC load attributes
