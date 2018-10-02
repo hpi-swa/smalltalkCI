@@ -13,6 +13,8 @@ basicLoadProjectOn: aSmalltalkCI
 		configuration: self configuration;
 		version: self version.
 
+	self ignoreImage ifTrue: [
+		metacello ignoreImage ].
 	self onConflict ifNotNil: [ :selector |
 		metacello onConflict: [ :ex :loaded :incoming | ex perform: selector ]].
 	self onUpgrade ifNotNil: [ :selector |

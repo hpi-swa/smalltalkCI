@@ -1,17 +1,18 @@
 {
+	"commentStamp" : "",
+	"super" : "SCIObjectWithSpec",
 	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [
-		 ],
+	"classinstvars" : [ ],
+	"pools" : [ ],
 	"classvars" : [
 		"DeprecationWarnings",
 		"PlatformClass",
-		"TravisID" ],
-	"commentStamp" : "",
+		"TravisID"
+	],
 	"instvars" : [
 		"projectDirectory",
-		"coverageWrappers" ],
+		"coverageWrappers"
+	],
 	"name" : "SmalltalkCI",
-	"pools" : [
-		 ],
-	"super" : "SCIObjectWithSpec",
-	"type" : "normal" }
+	"type" : "normal"
+}
