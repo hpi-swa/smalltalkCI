@@ -204,7 +204,7 @@ gemstone::load_project() {
   local status=0
 
   fold_start load_server_project "Loading server project..."
-    travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
+    travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T ${GSCI_TOC:-100000} << EOF || status=$?
       iferr 1 stk
       iferr 2 stack
       iferr 3 exit 1
@@ -243,7 +243,7 @@ gemstone::test_project() {
   local status=0
   local failing_clients=()
 
-  travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
+  travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T ${GSCI_TOC:-100000} << EOF || status=$?
     iferr 1 stk
     iferr 2 stack
     iferr 3 exit 1
