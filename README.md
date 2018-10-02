@@ -384,6 +384,7 @@ SCIMetacelloLoadSpec {
   #repository : 'http://smalltalkhub.com/mc/...',     // Alternatively, define MC repository
   #onConflict : #useIncoming,                         // When there is a conflict between loaded sources and incoming sources (can be #useIncoming|#useLoaded)
   #onUpgrade : #useIncoming,                          // When loaded sources are an older version than incoming sources (can be #useIncoming|#useLoaded)
+  #ignoreImage : true,                                // If true, Metacello will force the load of a package, overriding a previous exisiting one
   #onWarningLog : true,                               // Log Warning messages to Transcript
   #failOn : [ #OCUndeclaredVariableWarning ],         // Fail build on provided list of Warnings
   #useLatestMetacello : true,                         // Upgrade Metacello before loading
