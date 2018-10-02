@@ -23,4 +23,6 @@ basicLoadProjectOn: aSmalltalkCI
 	metacello copy get.	"compensate for older versions of Metacello"
 	self withExceptionHandlerDo: [ 
 		aSmalltalkCI performMetacelloLoad: [ 
-			metacello load: self load ] ]
+			[ metacello load: self load ]
+			on: MetacelloIgnorePackageLoaded
+			do: [ :e | e resume: self ignoreImage ] ] ]
