@@ -382,7 +382,7 @@ SCIMetacelloLoadSpec {
   #configuration : 'MyProject',                       // Alternatively, define MC Configuration
   #directory : 'packages',                            // Path to packages if FileTree is used
   #failOn : [ #OCUndeclaredVariableWarning ],         // Fail build on provided list of Warnings
-  #ignoreImage : true,                                // If true, Metacello will force the load of a package, overriding a previous exisiting one
+  #ignoreImage : true,                                // If true, Metacello will force the load of a package, overriding a previous existing one
   #load : [ 'default' ],                              // Define MC load attributes
   #onConflict : #useIncoming,                         // When there is a conflict between loaded sources and incoming sources (can be #useIncoming|#useLoaded)
   #onUpgrade : #useIncoming,                          // When loaded sources are an older version than incoming sources (can be #useIncoming|#useLoaded)
