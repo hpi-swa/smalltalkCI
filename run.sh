@@ -196,7 +196,7 @@ in ${project_home}."
 #   config_smalltalk
 ################################################################################
 select_smalltalk() {
-  local images="Squeak-trunk Squeak-5.1 Squeak-5.0 Squeak-4.6 Squeak-4.5
+  local images="Squeak-trunk Squeak-5.2 Squeak-5.1 Squeak-5.0 Squeak-4.6 Squeak-4.5
                 Pharo-stable Pharo-alpha Pharo-7.0 Pharo-6.0 Pharo-5.0 Pharo-4.0
                 Pharo-3.0
                 Pharo64-stable Pharo64-alpha Pharo64-7.0 Pharo64-6.1 Pharo64-6.0

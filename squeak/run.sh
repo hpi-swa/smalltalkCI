@@ -16,6 +16,9 @@ squeak::download_image() {
   local download_name
 
   case "${smalltalk_name}" in
+    "Squeak-5.2"|"Squeak5.2")
+      download_name="Squeak-5.2.tar.gz"
+      ;;
     "Squeak-5.1"|"Squeak5.1")
       download_name="Squeak-5.1.tar.gz"
       ;;

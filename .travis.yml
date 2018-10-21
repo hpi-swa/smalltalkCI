@@ -24,7 +24,7 @@ aliases:
 jobs:
   include:
     - stage: "Prioritized jobs"
-      smalltalk: Squeak-5.1
+      smalltalk: Squeak-5.2
     - smalltalk: Pharo-stable
     - smalltalk: GemStone-3.3.2
       env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
@@ -60,7 +60,9 @@ jobs:
     - smalltalk: Moose-trunk
 
     - stage: "Linux jobs"
-      smalltalk: Squeak-5.0
+    - smalltalk: Squeak-5.2
+    - smalltalk: Squeak-5.1
+    - smalltalk: Squeak-5.0
     - smalltalk: Squeak-4.6
     - smalltalk: Squeak-4.5
     - smalltalk: Pharo64-7.0
