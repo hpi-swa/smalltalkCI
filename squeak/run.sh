@@ -4,7 +4,7 @@
 ################################################################################
 
 readonly BASE_DOWNLOAD="${GITHUB_REPO_URL}/releases/download"
-readonly BASE_DOWNLOAD_IMAGE="${BASE_DOWNLOAD}/v2.7.5"
+readonly BASE_DOWNLOAD_IMAGE="${BASE_DOWNLOAD}/v2.8.3"
 readonly BASE_DOWNLOAD_VM="${BASE_DOWNLOAD}/v2.8.0"
 readonly OSVM_VERSION="201807260206"
 
