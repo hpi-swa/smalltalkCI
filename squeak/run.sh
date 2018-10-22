@@ -4,7 +4,6 @@
 ################################################################################
 
 readonly BASE_DOWNLOAD="${GITHUB_REPO_URL}/releases/download"
-readonly BASE_DOWNLOAD_IMAGE="${BASE_DOWNLOAD}/v2.8.3"
 readonly BASE_DOWNLOAD_VM="${BASE_DOWNLOAD}/v2.8.0"
 readonly OSVM_VERSION="201807260206"
 
@@ -14,29 +13,35 @@ readonly OSVM_VERSION="201807260206"
 squeak::download_image() {
   local smalltalk_name=$1
   local download_name
+  local git_tag
 
   case "${smalltalk_name}" in
     "Squeak-5.2"|"Squeak5.2")
       download_name="Squeak-5.2.tar.gz"
+      git_tag="v2.8.3"
       ;;
     "Squeak-5.1"|"Squeak5.1")
       download_name="Squeak-5.1.tar.gz"
+      git_tag="v2.7.5"
       ;;
     "Squeak-5.0"|"Squeak5.0")
       download_name="Squeak-5.0.tar.gz"
+      git_tag="v2.7.5"
       ;;
     "Squeak-4.6"|"Squeak4.6")
       download_name="Squeak-4.6.tar.gz"
+      git_tag="v2.7.5"
       ;;
     "Squeak-4.5"|"Squeak4.5")
       download_name="Squeak-4.5.tar.gz"
+      git_tag="v2.7.5"
       ;;
     *)
       print_error_and_exit "Unsupported Squeak version '${smalltalk_name}'."
       ;;
   esac
 
-  squeak::download_prepared_image "${download_name}"
+  squeak::download_prepared_image "${download_name}" "${git_tag}"
 }
 
 ################################################################################
@@ -44,7 +49,8 @@ squeak::download_image() {
 ################################################################################
 squeak::download_prepared_image() {
   local download_name=$1
-  local download_url="${BASE_DOWNLOAD_IMAGE}/${download_name}"
+  local git_tag=$2
+  local download_url="${BASE_DOWNLOAD}/${git_tag}/${download_name}"
   local target="${SMALLTALK_CI_CACHE}/${download_name}"
 
   if ! is_file "${target}"; then
@@ -66,9 +72,10 @@ squeak::download_prepared_image() {
 ################################################################################
 squeak::download_trunk_image() {
   local target="${SMALLTALK_CI_BUILD}/trunk.tar.gz"
+  local git_tag="v2.8.3"
 
   fold_start download_image "Downloading ${config_smalltalk} image..."
-    download_file "${BASE_DOWNLOAD_IMAGE}/Squeak-trunk.tar.gz" "${target}"
+    download_file "${BASE_DOWNLOAD}/${git_tag}/Squeak-trunk.tar.gz" "${target}"
     extract_file "${target}" "${SMALLTALK_CI_BUILD}"
     mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_BUILD}/TravisCI.image"
     mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_BUILD}/TravisCI.changes"

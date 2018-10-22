@@ -35,7 +35,7 @@ jobs:
       sudo: false
       script: tests/all_tests.sh
 
-    - smalltalk: Squeak-5.1
+    - smalltalk: Squeak-5.2
       os: osx
     - smalltalk: Pharo-stable
       os: osx
@@ -43,7 +43,7 @@ jobs:
       os: osx
       <<: *with-gemstone-cache-enabled
 
-    - smalltalk: Squeak-5.1
+    - smalltalk: Squeak-5.2
       <<: *ensure-smalltalkci-can-fail
     - smalltalk: Pharo-stable
       <<: *ensure-smalltalkci-can-fail
@@ -60,8 +60,7 @@ jobs:
     - smalltalk: Moose-trunk
 
     - stage: "Linux jobs"
-    - smalltalk: Squeak-5.2
-    - smalltalk: Squeak-5.1
+      smalltalk: Squeak-5.1
     - smalltalk: Squeak-5.0
     - smalltalk: Squeak-4.6
     - smalltalk: Squeak-4.5
@@ -81,7 +80,9 @@ jobs:
       <<: *with-gemstone-cache-enabled
 
     - stage: "Mac jobs"
-      smalltalk: Squeak-5.0
+      smalltalk: Squeak-5.1
+      os: osx
+    - smalltalk: Squeak-5.0
       os: osx
     - smalltalk: Squeak-4.6
       os: osx
