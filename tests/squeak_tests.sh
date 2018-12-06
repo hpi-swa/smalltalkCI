@@ -16,32 +16,32 @@ test_get_vm_details() {
 
   vm_details="$(squeak::get_vm_details "Linux" 1)"
   set_vars vm_filename vm_path "${vm_details}"
-  assertEquals "squeak.cog.spur_linux32x86_itimer_201807260206.tar.gz" "${vm_filename}"
+  assertEquals "squeak.cog.spur_linux32x86_itimer_${OSVM_VERSION}.tar.gz" "${vm_filename}"
   assertEquals "${config_vm_dir}/sqcogspurlinux/squeak" "${vm_path}"
 
   vm_details="$(squeak::get_vm_details "Linux" 0)"
   set_vars vm_filename vm_path "${vm_details}"
-  assertEquals "squeak.cog.v3_linux32x86_itimer_201807260206.tar.gz" "${vm_filename}"
+  assertEquals "squeak.cog.v3_linux32x86_itimer_${OSVM_VERSION}.tar.gz" "${vm_filename}"
   assertEquals "${config_vm_dir}/sqcoglinux/squeak" "${vm_path}"
 
   vm_details="$(squeak::get_vm_details "Darwin" 1)"
   set_vars vm_filename vm_path "${vm_details}"
-  assertEquals "squeak.cog.spur_macos32x86_201807260206.dmg" "${vm_filename}"
+  assertEquals "squeak.cog.spur_macos32x86_${OSVM_VERSION}.dmg" "${vm_filename}"
   assertEquals "${config_vm_dir}/Squeak.app/Contents/MacOS/Squeak" "${vm_path}"
 
   vm_details="$(squeak::get_vm_details "Darwin" 0)"
   set_vars vm_filename vm_path "${vm_details}"
-  assertEquals "squeak.cog.v3_macos32x86_201807260206.dmg" "${vm_filename}"
+  assertEquals "squeak.cog.v3_macos32x86_${OSVM_VERSION}.dmg" "${vm_filename}"
   assertEquals "${config_vm_dir}/Squeak.app/Contents/MacOS/Squeak" "${vm_path}"
 
   vm_details="$(squeak::get_vm_details "CYGWIN_NT-6.1" 1)"
   set_vars vm_filename vm_path "${vm_details}"
-  assertEquals "squeak.cog.spur_win32x86_201807260206.zip" "${vm_filename}"
+  assertEquals "squeak.cog.spur_win32x86_${OSVM_VERSION}.zip" "${vm_filename}"
   assertEquals "${config_vm_dir}/SqueakConsole.exe" "${vm_path}"
 
   vm_details="$(squeak::get_vm_details "CYGWIN_NT-6.1" 0)"
   set_vars vm_filename vm_path "${vm_details}"
-  assertEquals "squeak.cog.v3_win32x86_201807260206.zip" "${vm_filename}"
+  assertEquals "squeak.cog.v3_win32x86_${OSVM_VERSION}.zip" "${vm_filename}"
   assertEquals "${config_vm_dir}/SqueakConsole.exe" "${vm_path}"
 
   set +e

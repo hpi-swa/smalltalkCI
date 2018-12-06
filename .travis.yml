@@ -24,7 +24,7 @@ aliases:
 jobs:
   include:
     - stage: "Prioritized jobs"
-      smalltalk: Squeak-5.2
+      smalltalk: Squeak64-5.2
     - smalltalk: Pharo-stable
     - smalltalk: GemStone-3.3.2
       env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
@@ -53,14 +53,14 @@ jobs:
       <<: *with-gemstone-cache-enabled
 
     - stage: "Allowed failures"
-      smalltalk: Squeak-trunk
+      smalltalk: Squeak64-trunk
     - smalltalk: Pharo64-stable
     - smalltalk: Pharo64-alpha
     - smalltalk: Pharo-alpha
     - smalltalk: Moose-trunk
 
     - stage: "Linux jobs"
-      smalltalk: Squeak-5.1
+      smalltalk: Squeak64-5.1
     - smalltalk: Squeak-5.0
     - smalltalk: Squeak-4.6
     - smalltalk: Squeak-4.5
@@ -80,7 +80,7 @@ jobs:
       <<: *with-gemstone-cache-enabled
 
     - stage: "Mac jobs"
-      smalltalk: Squeak-5.1
+      smalltalk: Squeak64-5.1
       os: osx
     - smalltalk: Squeak-5.0
       os: osx
@@ -108,7 +108,7 @@ jobs:
 ##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
 
   allow_failures:
-    - smalltalk: Squeak-trunk
+    - smalltalk: Squeak64-trunk
     - smalltalk: Pharo64-alpha
     - smalltalk: Pharo-alpha
     - smalltalk: Moose-trunk

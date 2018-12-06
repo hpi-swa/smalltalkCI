@@ -4,8 +4,8 @@
 ################################################################################
 
 readonly BASE_DOWNLOAD="${GITHUB_REPO_URL}/releases/download"
-readonly BASE_DOWNLOAD_VM="${BASE_DOWNLOAD}/v2.8.0"
-readonly OSVM_VERSION="201807260206"
+readonly BASE_DOWNLOAD_VM="${BASE_DOWNLOAD}/v2.8.4"
+readonly OSVM_VERSION="201810190412"
 
 ################################################################################
 # Download Squeak image.
@@ -16,6 +16,14 @@ squeak::download_image() {
   local git_tag
 
   case "${smalltalk_name}" in
+    "Squeak64-5.2")
+      download_name="Squeak64-5.2.tar.gz"
+      git_tag="v2.8.4"
+      ;;
+    "Squeak64-5.1")
+      download_name="Squeak64-5.1.tar.gz"
+      git_tag="v2.8.4"
+      ;;
     "Squeak-5.2"|"Squeak5.2")
       download_name="Squeak-5.2.tar.gz"
       git_tag="v2.8.3"
@@ -50,17 +58,21 @@ squeak::download_image() {
 squeak::download_prepared_image() {
   local download_name=$1
   local git_tag=$2
-  local download_url="${BASE_DOWNLOAD}/${git_tag}/${download_name}"
   local target="${SMALLTALK_CI_CACHE}/${download_name}"
 
   if ! is_file "${target}"; then
     fold_start download_image "Downloading '${download_name}' testing image..."
-      download_file "${download_url}" "${target}"
+      download_file "${BASE_DOWNLOAD}/${git_tag}/${download_name}" "${target}"
     fold_end download_image
   fi
 
   print_info "Extracting image..."
   extract_file "${target}" "${SMALLTALK_CI_BUILD}"
+  # TODO: cleanup soon, some archives still include TravisCI.(image|changes)
+  if ! is_file "${SMALLTALK_CI_IMAGE}"; then 
+    mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_IMAGE}"
+    mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_CHANGES}"
+  fi
 
   if ! is_file "${SMALLTALK_CI_IMAGE}"; then
     print_error_and_exit "Failed to prepare image at '${SMALLTALK_CI_IMAGE}'."
@@ -71,14 +83,22 @@ squeak::download_prepared_image() {
 # Download trunk image and extract it.
 ################################################################################
 squeak::download_trunk_image() {
-  local target="${SMALLTALK_CI_BUILD}/trunk.tar.gz"
-  local git_tag="v2.8.3"
+  local target
+  local download_name
+  local git_tag="v2.8.4" # 32bit/64bit are kept in sync
+
+  if is_64bit; then
+    download_name="Squeak64-trunk.tar.gz"
+  else
+    download_name="Squeak-trunk.tar.gz"
+  fi
+  target="${SMALLTALK_CI_BUILD}/${download_name}"
 
   fold_start download_image "Downloading ${config_smalltalk} image..."
-    download_file "${BASE_DOWNLOAD}/${git_tag}/Squeak-trunk.tar.gz" "${target}"
+    download_file "${BASE_DOWNLOAD}/${git_tag}/${download_name}" "${target}"
     extract_file "${target}" "${SMALLTALK_CI_BUILD}"
-    mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_BUILD}/TravisCI.image"
-    mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_BUILD}/TravisCI.changes"
+    mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_IMAGE}"
+    mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_CHANGES}"
   fold_end download_image
 
   if ! is_file "${SMALLTALK_CI_IMAGE}"; then
@@ -122,21 +142,37 @@ squeak::get_vm_details() {
 
   case "${os_name}" in
     "Linux")
-      vm_arch="linux32x86_itimer"
+      if is_64bit; then
+        vm_arch="linux64x64_itimer"
+      else
+        vm_arch="linux32x86_itimer"
+      fi
       vm_file_ext="tar.gz"
       if [[ "${require_spur}" -eq 1 ]]; then
-        vm_path="${config_vm_dir}/sqcogspurlinux/squeak"
+        if is_64bit; then
+          vm_path="${config_vm_dir}/sqcogspur64linux/squeak"
+        else
+          vm_path="${config_vm_dir}/sqcogspurlinux/squeak"
+        fi
       else
         vm_path="${config_vm_dir}/sqcoglinux/squeak"
       fi
       ;;
     "Darwin")
-      vm_arch="macos32x86"
+      if is_64bit; then
+        vm_arch="macos64x64"
+      else
+        vm_arch="macos32x86"
+      fi
       vm_file_ext="dmg"
       vm_path="${config_vm_dir}/Squeak.app/Contents/MacOS/Squeak"
       ;;
     "CYGWIN_NT-"*)
-      vm_arch="win32x86"
+      if is_64bit; then
+        vm_arch="win64x64"
+      else
+        vm_arch="win32x86"
+      fi
       vm_file_ext="zip"
       vm_path="${config_vm_dir}/SqueakConsole.exe"
       ;;
