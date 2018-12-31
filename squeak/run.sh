@@ -24,23 +24,23 @@ squeak::download_image() {
       download_name="Squeak64-5.1.tar.gz"
       git_tag="v2.8.4"
       ;;
-    "Squeak-5.2"|"Squeak5.2")
+    "Squeak32-5.2"|"Squeak-5.2"|"Squeak5.2")
       download_name="Squeak-5.2.tar.gz"
       git_tag="v2.8.3"
       ;;
-    "Squeak-5.1"|"Squeak5.1")
+    "Squeak32-5.1"|"Squeak-5.1"|"Squeak5.1")
       download_name="Squeak-5.1.tar.gz"
       git_tag="v2.7.5"
       ;;
-    "Squeak-5.0"|"Squeak5.0")
+    "Squeak32-5.0"|"Squeak-5.0"|"Squeak5.0")
       download_name="Squeak-5.0.tar.gz"
       git_tag="v2.7.5"
       ;;
-    "Squeak-4.6"|"Squeak4.6")
+    "Squeak32-4.6"|"Squeak-4.6"|"Squeak4.6")
       download_name="Squeak-4.6.tar.gz"
       git_tag="v2.7.5"
       ;;
-    "Squeak-4.5"|"Squeak4.5")
+    "Squeak32-4.5"|"Squeak-4.5"|"Squeak4.5")
       download_name="Squeak-4.5.tar.gz"
       git_tag="v2.7.5"
       ;;

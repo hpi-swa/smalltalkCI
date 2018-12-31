@@ -150,23 +150,23 @@ gemstone::prepare_optional_clients() {
   for version in "${DEVKIT_CLIENTS[@]}"
   do
     case "${version}" in
-      "Pharo-6.0")
+      "Pharo32-6.0"|"Pharo-6.0")
         client_version="Pharo6.0"
         client_extension="Pharo6.0"
         ;;
-      "Pharo-6.1")
+      "Pharo32-6.1"|"Pharo-6.1")
         client_version="Pharo6.1"
         client_extension="Pharo6.1"
         ;;
-      "Pharo-5.0")
+      "Pharo32-5.0"|"Pharo-5.0")
         client_version="Pharo5.0"
         client_extension="Pharo5.0"
         ;;
-      "Pharo-4.0")
+      "Pharo32-4.0"|"Pharo-4.0")
         client_version="Pharo4.0"
         client_extension="Pharo4.0"
         ;;
-      "Pharo-3.0")
+      "Pharo32-3.0"|"Pharo-3.0")
         client_version="Pharo3.0"
         client_extension="Pharo3.0"
         ;;

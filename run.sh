@@ -197,12 +197,14 @@ in ${project_home}."
 ################################################################################
 select_smalltalk() {
   local images="Squeak64-trunk Squeak64-5.2 Squeak64-5.1
-                Squeak-trunk Squeak-5.2 Squeak-5.1 Squeak-5.0 Squeak-4.6 Squeak-4.5
+                Squeak32-trunk Squeak32-5.2 Squeak32-5.1 Squeak32-5.0
+                Squeak32-4.6 Squeak32-4.5
                 Pharo64-stable Pharo64-alpha Pharo64-7.0 Pharo64-6.1 Pharo64-6.0
-                Pharo-stable Pharo-alpha Pharo-7.0 Pharo-6.0 Pharo-5.0 Pharo-4.0
-                Pharo-3.0
-                GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6
-                Moose-trunk Moose-6.1 Moose-6.0"
+                Pharo32-stable Pharo32-alpha Pharo32-7.0 Pharo32-6.0 Pharo32-5.0
+                Pharo32-4.0 Pharo32-3.0
+                GemStone64-3.3.2 GemStone64-3.3.0 GemStone64-3.2.12
+                GemStone64-3.1.0.6
+                Moose32-trunk Moose32-6.1 Moose32-6.0"
 
   if is_not_empty "${config_smalltalk}"; then
     return
@@ -238,6 +240,11 @@ select_smalltalk() {
 validate_configuration() {
   if is_empty "${config_smalltalk}"; then
     print_error_and_exit "Smalltalk image is not defined."
+  fi
+  if [[ "${config_smalltalk}" != *"64-"* ]] && \
+     [[ "${config_smalltalk}" != *"32-"* ]]; then
+    print_notice 'Please consider explicitly specifying image architecture
+(Example: use `Squeak64-trunk` instead of `Squeak-trunk`).'
   fi
   if is_empty "${config_ston}"; then
     print_error_and_exit "No STON file found."

@@ -91,14 +91,14 @@ language: smalltalk
 sudo: false
 os: linux
 smalltalk:
-  - GemStone-2.4.7
-  - GemStone-3.1.0.6
-  - GemStone-3.2.12
-  - GemStone-3.3.0
+  - GemStone64-2.4.7
+  - GemStone64-3.1.0.6
+  - GemStone64-3.2.12
+  - GemStone64-3.3.0
 # Do only one build on osx
 matrix:
   include:
-    - smalltalk: GemStone-3.3.0
+    - smalltalk: GemStone64-3.3.0
       os: osx
 cache:
   directories:
@@ -131,12 +131,12 @@ The following steps assume that you are trying to debug Travis test failures in 
 ```shell
 cd $GS_HOME/shared/repos/smalltalkCI
 #
-# Run build using GemStone-3.3.0
+# Run build using GemStone64-3.3.0
 # A stone named travis is created in an existing GsDevKit_home checkout
 #  Note that you will want to delete the travis stone when you are done.
 # Run the build for the tODE using the .smalltalk.ston file for tODE
 #
-./run.sh -s GemStone-3.3.0 --gs-HOME=$GS_HOME $GS_HOME/shared/repos/tode/.smalltalk.ston
+./run.sh -s GemStone64-3.3.0 --gs-HOME=$GS_HOME $GS_HOME/shared/repos/tode/.smalltalk.ston
 ```
 
 At the end of the run, you get a summary of the test failures:
@@ -195,9 +195,9 @@ sudo: false
 os:
   - linux
 env:
-  - GSCI_CLIENTS=( "Pharo-3.0" "Pharo-4.0" "Pharo-5.0" )
+  - GSCI_CLIENTS=( "Pharo32-3.0" "Pharo32-4.0" "Pharo32-5.0" )
 smalltalk:
-  - GemStone-3.3.0
+  - GemStone64-3.3.0
 cache:
   directories:
     - $SMALLTALK_CI_CACHE
@@ -218,14 +218,14 @@ git clone https://github.com/GsDevKit/GemStone-GCI.git
 #
 cd smalltalkCI
 #
-# Run build using GemStone-3.3.0
+# Run build using GemStone64-3.3.0
 # A stone named travis is created in an existing GsDevKit_home checkout
 #  Note that you will want to delete the travis stone when you are done.
 # Run the build for the GemStone-GCI using the .smalltalk.ston file for GemStone-GCI
-# In addition to running the build and tests for GemStone-3.3.0, run client tests for
-#  Pharo-4.0 and Pharo-5.0 against the travis stone.
+# In addition to running the build and tests for GemStone64-3.3.0, run client tests for
+#  Pharo32-4.0 and Pharo32-5.0 against the travis stone.
 #
-./run.sh -s GemStone-3.3.0 --gs-CLIENTS="Pharo-4.0 Pharo-5." --gs-HOME=$GS_HOME $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
+./run.sh -s GemStone64-3.3.0 --gs-CLIENTS="Pharo32-4.0 Pharo32-5." --gs-HOME=$GS_HOME $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
 ```
 
 At the end of the build, the test results are summarized for the server and 2 clients:

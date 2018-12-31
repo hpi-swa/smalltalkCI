@@ -69,16 +69,21 @@ they can take up a lot of space on your drive.*
 
 ## <a name="images"/>List Of Supported Images
 
-| [Squeak][squeak]   | [Pharo][pharo]     | [GemStone][gemstone] | [Moose][moose] |
-| ------------------ | ------------------ | -------------------- | -------------- |
-| `Squeak(64)-trunk` | `Pharo(64)-alpha`  | `GemStone-3.3.x`     | `Moose-trunk`  |
-| `Squeak(64)-5.2`   | `Pharo(64)-stable` | `GemStone-3.2.x`     | `Moose-6.1`    |
-| `Squeak(64)-5.1`   | `Pharo(64)-7.0`    | `GemStone-3.1.0.x`   | `Moose-6.0`    |
-| `Squeak-5.0`       | `Pharo(64)-6.1`    | `Gemstone-2.4.x`     |                |
-| `Squeak-4.6`       | `Pharo(64)-6.0`    |                      |                |
-| `Squeak-4.5`       | `Pharo-5.0`        |                      |                |
-|                    | `Pharo-4.0`        |                      |                |
-|                    | `Pharo-3.0`        |                      |                |
+| [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  |
+| ---------------- | ---------------- | -------------------- | --------------- |
+| `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.3.x`   | `Moose32-trunk` |
+| `Squeak64-5.2`   | `Pharo64-stable` | `GemStone64-3.2.x`   | `Moose32-6.1`   |
+| `Squeak64-5.1`   | `Pharo64-7.0`    | `GemStone64-3.1.0.x` | `Moose32-6.0`   |
+| `Squeak32-trunk` | `Pharo64-6.1`    | `Gemstone64-2.4.x`   |                 |
+| `Squeak32-5.2`   | `Pharo64-6.0`    |                      |                 |
+| `Squeak32-5.1`   | `Pharo32-alpha`  |                      |                 |
+| `Squeak32-5.0`   | `Pharo32-stable` |                      |                 |
+| `Squeak32-4.6`   | `Pharo32-7.0`    |                      |                 |
+| `Squeak32-4.5`   | `Pharo32-6.1`    |                      |                 |
+|                  | `Pharo32-6.0`    |                      |                 |
+|                  | `Pharo32-5.0`    |                      |                 |
+|                  | `Pharo32-4.0`    |                      |                 |
+|                  | `Pharo32-3.0`    |                      |                 |
 
 
 ## <a name="templates"/>Templates
@@ -114,30 +119,24 @@ os:
 
 # Select compatible Smalltalk image(s)
 smalltalk:
-  - Squeak-trunk
-  - Squeak-5.1
-  - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
-
-  - Pharo-alpha
-  - Pharo-stable
-  - Pharo-7.0
-  - Pharo-6.1
-  - Pharo-6.0
-  - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
-
+  - Squeak64-trunk
+  - Squeak64-5.1
+  - Squeak32-4.6
+  - Squeak32-4.5
+  # ...
   - Pharo64-alpha
   - Pharo64-stable
   - Pharo64-7.0
   - Pharo64-6.1
-  - Pharo64-6.0
-
-  - GemStone-3.3.0
-  - GemStone-3.2.12
-  - GemStone-3.1.0.6
+  # ...
+  - Pharo32-alpha
+  - Pharo32-stable
+  - Pharo32-6.1
+  # ...
+  - GemStone64-3.3.2
+  - GemStone64-3.2.12
+  - GemStone64-3.1.0.6
+  # ...
 
 # Override `script` to customize smalltalkCI invocation, e.g.:
 #script:
@@ -163,10 +162,10 @@ environment:
   SCI_RUN: /cygdrive/c/smalltalkCI-master/bin/smalltalkci
   matrix:
     # Currently, only Squeak and Pharo images are supported on AppVeyor.
-    - SMALLTALK: Squeak-trunk
-    - SMALLTALK: Squeak-5.0
-    - SMALLTALK: Pharo-6.0
-    - SMALLTALK: Pharo-5.0
+    - SMALLTALK: Squeak64-trunk
+    - SMALLTALK: Squeak32-5.0
+    - SMALLTALK: Pharo64-alpha
+    - SMALLTALK: Pharo32-6.0
     # ...
 
 platform:
@@ -188,17 +187,17 @@ test_script:
 ```yml
 image: hpiswa/smalltalkci
 
-SqueakTrunk:
-  script: smalltalkci -s "Squeak-trunk"
+Squeak64Trunk:
+  script: smalltalkci -s "Squeak64-trunk"
 
-Squeak5.1:
-  script: smalltalkci -s "Squeak-5.1"
+Squeak325.1:
+  script: smalltalkci -s "Squeak32-5.1"
 
-PharoAlpha:
-  script: smalltalkci -s "Pharo-alpha"
+Pharo64Alpha:
+  script: smalltalkci -s "Pharo64-alpha"
   
-Pharo7.0:
-  script: smalltalkci -s "Pharo-7.0"
+Pharo327.0:
+  script: smalltalkci -s "Pharo32-7.0"
 
 # ...
 ```
@@ -216,8 +215,8 @@ language: smalltalk
 sudo: false
 
 smalltalk:
-  - Squeak-trunk
-  - Pharo-alpha
+  - Squeak64-trunk
+  - Pharo64-alpha
 
 smalltalk_config:
   - .smalltalk.ston
@@ -241,12 +240,12 @@ SmalltalkCISpec {
 
 #### Resulting build matrix
 
-| Smalltalk      | Config               | OS    |
-| -------------- | -------------------- | ----- |
-| `Squeak-trunk` | `.smalltalk.ston`    | Linux |
-| `Squeak-trunk` | `.bleedingEdge.ston` | Linux |
-| `Pharo-alpha`  | `.smalltalk.ston`    | Linux |
-| `Pharo-alpha`  | `.bleedingEdge.ston` | Linux |
+| Smalltalk        | Config               | OS    |
+| ---------------- | -------------------- | ----- |
+| `Squeak64-trunk` | `.smalltalk.ston`    | Linux |
+| `Squeak64-trunk` | `.bleedingEdge.ston` | Linux |
+| `Pharo64-alpha`  | `.smalltalk.ston`    | Linux |
+| `Pharo64-alpha`  | `.bleedingEdge.ston` | Linux |
 
 </details>
 
@@ -263,14 +262,14 @@ sudo: false
 os: osx
 
 smalltalk:
-  - Squeak-5.1
-  - Pharo-6.0
+  - Squeak32-5.1
+  - Pharo32-6.0
 
 matrix:
   include:
-    - smalltalk: Squeak-trunk
+    - smalltalk: Squeak64-trunk
       smalltalk_config: .bleedingEdge.ston
-    - smalltalk: Pharo-alpha
+    - smalltalk: Pharo64-alpha
       smalltalk_config: .bleedingEdge.ston
   allow_failures: # Allow bleeding edge builds to fail
     - smalltalk_config: .bleedingEdge.ston
@@ -278,12 +277,12 @@ matrix:
 
 #### Resulting build matrix
 
-| Smalltalk      | Config               | OS    |
-| -------------- | -------------------- | ----- |
-| `Squeak-5.1`   | `.smalltalk.ston`    | macOS |
-| `Pharo-6.0`    | `.smalltalk.ston`    | macOS |
-| `Squeak-trunk` | `.bleedingEdge.ston` | macOS |
-| `Pharo-alpha`  | `.bleedingEdge.ston` | macOS |
+| Smalltalk        | Config               | OS    |
+| ---------------- | -------------------- | ----- |
+| `Squeak32-5.1`   | `.smalltalk.ston`    | macOS |
+| `Pharo32-6.0`    | `.smalltalk.ston`    | macOS |
+| `Squeak64-trunk` | `.bleedingEdge.ston` | macOS |
+| `Pharo64-alpha`  | `.bleedingEdge.ston` | macOS |
 
 </details>
 
@@ -303,11 +302,11 @@ environment:
   SCI_RUN: /cygdrive/c/SMALLTALKCI-master/bin/smalltalkci
 
   matrix:
-    - SMALLTALK: Squeak-5.1
-    - SMALLTALK: Squeak-trunk
+    - SMALLTALK: Squeak32-5.1
+    - SMALLTALK: Squeak64-trunk
       SMALLTALK_CONFIG: .bleedingEdge.ston
-    - SMALLTALK: Pharo-6.0
-    - SMALLTALK: Pharo-alpha
+    - SMALLTALK: Pharo32-6.0
+    - SMALLTALK: Pharo64-alpha
       SMALLTALK_CONFIG: .bleedingEdge.ston
 
 platform:
@@ -326,12 +325,12 @@ test_script:
 
 #### Resulting build matrix
 
-| Smalltalk      | Config               |
-| -------------- | -------------------- |
-| `Squeak-5.1`   | `.smalltalk.ston`    |
-| `Squeak-trunk` | `.bleedingEdge.ston` |
-| `Pharo-6.0`    | `.smalltalk.ston`    |
-| `Pharo-alpha`  | `.bleedingEdge.ston` |
+| Smalltalk        | Config               |
+| ---------------- | -------------------- |
+| `Squeak32-5.1`   | `.smalltalk.ston`    |
+| `Squeak64-trunk` | `.bleedingEdge.ston` |
+| `Pharo32-6.0`    | `.smalltalk.ston`    |
+| `Pharo64-alpha`  | `.bleedingEdge.ston` |
 
 </details>
 

@@ -7,26 +7,26 @@ source "${BASE}/pharo/run.sh"
 test_get_image_url() {
   local image_url
 
-  image_url="$(pharo::get_image_url "Pharo-alpha")"
+  image_url="$(pharo::get_image_url "Pharo32-alpha")"
   assertEquals "get.pharo.org/alpha" "${image_url}"
 
-  image_url="$(pharo::get_image_url "Pharo-stable")"
+  image_url="$(pharo::get_image_url "Pharo32-stable")"
   assertEquals "get.pharo.org/stable" "${image_url}"
 
-  image_url="$(pharo::get_image_url "Pharo-6.0")"
+  image_url="$(pharo::get_image_url "Pharo32-6.0")"
   assertEquals "get.pharo.org/60" "${image_url}"
 
-  image_url="$(pharo::get_image_url "Pharo-5.0")"
+  image_url="$(pharo::get_image_url "Pharo32-5.0")"
   assertEquals "get.pharo.org/50" "${image_url}"
 
-  image_url="$(pharo::get_image_url "Pharo-4.0")"
+  image_url="$(pharo::get_image_url "Pharo32-4.0")"
   assertEquals "get.pharo.org/40" "${image_url}"
 
-  image_url="$(pharo::get_image_url "Pharo-3.0")"
+  image_url="$(pharo::get_image_url "Pharo32-3.0")"
   assertEquals "get.pharo.org/30" "${image_url}"
 
   set +e
-  $(image_url="$(pharo::get_image_url "Pharo-alpha" 2>/dev/null)") \
+  $(image_url="$(pharo::get_image_url "Pharo32-alpha" 2>/dev/null)") \
       || fail "Should be successful."
   $(image_url="$(pharo::get_image_url "" 2>/dev/null)") \
       && fail "Should not be successful."
@@ -38,29 +38,29 @@ test_get_image_url() {
 test_get_vm_url() {
   local vm_url
 
-  vm_url="$(pharo::get_vm_url "Pharo-alpha")"
+  vm_url="$(pharo::get_vm_url "Pharo32-alpha")"
   assertEquals "get.pharo.org/vmLatest70" "${vm_url}"
 
-  vm_url="$(pharo::get_vm_url "Pharo-stable")"
+  vm_url="$(pharo::get_vm_url "Pharo32-stable")"
   assertEquals "get.pharo.org/vm61" "${vm_url}"
 
-  vm_url="$(pharo::get_vm_url "Pharo-7.0")"
+  vm_url="$(pharo::get_vm_url "Pharo32-7.0")"
   assertEquals "get.pharo.org/vm70" "${vm_url}"
 
-  vm_url="$(pharo::get_vm_url "Pharo-6.0")"
+  vm_url="$(pharo::get_vm_url "Pharo32-6.0")"
   assertEquals "get.pharo.org/vm60" "${vm_url}"
 
-  vm_url="$(pharo::get_vm_url "Pharo-5.0")"
+  vm_url="$(pharo::get_vm_url "Pharo32-5.0")"
   assertEquals "get.pharo.org/vm50" "${vm_url}"
 
-  vm_url="$(pharo::get_vm_url "Pharo-4.0")"
+  vm_url="$(pharo::get_vm_url "Pharo32-4.0")"
   assertEquals "get.pharo.org/vm40" "${vm_url}"
 
-  vm_url="$(pharo::get_vm_url "Pharo-3.0")"
+  vm_url="$(pharo::get_vm_url "Pharo32-3.0")"
   assertEquals "get.pharo.org/vm30" "${vm_url}"
 
   set +e
-  $(vm_url="$(pharo::get_vm_url "Pharo-alpha" 2>/dev/null)") \
+  $(vm_url="$(pharo::get_vm_url "Pharo32-alpha" 2>/dev/null)") \
       || fail "Should be successful."
   $(vm_url="$(pharo::get_vm_url "" 2>/dev/null)") \
       && fail "Should not be successful."
