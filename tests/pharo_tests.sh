@@ -51,7 +51,7 @@ test_get_vm_url() {
   assertEquals "get.pharo.org/vmLatest80" "${vm_url}"
 
   vm_url="$(pharo::get_vm_url "Pharo32-stable")"
-  assertEquals "get.pharo.org/vm61" "${vm_url}"
+  assertEquals "get.pharo.org/vm70" "${vm_url}"
 
   vm_url="$(pharo::get_vm_url "Pharo32-8.0")"
   assertEquals "get.pharo.org/vm80" "${vm_url}"
