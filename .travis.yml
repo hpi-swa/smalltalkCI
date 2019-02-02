@@ -75,6 +75,7 @@ jobs:
     - smalltalk: Pharo32-5.0
     - smalltalk: Pharo32-4.0
     - smalltalk: Pharo32-3.0
+    - smalltalk: Moose32-7.0
     - smalltalk: Moose32-6.0
     - smalltalk: GemStone64-3.2.15
       <<: *with-gemstone-cache-enabled
