@@ -81,7 +81,7 @@ moose::get_image_url() {
     "Moose32-trunk"|"Moose-trunk")
       moose_name="moose-7.0"
       ;;
-    "Moose32-6"*|"Moose-6"*|"Moose32-7"*|"Moose-7*")
+    "Moose32-6"*|"Moose-6"*|"Moose32-7"*|"Moose-7"*)
       moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)"
       ;;
     *)
