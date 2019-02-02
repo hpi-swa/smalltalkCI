@@ -79,9 +79,9 @@ moose::get_image_url() {
 
   case "${smalltalk_name}" in
     "Moose32-trunk"|"Moose-trunk")
-      moose_name="moose-6.1"
+      moose_name="moose-7.0"
       ;;
-    "Moose32-6"*|"Moose-6"*)
+    "Moose32-6"*|"Moose-6"*|"Moose32-7"*|"Moose-7"*)
       moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)"
       ;;
     *)
@@ -126,10 +126,10 @@ pharo::get_vm_url() {
     "Pharo32-8.0")
       echo "get.pharo.org/vm80"
       ;;
-    "Pharo-stable"|"Pharo32-stable"|"Pharo32-7.0"|"Pharo-7.0")
+    "Pharo-stable"|"Pharo32-stable"|"Pharo32-7.0"|"Pharo-7.0"|"Moose32-trunk"|"Moose-trunk"|"Moose32-7.0"|"Moose-7.0")
       echo "get.pharo.org/vm70"
       ;;
-    "Pharo32-6.1"|"Moose32-trunk"|"Moose32-6.1"|"Pharo-6.1"|"Moose-trunk"|"Moose-6.1")
+    "Pharo32-6.1"|"Moose32-6.1"|"Pharo-6.1"|"Moose-6.1")
       echo "get.pharo.org/vm61"
       ;;
     "Pharo32-6.0"|"Pharo-6.0")

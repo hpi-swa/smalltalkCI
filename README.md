@@ -72,9 +72,9 @@ they can take up a lot of space on your drive.*
 | [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  |
 | ---------------- | ---------------- | -------------------- | --------------- |
 | `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.3.x`   | `Moose32-trunk` |
-| `Squeak64-5.2`   | `Pharo64-stable` | `GemStone64-3.2.x`   | `Moose32-6.1`   |
-| `Squeak64-5.1`   | `Pharo64-8.0`    | `GemStone64-3.1.0.x` | `Moose32-6.0`   |
-| `Squeak32-trunk` | `Pharo64-7.0`    | `Gemstone64-2.4.x`   |                 |
+| `Squeak64-5.2`   | `Pharo64-stable` | `GemStone64-3.2.x`   | `Moose32-7.0`   |
+| `Squeak64-5.1`   | `Pharo64-8.0`    | `GemStone64-3.1.0.x` | `Moose32-6.1`   |
+| `Squeak32-trunk` | `Pharo64-7.0`    | `Gemstone64-2.4.x`   | `Moose32-6.0`   |
 | `Squeak32-5.2`   | `Pharo64-6.1`    |                      |                 |
 | `Squeak32-5.1`   | `Pharo64-6.0`    |                      |                 |
 | `Squeak32-5.0`   | `Pharo32-alpha`  |                      |                 |
