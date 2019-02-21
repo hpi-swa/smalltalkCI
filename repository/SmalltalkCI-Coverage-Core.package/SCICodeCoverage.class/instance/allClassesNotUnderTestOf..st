@@ -1,7 +1,7 @@
 helpers
 allClassesNotUnderTestOf: classes
 	^ ((classes
-		select: [ :class | class theMetaClass includesSelector: #classNamesNotUnderTest])
-		gather: [ :class | class theNonMetaClass classNamesNotUnderTest
+		select: [ :class | (self theMetaClassOf: class) includesSelector: #classNamesNotUnderTest])
+		gather: [ :class | (self theNonMetaClassOf: class) classNamesNotUnderTest
 			collect: [ :className | Smalltalk classNamed: className ]])
 				reject: [ :ea | ea isNil ]
