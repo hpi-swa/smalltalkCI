@@ -75,6 +75,9 @@ jobs:
     - smalltalk: Pharo32-5.0
     - smalltalk: Pharo32-4.0
     - smalltalk: Pharo32-3.0
+    - smalltalk: Moose64-8.0
+    - smalltalk: Moose64-7.0
+    - smalltalk: Moose32-8.0
     - smalltalk: Moose32-7.0
     - smalltalk: Moose32-6.0
     - smalltalk: GemStone64-3.2.15
