@@ -204,7 +204,8 @@ select_smalltalk() {
                 Pharo32-4.0 Pharo32-3.0
                 GemStone64-3.3.2 GemStone64-3.3.0 GemStone64-3.2.12
                 GemStone64-3.1.0.6
-                Moose32-trunk Moose32-7.0 Moose32-6.1 Moose32-6.0"
+                Moose64-trunk Moose64-8.0 Moose64-7.0
+                Moose32-trunk Moose32-8.0 Moose32-7.0 Moose32-6.1 Moose32-6.0"
 
   if is_not_empty "${config_smalltalk}"; then
     return
