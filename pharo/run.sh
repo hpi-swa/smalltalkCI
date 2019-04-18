@@ -81,14 +81,11 @@ moose::get_image_url() {
     "Moose64-trunk")
       moose_name="moose-8.0-64bit"
       ;;
-    "Moose64-8.0")
-      moose_name="moose-8.0-64bit"
-      ;;
-    "Moose64-7.0")
-      moose_name="moose-7.0-64bit"
-      ;;
     "Moose32-trunk"|"Moose-trunk")
       moose_name="moose-8.0"
+      ;;
+    "Moose64-7"*|"Moose64-8"*)
+      moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)-64bit"
       ;;
     "Moose32-6"*|"Moose-6"*|"Moose32-7"*|"Moose-7"*|"Moose32-8"*)
       moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)"
