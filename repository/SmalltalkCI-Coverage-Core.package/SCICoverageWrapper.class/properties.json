@@ -1,16 +1,15 @@
 {
-	"category" : "SmalltalkCI-Coverage-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
+	"super" : "ProtoObject",
+	"category" : "SmalltalkCI-Coverage-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
 	"instvars" : [
 		"hasRun",
 		"reference",
-		"method" ],
+		"method"
+	],
 	"name" : "SCICoverageWrapper",
-	"pools" : [
-		 ],
-	"super" : "ProtoObject",
-	"type" : "normal" }
+	"type" : "normal"
+}

@@ -1,3 +1,3 @@
 coveralls
 coverallsResultFilename
-	^ 'coveralls_results.json'
+	^ self coverallsFilesDirectory / 'coveralls_results.json'
