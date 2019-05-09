@@ -1,0 +1,8 @@
+{
+	"instance" : { },
+	"class" : {
+		"getEnv:" : "fn 12/22/2018 14:20",
+		"stdout" : "GuillermoPolito 10/4/2017 17:56",
+		"isPlatformCompatible" : "fn 4/24/2019 22:00"
+	}
+}
