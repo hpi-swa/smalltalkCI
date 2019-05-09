@@ -1,3 +1,3 @@
 coveralls
 coverallsBuildDataFilename
-	^ self coverallsFilesDirectory / 'coveralls_build_data.json'
+	^ 'coveralls_build_data.json'
