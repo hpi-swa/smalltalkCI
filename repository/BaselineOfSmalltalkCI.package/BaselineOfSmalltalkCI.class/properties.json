@@ -1,11 +1,14 @@
 {
-	"commentStamp" : "",
-	"super" : "BaselineOf",
 	"category" : "BaselineOfSmalltalkCI",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
-	"instvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
 	"name" : "BaselineOfSmalltalkCI",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "BaselineOf",
+	"type" : "normal" }
