@@ -41,28 +41,31 @@ baseline: spec
 					with: [ spec requires: #('SmalltalkCI-Squeak-Core') ];
 			yourself.
 	spec group: 'tests' with: #('SmalltalkCI-Squeak-Tests' 'SmalltalkCI-Coverage-Tests' 'STON-Tests') ].
+
+	spec
+		for: #(#'pharo3.x' #'pharo4.x')
+		do: [ spec
+				configuration: 'Ston'
+				with: [ spec
+						version: #stable;
+						loads: #('Core');
+						repository: 'http://smalltalkhub.com/mc/SvenVanCaekenberghe/STON/main' ].
+			spec
+				package: 'SmalltalkCI-Core'
+				with: [ spec
+						requires: #('Ston');
+						includes: #('Ston') ] ].
+
 	spec
 		for: #'pharo'
 		do: [ 
 			spec
-				configuration: 'Ston'
-				with: [ 
-					spec
-						version: #'stable';
-						loads: #('Core');
-						repository:
-								'http://smalltalkhub.com/mc/SvenVanCaekenberghe/STON/main' ].
-			spec
 				package: 'SmalltalkCI-Core'
-					with: [ 
-							spec
-								requires: #('Ston');
-								includes: #('SmalltalkCI-Pharo-Core' 'Ston') ];
+					with: [ spec includes: #('SmalltalkCI-Pharo-Core') ];
 				package: 'SmalltalkCI-Pharo-Core'
 					with: [ spec requires: #('SmalltalkCI-Core' 'SmalltalkCI-Coverage-Core') ];
 				package: 'SmalltalkCI-Pharo-Tests'
-					with: [ spec requires: #('SmalltalkCI-Pharo-Core') ];
-				yourself.
+					with: [ spec requires: #('SmalltalkCI-Pharo-Core') ].
 	spec group: 'tests' with: #('SmalltalkCI-Pharo-Tests' 'SmalltalkCI-Coverage-Tests') ].
 	spec
 		for: #'gemstone'
