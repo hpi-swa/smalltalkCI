@@ -8,4 +8,4 @@ tearDown
 	(self spec failOnZeroTests and: [ self totalTests == 0 ])
 		ifTrue: [ SCIError signal: 'No tests were executed.
 
-If this is intended, use `#failOnZeroTests : true` in your SmalltalkCISpec.' ].
+If this is intended, use `#failOnZeroTests : false` in your SmalltalkCISpec.' ].

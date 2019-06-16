@@ -80,7 +80,7 @@ print_help() {
                         and server based using the project .smalltalk.ston file.
 
   EXAMPLE:
-    $(basename -- $0) -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
+    $(basename -- $0) -s "Squeak64-trunk" --headfull /path/to/project/.smalltalk.ston
 
 EOF
 }
@@ -172,6 +172,10 @@ image_is_user_provided() {
 
 vm_is_user_provided() {
   is_not_empty "${config_vm}"
+}
+
+is_64bit() {
+  [[ "${config_smalltalk}" == *"64-"* ]]
 }
 
 is_spur_image() {

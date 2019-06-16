@@ -21,6 +21,9 @@ pharo::get_image_url() {
     "Pharo64-stable")
       echo "get.pharo.org/64/stable"
       ;;
+    "Pharo64-8.0")
+      echo "get.pharo.org/64/80"
+      ;;
     "Pharo64-7.0")
       echo "get.pharo.org/64/70"
       ;;
@@ -30,28 +33,31 @@ pharo::get_image_url() {
     "Pharo64-6.0")
       echo "get.pharo.org/64/60"
       ;;
-    "Pharo-alpha")
+    "Pharo32-alpha"|"Pharo-alpha")
       echo "get.pharo.org/alpha"
       ;;
-    "Pharo-stable")
+    "Pharo32-stable"|"Pharo-stable")
       echo "get.pharo.org/stable"
       ;;
-    "Pharo-7.0")
+    "Pharo32-8.0")
+        echo "get.pharo.org/80"
+        ;;
+    "Pharo32-7.0"|"Pharo-7.0")
       echo "get.pharo.org/70"
       ;;
-    "Pharo-6.0")
+    "Pharo32-6.0"|"Pharo-6.0")
       echo "get.pharo.org/60"
       ;;
-    "Pharo-6.1")
+    "Pharo32-6.1"|"Pharo-6.1")
       echo "get.pharo.org/61"
       ;;
-    "Pharo-5.0")
+    "Pharo32-5.0"|"Pharo-5.0")
       echo "get.pharo.org/50"
       ;;
-    "Pharo-4.0")
+    "Pharo32-4.0"|"Pharo-4.0")
       echo "get.pharo.org/40"
       ;;
-    "Pharo-3.0")
+    "Pharo32-3.0"|"Pharo-3.0")
       echo "get.pharo.org/30"
       ;;
     *)
@@ -72,11 +78,17 @@ moose::get_image_url() {
   local moose_name
 
   case "${smalltalk_name}" in
-    "Moose-trunk")
-      moose_name="moose-6.1"
+    "Moose64-trunk")
+      moose_name="moose-8.0-64bit"
       ;;
-    "Moose-6"*)
-      moose_name="$(to_lowercase "${smalltalk_name}")"
+    "Moose32-trunk"|"Moose-trunk")
+      moose_name="moose-8.0"
+      ;;
+    "Moose64-7"*|"Moose64-8"*)
+      moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)-64bit"
+      ;;
+    "Moose32-6"*|"Moose-6"*|"Moose32-7"*|"Moose-7"*|"Moose32-8"*)
+      moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)"
       ;;
     *)
       print_error_and_exit "Unsupported Pharo version '${smalltalk_name}'."
@@ -100,36 +112,42 @@ pharo::get_vm_url() {
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
     "Pharo64-alpha")
-      echo "get.pharo.org/64/vmLatest70"
+      echo "get.pharo.org/64/vmLatest80"
       ;;
-    "Pharo64-7.0")
+    "Pharo64-8.0"|"Moose64-8.0"|"Moose64-trunk")
+      echo "get.pharo.org/64/vm80"
+      ;;
+    "Pharo64-stable"|"Pharo64-7.0"|"Moose64-7.0")
       echo "get.pharo.org/64/vm70"
       ;;
-    "Pharo64-stable"|"Pharo64-6.1")
+    "Pharo64-6.1")
       echo "get.pharo.org/64/vm61"
       ;;
     "Pharo64-6.0")
       echo "get.pharo.org/64/vm60"
       ;;
-    "Pharo-alpha")
-      echo "get.pharo.org/vmLatest70"
+    "Pharo32-alpha"|"Pharo-alpha")
+      echo "get.pharo.org/vmLatest80"
       ;;
-    "Pharo-7.0")
+    "Pharo32-8.0"|"Moose32-8.0"|"Moose32-trunk")
+      echo "get.pharo.org/vm80"
+      ;;
+    "Pharo-stable"|"Pharo32-stable"|"Pharo32-7.0"|"Pharo-7.0"|"Moose32-7.0"|"Moose-7.0")
       echo "get.pharo.org/vm70"
       ;;
-    "Pharo-stable"|"Pharo-6.1"|"Moose-trunk"|"Moose-6.1")
+    "Pharo32-6.1"|"Moose32-6.1"|"Pharo-6.1"|"Moose-6.1")
       echo "get.pharo.org/vm61"
       ;;
-    "Pharo-6.0")
+    "Pharo32-6.0"|"Pharo-6.0")
       echo "get.pharo.org/vm60"
       ;;
-    "Pharo-5.0"|"Moose-6.0")
+    "Pharo32-5.0"|"Moose32-6.0"|"Pharo-5.0"|"Moose-6.0")
       echo "get.pharo.org/vm50"
       ;;
-    "Pharo-4.0")
+    "Pharo32-4.0"|"Pharo-4.0")
       echo "get.pharo.org/vm40"
       ;;
-    "Pharo-3.0")
+    "Pharo32-3.0"|"Pharo-3.0")
       echo "get.pharo.org/vm30"
       ;;
     *)

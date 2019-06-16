@@ -1,6 +1,6 @@
 helpers
 allPackagesUnderTestOf: classes
 	^ (classes
-		select: [ :class | class theMetaClass includesSelector: #packageNamesUnderTest])
-		gather: [ :class | class theNonMetaClass packageNamesUnderTest
+		select: [ :class | (self theMetaClassOf: class) includesSelector: #packageNamesUnderTest])
+		gather: [ :class | (self theNonMetaClassOf: class) packageNamesUnderTest
 			gather: [ :packageName | SmalltalkCI classesInPackage: packageName ]]

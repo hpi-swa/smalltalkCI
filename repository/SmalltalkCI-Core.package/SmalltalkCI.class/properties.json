@@ -1,11 +1,11 @@
 {
 	"category" : "SmalltalkCI-Core",
 	"classinstvars" : [
-		"PlatformClass",
-		"TravisID",
-		"DeprecationWarnings" ],
-	"classvars" : [
 		 ],
+	"classvars" : [
+		"DeprecationWarnings",
+		"PlatformClass",
+		"TravisID" ],
 	"commentStamp" : "",
 	"instvars" : [
 		"projectDirectory",

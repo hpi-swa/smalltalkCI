@@ -150,23 +150,23 @@ gemstone::prepare_optional_clients() {
   for version in "${DEVKIT_CLIENTS[@]}"
   do
     case "${version}" in
-      "Pharo-6.0")
+      "Pharo32-6.0"|"Pharo-6.0")
         client_version="Pharo6.0"
         client_extension="Pharo6.0"
         ;;
-      "Pharo-6.1")
+      "Pharo32-6.1"|"Pharo-6.1")
         client_version="Pharo6.1"
         client_extension="Pharo6.1"
         ;;
-      "Pharo-5.0")
+      "Pharo32-5.0"|"Pharo-5.0")
         client_version="Pharo5.0"
         client_extension="Pharo5.0"
         ;;
-      "Pharo-4.0")
+      "Pharo32-4.0"|"Pharo-4.0")
         client_version="Pharo4.0"
         client_extension="Pharo4.0"
         ;;
-      "Pharo-3.0")
+      "Pharo32-3.0"|"Pharo-3.0")
         client_version="Pharo3.0"
         client_extension="Pharo3.0"
         ;;
@@ -204,7 +204,7 @@ gemstone::load_project() {
   local status=0
 
   fold_start load_server_project "Loading server project..."
-    travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
+    travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T ${GSCI_TOC:-100000} << EOF || status=$?
       iferr 1 stk
       iferr 2 stack
       iferr 3 exit 1
@@ -243,7 +243,7 @@ gemstone::test_project() {
   local status=0
   local failing_clients=()
 
-  travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T 100000 << EOF || status=$?
+  travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T ${GSCI_TOC:-100000} << EOF || status=$?
     iferr 1 stk
     iferr 2 stack
     iferr 3 exit 1

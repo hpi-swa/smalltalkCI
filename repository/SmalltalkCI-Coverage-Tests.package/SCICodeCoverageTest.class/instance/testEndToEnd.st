@@ -3,6 +3,10 @@ testEndToEnd
 	| block coverage |
 	self platformSupportsCoverageTesting ifFalse: [ ^ self ].
 	
+	"Skip on Pharo-6.0 (see #331)."
+	((SmalltalkCI platformSymbol = #pharo) and: [
+		SmalltalkCI platformClass platformNameBeginsWith: 'Pharo6.0' ]) ifTrue: [ ^ self ].
+	
 	block := [
 		self assert: SCICodeCoverageTestTarget new someInstanceMethod].
 	coverage := SmalltalkCI codeCoverageClass new

@@ -1,6 +1,4 @@
 executing
 prepareForLoading
-	self class isHeadless ifTrue: [
-		originalToolSet := ToolSet default: CommandLineToolSet ].
-	SCISqueakTranscript install.
+	self installCustomToolSet.
 	super prepareForLoading
