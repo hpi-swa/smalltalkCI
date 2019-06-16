@@ -26,7 +26,7 @@ jobs:
     - stage: "Prioritized jobs"
       smalltalk: Squeak64-5.2
     - smalltalk: Pharo32-stable
-    - smalltalk: GemStone64-3.3.2
+    - smalltalk: GemStone64-3.5.0
       env: GSCI_CLIENTS="Pharo32-5.0 Pharo32-4.0 Pharo32-3.0"
       <<: *with-gemstone-cache-enabled
 
@@ -39,7 +39,7 @@ jobs:
       os: osx
     - smalltalk: Pharo32-stable
       os: osx
-    - smalltalk: GemStone64-3.3.2
+    - smalltalk: GemStone64-3.5.0
       os: osx
       <<: *with-gemstone-cache-enabled
 
@@ -47,7 +47,7 @@ jobs:
       <<: *ensure-smalltalkci-can-fail
     - smalltalk: Pharo32-stable
       <<: *ensure-smalltalkci-can-fail
-    - smalltalk: GemStone64-3.3.2
+    - smalltalk: GemStone64-3.5.0
       <<: *ensure-smalltalkci-can-fail
       env: GSCI_CLIENTS="Pharo32-5.0 Pharo32-3.0" # latest and oldest clients
       <<: *with-gemstone-cache-enabled
@@ -80,7 +80,11 @@ jobs:
     - smalltalk: Moose32-8.0
     - smalltalk: Moose32-7.0
     - smalltalk: Moose32-6.0
-    - smalltalk: GemStone64-3.2.15
+    - smalltalk: GemStone64-3.4.3
+      <<: *with-gemstone-cache-enabled
+    - smalltalk: GemStone64-3.3.9
+      <<: *with-gemstone-cache-enabled
+    - smalltalk: GemStone64-3.2.17
       <<: *with-gemstone-cache-enabled
     - smalltalk: GemStone64-3.1.0.6
       <<: *with-gemstone-cache-enabled
