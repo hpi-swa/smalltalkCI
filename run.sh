@@ -297,6 +297,10 @@ parse_options() {
       fi
       shift 2
       ;;
+    --no-color)
+      config_color="false"
+      shift
+      ;;
     --no-tracking)
       config_tracking="false"
       shift
@@ -481,6 +485,7 @@ main() {
   local config_debug="false"
   local config_headless="true"
   local config_image=""
+  local config_color="true"
   local config_tracking="true"
   local config_verbose="false"
   local config_vm=""

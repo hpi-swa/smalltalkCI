@@ -16,19 +16,31 @@ readonly ANSI_RESET="\033[0m"
 readonly ANSI_CLEAR="\033[0K"
 
 print_info() {
-  printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
+  if [ "$config_color" == "true" ];
+  then printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
+  else echo "$1"
+  fi
 }
 
 print_notice() {
-  printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
+  if [ "$config_color" == "true" ];
+  then printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
+  else echo "$1"
+  fi
 }
 
 print_success() {
-  printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
+  if [ "$config_color" == "true" ];
+  then printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
+  else echo "$1"
+  fi
 }
 
 print_error() {
-  printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
+  if [ "$config_color" == "true" ];
+  then printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
+  else echo "$1"
+  fi
 }
 
 print_error_and_exit() {
@@ -49,6 +61,7 @@ print_help() {
     --headful           Open vm in headful mode and do not close image.
     --image             Custom image for build (Squeak/Pharo).
     --install           Install symlink to this smalltalkCI instance.
+    --no-color          Disable colored output
     --no-tracking       Disable collection of anonymous build metrics (TravisCI & AppVeyor only).
     -s | --smalltalk    Overwrite Smalltalk image selection.
     --uninstall         Remove symlink to any smalltalkCI instance.
