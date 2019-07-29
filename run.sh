@@ -299,6 +299,10 @@ parse_options() {
       fi
       shift 2
       ;;
+    --no-color)
+      config_colorful="false"
+      shift
+      ;;
     --no-tracking)
       config_tracking="false"
       shift
@@ -370,6 +374,7 @@ prepare_environment() {
 add_env_vars() {
   export SCIII_SMALLTALK="${config_smalltalk}"
   export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
+  export SCIII_COLORFUL="${config_colorful}"
   export SCIII_DEBUG="${config_debug}"
 }
 
@@ -488,6 +493,7 @@ main() {
   local config_debug="false"
   local config_headless="true"
   local config_image=""
+  local config_colorful="true"
   local config_tracking="true"
   local config_verbose="false"
   local config_vm=""
