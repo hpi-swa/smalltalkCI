@@ -16,28 +16,28 @@ readonly ANSI_RESET="\033[0m"
 readonly ANSI_CLEAR="\033[0K"
 
 print_info() {
-  if [ "$config_color" == "true" ];
+  if [ "${config_color:-true}" == "true" ];
   then printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
   else echo "$1"
   fi
 }
 
 print_notice() {
-  if [ "$config_color" == "true" ];
+  if [ "${config_color:-true}" == "true" ];
   then printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
   else echo "$1"
   fi
 }
 
 print_success() {
-  if [ "$config_color" == "true" ];
+  if [ "${config_color:-true}" == "true" ];
   then printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
   else echo "$1"
   fi
 }
 
 print_error() {
-  if [ "$config_color" == "true" ];
+  if [ "${config_color:-true}" == "true" ];
   then printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
   else echo "$1"
   fi
