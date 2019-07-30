@@ -93,7 +93,7 @@ moose::get_image_url() {
       moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)"
         echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
       ;;
-     "Moose64-8")
+     "Moose64-8"*)
       echo "https://ci.inria.fr/moose/view/Moose%208.0/job/Moose-8/ARCHITECTURE=64,PHARO=80,VERSION=development,VM=vm/lastSuccessfulBuild/artifact/Moose.zip"
       ;;
     *)
