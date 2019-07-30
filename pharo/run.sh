@@ -78,25 +78,29 @@ moose::get_image_url() {
   local moose_name
 
   case "${smalltalk_name}" in
-    "Moose64-trunk")
-      moose_name="moose-8.0-64bit"
+    "Moose64-trunk"|"Moose-trunk")
+     echo "https://ci.inria.fr/moose/view/Moose%208.0/job/Moose-8/ARCHITECTURE=64,PHARO=80,VERSION=development,VM=vm/lastSuccessfulBuild/artifact/Moose.zip"
       ;;
-    "Moose32-trunk"|"Moose-trunk")
-      moose_name="moose-8.0"
+    "Moose32-trunk")
+      moose_name="moose-7.0"
+        echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
       ;;
-    "Moose64-7"*|"Moose64-8"*)
+    "Moose64-7"*)
       moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)-64bit"
+        echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
       ;;
-    "Moose32-6"*|"Moose-6"*|"Moose32-7"*|"Moose-7"*|"Moose32-8"*)
+    "Moose32-6"*|"Moose-6"*|"Moose32-7"*|"Moose-7"*)
       moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)"
+        echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
+      ;;
+     "Moose64-8")
+      echo "https://ci.inria.fr/moose/view/Moose%208.0/job/Moose-8/ARCHITECTURE=64,PHARO=80,VERSION=development,VM=vm/lastSuccessfulBuild/artifact/Moose.zip"
       ;;
     *)
       print_error_and_exit "Unsupported Pharo version '${smalltalk_name}'."
       ;;
   esac
 
-  echo "https://ci.inria.fr/moose/job/${moose_name}/\
-lastSuccessfulBuild/artifact/${moose_name}.zip"
 }
 
 ################################################################################
