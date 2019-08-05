@@ -1,1 +1,22 @@
-(name 'SmalltalkCI-Pharo-Tests-fn.7' message 'Testcases need to inherit from TestCase...' id 'a2a36911-8c2a-43d6-9bdf-621a14e402c8' date '14 November 2016' time '2:59:13.629 pm' author 'fn' ancestors ((name 'SmalltalkCI-Pharo-Tests-fn.6' message 'Add testSkip (#234)' id 'acf123ab-75b7-4eb7-a4eb-ce2a7ad2ed54' date '14 November 2016' time '2:51:13.508 pm' author 'fn' ancestors ((name 'SmalltalkCI-Pharo-Tests-fn.5' message 'Add platform-specific testMethodReferenceForSelector test' id 'dee0781a-4da4-476e-aeda-659d0bc3c4fb' date '16 October 2016' time '5:44:27.02 pm' author 'fn' ancestors ((name 'SmalltalkCI-Pharo-Tests-fn.4' message 'Remove Pharo-specific SCIPharoCodeCoverageTest' id 'ba77172b-8f93-47c2-9807-2ec4b60411cb' date '16 October 2016' time '4:55:42.864 pm' author 'fn' ancestors ((name 'SmalltalkCI-Pharo-Tests-fn.3' message 'Fix test' id '61f9da73-2409-4f90-8019-ddea3c8f1d40' date '8 October 2016' time '5:28:59.206 pm' author 'fn' ancestors ((name 'SmalltalkCI-Pharo-Tests-fn.2' message 'Update tests for new SCICodeCoverage' id '5032a23c-ebf9-496a-bc79-7619831ec925' date '8 October 2016' time '4:55:05.932 pm' author 'fn' ancestors ((name 'SmalltalkCI-Pharo-Tests-fn.1' message 'Add Pharo-specific tests' id 'fbab57b8-0c69-4161-9491-d1ae03f0bcfc' date '15 April 2016' time '11:40:57.316819 pm' author 'fn' ancestors () stepChildren ())) stepChildren ())) stepChildren ())) stepChildren ())) stepChildren ())) stepChildren ())) stepChildren ())
+(name 'SmalltalkCI-Pharo-Tests-CyrilFerlicot.1564995733' message 'Update test to use the same methods than in the the code to test.Fixes https://github.com/hpi-swa/smalltalkCI/issues/434' id 'f467faf0-bc4b-0d00-b80b-34050904be60' date '5 August 2019' time '11:19:26.116452 am' author 'CyrilFerlicot' ancestors ((name 'SmalltalkCI-Pharo-Tests-CompatibleUserName.1564995732' message 'Update Moose CI (#433)
+
+* Update run to fix Moose 8
+
+Moose 8 32 bits doesn''t exist.
+Moose 8 64 bits exists for Pharo 8 (and 7, but maybe not in the future... so let''s say only P8).
+We stop the support of 32 bits version
+
+* Update README.md
+
+remove moose 32 8.0
+
+* Update run.sh
+
+* remove moose 32 8.0
+
+* Enable allow_failures for Pharo 8-based images
+
+There seems to be a coverage-related problem: https://travis-ci.org/hpi-swa/smalltalkCI/jobs/565996310#L631
+
+* Minor edit [ci skip]
+' id '0244da30-24f6-5783-ad0c-b6ce1987ed04' date '5 August 2019' time '11:02:12 am' author 'CompatibleUserName' ancestors () stepChildren ())) stepChildren ())
