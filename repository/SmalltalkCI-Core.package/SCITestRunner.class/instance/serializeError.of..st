@@ -1,3 +1,3 @@
 private
 serializeError: error of: aTestCase
-	self subclassResponsibility
+	"Hook for supporting post-mortem stack dumps. Do nothing by default."
