@@ -1,14 +1,16 @@
 helpers
 deprecationWarning
 
-	| ctx |
+	| ctx sender |
+
 	"First sender is SmalltalkCI>>deprecated"
 	ctx := thisContext sender sender.
 	"Skip additional SCICoverageWrapper senders"
+	sender := thisContext sender.
 	Smalltalk
 		at: #SCICoverageWrapper
 		ifPresent: [ :coverageWrapperClass |
-			thisContext sender method methodClass == coverageWrapperClass
+			sender method methodClass == coverageWrapperClass
 				ifTrue: [ ctx := ctx sender sender ]
 			].
 	^ ctx asString
