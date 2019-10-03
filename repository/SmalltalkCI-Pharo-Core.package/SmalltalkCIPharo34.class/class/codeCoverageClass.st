@@ -1,4 +1,4 @@
 compatibility
 codeCoverageClass
 
-	^ SCICodeCoverage
+	^ SCIPharo34CodeCoverage
