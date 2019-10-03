@@ -1,0 +1,4 @@
+compatibility
+codeCoverageClass
+
+	^ SCICodeCoverage
