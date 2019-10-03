@@ -1,6 +1,2 @@
-(name 'SmalltalkCI-Pharo-Core-GOC.1569504734' message 'Fix #441 Use #refersToLiteral: method in Pharo to discover methods including the <ignoreForCoverage> pragma' id 'b1f99e08-5250-0d00-8dbe-598704c51116' date '2 October 2019' time '1:52:39.415382 pm' author 'GOC' ancestors ((name 'SmalltalkCI-Pharo-Core-CompatibleUserName.1569504733' message 'Drop SCISqueakTestRunner>>serializeError:of:
-
-The method was not doing anything anyway, but is responsible for VM crashes (see #440 and https://github.com/OpenSmalltalk/opensmalltalk-vm/issues/265).
-
-Fixes #440
-' id '33bc4faa-a0cf-5396-81dc-1612c3a0883d' date '26 September 2019' time '10:32:13 am' author 'CompatibleUserName' ancestors () stepChildren ())) stepChildren ())
+(name 'SmalltalkCI-Pharo-Core-GOC.1570035212' message 'Adapt the baseline to exclude coverage support in Pharo 3/4' id '54b5d8a0-6250-0d00-8dbb-c90204c51116' date '3 October 2019' time '9:40:32.812561 am' author 'GOC' ancestors ((name 'SmalltalkCI-Pharo-Core-CompatibleUserName.1570035211' message 'Fix #441 Use #refersToLiteral: method in Pharo to discover methods including the <ignoreForCoverage> pragma
+' id '74a0b815-11e3-5b3e-820b-e3c9c7a91788' date '2 October 2019' time '1:53:31 pm' author 'CompatibleUserName' ancestors () stepChildren ())) stepChildren ())

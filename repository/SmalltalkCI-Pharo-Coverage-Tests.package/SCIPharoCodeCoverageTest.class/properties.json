@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "",
 	"super" : "TestCase",
-	"category" : "SmalltalkCI-Pharo-Tests",
+	"category" : "SmalltalkCI-Pharo-Coverage-Tests",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

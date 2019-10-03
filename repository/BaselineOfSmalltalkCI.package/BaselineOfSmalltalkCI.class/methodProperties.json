@@ -1,5 +1,9 @@
 {
-	"class" : {
-		 },
 	"instance" : {
-		"baseline:" : "jecisc 05/28/2019 13:17" } }
+		"setUpGemStonePackages:" : "GOC 10/3/2019 09:36",
+		"setUpSqueakPackages:" : "GOC 10/3/2019 09:36",
+		"baseline:" : "GOC 10/3/2019 09:37",
+		"setUpPharoPackages:" : "GOC 10/3/2019 09:35"
+	},
+	"class" : { }
+}

@@ -1,0 +1,1 @@
+(name 'SmalltalkCI-Pharo-Coverage-Core-GOC.1' message 'Adapt the baseline to exclude coverage support in Pharo 3/4' id '1edc46a1-6250-0d00-8dbc-a49004c51116' date '3 October 2019' time '9:40:40.032391 am' author 'GOC' ancestors () stepChildren ())
