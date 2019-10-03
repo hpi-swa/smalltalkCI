@@ -16,5 +16,6 @@ baseline: spec
 				yourself
 			].
 	self setUpSqueakPackages: spec.
-	self setUpPharoPackages: spec.
+	self setUpPharo3And4Packages: spec.
+	self setUpPharo5AndGreaterPackages: spec.
 	self setUpGemStonePackages: spec

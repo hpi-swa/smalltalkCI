@@ -1,9 +1,10 @@
 {
 	"instance" : {
-		"setUpGemStonePackages:" : "GOC 10/3/2019 09:36",
 		"setUpSqueakPackages:" : "GOC 10/3/2019 09:36",
-		"baseline:" : "GOC 10/3/2019 09:37",
-		"setUpPharoPackages:" : "GOC 10/3/2019 09:35"
+		"setUpPharo3And4Packages:" : "GOC 10/3/2019 11:30",
+		"setUpGemStonePackages:" : "GOC 10/3/2019 09:36",
+		"setUpPharo5AndGreaterPackages:" : "GOC 10/3/2019 11:30",
+		"baseline:" : "GOC 10/3/2019 11:30"
 	},
 	"class" : { }
 }
