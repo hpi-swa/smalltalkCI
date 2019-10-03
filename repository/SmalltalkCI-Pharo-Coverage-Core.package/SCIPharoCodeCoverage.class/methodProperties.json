@@ -13,18 +13,15 @@
 		"isInTonelFormat:" : "GabrielOmarCotelli 4/6/2018 18:40"
 	},
 	"class" : {
-		"tonelFilePathFor:in:" : "GabrielOmarCotelli 2/20/2019 18:02",
-		"coverallsFilesDirectory" : "CompatibleUserName 9/26/2019 10:32:13",
-		"coverallsBuildDataFilename" : "CompatibleUserName 9/26/2019 10:32:13",
-		"packageNameForClass:" : "fn 10/8/2016 15:12",
-		"coverallsResultFilename" : "CompatibleUserName 9/26/2019 10:32:13",
-		"theNonMetaClassOf:" : "GabrielOmarCotelli 2/20/2019 18:03",
-		"isExcluded:" : "GOC 10/2/2019 13:47",
-		"coverallsBuildData" : "smalltalkCI 4/9/2018 11:06",
-		"methodReferenceFor:selector:" : "fn 11/22/2016 18:16",
-		"filePathFor:in:" : "GabrielOmarCotelli 4/6/2018 18:55",
-		"linesOf:" : "fn 11/22/2017 14:41",
 		"isInTonelFormatCodeLocatedAt:" : "GabrielOmarCotelli 4/6/2018 13:13",
-		"md5Of:" : "fn 11/22/2017 14:42"
+		"md5Of:" : "fn 11/22/2017 14:42",
+		"methodReferenceFor:selector:" : "fn 11/22/2016 18:16",
+		"tonelFilePathFor:in:" : "GabrielOmarCotelli 2/20/2019 18:02",
+		"linesOf:" : "fn 11/22/2017 14:41",
+		"filePathFor:in:" : "GabrielOmarCotelli 4/6/2018 18:55",
+		"coverallsBuildData" : "smalltalkCI 4/9/2018 11:06",
+		"packageNameForClass:" : "fn 10/8/2016 15:12",
+		"theNonMetaClassOf:" : "GabrielOmarCotelli 2/20/2019 18:03",
+		"isExcluded:" : "GOC 10/2/2019 13:47"
 	}
 }
