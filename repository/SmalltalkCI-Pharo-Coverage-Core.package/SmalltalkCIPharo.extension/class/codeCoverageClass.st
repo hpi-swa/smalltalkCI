@@ -1,3 +1,3 @@
-compatibility
+*SmalltalkCI-Pharo-Coverage-Core
 codeCoverageClass
 	^ SCIPharoCodeCoverage

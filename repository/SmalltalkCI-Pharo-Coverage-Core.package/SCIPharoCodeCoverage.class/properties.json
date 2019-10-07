@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "",
 	"super" : "SCICodeCoverage",
-	"category" : "SmalltalkCI-Pharo-Core",
+	"category" : "SmalltalkCI-Pharo-Coverage-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
