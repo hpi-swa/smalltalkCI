@@ -1,10 +1,6 @@
 language: smalltalk
 sudo: required
 
-dist:
-  - bionic
-  - xenial
-
 branches:
   except:
     - windows
@@ -33,9 +29,16 @@ jobs:
   include:
     - stage: "Prioritized jobs"
       smalltalk: Squeak64-5.2
+      dist: xenial
     - smalltalk: Pharo32-stable
+      dist: bionic
     - smalltalk: GemStone64-3.5.0
       env: GSCI_CLIENTS="Pharo32-5.0 Pharo32-4.0 Pharo32-3.0"
+      dist: xenial
+      <<: *with-gemstone-cache-enabled
+    - smalltalk: GemStone64-3.5.0
+      env: GSCI_CLIENTS="Pharo32-5.0 Pharo32-4.0 Pharo32-3.0"
+      dist: bionic
       <<: *with-gemstone-cache-enabled
 
 #     - language: bash
