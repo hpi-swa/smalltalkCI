@@ -10,7 +10,8 @@ install:
   # Move cache directory if it exists
   - "[[ ! -d ${SMALLTALK_CI_CACHE} ]] || mv ${SMALLTALK_CI_CACHE} $(pwd)"
   - sudo dpkg --add-architecture i386
-  - sudo ln -f -s /usr/lib/i386-lin-gnu/libstdc++.so.6 /usr/lib/i386-linux-gnu/libstdc++.so
+  - ls /usr/lib/i386-lin-gnu/
+#   - sudo ln -f -s /usr/lib/i386-lin-gnu/libstdc++.so.6 /usr/lib/i386-linux-gnu/libstdc++.so
   - sudo apt-get install -y --no-install-recommends libpam0g:i386 libssl1.0.0:i386 gcc-multilib libstdc++6:i386 libfreetype6:i386 pstack libgl1-mesa-glx:i386 libxcb-dri2-0:i386
   - "sudo /bin/su -c \"echo 'kernel.yama.ptrace_scope = 0' >>/etc/sysctl.d/10-ptrace.conf\""
 
