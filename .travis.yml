@@ -64,10 +64,12 @@ jobs:
     - smalltalk: Squeak32-5.0
     - smalltalk: Squeak32-4.6
     - smalltalk: Squeak32-4.5
+    - smalltalk: Pharo64-9.0
     - smalltalk: Pharo64-8.0
     - smalltalk: Pharo64-7.0
     - smalltalk: Pharo64-6.1
     - smalltalk: Pharo64-6.0
+    - smalltalk: Pharo32-9.0
     - smalltalk: Pharo32-8.0
     - smalltalk: Pharo32-7.0
     - smalltalk: Pharo32-6.0
@@ -96,6 +98,8 @@ jobs:
     - smalltalk: Squeak32-4.6
       os: osx
     - smalltalk: Squeak32-4.5
+      os: osx
+    - smalltalk: Pharo32-9.0
       os: osx
     - smalltalk: Pharo32-8.0
       os: osx
