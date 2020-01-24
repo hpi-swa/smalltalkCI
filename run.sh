@@ -384,7 +384,7 @@ raise_rtprio_limit() {
   pushd $(mktemp -d) > /dev/null
   gcc -o "set_rtprio_limit" "${SMALLTALK_CI_HOME}/utils/set_rtprio_limit.c"
   chmod +x "./set_rtprio_limit"
-  sudo "./set_rtprio_limit" $$
+  sudo "./set_rtprio_limit" $$ || true
   popd > /dev/null
   fold_end set_rtprio_limit
 }
