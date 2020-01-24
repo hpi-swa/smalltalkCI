@@ -130,7 +130,7 @@ is_int() {
 program_exists() {
   local program=$1
 
-  [[ $(which "${program}" 2> /dev/null) ]]
+  [[ $(command -v "${program}" 2> /dev/null) ]]
 }
 
 is_travis_build() {

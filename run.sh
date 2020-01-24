@@ -375,6 +375,11 @@ add_env_vars() {
 # Raise RTPRIO of current bash for OpenSmalltalk VMs with threaded heartbeat.
 ################################################################################
 raise_rtprio_limit() {
+  if ! program_exists "gcc"; then
+    print_info "Unable to raise real-time priority: gcc is not available."
+    return
+  fi
+
   fold_start set_rtprio_limit "Raising real-time priority for OpenSmalltalk VMs with threaded heartbeat..."
   pushd $(mktemp -d) > /dev/null
   gcc -o "set_rtprio_limit" "${SMALLTALK_CI_HOME}/utils/set_rtprio_limit.c"
