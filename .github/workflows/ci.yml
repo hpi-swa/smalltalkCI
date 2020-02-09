@@ -35,6 +35,9 @@ jobs:
       - uses: hpi-swa/setup-smalltalkCI@v0.8
         with:
           smalltalk-version: ${{ matrix.smalltalk }}
+      - name: Install Windows dependencies
+        run: choco install curl
+        if: matrix.os == 'windows-latest'
       - run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
         shell: bash
         if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false
