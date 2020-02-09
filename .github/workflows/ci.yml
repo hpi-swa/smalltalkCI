@@ -35,9 +35,9 @@ jobs:
       - uses: hpi-swa/setup-smalltalkCI@v0.8
         with:
           smalltalk-version: ${{ matrix.smalltalk }}
-      - run: bin/smalltalkci --self-test
-        if: contains(matrix.smalltalk, 'trunk') == true
-        timeout-minutes: 15
-      - run: bin/smalltalkci --self-test || true
+      - run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
         if: contains(matrix.smalltalk, 'trunk') == false
+        timeout-minutes: 15
+      - run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test || true
+        if: contains(matrix.smalltalk, 'trunk') == true
         timeout-minutes: 15
