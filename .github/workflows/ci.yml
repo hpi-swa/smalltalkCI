@@ -37,6 +37,7 @@ jobs:
           smalltalk-version: ${{ matrix.smalltalk }}
       - name: Uninstall curl on Windows for Pharo Zeroconf
         run: pacman -R curl --noconfirm
+        shell: bash
         if: matrix.os == 'windows-latest' && (contains(matrix.smalltalk, 'Pharo') || contains(matrix.smalltalk, 'Moose'))
       - run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
         shell: bash
