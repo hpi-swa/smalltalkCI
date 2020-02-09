@@ -221,7 +221,7 @@ squeak::prepare_vm() {
       print_error_and_exit "Unable to set vm up at '${vm_path}'."
     fi
     chmod +x "${vm_path}"
-    if is_cygwin_build; then
+    if is_msys_build || is_cygwin_build; then
       chmod +x "$(dirname ${vm_path})/"*.dll
     fi
   fi

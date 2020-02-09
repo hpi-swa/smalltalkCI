@@ -21,7 +21,7 @@ initialize() {
 
   # Fail if OS is not supported
   case "$(uname -s)" in
-    "Linux"|"Darwin"|"CYGWIN_NT-"*)
+    "Linux"|"Darwin"|"MSYS_NT"*|"CYGWIN_NT-"*)
       ;;
     *)
       echo "Unsupported platform '$(uname -s)'." 1>&2

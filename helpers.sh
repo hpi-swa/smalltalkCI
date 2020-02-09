@@ -149,6 +149,10 @@ is_linux_build() {
   [[ $(uname -s) = "Linux" ]]
 }
 
+is_msys_build() {
+  [[ $(uname -s) = "MSYS_NT"* ]]
+}
+
 is_cygwin_build() {
   [[ $(uname -s) = "CYGWIN_NT-"* ]]
 }
