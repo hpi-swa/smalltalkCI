@@ -36,8 +36,8 @@ jobs:
         with:
           smalltalk-version: ${{ matrix.smalltalk }}
       - run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
-        if: contains(matrix.smalltalk, 'trunk') == false
+        if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false
         timeout-minutes: 15
       - run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test || true
-        if: contains(matrix.smalltalk, 'trunk') == true
+        if: contains(matrix.smalltalk, 'trunk') || contains(matrix.smalltalk, 'alpha')
         timeout-minutes: 15
