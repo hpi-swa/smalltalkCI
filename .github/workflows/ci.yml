@@ -35,12 +35,6 @@ jobs:
       - uses: hpi-swa/setup-smalltalkCI@v0.8
         with:
           smalltalk-version: ${{ matrix.smalltalk }}
-      - name: Installing Cygwin on Windows
-        run: |
-          choco install --no-progress cygwin
-          C:\tools\cygwin\cygwinsetup.exe -qgnNdO -R C:/tools/cygwin -s http://mirrors.kernel.org/sourceware/cygwin/ -P unzip
-          echo "::add-path::C:\tools\cygwin\bin"
-        if: matrix.os == 'windows-latest'
       - run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
         shell: bash
         if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false
