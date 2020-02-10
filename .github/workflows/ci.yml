@@ -37,7 +37,7 @@ jobs:
         with:
           smalltalk-version: ${{ matrix.smalltalk }}
       - run: |
-          echo $PATH
+          pwd
           smalltalkci -s ${{ matrix.smalltalk }} --self-test
         shell: bash
         if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false
