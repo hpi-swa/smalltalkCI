@@ -10,7 +10,7 @@ jobs:
         os: [ windows-latest ]
         smalltalk:
           - Squeak64-5.2
-#           - Squeak64-5.1
+          - Squeak64-5.1
 #           - Squeak64-trunk
 #           - Pharo64-stable
 #           - Pharo64-alpha
