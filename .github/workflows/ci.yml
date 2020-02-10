@@ -10,17 +10,17 @@ jobs:
         os: [ windows-latest ]
         smalltalk:
           - Squeak64-5.2
-          - Squeak64-5.1
-          - Squeak64-trunk
-          - Pharo64-stable
-          - Pharo64-alpha
-          - Pharo64-9.0
-          - Pharo64-8.0
-          - Pharo64-7.0
-          - Pharo64-6.1
-          - Pharo64-6.0
-          - Moose64-8.0
-          - Moose64-7.0
+#           - Squeak64-5.1
+#           - Squeak64-trunk
+#           - Pharo64-stable
+#           - Pharo64-alpha
+#           - Pharo64-9.0
+#           - Pharo64-8.0
+#           - Pharo64-7.0
+#           - Pharo64-6.1
+#           - Pharo64-6.0
+#           - Moose64-8.0
+#           - Moose64-7.0
 #           - GemStone64-3.5.0
 #           - GemStone64-3.4.3
 #           - GemStone64-3.3.9
@@ -33,7 +33,7 @@ jobs:
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - uses: hpi-swa/setup-smalltalkCI@v0.8.2
+      - uses: hpi-swa/setup-smalltalkCI@v0.8.3
         with:
           smalltalk-version: ${{ matrix.smalltalk }}
       - run: |
