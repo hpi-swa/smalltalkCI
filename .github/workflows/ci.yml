@@ -33,7 +33,7 @@ jobs:
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - uses: hpi-swa/setup-smalltalkCI@v0.8.4
+      - uses: hpi-swa/setup-smalltalkCI@v0.8.5
         with:
           smalltalk-version: ${{ matrix.smalltalk }}
       - run: |
