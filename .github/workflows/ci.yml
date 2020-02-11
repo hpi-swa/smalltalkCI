@@ -6,29 +6,25 @@ jobs:
   build:
     strategy:
       matrix:
-#         os: [ ubuntu-latest, macos-latest, windows-latest ]
-        os: [ windows-latest ]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
         smalltalk:
           - Squeak64-5.2
-#           - Squeak64-5.1
-#           - Squeak64-trunk
-#           - Pharo64-stable
-#           - Pharo64-alpha
-#           - Pharo64-9.0
-#           - Pharo64-8.0
+          - Squeak64-5.1
+          - Squeak64-trunk
+          - Pharo64-stable
+          - Pharo64-alpha
+          - Pharo64-9.0
+          - Pharo64-8.0
           - Pharo64-7.0
-#           - Pharo64-6.1
-#           - Pharo64-6.0
-#           - Moose64-8.0
-#           - Moose64-7.0
+          - Pharo64-6.1
+          - Pharo64-6.0
+          - Moose64-8.0
+          - Moose64-7.0
 #           - GemStone64-3.5.0
 #           - GemStone64-3.4.3
 #           - GemStone64-3.3.9
 #           - GemStone64-3.2.17
 #           - GemStone64-3.1.0.6
-        exclude:
-          - os: macos-latest
-            smalltalk: Squeak32-5.1
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
     steps:
@@ -36,11 +32,13 @@ jobs:
       - uses: hpi-swa/setup-smalltalkCI@v0.8.5
         with:
           smalltalk-version: ${{ matrix.smalltalk }}
-      - run: smalltalkci -s ${{ matrix.smalltalk }} --self-test
+      - name: Run smalltalkCI self test
+        run: smalltalkci -s ${{ matrix.smalltalk }} --self-test
         shell: bash
-        if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false
+        if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false && (contains(matrix.smalltalk, 'Pharo') && matrix.os == 'windows-latest') == false
         timeout-minutes: 15
-      - run: smalltalkci -s ${{ matrix.smalltalk }} --self-test || true
+      - name: Run smalltalkCI self test and ignore failures
+        run: smalltalkci -s ${{ matrix.smalltalk }} --self-test || true
         shell: bash
-        if: contains(matrix.smalltalk, 'trunk') || contains(matrix.smalltalk, 'alpha')
+        if: contains(matrix.smalltalk, 'trunk') || contains(matrix.smalltalk, 'alpha') || (contains(matrix.smalltalk, 'Pharo') && matrix.os == 'windows-latest')
         timeout-minutes: 15
