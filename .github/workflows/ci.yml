@@ -6,7 +6,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+#         os: [ ubuntu-latest, macos-latest, windows-latest ]
+        os: [ windows-latest ]
         smalltalk:
           - Squeak64-5.2
           - Squeak64-5.1
