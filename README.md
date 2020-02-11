@@ -1,8 +1,8 @@
 # smalltalkCI [![Build Status][travis_b]][travis_url] [![AppVeyor status][appveyor_b]][appveyor_url] [![Coverage Status][coveralls_b]][coveralls_url]
 
 Community-supported framework for testing Smalltalk projects on Linux, OS X, and
-Windows with built-in support for [Travis CI][travisCI], [AppVeyor][appveyor],
-and [GitLab CI/CD][gitlab_ci_cd].
+Windows with built-in support for [GitHub Actions][github_action],
+[Travis CI][travisCI], [AppVeyor][appveyor], and [GitLab CI/CD][gitlab_ci_cd].
 
 It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy
 way to load and test Smalltalk projects.
@@ -110,6 +110,12 @@ SmalltalkCISpec {
   ]
 }
 ```
+
+### GitHub Action Template
+
+For GitHub Action templates, please refer to the Marketplace listing of the
+[`setup-smalltalkCI` action][github_action].
+
 
 ### `.travis.yml` Template
 
@@ -712,6 +718,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [esug_logo]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/logo.png
 [filetree]: https://github.com/dalehenrich/filetree
 [gemstone]: https://gemtalksystems.com/
+[github_action]: https://github.com/marketplace/actions/setup-smalltalkci
 [gitlab_ci_cd]: https://about.gitlab.com/features/gitlab-ci-cd/
 [gofer]: http://www.lukas-renggli.ch/blog/gofer
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
