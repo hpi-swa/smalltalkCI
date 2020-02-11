@@ -12,11 +12,11 @@ jobs:
           - Squeak64-5.2
 #           - Squeak64-5.1
 #           - Squeak64-trunk
-          - Pharo64-stable
+#           - Pharo64-stable
 #           - Pharo64-alpha
 #           - Pharo64-9.0
 #           - Pharo64-8.0
-#           - Pharo64-7.0
+          - Pharo64-7.0
 #           - Pharo64-6.1
 #           - Pharo64-6.0
 #           - Moose64-8.0
