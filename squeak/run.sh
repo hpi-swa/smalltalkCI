@@ -167,7 +167,7 @@ squeak::get_vm_details() {
       vm_file_ext="dmg"
       vm_path="${config_vm_dir}/Squeak.app/Contents/MacOS/Squeak"
       ;;
-    "CYGWIN_NT-"*)
+    "CYGWIN_NT-"*|"MINGW64_NT-"*)
       if is_64bit; then
         vm_arch="win64x64"
       else
@@ -221,7 +221,7 @@ squeak::prepare_vm() {
       print_error_and_exit "Unable to set vm up at '${vm_path}'."
     fi
     chmod +x "${vm_path}"
-    if is_cygwin_build; then
+    if is_cygwin_build || is_mingw64_build; then
       chmod +x "$(dirname ${vm_path})/"*.dll
     fi
   fi
@@ -244,7 +244,7 @@ squeak::determine_vm_flags() {
       "Linux")
         vm_flags="-nosound -vm-display-null"
         ;;
-      "Darwin"|"CYGWIN_NT-"*)
+      "Darwin"|"CYGWIN_NT-"*|"MINGW64_NT-"*)
         vm_flags="-headless"
         ;;
     esac

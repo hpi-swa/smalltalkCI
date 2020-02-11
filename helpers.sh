@@ -153,6 +153,10 @@ is_cygwin_build() {
   [[ $(uname -s) = "CYGWIN_NT-"* ]]
 }
 
+is_mingw64_build() {
+  [[ $(uname -s) = "MINGW64_NT-"* ]]
+}
+
 is_sudo_enabled() {
   $(sudo -n true > /dev/null 2>&1)
 }
@@ -306,7 +310,7 @@ extract_file() {
 resolve_path() {
   local path=$1
 
-  if is_cygwin_build; then
+  if is_cygwin_build || is_mingw64_build; then
     echo $(cygpath -w "${path}")
   else
     echo "${path}"
