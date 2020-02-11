@@ -15,16 +15,15 @@ readonly GITHUB_REPO_URL="https://github.com/hpi-swa/smalltalkCI"
 initialize() {
   local resolved_path
 
-  trap handle_exit EXIT
-  trap handle_error ERR
-  trap handle_interrupt INT
-
-  # Fail if OS is not supported
+  # Set up traps, otherwise fail if OS is not supported
   case "$(uname -s)" in
-    "Linux"|"Darwin"|"MINGW64_NT"*|"CYGWIN_NT-"*)
+    "Linux"|"Darwin"|"MINGW64_NT-"*|"CYGWIN_NT-"*)
+      trap handle_exit EXIT
+      trap handle_error ERR
+      trap handle_interrupt INT
       ;;
     *)
-      echo "Unsupported platform '$(uname -s)'." 1>&2
+      echo "Unsupported platform '$(uname -s)' [!!!]." 1>&2
       exit 1
       ;;
   esac
