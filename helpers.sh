@@ -149,6 +149,10 @@ is_linux_build() {
   [[ $(uname -s) = "Linux" ]]
 }
 
+is_mingw_build() {
+  [[ $(uname -s) = "MINGW64_NT"* ]]
+}
+
 is_msys_build() {
   [[ $(uname -s) = "MSYS_NT"* ]]
 }
@@ -310,7 +314,7 @@ extract_file() {
 resolve_path() {
   local path=$1
 
-  if is_cygwin_build; then
+  if is_cygwin_build || is_mingw_build; then
     echo $(cygpath -w "${path}")
   else
     echo "${path}"

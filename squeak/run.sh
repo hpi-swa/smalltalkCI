@@ -288,7 +288,7 @@ squeak::load_project() {
   smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
 EOL
 
-  squeak::run_script "${SMALLTALK_CI_BUILD}/load.st"
+  squeak::run_script "load.st"
 }
 
 ################################################################################
@@ -309,7 +309,7 @@ squeak::test_project() {
   smalltalkCI test: '$(resolve_path "${config_ston}")'
 EOL
 
-  squeak::run_script "${SMALLTALK_CI_BUILD}/test.st"
+  squeak::run_script "test.st"
 
   printf "\n\n"
 }
