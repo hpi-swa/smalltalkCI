@@ -129,8 +129,9 @@ ensure_ston_config_exists() {
 
   if is_travis_build; then
     if is_not_empty "${TRAVIS_SMALLTALK_CONFIG:-}"; then
-      # if the variable is a list (ruby array like ["a", "b", "c"]) extract the first value
-      first_config=echo ${TRAVIS_SMALLTALK_CONFIG//[\[\]]} | awk -F',' '{print $1}'
+      # If the variable is a list (ruby array like ["a", "b", "c"]) extract the first value
+      # This is a workaround for https://github.com/hpi-swa/smalltalkCI/issues/448
+      first_config="$(echo ${TRAVIS_SMALLTALK_CONFIG//[\[\]]} | awk -F',' '{print $1}')"
       config_ston="${TRAVIS_BUILD_DIR}/${first_config}"
     else
       locate_ston_config
