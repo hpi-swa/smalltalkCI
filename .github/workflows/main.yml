@@ -8,6 +8,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
         smalltalk:
+          - Squeak64-5.3
           - Squeak64-5.2
           - Squeak64-5.1
           - Squeak64-trunk

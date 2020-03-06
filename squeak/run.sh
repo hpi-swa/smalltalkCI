@@ -16,6 +16,10 @@ squeak::download_image() {
   local git_tag
 
   case "${smalltalk_name}" in
+    "Squeak64-5.3")
+      download_name="Squeak64-5.3.tar.gz"
+      git_tag="v2.9.1"
+      ;;
     "Squeak64-5.2")
       download_name="Squeak64-5.2.tar.gz"
       git_tag="v2.8.4"
@@ -23,6 +27,10 @@ squeak::download_image() {
     "Squeak64-5.1")
       download_name="Squeak64-5.1.tar.gz"
       git_tag="v2.8.4"
+      ;;
+    "Squeak32-5.3")
+      download_name="Squeak32-5.3.tar.gz"
+      git_tag="v2.9.1"
       ;;
     "Squeak32-5.2"|"Squeak-5.2"|"Squeak5.2")
       download_name="Squeak-5.2.tar.gz"

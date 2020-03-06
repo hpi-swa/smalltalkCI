@@ -24,7 +24,7 @@ aliases:
 jobs:
   include:
     - stage: "Prioritized jobs"
-      smalltalk: Squeak64-5.2
+      smalltalk: Squeak64-5.3
     - smalltalk: Pharo32-stable
     - smalltalk: GemStone64-3.5.0
       env: GSCI_CLIENTS="Pharo32-5.0 Pharo32-4.0 Pharo32-3.0"
@@ -35,7 +35,7 @@ jobs:
       sudo: false
       script: tests/all_tests.sh
 
-    - smalltalk: Squeak32-5.2
+    - smalltalk: Squeak32-5.3
       os: osx
     - smalltalk: Pharo32-stable
       os: osx
@@ -43,7 +43,7 @@ jobs:
       os: osx
       <<: *with-gemstone-cache-enabled
 
-    - smalltalk: Squeak32-5.2
+    - smalltalk: Squeak32-5.3
       <<: *ensure-smalltalkci-can-fail
     - smalltalk: Pharo32-stable
       <<: *ensure-smalltalkci-can-fail
@@ -60,7 +60,8 @@ jobs:
     - smalltalk: Moose32-trunk
 
     - stage: "Linux jobs"
-      smalltalk: Squeak64-5.1
+      smalltalk: Squeak64-5.2
+    - smalltalk: Squeak32-5.1
     - smalltalk: Squeak32-5.0
     - smalltalk: Squeak32-4.6
     - smalltalk: Squeak32-4.5
@@ -91,7 +92,9 @@ jobs:
       <<: *with-gemstone-cache-enabled
 
     - stage: "Mac jobs"
-      smalltalk: Squeak64-5.1
+      smalltalk: Squeak64-5.2
+      os: osx
+    - smalltalk: Squeak32-5.1
       os: osx
     - smalltalk: Squeak32-5.0
       os: osx
