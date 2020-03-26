@@ -16,13 +16,13 @@ test_get_vm_details() {
 
   vm_details="$(squeak::get_vm_details "Linux" 1)"
   set_vars vm_filename vm_path "${vm_details}"
-  assertEquals "squeak.cog.spur_linux32x86_itimer_${OSVM_VERSION}.tar.gz" "${vm_filename}"
-  assertEquals "${config_vm_dir}/sqcogspurlinux/squeak" "${vm_path}"
+  assertEquals "squeak.cog.spur_linux32x86_${OSVM_VERSION}.tar.gz" "${vm_filename}"
+  assertEquals "${config_vm_dir}/sqcogspurlinuxht/squeak" "${vm_path}"
 
   vm_details="$(squeak::get_vm_details "Linux" 0)"
   set_vars vm_filename vm_path "${vm_details}"
-  assertEquals "squeak.cog.v3_linux32x86_itimer_${OSVM_VERSION}.tar.gz" "${vm_filename}"
-  assertEquals "${config_vm_dir}/sqcoglinux/squeak" "${vm_path}"
+  assertEquals "squeak.cog.v3_linux32x86_${OSVM_VERSION}.tar.gz" "${vm_filename}"
+  assertEquals "${config_vm_dir}/sqcoglinuxht/squeak" "${vm_path}"
 
   vm_details="$(squeak::get_vm_details "Darwin" 1)"
   set_vars vm_filename vm_path "${vm_details}"

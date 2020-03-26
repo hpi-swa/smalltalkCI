@@ -4,8 +4,8 @@
 ################################################################################
 
 readonly BASE_DOWNLOAD="${GITHUB_REPO_URL}/releases/download"
-readonly BASE_DOWNLOAD_VM="${BASE_DOWNLOAD}/v2.8.4"
-readonly OSVM_VERSION="201810190412"
+readonly BASE_DOWNLOAD_VM="${BASE_DOWNLOAD}/v2.9.1"
+readonly OSVM_VERSION="202003021730"
 
 ################################################################################
 # Download Squeak image.
@@ -151,19 +151,19 @@ squeak::get_vm_details() {
   case "${os_name}" in
     "Linux")
       if is_64bit; then
-        vm_arch="linux64x64_itimer"
+        vm_arch="linux64x64"
       else
-        vm_arch="linux32x86_itimer"
+        vm_arch="linux32x86"
       fi
       vm_file_ext="tar.gz"
       if [[ "${require_spur}" -eq 1 ]]; then
         if is_64bit; then
-          vm_path="${config_vm_dir}/sqcogspur64linux/squeak"
+          vm_path="${config_vm_dir}/sqcogspur64linuxht/squeak"
         else
-          vm_path="${config_vm_dir}/sqcogspurlinux/squeak"
+          vm_path="${config_vm_dir}/sqcogspurlinuxht/squeak"
         fi
       else
-        vm_path="${config_vm_dir}/sqcoglinux/squeak"
+        vm_path="${config_vm_dir}/sqcoglinuxht/squeak"
       fi
       ;;
     "Darwin")
