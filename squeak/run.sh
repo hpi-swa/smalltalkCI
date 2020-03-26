@@ -4,8 +4,6 @@
 ################################################################################
 
 readonly BASE_DOWNLOAD="${GITHUB_REPO_URL}/releases/download"
-readonly BASE_DOWNLOAD_VM="${BASE_DOWNLOAD}/v2.9.1"
-readonly OSVM_VERSION="202003021730"
 
 ################################################################################
 # Download Squeak image.
@@ -141,29 +139,52 @@ squeak::prepare_image() {
 #   'vm_filename|vm_path' string
 ################################################################################
 squeak::get_vm_details() {
-  local os_name=$1
-  local require_spur=$2
+  local smalltalk_name=$1
+  local os_name=$2
+  local require_spur=$3
+  local git_tag
+  local osvm_version
   local vm_arch
+  local vm_arch_linux_prefix=""
   local vm_file_ext
   local vm_filename
   local vm_path
+  local vm_path_linux_suffix="ht"
+
+  if is_trunk_build; then
+    git_tag="v2.9.1"
+    osvm_version="202003021730"
+  else 
+    case "${smalltalk_name}" in
+      "Squeak64-5.3")
+        git_tag="v2.9.1"
+        osvm_version="202003021730"
+        ;;
+      *)
+        git_tag="v2.8.4"
+        osvm_version="201810190412"
+        vm_arch_linux_prefix="_itimer"
+        vm_path_linux_suffix=""
+        ;;
+    esac
+  fi
 
   case "${os_name}" in
     "Linux")
       if is_64bit; then
-        vm_arch="linux64x64"
+        vm_arch="linux64x64${vm_arch_linux_prefix}"
       else
-        vm_arch="linux32x86"
+        vm_arch="linux32x86${vm_arch_linux_prefix}"
       fi
       vm_file_ext="tar.gz"
       if [[ "${require_spur}" -eq 1 ]]; then
         if is_64bit; then
-          vm_path="${config_vm_dir}/sqcogspur64linuxht/squeak"
+          vm_path="${config_vm_dir}/sqcogspur64linux${vm_path_linux_suffix}/squeak"
         else
-          vm_path="${config_vm_dir}/sqcogspurlinuxht/squeak"
+          vm_path="${config_vm_dir}/sqcogspurlinux${vm_path_linux_suffix}/squeak"
         fi
       else
-        vm_path="${config_vm_dir}/sqcoglinuxht/squeak"
+        vm_path="${config_vm_dir}/sqcoglinux${vm_path_linux_suffix}/squeak"
       fi
       ;;
     "Darwin")
@@ -190,12 +211,12 @@ squeak::get_vm_details() {
   esac
 
   if [[ "${require_spur}" -eq 1 ]]; then
-    vm_filename="squeak.cog.spur_${vm_arch}_${OSVM_VERSION}.${vm_file_ext}"
+    vm_filename="squeak.cog.spur_${vm_arch}_${osvm_version}.${vm_file_ext}"
   else
-    vm_filename="squeak.cog.v3_${vm_arch}_${OSVM_VERSION}.${vm_file_ext}"
+    vm_filename="squeak.cog.v3_${vm_arch}_${osvm_version}.${vm_file_ext}"
   fi
 
-  return_vars "${vm_filename}" "${vm_path}"
+  return_vars "${vm_filename}" "${vm_path}" "${git_tag}"
 }
 
 ################################################################################
@@ -210,9 +231,10 @@ squeak::prepare_vm() {
   local target
 
   is_spur_image "${config_image:-${SMALLTALK_CI_IMAGE}}" && require_spur=1
-  vm_details=$(squeak::get_vm_details "$(uname -s)" "${require_spur}")
-  set_vars vm_filename vm_path "${vm_details}"
-  download_url="${BASE_DOWNLOAD_VM}/${vm_filename}"
+  vm_details=$(squeak::get_vm_details \
+    "${config_smalltalk}" "$(uname -s)" "${require_spur}")
+  set_vars vm_filename vm_path git_tag "${vm_details}"
+  download_url="${BASE_DOWNLOAD}/${git_tag}/${vm_filename}"
   target="${SMALLTALK_CI_CACHE}/${vm_filename}"
 
   if ! is_file "${target}"; then
