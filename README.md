@@ -174,13 +174,13 @@ environment:
   matrix:
     # Currently, only Squeak and Pharo images are supported on AppVeyor.
     - SMALLTALK: Squeak64-trunk
-    - SMALLTALK: Squeak32-5.0
+    - SMALLTALK: Squeak64-5.0
     - SMALLTALK: Pharo64-alpha
-    - SMALLTALK: Pharo32-6.0
+    - SMALLTALK: Pharo64-6.0
     # ...
 
 platform:
-  - x86
+  - x64
 
 install:
   - '%CYG_EXE% -dgnqNO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip'
