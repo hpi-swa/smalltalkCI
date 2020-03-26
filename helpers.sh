@@ -195,7 +195,14 @@ is_spur_image() {
     return 0
   fi
 
-  image_format_number="$((16#$(xxd -p -l 1 ${image_path})))"
+  if hash hexdump 2>/dev/null; then
+    image_format_number="$(hexdump -n 4 -e '2/4 "%04d " "\n"' "${image_path}")"
+  elif hash xxd 2>/dev/null; then
+    image_format_number="$((16#$(xxd -p -l 1 "${image_path}")))"
+  else
+    print_error_and_exit "Unable to detect image format (xxd or hexdump needed)"
+  fi
+  
   [[ $((image_format_number>>(spur_bit-1) & 1)) -eq 1 ]]
 }
 
