@@ -9,7 +9,7 @@ environment:
     - SMALLTALK: Squeak64-5.3
     - SMALLTALK: Squeak64-5.2
     - SMALLTALK: Squeak64-5.1
-    - SMALLTALK: Squeak64-5.0
+    - SMALLTALK: Squeak32-5.0
     - SMALLTALK: Pharo64-alpha
     - SMALLTALK: Pharo64-5.0
 
