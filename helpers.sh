@@ -142,7 +142,7 @@ is_appveyor_build() {
 }
 
 is_github_build() {
-  [[ "${GITHUB_ACTION:-}" = "true" ]]
+  [[ "${GITHUB_ACTIONS:-}" = "true" ]]
 }
 
 is_gitlabci_build() {
