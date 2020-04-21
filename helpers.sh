@@ -259,6 +259,8 @@ finalize() {
 
   if is_travis_build || is_appveyor_build || is_github_build; then
     upload_coveralls_results
+  else
+    print_info "Skipping coveralls upload."
   fi
 
   if ! is_file "${BUILD_STATUS_FILE}"; then
