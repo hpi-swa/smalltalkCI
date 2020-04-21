@@ -141,12 +141,12 @@ is_appveyor_build() {
   [[ "${APPVEYOR:-}" = "True" ]]
 }
 
-is_gitlabci_build() {
-  [[ "${GITLAB_CI:-}" = "true" ]]
-}
-
 is_github_build() {
   [[ "${GITHUB_ACTION:-}" = "true" ]]
+}
+
+is_gitlabci_build() {
+  [[ "${GITLAB_CI:-}" = "true" ]]
 }
 
 is_linux_build() {
