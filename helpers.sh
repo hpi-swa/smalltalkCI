@@ -59,8 +59,8 @@ print_help() {
     --gs-BRANCH=<branch-SHA-tag>
                         Name of GsDevKit_home branch, SHA, or tag. Default is 'master'.
 
-                        Environment variable GSCI_DEVKIT_BRANCH may be used to 
-                        specify <branch-SHA-tag>. Command line option overrides 
+                        Environment variable GSCI_DEVKIT_BRANCH may be used to
+                        specify <branch-SHA-tag>. Command line option overrides
                         value of environment variable.
 
     --gs-HOME=<GS_HOME-path>
@@ -70,13 +70,13 @@ print_help() {
                         --gs-DEVKIT_BRANCH option is ignored.
 
     --gs-CLIENTS="<smalltalk-platform>..."
-                        List of Smalltalk client versions to use as a GemStone client. 
+                        List of Smalltalk client versions to use as a GemStone client.
 
-                        Environment variable GSCI_CLIENTS may also be used to 
-                        specify a list of <smalltalk-platform> client versions. 
+                        Environment variable GSCI_CLIENTS may also be used to
+                        specify a list of <smalltalk-platform> client versions.
                         Command line option overrides value of environment variable.
 
-                        If a client is specified, tests are run for both the client 
+                        If a client is specified, tests are run for both the client
                         and server based using the project .smalltalk.ston file.
 
   EXAMPLE:
@@ -145,6 +145,10 @@ is_gitlabci_build() {
   [[ "${GITLAB_CI:-}" = "true" ]]
 }
 
+is_github_build() {
+  [[ "${GITHUB_ACTION:-}" = "true"]]
+}
+
 is_linux_build() {
   [[ $(uname -s) = "Linux" ]]
 }
@@ -202,7 +206,7 @@ is_spur_image() {
   else
     print_error_and_exit "Unable to detect image format (xxd or hexdump needed)"
   fi
-  
+
   [[ $((image_format_number>>(spur_bit-1) & 1)) -eq 1 ]]
 }
 
@@ -253,7 +257,7 @@ check_and_consume_build_status_file() {
 finalize() {
   local build_status
 
-  if is_travis_build || is_appveyor_build; then
+  if is_travis_build || is_appveyor_build || is_github_build; then
     upload_coveralls_results
   fi
 
@@ -368,6 +372,11 @@ export_coveralls_data() {
     branch_name="${CI_COMMIT_REF_NAME}"
     url="${CI_PROJECT_URL}"
     job_id="${CI_PIPELINE_ID}.${CI_JOB_ID}"
+  elif is_github_build; then
+    service_name="github"
+    branch_name="${GITHUB_REF}"
+    url="${GITHUB_REPOSITORY}"
+    job_id="${GITHUB_RUN_ID}"
   fi
 
   cat >"${SMALLTALK_CI_BUILD}/coveralls_build_data.json" <<EOL
@@ -534,7 +543,7 @@ travis_wait() {
 
   if ! is_int "${timeout}"; then
     $cmd
-    return $?    
+    return $?
   fi
 
   $cmd &
