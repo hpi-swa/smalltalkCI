@@ -146,7 +146,7 @@ is_gitlabci_build() {
 }
 
 is_github_build() {
-  [[ "${GITHUB_ACTION:-}" = "true"]]
+  [[ "${GITHUB_ACTION:-}" = "true" ]]
 }
 
 is_linux_build() {
