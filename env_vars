@@ -3,7 +3,7 @@ if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
 fi
 
 export SMALLTALK_CI_BUILD_BASE="${SMALLTALK_CI_HOME}/_builds"
-if [[ -z "${TRAVIS:-${APPVEYOR:-}}" ]]; then
+if [[ -z "${TRAVIS:-${APPVEYOR:-${GITHUB_ACTIONS:-}}}" ]]; then
   export SMALLTALK_CI_BUILD="${SMALLTALK_CI_BUILD_BASE}/$(date "+%Y_%m_%d_%H_%M_%S")"
 else
   export SMALLTALK_CI_BUILD="${SMALLTALK_CI_BUILD_BASE}"
