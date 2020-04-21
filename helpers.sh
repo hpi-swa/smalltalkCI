@@ -377,7 +377,7 @@ export_coveralls_data() {
   elif is_github_build; then
     service_name="github"
     branch_name="${GITHUB_REF}"
-    url="${GITHUB_REPOSITORY}"
+    url="https://github.com/${GITHUB_REPOSITORY}.git"
     job_id="${GITHUB_RUN_ID}"
   fi
 
