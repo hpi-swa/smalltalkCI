@@ -1,7 +1,9 @@
+#!/usr/bin/env bash
+
 ################################################################################
 # This file provides GemStone support for smalltalkCI. It is used in the context
 # of a smalltalkCI build and it is not meant to be executed by itself.
-################################################################################ 
+################################################################################
 
 local CLIENT_NAME="travisClient"
 local DEFAULT_DEVKIT_BRANCH="master"
@@ -21,9 +23,9 @@ local USE_DEFAULT_HOME="true"
 gemstone::prepare_gsdevkit_home() {
   if [[ "${USE_DEFAULT_HOME}" = "true" ]]; then
     fold_start clone_gsdevkit "Cloning GsDevKit..."
-      pushd "${SMALLTALK_CI_BUILD}"
+      pushd "${SMALLTALK_CI_BUILD}" || exit
         git clone -b "${DEVKIT_BRANCH}" --depth 1 "${DEVKIT_DOWNLOAD}"
-        cd "${GS_HOME}"
+        cd "${GS_HOME}" || exit
         # pre-clone /sys/local, so that travis can skip backups
         ${GS_HOME}/bin/private/clone_sys_local
         # arrange to skip backups
@@ -37,7 +39,7 @@ gemstone::prepare_gsdevkit_home() {
         # Make sure the GsDevKit_home is using $SMALLTALK_CI_HOME in $GS_HOME/shared/repos
         ln -s ${SMALLTALK_CI_HOME} ${GS_HOME}/shared/repos/smalltalkCI
 
-      popd
+      popd || exit
     fold_end clone_gsdevkit
 
     export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
@@ -64,7 +66,7 @@ gemstone::prepare_stone() {
   fi
 
   if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone"; then
-    print_info "Creating GemStone extent cache..." 
+    print_info "Creating GemStone extent cache..."
     mkdir "${SMALLTALK_CI_CACHE}/gemstone"
     if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/extents"; then
       mkdir "${SMALLTALK_CI_CACHE}/gemstone/extents"
@@ -81,26 +83,26 @@ gemstone::prepare_stone() {
     fold_start prepare_cache "Preparing Travis caches..."
       if ! is_dir "${SMALLTALK_CI_VMS}/Pharo-3.0"; then
         mkdir -p "${SMALLTALK_CI_VMS}/Pharo-3.0"
-        print_info "Downloading Pharo-3.0 vm to cache" 
-        pushd "${SMALLTALK_CI_VMS}/Pharo-3.0" > /dev/null
+        print_info "Downloading Pharo-3.0 vm to cache"
+        pushd "${SMALLTALK_CI_VMS}/Pharo-3.0" > /dev/null || exit
           download_file "get.pharo.org/vm30" "$(pwd)/zeroconfig"
           bash "$(pwd)/zeroconfig"
-        popd > /dev/null
+        popd > /dev/null || exit
       fi
-  
+
       if ! is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}"; then
-        print_info "Downloading Pharo-3.0 image to cache..." 
-        pushd ${SMALLTALK_CI_CACHE} > /dev/null
+        print_info "Downloading Pharo-3.0 image to cache..."
+        pushd ${SMALLTALK_CI_CACHE} > /dev/null || exit
           download_file "get.pharo.org/30" "$(pwd)/pharo30_zeroconfig"
           bash "$(pwd)/pharo30_zeroconfig"
           mv "Pharo.image" "${PHARO_IMAGE_FILE}"
           mv "Pharo.changes" "${PHARO_CHANGES_FILE}"
-        popd > /dev/null
+        popd > /dev/null || exit
       fi
-  
+
       if is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}"; then
         if is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
-          print_info "Utilizing cached gsDevKitCommandLine image..." 
+          print_info "Utilizing cached gsDevKitCommandLine image..."
           cp "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}" ${GS_HOME}/shared/pharo/Pharo.image
           cp "${SMALLTALK_CI_CACHE}/${PHARO_CHANGES_FILE}" ${GS_HOME}/shared/pharo/Pharo.changes
           ln -s "${SMALLTALK_CI_VMS}/Pharo-3.0/pharo" ${GS_HOME}/shared/pharo/pharo
@@ -127,7 +129,7 @@ gemstone::prepare_stone() {
       else
         ${GS_HOME}/bin/createStone -t "${gemstone_cached_extent_file}" ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}"
       fi
-  
+
       if ! is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
         cp ${GS_HOME}/shared/pharo/gsDevKitCommandLine.* "${SMALLTALK_CI_CACHE}/gemstone/pharo/"
       fi

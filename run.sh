@@ -5,9 +5,7 @@ set -o errtrace
 set -o pipefail
 set -o nounset
 
-readonly BINTRAY_API="https://api.bintray.com/content"
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
-readonly GITHUB_REPO_URL="https://github.com/hpi-swa/smalltalkCI"
 
 ################################################################################
 # Locate $SMALLTALK_CI_HOME and load helpers.
@@ -28,7 +26,7 @@ initialize() {
       ;;
   esac
 
-  if [[ "$@" = *--self-test* ]]; then
+  if [[ "$*" = *--self-test* ]]; then
     # Unset all `SMALLTALK_CI_*` environment variables for self testing
     for var in ${!SMALLTALK_CI_@}; do
       unset "${var}"
@@ -58,6 +56,7 @@ initialize() {
     fi
 
     # Load environment variables
+    # shellcheck source=env_vars
     source "${SMALLTALK_CI_HOME}/env_vars"
   fi
 
@@ -67,7 +66,9 @@ initialize() {
   fi
 
   # Load helpers
+  # shellcheck source=helpers.sh
   source "${SMALLTALK_CI_HOME}/helpers.sh"
+  # shellcheck disable=SC2034
   smalltalk_ci_start_time=$(timer_nanoseconds)
 }
 
@@ -369,7 +370,8 @@ prepare_environment() {
 ################################################################################
 add_env_vars() {
   export SCIII_SMALLTALK="${config_smalltalk}"
-  export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
+  SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
+  export SCIII_BUILD
   export SCIII_DEBUG="${config_debug}"
 }
 
@@ -383,7 +385,7 @@ raise_rtprio_limit() {
   fi
 
   fold_start set_rtprio_limit "Raising real-time priority for OpenSmalltalk VMs with threaded heartbeat..."
-  pushd $(mktemp -d) > /dev/null
+  pushd "$(mktemp -d)" > /dev/null
   gcc -o "set_rtprio_limit" "${SMALLTALK_CI_HOME}/utils/set_rtprio_limit.c"
   chmod +x "./set_rtprio_limit"
   sudo "./set_rtprio_limit" $$ || true
@@ -452,14 +454,17 @@ run() {
   case "${config_smalltalk}" in
     Squeak*)
       print_info "Starting Squeak build..."
+      # shellcheck source=squeak/run.sh
       source "${SMALLTALK_CI_HOME}/squeak/run.sh"
       ;;
     Pharo*|Moose*)
       print_info "Starting Pharo build..."
+      # shellcheck source=pharo/run.sh
       source "${SMALLTALK_CI_HOME}/pharo/run.sh"
       ;;
     GemStone*)
       print_info "Starting GemStone build..."
+      # shellcheck source=gemstone/run.sh
       source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
       ;;
     *)
@@ -486,8 +491,10 @@ main() {
   local config_ston=""
   local config_clean="false"
   local config_debug="false"
+  # shellcheck disable=SC2034
   local config_headless="true"
   local config_image=""
+  # shellcheck disable=SC2034
   local config_tracking="true"
   local config_verbose="false"
   local config_vm=""
@@ -500,6 +507,7 @@ main() {
   check_clean_up
   select_smalltalk
   validate_configuration
+  # shellcheck disable=SC2034
   config_vm_dir="${SMALLTALK_CI_VMS}/${config_smalltalk}"
   prepare_folders
   export_coveralls_data

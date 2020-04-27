@@ -1,7 +1,9 @@
 #!/bin/bash
 
 readonly BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=../helpers.sh
 source "${BASE}/helpers.sh"
+# shellcheck source=../pharo/run.sh
 source "${BASE}/pharo/run.sh"
 
 test_get_image_url() {
@@ -87,4 +89,5 @@ test_get_vm_url() {
   set -e
 }
 
+# shellcheck source=../lib/shunit2
 source "${BASE}/lib/shunit2"

@@ -1,8 +1,11 @@
+#!/usr/bin/env bash
+
 ################################################################################
 # This file provides Squeak support for smalltalkCI. It is used in the context
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
+readonly GITHUB_REPO_URL="https://github.com/hpi-swa/smalltalkCI"
 readonly BASE_DOWNLOAD="${GITHUB_REPO_URL}/releases/download"
 
 ################################################################################
@@ -75,7 +78,7 @@ squeak::download_prepared_image() {
   print_info "Extracting image..."
   extract_file "${target}" "${SMALLTALK_CI_BUILD}"
   # TODO: cleanup soon, some archives still include TravisCI.(image|changes)
-  if ! is_file "${SMALLTALK_CI_IMAGE}"; then 
+  if ! is_file "${SMALLTALK_CI_IMAGE}"; then
     mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_IMAGE}"
     mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_CHANGES}"
   fi
@@ -118,7 +121,7 @@ squeak::download_trunk_image() {
 ################################################################################
 squeak::prepare_image() {
   local status=0
-  
+
   fold_start prepare_image "Preparing ${config_smalltalk} image for CI..."
     cp "${SMALLTALK_CI_HOME}/squeak/prepare.st" \
        "${SMALLTALK_CI_BUILD}/prepare.st"
@@ -155,7 +158,7 @@ squeak::get_vm_details() {
   if is_trunk_build; then
     git_tag="v2.9.1"
     osvm_version="202003021730"
-  else 
+  else
     case "${smalltalk_name}" in
       "Squeak64-5.3")
         git_tag="v2.9.1"
@@ -288,9 +291,11 @@ squeak::determine_vm_flags() {
 ################################################################################
 squeak::run_script() {
   local script=$1
-  local vm_flags="$(squeak::determine_vm_flags)"
+  local vm_flags
+  vm_flags="$(squeak::determine_vm_flags)"
   local resolved_vm="${config_vm:-${SMALLTALK_CI_VM}}"
-  local resolved_image="$(resolve_path "${config_image:-${SMALLTALK_CI_IMAGE}}")"
+  local resolved_image
+  resolved_image="$(resolve_path "${config_image:-${SMALLTALK_CI_IMAGE}}")"
 
   case "$(uname -s)" in
     "Linux"|"Darwin")

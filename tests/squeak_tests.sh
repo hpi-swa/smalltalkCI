@@ -1,7 +1,9 @@
 #!/bin/bash
 
 readonly BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=../helpers.sh
 source "${BASE}/helpers.sh"
+# shellcheck source=../squeak/run.sh
 source "${BASE}/squeak/run.sh"
 
 test_prepare_build() {
@@ -79,4 +81,5 @@ test_get_vm_details() {
   set -e
 }
 
+# shellcheck source=../lib/shunit2
 source "${BASE}/lib/shunit2"

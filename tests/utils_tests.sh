@@ -1,6 +1,7 @@
 #!/bin/bash
 
 readonly BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=../helpers.sh
 source "${BASE}/helpers.sh"
 
 
@@ -14,4 +15,5 @@ test_set_rtprio() {
   fi
 }
 
+# shellcheck source=../lib/shunit2
 source "${BASE}/lib/shunit2"

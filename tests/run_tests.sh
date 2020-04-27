@@ -1,6 +1,7 @@
 #!/bin/bash
 
 readonly BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=../run.sh
 source "${BASE}/run.sh"
 # Initialize smalltalkCI
 initialize
@@ -23,6 +24,7 @@ test_ensure_ston_config_exists() {
 test_prepare_folders() {
   config_ston="/tmp/.smalltalk.ston"
   SMALLTALK_CI_HOME="${BASE}/tests"
+  # shellcheck source=../env_vars
   source "${BASE}/env_vars"
 
   if [[ -d "${SMALLTALK_CI_CACHE}" ]]; then
@@ -53,4 +55,5 @@ test_prepare_folders() {
   rm -rf "${SMALLTALK_CI_CACHE}" "${SMALLTALK_CI_BUILD_BASE}"
 }
 
+# shellcheck source=../lib/shunit2
 source "${BASE}/lib/shunit2"

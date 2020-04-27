@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ################################################################################
 # This file provides helper functions for smalltalkCI. It is used in the context
 # of a smalltalkCI build and it is not meant to be executed by itself.
@@ -86,6 +88,7 @@ EOF
 }
 
 print_config() {
+  # shellcheck disable=SC2154
   for var in ${!config_@}; do
     echo "${var}=${!var}"
   done
@@ -162,10 +165,11 @@ is_mingw64_build() {
 }
 
 is_sudo_enabled() {
-  $(sudo -n true > /dev/null 2>&1)
+  sudo -n true > /dev/null 2>&1
 }
 
 is_trunk_build() {
+  # shellcheck disable=SC2154
   case "${config_smalltalk}" in
     *"trunk"|*"Trunk"|*"latest"|*"Latest")
       return 0
@@ -175,10 +179,12 @@ is_trunk_build() {
 }
 
 image_is_user_provided() {
+  # shellcheck disable=SC2154
   is_not_empty "${config_image}"
 }
 
 vm_is_user_provided() {
+  # shellcheck disable=SC2154
   is_not_empty "${config_vm}"
 }
 
@@ -211,14 +217,17 @@ is_spur_image() {
 }
 
 is_headless() {
+  # shellcheck disable=SC2154
   [[ "${config_headless}" = "true" ]]
 }
 
 ston_includes_loading() {
+  # shellcheck disable=SC2154
   grep -Fq "#loading" "${config_ston}"
 }
 
 debug_enabled() {
+  # shellcheck disable=SC2154
   [[ "${config_debug}" = "true" ]]
 }
 
@@ -324,7 +333,7 @@ resolve_path() {
   local path=$1
 
   if is_cygwin_build || is_mingw64_build; then
-    echo $(cygpath -w "${path}")
+    echo "$(cygpath -w ${path})"
   else
     echo "${path}"
   fi
@@ -335,7 +344,7 @@ return_vars() {
 }
 
 set_vars() {
-  local variables=(${@:1:(($# - 1))})
+  local variables=("${@:1:(($# - 1))}")
   local values="${!#}"
 
   IFS="|" read -r "${variables[@]}" <<< "${values}"
@@ -425,9 +434,11 @@ report_build_metrics() {
   local project_slug
   local api_url
   local status_code
+  # shellcheck disable=SC2154
   local duration=$(($(timer_nanoseconds)-$smalltalk_ci_start_time))
   duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
 
+  # shellcheck disable=SC2154
   if [[ "${config_tracking}" != "true" ]]; then
     return 0
   fi
@@ -442,7 +453,7 @@ report_build_metrics() {
 
   project_slug="${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-}}"
   api_url="${GITHUB_API}/repos/${project_slug}"
-  status_code=$(curl -w %{http_code} -s -o /dev/null "${api_url}")
+  status_code=$(curl -w "%{http_code}" -s -o /dev/null "${api_url}")
   if [[ "${status_code}" != "200" ]]; then
     return 0 # Not a public repository
   fi
@@ -458,13 +469,13 @@ report_build_metrics() {
 # Deploy build artifacts to bintray if configured.
 ################################################################################
 deploy() {
+  readonly BINTRAY_API="https://api.bintray.com/content"
   local build_status_value=$1
   local target
   local version="${TRAVIS_BUILD_NUMBER}"
-  local project_name="$(basename ${TRAVIS_BUILD_DIR})"
+  local project_name
+  project_name="$(basename ${TRAVIS_BUILD_DIR})"
   local name="${project_name}-${TRAVIS_JOB_NUMBER}-${config_smalltalk}"
-  local image_name="${SMALLTALK_CI_BUILD}/${name}.image"
-  local changes_name="${SMALLTALK_CI_BUILD}/${name}.changes"
   local publish=false
 
   if is_empty "${BINTRAY_CREDENTIALS:-}" || \
@@ -487,7 +498,7 @@ deploy() {
   fi
 
   fold_start deploy "Deploying to bintray.com..."
-    pushd "${SMALLTALK_CI_BUILD}" > /dev/null
+    pushd "${SMALLTALK_CI_BUILD}" > /dev/null || exit
 
     print_info "Compressing and uploading image and changes files..."
     mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
@@ -515,7 +526,7 @@ deploy() {
       curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
     fi
 
-    popd > /dev/null
+    popd > /dev/null || exit
   fold_end deploy
 }
 
@@ -527,7 +538,8 @@ deploy() {
 timer_nanoseconds() {
   local cmd="date"
   local format="+%s%N"
-  local os=$(uname)
+  local os
+  os=$(uname)
 
   if hash gdate > /dev/null 2>&1; then
     cmd="gdate" # use gdate if available
@@ -541,7 +553,7 @@ timer_nanoseconds() {
 travis_wait() {
   local timeout="${SMALLTALK_CI_TIMEOUT:-}"
 
-  local cmd="$@"
+  local cmd="$*"
 
   if ! is_int "${timeout}"; then
     $cmd
@@ -578,11 +590,11 @@ travis_jigger() {
 
   while [ $count -lt $timeout ]; do
     count=$(($count + 1))
-    echo -e "Still running ($count of $timeout): $@"
+    echo -e "Still running ($count of $timeout): $*"
     sleep 60
   done
 
-  echo -e "\n${ANSI_BOLD}${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
+  echo -e "\n${ANSI_BOLD}${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$*\"${ANSI_RESET}\n"
   kill -9 $cmd_pid
 }
 
@@ -603,7 +615,8 @@ fold_start() {
 fold_end() {
   local identifier=$1
   local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
-  local timer_end_time=$(timer_nanoseconds)
+  local timer_end_time
+  timer_end_time=$(timer_nanoseconds)
   local duration=$(($timer_end_time-$timer_start_time))
 
   if is_travis_build; then

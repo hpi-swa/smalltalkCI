@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ################################################################################
 # This file provides Pharo support for smalltalkCI. It is used in the context
 # of a smalltalkCI build and it is not meant to be executed by itself.
@@ -181,8 +183,10 @@ pharo::get_vm_url() {
 ################################################################################
 pharo::prepare_vm() {
   local smalltalk_name=$1
-  local pharo_vm_url="$(pharo::get_vm_url "${smalltalk_name}")"
-  local pharo_zeroconf="${config_vm_dir}/zeroconfig"
+  local pharo_vm_url
+  pharo_vm_url="$(pharo::get_vm_url "${smalltalk_name}")"
+  local pharo_zeroconf
+  pharo_zeroconf="${config_vm_dir}/zeroconfig"
 
   # Skip in case vm is already set up
   if is_file "${SMALLTALK_CI_VM}"; then
@@ -221,7 +225,8 @@ pharo::prepare_vm() {
 ################################################################################
 pharo::prepare_image() {
   local smalltalk_name=$1
-  local pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
+  local pharo_image_url
+  pharo_image_url="$(pharo::get_image_url "${smalltalk_name}")"
   local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}"
   local pharo_zeroconf="${target}/zeroconfig"
 
@@ -253,7 +258,8 @@ pharo::prepare_image() {
 ################################################################################
 pharo::prepare_moose_image() {
   local smalltalk_name=$1
-  local moose_image_url="$(moose::get_image_url "${smalltalk_name}")"
+  local moose_image_url
+  moose_image_url="$(moose::get_image_url "${smalltalk_name}")"
   local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}.zip"
 
   if ! is_file "${target}"; then
@@ -285,7 +291,8 @@ pharo::run_script() {
   local script=$1
   local vm_flags=""
   local resolved_vm="${config_vm:-${SMALLTALK_CI_VM}}"
-  local resolved_image="$(resolve_path "${config_image:-${SMALLTALK_CI_IMAGE}}")"
+  local resolved_image
+  resolved_image="$(resolve_path "${config_image:-${SMALLTALK_CI_IMAGE}}")"
 
   if ! is_travis_build && ! is_headless; then
     vm_flags="--no-quit"

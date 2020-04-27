@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ -z "${SMALLTALK_CI_HOME:-}" || "$@" = *--self-test* ]]; then
+if [[ -z "${SMALLTALK_CI_HOME:-}" || "$*" = *--self-test* ]]; then
   smalltalkci="${BASH_SOURCE[0]}" # start from this very file
   if [[ -L "${smalltalkci}" ]]; then # if it is a symlink, resolve it
     smalltalkci="$(readlink "${smalltalkci}")"
