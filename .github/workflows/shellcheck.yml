@@ -8,4 +8,7 @@ jobs:
     steps:
       - uses: 'actions/checkout@v2'
       - name: 'Run Shellcheck'
-        uses: 'bewuethr/shellcheck-action@v2'
+        uses: reviewdog/action-shellcheck@v1
+        with:
+          level: warning
+          exclude: "./lib/*"
