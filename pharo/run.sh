@@ -186,6 +186,7 @@ pharo::prepare_vm() {
   local pharo_vm_url
   pharo_vm_url="$(pharo::get_vm_url "${smalltalk_name}")"
   local pharo_zeroconf
+  # shellcheck disable=SC2154
   pharo_zeroconf="${config_vm_dir}/zeroconfig"
 
   # Skip in case vm is already set up
@@ -305,6 +306,7 @@ pharo::run_script() {
 # Load project into Pharo image.
 ################################################################################
 pharo::load_project() {
+  # shellcheck disable=SC2154
   pharo::run_script "
     | smalltalkCI |
     $(conditional_debug_halt)
@@ -343,6 +345,7 @@ pharo::test_project() {
 ################################################################################
 run_build() {
   if ! image_is_user_provided; then
+    # shellcheck disable=SC2154
     case "${config_smalltalk}" in
       Pharo*)
         pharo::prepare_image "${config_smalltalk}"

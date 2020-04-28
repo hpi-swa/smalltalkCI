@@ -104,6 +104,7 @@ squeak::download_trunk_image() {
   fi
   target="${SMALLTALK_CI_BUILD}/${download_name}"
 
+  # shellcheck disable=SC2154
   fold_start download_image "Downloading ${config_smalltalk} image..."
     download_file "${BASE_DOWNLOAD}/${git_tag}/${download_name}" "${target}"
     extract_file "${target}" "${SMALLTALK_CI_BUILD}"
@@ -183,6 +184,7 @@ squeak::get_vm_details() {
       vm_file_ext="tar.gz"
       if [[ "${require_spur}" -eq 1 ]]; then
         if is_64bit; then
+          # shellcheck disable=SC2154
           vm_path="${config_vm_dir}/sqcogspur64linux${vm_path_linux_suffix}/squeak"
         else
           vm_path="${config_vm_dir}/sqcogspurlinux${vm_path_linux_suffix}/squeak"
@@ -311,6 +313,7 @@ squeak::run_script() {
 # Load smalltalkCI and the project and save image.
 ################################################################################
 squeak::load_project() {
+  # shellcheck disable=SC2154
   cat >"${SMALLTALK_CI_BUILD}/load.st" <<EOL
   | smalltalkCI |
   $(conditional_debug_halt)

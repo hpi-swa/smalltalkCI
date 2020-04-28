@@ -1,4 +1,13 @@
 #! /bin/sh
+# Ignoring shellcheck warnings because this is an external library:
+# shellcheck disable=SC2145
+# shellcheck disable=SC2090
+# shellcheck disable=SC2166
+# shellcheck disable=SC2034
+# shellcheck disable=SC2039
+# shellcheck disable=SC2089
+# shellcheck disable=SC2046
+# shellcheck disable=SC1090
 # $Id$
 # vim:et:ft=sh:sts=2:sw=2
 #

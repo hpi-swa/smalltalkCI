@@ -23,6 +23,7 @@ test_ensure_ston_config_exists() {
 
 test_prepare_folders() {
   config_ston="/tmp/.smalltalk.ston"
+  # shellcheck disable=SC2034
   SMALLTALK_CI_HOME="${BASE}/tests"
   # shellcheck source=../env_vars
   source "${BASE}/env_vars"

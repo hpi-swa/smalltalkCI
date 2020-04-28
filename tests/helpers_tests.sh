@@ -8,6 +8,7 @@ test_is_empty() {
   if ! is_empty ""; then
     fail "Empty string should be empty"
   fi
+  # shellcheck disable=SC2154
   if ! is_empty "$Foo"; then
     fail "\$Foo should be empty"
   fi
@@ -66,6 +67,7 @@ test_is_travis_build() {
     fail "Should not be a Travis build."
   fi
 
+  # shellcheck disable=SC2034
   TRAVIS=""
   if is_travis_build; then
     fail "Should not be a Travis build."

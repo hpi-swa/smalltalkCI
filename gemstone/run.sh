@@ -5,17 +5,17 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-local CLIENT_NAME="travisClient"
-local DEFAULT_DEVKIT_BRANCH="master"
-local DEFAULT_GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
-local DEVKIT_BRANCH="${DEFAULT_DEVKIT_BRANCH}"
-local DEVKIT_CLIENT_NAMES=()
-local DEVKIT_CLIENTS=()
-local DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
-local PHARO_CHANGES_FILE="Pharo-3.0.changes"
-local PHARO_IMAGE_FILE="Pharo-3.0.image"
-local STONE_NAME="travis"
-local USE_DEFAULT_HOME="true"
+CLIENT_NAME="travisClient"
+DEFAULT_DEVKIT_BRANCH="master"
+DEFAULT_GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
+DEVKIT_BRANCH="${DEFAULT_DEVKIT_BRANCH}"
+DEVKIT_CLIENT_NAMES=()
+DEVKIT_CLIENTS=()
+DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
+PHARO_CHANGES_FILE="Pharo-3.0.changes"
+PHARO_IMAGE_FILE="Pharo-3.0.image"
+STONE_NAME="travis"
+USE_DEFAULT_HOME="true"
 
 ################################################################################
 # Clone the GsDevKit_home project.
@@ -117,6 +117,7 @@ gemstone::prepare_stone() {
 
   fold_start create_stone "Creating stone..."
     if is_file "${GS_HOME}/bin/.smalltalkCI_create_arg_supported"; then
+      # shellcheck disable=SC2154
       config_stone_create_arg="-z ${config_ston}"
     fi
 
@@ -245,6 +246,7 @@ gemstone::test_project() {
   local status=0
   local failing_clients=()
 
+  # shellcheck disable=SC2154
   travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T ${GSCI_TOC:-100000} << EOF || status=$?
     iferr 1 stk
     iferr 2 stack
@@ -279,6 +281,7 @@ EOF
   fi
 
   # Create build status file for `finalize` step
+  # shellcheck disable=SC2154
   if is_nonzero "${#failing_clients[@]}"; then
     echo "Error in the following client(s): ${failing_clients[*]}." > "${build_status_file}"
   else

@@ -40,11 +40,11 @@ test_get_image_url() {
   assertEquals "get.pharo.org/30" "${image_url}"
 
   set +e
-  $(image_url="$(pharo::get_image_url "Pharo32-alpha" 2>/dev/null)") \
+  image_url="$(pharo::get_image_url "Pharo32-alpha" 2>/dev/null)" \
       || fail "Should be successful."
-  $(image_url="$(pharo::get_image_url "" 2>/dev/null)") \
+  image_url="$(pharo::get_image_url "" 2>/dev/null)" \
       && fail "Should not be successful."
-  $(image_url="$(pharo::get_image_url "Squeak" 2>/dev/null)") \
+  image_url="$(pharo::get_image_url "Squeak" 2>/dev/null)" \
       && fail "Should not be successful."
   set -e
 }
@@ -80,11 +80,11 @@ test_get_vm_url() {
   assertEquals "get.pharo.org/vm30" "${vm_url}"
 
   set +e
-  $(vm_url="$(pharo::get_vm_url "Pharo32-alpha" 2>/dev/null)") \
+  vm_url="$(pharo::get_vm_url "Pharo32-alpha" 2>/dev/null)" \
       || fail "Should be successful."
-  $(vm_url="$(pharo::get_vm_url "" 2>/dev/null)") \
+  vm_url="$(pharo::get_vm_url "" 2>/dev/null)" \
       && fail "Should not be successful."
-  $(vm_url="$(pharo::get_vm_url "Squeak" 2>/dev/null)") \
+  vm_url="$(pharo::get_vm_url "Squeak" 2>/dev/null)" \
       && fail "Should not be successful."
   set -e
 }
