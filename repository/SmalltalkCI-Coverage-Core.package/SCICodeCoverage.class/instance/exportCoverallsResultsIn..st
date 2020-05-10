@@ -1,4 +1,4 @@
-coveralls
+coverage
 exportCoverallsResultsIn: projectDirectory
 	| data |
 	(SmalltalkCI fileExists: self class coverallsBuildDataFilename) ifFalse: [

@@ -1,4 +1,4 @@
-coveralls
+coverage
 directoryFor: methodReference in: projectDirectory
 	^ (spec loading
 		collect: [ :loadspec | projectDirectory, SmalltalkCI pathNameDelimiter, loadspec directory ])

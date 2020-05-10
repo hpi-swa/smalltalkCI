@@ -1,4 +1,4 @@
-coveralls
+coverage
 coverallsSourceFilesIn: projectDirectory
 	"See http://docs.coveralls.io/api-reference for value mapping"
 	^ { 1->self coveredMethods. 0->self uncoveredMethods. nil->self excludedMethods }
