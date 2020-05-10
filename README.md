@@ -34,7 +34,7 @@ way to load and test Smalltalk projects.
   purposes)
 - Exports test results in the JUnit XML format as part of the Travis build log
 - Supports [coverage testing](#coverage-testing) and publishes results to
-  [coveralls.io][coveralls]
+  [coveralls.io][coveralls] or [codecov.io][codecov]
 
 
 ## <a name="how-to-travis"/>How To Enable Travis CI For Your Smalltalk Project
@@ -490,9 +490,9 @@ SmalltalkCISpec {
 #### Coverage Testing
 
 smalltalkCI supports coverage testing and sends coverage results automatically
-to [coveralls.io][coveralls] when the feature is enabled and when running on
-Travis CI or AppVeyor.
-Make sure you have [coveralls][coveralls] enabled for your GitHub repository.
+to [coveralls.io][coveralls] or [codecov.io][codecov] when the feature is enabled and when running on
+Travis CI, AppVeyor or GitHub Actions.
+Make sure you have [coveralls][coveralls] enabled for your GitHub repository or a `CODECOV_TOKEN` configured depending on the service you want to use.
 In order to enable coverage testing in smalltalkCI, the `#testing` slot needs to
 contain a `#coverage` dictionary.
 This dictionary can contain `#packages` (recommended), `#classes`, or
@@ -515,6 +515,25 @@ SmalltalkCISpec {
   }
 }
 ```
+The coverage service will default to [coveralls.io][coveralls] to keep backwards compatibility. But you can use:
+- `#coveralls` will use [coveralls.io][coveralls]
+- `#codecov` will use [codecov.io][codecov]
+- `#local` will not attempt to upload the coverage report to any service. Useful for local runs or to setup the upload as a separate step in the build.
+```javascript
+SmalltalkCISpec {
+  ...
+  #testing : {
+    ...
+    #coverage : {
+      #packages : [ 'Packages-To-Cover.*' ],
+      #classes : [ #ClassToCover, #'ClassToCover class' ],
+      #categories : [ 'Categories-To-Cover*' ],
+      #service: #codecov
+    }
+  }
+}
+```
+If the configured service is not `#local`, the `#auto_upload` key will control if the coverage report will be uploaded automatically as part of the test run step or no. In practical terms setting `#auto_upload` to false is equivalent to use `#local` as service.
 
 #### Custom Scripts
 
@@ -710,6 +729,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 [ci_skip]: https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build
 [clone]: https://help.github.com/articles/cloning-a-repository/
+[codecov]: https://codecov.io
 [coveralls]: https://coveralls.io/
 [download]: https://github.com/hpi-swa/smalltalkCI/archive/master.zip
 [esug]: http://www.esug.org/

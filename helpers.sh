@@ -7,7 +7,6 @@
 
 readonly BUILD_STATUS_FILE="${SMALLTALK_CI_BUILD}/build_status.txt"
 readonly GITHUB_API="https://api.github.com"
-readonly COVERALLS_API="https://coveralls.io/api/v1/jobs"
 
 readonly ANSI_BOLD="\033[1m"
 readonly ANSI_RED="\033[31m"
@@ -267,9 +266,11 @@ finalize() {
   local build_status
 
   if is_travis_build || is_appveyor_build || is_github_build; then
-    upload_coveralls_results
+    # shellcheck source=coverage/upload-coverage.sh
+    "${SMALLTALK_CI_HOME}/coverage/upload-coverage.sh"
   else
-    print_info "Skipping coveralls upload."
+    # shellcheck source=coverage/skip-coverage-upload.sh
+    "${SMALLTALK_CI_HOME}/coverage/skip-coverage-upload.sh"
   fi
 
   if ! is_file "${BUILD_STATUS_FILE}"; then
@@ -413,19 +414,6 @@ export_coveralls_data() {
   "service_name": "${service_name}"
 }
 EOL
-}
-
-upload_coveralls_results() {
-  local curl_status=0
-  local coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"
-
-  if is_file "${coverage_results}"; then
-    print_info "Uploading coverage results to Coveralls..."
-    curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" > /dev/null || curl_status=$?
-    if is_nonzero "${curl_status}"; then
-      print_error "Failed to upload coverage results (curl error code #${curl_status})"
-    fi
-  fi
 }
 
 report_build_metrics() {
