@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-source "coverage-utils.sh"
+# shellcheck source=coverage-utils.sh
+source "${SMALLTALK_CI_BUILD}/coverage-utils.sh"
 
 upload_status=0
 coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"

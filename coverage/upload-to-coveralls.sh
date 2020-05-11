@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-source "coverage.sh"
+# shellcheck source=coverage-utils.sh
+source "${SMALLTALK_CI_BUILD}/coverage-utils.sh"
 
 readonly COVERALLS_API="https://coveralls.io/api/v1/jobs"
 readonly coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"

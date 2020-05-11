@@ -3,8 +3,8 @@ configureCoverageReportUploadActions
 
 	SmalltalkCI
 		forceNewFileNamed: self class coverageUploadScriptFileName
-		do: [ :stream | 
+		do: [ :stream |
 			stream
 				nextPutAll:
-					('source "<1s>"'
+					('source "${SMALLTALK_CI_BUILD}/<1s>"'
 						expandMacrosWith: self coverageReportUploadActionScript) ]

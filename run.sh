@@ -510,7 +510,7 @@ main() {
   # shellcheck disable=SC2034
   config_vm_dir="${SMALLTALK_CI_VMS}/${config_smalltalk}"
   prepare_folders
-  export_coveralls_data
+  prepare_coverage_data
   prepare_environment
   run "$@"
   finalize
