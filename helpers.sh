@@ -267,6 +267,7 @@ finalize() {
 
   cp coverage/* "${SMALLTALK_CI_BUILD}"
   chmod +xw "${SMALLTALK_CI_BUILD}/upload-coverage.sh"
+  chmod +x "${SMALLTALK_CI_BUILD}/coverage-utils.sh"
   chmod +x "${SMALLTALK_CI_BUILD}/skip-coverage-upload.sh"
   chmod +x "${SMALLTALK_CI_BUILD}/upload-to-coveralls.sh"
   chmod +x "${SMALLTALK_CI_BUILD}/upload-to-codecov.sh"
