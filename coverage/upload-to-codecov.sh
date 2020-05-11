@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "../print-utils.sh"
+source "coverage-utils.sh"
 
 upload_status=0
 coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "../print-utils.sh"
+source "coverage.sh"
 
 readonly COVERALLS_API="https://coveralls.io/api/v1/jobs"
 readonly coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"
