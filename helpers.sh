@@ -266,11 +266,12 @@ finalize() {
   local build_status
 
   if is_travis_build || is_appveyor_build || is_github_build; then
+    cp coverage/* "${SMALLTALK_CI_BUILD}"
     # shellcheck source=coverage/upload-coverage.sh
-    "${SMALLTALK_CI_HOME}/coverage/upload-coverage.sh"
+    "${SMALLTALK_CI_BUILD}/upload-coverage.sh"
   else
     # shellcheck source=coverage/skip-coverage-upload.sh
-    "${SMALLTALK_CI_HOME}/coverage/skip-coverage-upload.sh"
+    "${SMALLTALK_CI_BUILD}/skip-coverage-upload.sh"
   fi
 
   if ! is_file "${BUILD_STATUS_FILE}"; then
