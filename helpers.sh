@@ -265,8 +265,12 @@ check_and_consume_build_status_file() {
 finalize() {
   local build_status
 
+  cp coverage/* "${SMALLTALK_CI_BUILD}"
+  chmod +xw "${SMALLTALK_CI_BUILD}/upload-coverage.sh"
+  chmod +x "${SMALLTALK_CI_BUILD}/skip-coverage-upload.sh"
+  chmod +x "${SMALLTALK_CI_BUILD}/upload-to-coveralls.sh"
+  chmod +x "${SMALLTALK_CI_BUILD}/upload-to-codecov.sh"
   if is_travis_build || is_appveyor_build || is_github_build; then
-    cp coverage/* "${SMALLTALK_CI_BUILD}"
     # shellcheck source=coverage/upload-coverage.sh
     "${SMALLTALK_CI_BUILD}/upload-coverage.sh"
   else
