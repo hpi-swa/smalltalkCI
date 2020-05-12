@@ -366,7 +366,8 @@ git_log() {
 
 prepare_coverage_data() {
 
-  cp "${SMALLTALK_CI_HOME}/coverage/*" "${SMALLTALK_CI_BUILD}"
+  print_info "Preparing coverage templates..."
+  cp "${SMALLTALK_CI_HOME}"/coverage/* "${SMALLTALK_CI_BUILD}"
   chmod +xw "${SMALLTALK_CI_BUILD}/upload-coverage.sh"
   chmod +x "${SMALLTALK_CI_BUILD}/coverage-utils.sh"
   chmod +x "${SMALLTALK_CI_BUILD}/skip-coverage-upload.sh"
