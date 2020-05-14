@@ -1,4 +1,4 @@
-# smalltalkCI [![Build Status][travis_b]][travis_url] [![AppVeyor status][appveyor_b]][appveyor_url] [![Coverage Status][coveralls_b]][coveralls_url]
+# smalltalkCI [![GitHub Workflow Status][github_action_b]][github_action_url] [![Travis CI Status][travis_b]][travis_url] [![AppVeyor Status][appveyor_b]][appveyor_url] [![Coverage Status][coveralls_b]][coveralls_url]
 
 Community-supported framework for testing Smalltalk projects on Linux, OS X, and
 Windows with built-in support for [GitHub Actions][github_action],
@@ -695,7 +695,7 @@ problem.
 list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 
 
-[travis_b]: https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master
+[travis_b]: https://img.shields.io/travis/hpi-swa/smalltalkCI?logo=travis
 [travis_url]: https://travis-ci.org/hpi-swa/smalltalkCI
 [appveyor_b]: https://ci.appveyor.com/api/projects/status/c2uchb5faykdrj3y/branch/master?svg=true
 [appveyor_url]: https://ci.appveyor.com/project/smalltalkCI/smalltalkci/branch/master
@@ -719,6 +719,8 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [filetree]: https://github.com/dalehenrich/filetree
 [gemstone]: https://gemtalksystems.com/
 [github_action]: https://github.com/marketplace/actions/setup-smalltalkci
+[github_action_b]: https://img.shields.io/github/workflow/status/hpi-swa/smalltalkCI/smalltalkCI%20Self%20Test?logo=github
+[github_action_url]: https://github.com/hpi-swa/smalltalkCI/actions
 [gitlab_ci_cd]: https://about.gitlab.com/features/gitlab-ci-cd/
 [gofer]: http://www.lukas-renggli.ch/blog/gofer
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
