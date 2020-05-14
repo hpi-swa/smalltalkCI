@@ -15,28 +15,28 @@ squeak::download_image() {
 
   case "${smalltalk_name}" in
     "Squeak64-5.3")
-      download_name="Squeak64-5.3.tar.gz"
-      git_tag="v2.9.1"
+      download_name="Squeak64-5.3-19438.tar.gz"
+      git_tag="v2.9.4"
       ;;
     "Squeak64-5.2")
-      download_name="Squeak64-5.2.tar.gz"
-      git_tag="v2.8.4"
+      download_name="Squeak64-5.2-18236.tar.gz"
+      git_tag="v2.9.4"
       ;;
     "Squeak64-5.1")
-      download_name="Squeak64-5.1.tar.gz"
-      git_tag="v2.8.4"
+      download_name="Squeak64-5.1-16555.tar.gz"
+      git_tag="v2.9.4"
       ;;
     "Squeak32-5.3")
-      download_name="Squeak32-5.3.tar.gz"
-      git_tag="v2.9.1"
+      download_name="Squeak32-5.3-19438.tar.gz"
+      git_tag="v2.9.4"
       ;;
     "Squeak32-5.2"|"Squeak-5.2"|"Squeak5.2")
-      download_name="Squeak-5.2.tar.gz"
-      git_tag="v2.8.3"
+      download_name="Squeak-5.2-18236.tar.gz"
+      git_tag="v2.9.4"
       ;;
     "Squeak32-5.1"|"Squeak-5.1"|"Squeak5.1")
-      download_name="Squeak-5.1.tar.gz"
-      git_tag="v2.7.5"
+      download_name="Squeak-5.1-16555.tar.gz"
+      git_tag="v2.9.4"
       ;;
     "Squeak32-5.0"|"Squeak-5.0"|"Squeak5.0")
       download_name="Squeak-5.0.tar.gz"
