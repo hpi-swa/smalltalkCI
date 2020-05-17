@@ -31,11 +31,11 @@ squeak::download_image() {
       git_tag="v2.9.4"
       ;;
     "Squeak32-5.2"|"Squeak-5.2"|"Squeak5.2")
-      download_name="Squeak-5.2-18236.tar.gz"
+      download_name="Squeak32-5.2-18236.tar.gz"
       git_tag="v2.9.4"
       ;;
     "Squeak32-5.1"|"Squeak-5.1"|"Squeak5.1")
-      download_name="Squeak-5.1-16555.tar.gz"
+      download_name="Squeak32-5.1-16555.tar.gz"
       git_tag="v2.9.4"
       ;;
     "Squeak32-5.0"|"Squeak-5.0"|"Squeak5.0")
