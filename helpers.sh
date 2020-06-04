@@ -295,11 +295,14 @@ download_file() {
   fi
 
   if program_exists "curl"; then
-    curl -f -s -L --retry 3 -o "${target}" "${url}" || print_error_and_exit \
-      "curl failed to download ${url} to '${target}'."
+    curl --fail --silent --show-error --location \
+      --retry 3 --retry-connrefused --retry-delay 5 --max-time 30 \
+      -o "${target}" "${url}" || print_error_and_exit \
+        "curl failed to download ${url} to '${target}'."
   elif program_exists "wget"; then
-    wget -q -O "${target}" "${url}" || print_error_and_exit \
-      "wget failed to download ${url} to '${target}'."
+    wget -t 3 --retry-connrefused --waitretry=5 --read-timeout=20 --timeout=15 \
+      --no-dns-cache -q -O "${target}" "${url}" || print_error_and_exit \
+        "wget failed to download ${url} to '${target}'."
   else
     print_error_and_exit "Please install curl or wget."
   fi
