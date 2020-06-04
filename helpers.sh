@@ -296,7 +296,7 @@ download_file() {
 
   if program_exists "curl"; then
     curl --fail --silent --show-error --location \
-      --retry 3 --retry-connrefused --retry-delay 5 --max-time 30 \
+      --retry 3 --retry-delay 5 --max-time 30 \
       -o "${target}" "${url}" || print_error_and_exit \
         "curl failed to download ${url} to '${target}'."
   elif program_exists "wget"; then
