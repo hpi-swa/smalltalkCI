@@ -439,8 +439,12 @@ report_build_metrics() {
     env_name="TravisCI"
   elif is_appveyor_build; then
     env_name="AppVeyor"
+  elif is_gitlabci_build; then
+    env_name="GitLabCI"
+  elif is_github_build; then
+    env_name="GitHub"
   else
-    return 0 # Only report build metrics when running on TravisCI or AppVeyor
+    return 0 # Only report build metrics when running on known CI service
   fi
 
   project_slug="${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-}}"
