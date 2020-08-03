@@ -419,8 +419,8 @@ upload_coveralls_results() {
     http_status=$(curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" -o "${coveralls_response}" -w "%{http_code}")
     if [[ "${http_status}" != "200" ]]; then
       print_error "Failed to upload coverage results (HTTP status code #${http_status}):"
-      cat "${coveralls_response}"
     fi
+    cat "${coveralls_response}"
   fi
 }
 
