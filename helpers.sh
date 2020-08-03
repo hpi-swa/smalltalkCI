@@ -381,7 +381,7 @@ export_coveralls_data() {
     service_name="github"
     branch_name="${GITHUB_REF}"
     url="https://github.com/${GITHUB_REPOSITORY}.git"
-    job_id="${GITHUB_RUN_ID}"
+    job_id="${GITHUB_RUN_NUMBER}"
   fi
 
   cat >"${SMALLTALK_CI_BUILD}/coveralls_build_data.json" <<EOL
