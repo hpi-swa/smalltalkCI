@@ -357,32 +357,37 @@ git_log() {
 
 
 export_coveralls_data() {
-  local service_name="unknown"
   local branch_name="unknown"
-  local url="unknown"
+  local flag_name=""
   local job_id="unknown"
   local repo_token=""
+  local service_name="unknown"
+  local url="unknown"
 
   if is_travis_build; then
     service_name="travis-ci"
     branch_name="${TRAVIS_BRANCH}"
     url="https://github.com/${TRAVIS_REPO_SLUG}.git"
     job_id="${TRAVIS_JOB_ID}"
+    flag_name="${TRAVIS_JOB_NUMBER}"
   elif is_appveyor_build; then
     service_name="appveyor"
     branch_name="${APPVEYOR_REPO_BRANCH}"
     url="https://github.com/${APPVEYOR_REPO_NAME}.git"
     job_id="${APPVEYOR_BUILD_ID}"
+    flag_name="${APPVEYOR_BUILD_NUMBER}"
   elif is_gitlabci_build; then
     service_name="gitlab-ci"
     branch_name="${CI_COMMIT_REF_NAME}"
     url="${CI_PROJECT_URL}"
     job_id="${CI_PIPELINE_ID}.${CI_JOB_ID}"
+    flag_name="${job_id}"
   elif is_github_build; then
     service_name="github"
     branch_name="${GITHUB_REF}"
     url="https://github.com/${GITHUB_REPOSITORY}.git"
     job_id="${GITHUB_RUN_ID}"
+    flag_name="${GITHUB_RUN_ID}.${GITHUB_RUN_NUMBER}"
     repo_token="${GITHUB_TOKEN:-}"
   fi
   
@@ -412,10 +417,11 @@ export_coveralls_data() {
       }
     ]
   },
+  "flag_name": "${flag_name}",
   "parallel": ${COVERALLS_PARALLEL:-false},
+  "repo_token": "${repo_token}",
   "service_job_id": "${job_id}",
-  "service_name": "${service_name}",
-  "repo_token": "${repo_token}"
+  "service_name": "${service_name}"
 }
 EOL
 }
