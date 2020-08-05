@@ -361,7 +361,7 @@ export_coveralls_data() {
   local branch_name="unknown"
   local url="unknown"
   local job_id="unknown"
-  local repo_token="${COVERALLS_REPO_TOKEN:-}"
+  local repo_token=""
 
   if is_travis_build; then
     service_name="travis-ci"
@@ -383,10 +383,12 @@ export_coveralls_data() {
     branch_name="${GITHUB_REF}"
     url="https://github.com/${GITHUB_REPOSITORY}.git"
     job_id="${GITHUB_RUN_NUMBER}"
+    repo_token="${GITHUB_TOKEN:-}"
   fi
-
-  if is_not_empty "${repo_token}"; then
+  
+  if is_not_empty "${COVERALLS_REPO_TOKEN:-}"; then
     print_info 'Using $COVERALLS_REPO_TOKEN instead of CI service info...'
+    repo_token="${COVERALLS_REPO_TOKEN:-}"
     service_name=""
     job_id=""
   fi
