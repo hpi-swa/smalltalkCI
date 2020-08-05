@@ -412,6 +412,7 @@ export_coveralls_data() {
       }
     ]
   },
+  "parallel": ${COVERALLS_PARALLEL:-false},
   "service_job_id": "${job_id}",
   "service_name": "${service_name}",
   "repo_token": "${repo_token}"
