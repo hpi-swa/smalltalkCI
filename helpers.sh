@@ -382,7 +382,7 @@ export_coveralls_data() {
     service_name="github"
     branch_name="${GITHUB_REF}"
     url="https://github.com/${GITHUB_REPOSITORY}.git"
-    job_id="${GITHUB_RUN_NUMBER}"
+    job_id="${GITHUB_RUN_ID}"
     repo_token="${GITHUB_TOKEN:-}"
   fi
   
