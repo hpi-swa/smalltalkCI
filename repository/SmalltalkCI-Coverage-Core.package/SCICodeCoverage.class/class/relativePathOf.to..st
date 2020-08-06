@@ -1,5 +1,7 @@
 helpers
 relativePathOf: aFilePath to: projectDirectory
-	(aFilePath beginsWith: projectDirectory, '/')
-		ifTrue: [ ^ aFilePath allButFirst: projectDirectory size + 1 ].
-	^ aFilePath
+	| normalizedUnixPath |
+	normalizedUnixPath := aFilePath copyReplaceAll: '\' with: '/'.
+	^ (normalizedUnixPath beginsWith: projectDirectory, '/')
+		ifTrue: [ normalizedUnixPath allButFirst: projectDirectory size + 1 ]
+		ifFalse: [ normalizedUnixPath ]
