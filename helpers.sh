@@ -371,6 +371,10 @@ export_coveralls_data() {
   local service_pull_request=""
   local url="unknown"
 
+  if ! grep -q "#coverage" "${config_ston}"; then
+    return 0 # Coverage data not needed
+  fi
+
   # Handle info in same way as Coveralls' node module (see https://git.io/JJiOz)
 
   if is_not_empty "${COVERALLS_REPO_TOKEN:-}"; then
