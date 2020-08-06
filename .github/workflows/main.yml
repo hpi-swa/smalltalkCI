@@ -34,8 +34,12 @@ jobs:
         shell: bash
         if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false && ((contains(matrix.smalltalk, 'Pharo') || contains(matrix.smalltalk, 'Moose')) && matrix.os == 'windows-latest') == false
         timeout-minutes: 15
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run smalltalkCI self test and ignore failures
         run: smalltalkci -s ${{ matrix.smalltalk }} --self-test || true
         shell: bash
         if: contains(matrix.smalltalk, 'trunk') || contains(matrix.smalltalk, 'alpha') || ((contains(matrix.smalltalk, 'Pharo') || contains(matrix.smalltalk, 'Moose')) && matrix.os == 'windows-latest')
         timeout-minutes: 15
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
