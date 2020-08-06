@@ -6,6 +6,8 @@
 readonly BUILD_STATUS_FILE="${SMALLTALK_CI_BUILD}/build_status.txt"
 readonly GITHUB_API="https://api.github.com"
 readonly COVERALLS_API="https://coveralls.io/api/v1/jobs"
+readonly COVERALLS_OPTIONAL_KEYS="flag_name parallel repo_token service_job_id
+  service_job_number service_name service_number service_pull_request"
 
 readonly ANSI_BOLD="\033[1m"
 readonly ANSI_RED="\033[31m"
@@ -358,14 +360,24 @@ git_log() {
 
 export_coveralls_data() {
   local branch_name="unknown"
+  local flag_name="${COVERALLS_FLAG_NAME:-}"
+  local optional_values=""
+  local parallel="${COVERALLS_PARALLEL:-}"
   local repo_token=""
   local service_job_id=""
+  local service_job_number=""
   local service_number=""
   local service_name=""
   local service_pull_request=""
   local url="unknown"
 
-  if is_travis_build; then
+  # Handle info in same way as Coveralls' node module (see https://git.io/JJiOz)
+
+  if is_not_empty "${COVERALLS_REPO_TOKEN:-}"; then
+    print_info 'Using $COVERALLS_REPO_TOKEN instead of CI service info...'
+    branch_name="$(git rev-parse --abbrev-ref HEAD)"
+    repo_token="${COVERALLS_REPO_TOKEN:-}"
+  elif is_travis_build; then
     branch_name="${TRAVIS_BRANCH}"
     service_job_id="${TRAVIS_JOB_ID}"
     service_name="travis-ci"
@@ -374,17 +386,27 @@ export_coveralls_data() {
   elif is_appveyor_build; then
     branch_name="${APPVEYOR_REPO_BRANCH}"
     service_job_id="${APPVEYOR_BUILD_ID}"
+    service_job_number="${APPVEYOR_BUILD_NUMBER}"
     service_name="appveyor"
     service_pull_request="${APPVEYOR_PULL_REQUEST_NUMBER}"
     url="https://github.com/${APPVEYOR_REPO_NAME}.git"
   elif is_gitlabci_build; then
     branch_name="${CI_COMMIT_REF_NAME}"
-    service_job_id="${CI_PIPELINE_ID}.${CI_JOB_ID}"
+    service_job_id="${CI_BUILD_ID}"
+    service_job_number="${CI_BUILD_NAME}"
     service_name="gitlab-ci"
+    service_pull_request="${CI_MERGE_REQUEST_IID}"
     url="${CI_PROJECT_URL}"
   elif is_github_build; then
-    branch_name="${GITHUB_REF##*/}"
-    repo_token="${GITHUB_TOKEN:-}"
+    if [[ "${GITHUB_REF}" == "refs/heads/"* ]]; then
+      branch_name="${GITHUB_REF##*/}" # e.g. in push events.
+    else
+      branch_name="${GITHUB_HEAD_REF}" # e.g. in pull_request events.
+    fi
+    if is_empty "${GITHUB_TOKEN:-}"; then
+      print_error_and_exit 'Running on GitHub Actions but $GITHUB_TOKEN is not set. Add `env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}` to your step config.'
+    fi
+    repo_token="${GITHUB_TOKEN}"
     service_name="github"
     service_number="${GITHUB_RUN_ID}"
     if [[ "${GITHUB_REF}" == "refs/pull/"* ]]; then
@@ -392,17 +414,16 @@ export_coveralls_data() {
     fi
     url="https://github.com/${GITHUB_REPOSITORY}.git"
   fi
-  
-  if is_not_empty "${COVERALLS_REPO_TOKEN:-}"; then
-    print_info 'Using $COVERALLS_REPO_TOKEN instead of CI service info...'
-    repo_token="${COVERALLS_REPO_TOKEN:-}"
-    service_job_id=""
-    service_name=""
-    service_number=""
-  fi
+
+  for key in ${COVERALLS_OPTIONAL_KEYS}; do
+    if is_not_empty "${!key:-}"; then
+      optional_values="${optional_values}\"${key}\": \"${!key}\", "
+    fi
+  done
 
   cat >"${SMALLTALK_CI_BUILD}/coveralls_build_data.json" <<EOL
 {
+  ${optional_values}
   "git": {
     "branch": "${branch_name}",
     "head": {
@@ -419,14 +440,7 @@ export_coveralls_data() {
         "name": "origin"
       }
     ]
-  },
-  "flag_name": "${COVERALLS_FLAG_NAME:-}",
-  "parallel": ${COVERALLS_PARALLEL:-false},
-  "repo_token": "${repo_token}",
-  "service_job_id": "${service_job_id}",
-  "service_name": "${service_name}",
-  "service_number": "${service_number}",
-  "service_pull_request": "${service_pull_request}"
+  }
 }
 EOL
 }
