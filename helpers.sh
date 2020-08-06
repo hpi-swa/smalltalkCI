@@ -358,43 +358,47 @@ git_log() {
 
 export_coveralls_data() {
   local branch_name="unknown"
-  local job_id="unknown"
-  local job_number=""
   local repo_token=""
-  local service_name="unknown"
+  local service_job_id=""
+  local service_number=""
+  local service_name=""
+  local service_pull_request=""
   local url="unknown"
 
   if is_travis_build; then
-    service_name="travis-ci"
     branch_name="${TRAVIS_BRANCH}"
+    service_job_id="${TRAVIS_JOB_ID}"
+    service_name="travis-ci"
+    service_pull_request="${TRAVIS_PULL_REQUEST}"
     url="https://github.com/${TRAVIS_REPO_SLUG}.git"
-    job_id="${TRAVIS_JOB_ID}"
-    job_number="${TRAVIS_JOB_NUMBER}"
   elif is_appveyor_build; then
-    service_name="appveyor"
     branch_name="${APPVEYOR_REPO_BRANCH}"
+    service_job_id="${APPVEYOR_BUILD_ID}"
+    service_name="appveyor"
+    service_pull_request="${APPVEYOR_PULL_REQUEST_NUMBER}"
     url="https://github.com/${APPVEYOR_REPO_NAME}.git"
-    job_id="${APPVEYOR_BUILD_ID}"
-    job_number="${APPVEYOR_BUILD_NUMBER}"
   elif is_gitlabci_build; then
-    service_name="gitlab-ci"
     branch_name="${CI_COMMIT_REF_NAME}"
+    service_job_id="${CI_PIPELINE_ID}.${CI_JOB_ID}"
+    service_name="gitlab-ci"
     url="${CI_PROJECT_URL}"
-    job_id="${CI_PIPELINE_ID}.${CI_JOB_ID}"
   elif is_github_build; then
-    service_name="github"
-    branch_name="${GITHUB_REF}"
-    url="https://github.com/${GITHUB_REPOSITORY}.git"
-    job_id="${GITHUB_RUN_ID}"
-    job_number="${GITHUB_RUN_NUMBER}"
+    branch_name="${GITHUB_REF##*/}"
     repo_token="${GITHUB_TOKEN:-}"
+    service_name="github"
+    service_number="${GITHUB_RUN_ID}"
+    if [[ "${GITHUB_REF}" == "refs/pull/"* ]]; then
+      service_pull_request="${GITHUB_REF#refs/pulls/}"
+    fi
+    url="https://github.com/${GITHUB_REPOSITORY}.git"
   fi
   
   if is_not_empty "${COVERALLS_REPO_TOKEN:-}"; then
     print_info 'Using $COVERALLS_REPO_TOKEN instead of CI service info...'
     repo_token="${COVERALLS_REPO_TOKEN:-}"
+    service_job_id=""
     service_name=""
-    job_id=""
+    service_number=""
   fi
 
   cat >"${SMALLTALK_CI_BUILD}/coveralls_build_data.json" <<EOL
@@ -416,11 +420,13 @@ export_coveralls_data() {
       }
     ]
   },
+  "flag_name": "${COVERALLS_FLAG_NAME:-}",
   "parallel": ${COVERALLS_PARALLEL:-false},
   "repo_token": "${repo_token}",
-  "service_job_id": "${job_id}",
-  "service_job_number": "${job_number}",
-  "service_name": "${service_name}"
+  "service_job_id": "${service_job_id}",
+  "service_name": "${service_name}",
+  "service_number": "${service_number}",
+  "service_pull_request": "${service_pull_request}"
 }
 EOL
 }
