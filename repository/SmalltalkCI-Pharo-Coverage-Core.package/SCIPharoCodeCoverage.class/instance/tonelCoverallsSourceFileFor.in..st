@@ -5,6 +5,6 @@ tonelCoverallsSourceFileFor: classToCover in: projectDirectory
 	filePath := self class tonelFilePathFor: classToCover in: sourceDirectory.
 	^ Dictionary
 		newFrom:
-			{('name' -> (self class relativePathOf: filePath to: projectDirectory)).
+			{('name' -> (self class relativeUnixPathOf: filePath to: projectDirectory)).
 			('source_digest' -> (self class md5Of: filePath)).
 			('coverage' -> (self tonelCoverageFor: classToCover in: filePath))}
