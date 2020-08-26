@@ -34,6 +34,7 @@
 		"ensureNoExistingBuildStatusFile" : "fn 11/20/2017 11:55",
 		"escape" : "fn 9/26/2016 16:12",
 		"explicitTestKeys" : "fn 11/13/2016 22:23",
+		"failAndQuit:" : "smalltalkCI 8/26/2020 14:34",
 		"fileExists:" : "fn 11/22/2017 14:19",
 		"fold:block:" : "fn 10/7/2016 21:26",
 		"fold:on:block:" : "smalltalkCI 8/25/2020 13:04",
