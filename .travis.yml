@@ -1,10 +1,6 @@
 language: smalltalk
 sudo: false
 
-smalltalk_edge:
-  source: MrModder/smalltalkCI
-  branch: master
-
 branches:
   except:
     - windows
