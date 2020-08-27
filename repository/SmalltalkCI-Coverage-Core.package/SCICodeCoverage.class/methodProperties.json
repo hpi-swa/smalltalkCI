@@ -1,11 +1,7 @@
 {
 	"class" : {
 		"classNamesNotUnderTest" : "fn 11/22/2017 18:05",
-		"coverallsAPI" : "fn 10/8/2016 16:27",
-		"coverallsBuildData" : "fn 11/22/2017 14:52",
-		"coverallsBuildDataFilename" : "fn 11/22/2017 14:17",
 		"coverallsDictFor:in:projectDirectory:coverageValue:" : "fn 8/6/2020 13:32",
-		"coverallsResultFilename" : "fn 10/8/2016 17:50",
 		"filePathFor:in:" : "fn 11/22/2017 15:02",
 		"ignoredPackages" : "fn 11/26/2017 18:26",
 		"ignoredSelectors" : "fn 11/22/2017 11:23",
