@@ -1,6 +1,6 @@
 exporting
 coverageWriter
 
-	^ SCICoverallsWriter new
+	^ self coverageWriterClass new
 		spec: spec;
 		yourself
