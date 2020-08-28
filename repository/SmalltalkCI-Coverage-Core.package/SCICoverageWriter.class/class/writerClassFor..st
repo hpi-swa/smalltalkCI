@@ -8,4 +8,4 @@ writerClassFor: coverageFormat
 	SCIError signal:
 		'Unknown coverage format: ', coverageFormat printString, String cr,
 		'Supported formats are: ', self supportedFormatsString, String cr,
-		'Also see: https://github.com/hpi-swa/smalltalkCI#coverage-testing .'.
+		'See: https://github.com/hpi-swa/smalltalkCI#coverage-testing'.
