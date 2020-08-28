@@ -1,5 +1,14 @@
 {
 	"class" : {
-		"coverageFormat" : "smalltalkCI 8/28/2020 14:14" },
+		"coverageFormat" : "smalltalkCI 8/28/2020 14:14",
+		"lcovResultFilename" : "smalltalkCI 8/28/2020 15:31" },
 	"instance" : {
-		"export:in:" : "smalltalkCI 8/28/2020 14:04" } }
+		"export:in:" : "smalltalkCI 8/28/2020 17:03",
+		"lineEnding" : "smalltalkCI 8/28/2020 17:15",
+		"projectDirectory" : "smalltalkCI 8/28/2020 16:50",
+		"projectDirectory:" : "smalltalkCI 8/28/2020 16:50",
+		"stream" : "smalltalkCI 8/28/2020 15:29",
+		"stream:" : "smalltalkCI 8/28/2020 15:30",
+		"writeLineDataByFiles:" : "smalltalkCI 8/28/2020 16:56",
+		"writeLineDataForFile:" : "smalltalkCI 8/28/2020 17:16",
+		"writeLines:" : "smalltalkCI 8/28/2020 17:17" } }
