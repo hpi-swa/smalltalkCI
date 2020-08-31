@@ -1,0 +1,182 @@
+# Coverage testing
+
+smalltalkCI has built-in support for per-method coverage testing in Pharo and Squeak.
+It natively supports uploading coverage to [Coveralls](https://coveralls.io) from Travis CI or AppVeyor.
+
+Other CI services/Coverage reporters are supported by smalltalkCI with the [LCOV output format](#uploading-with-different-ci-services%2Fcoverage-reporters).
+
+## Configuring coverage testing
+
+To enable coverage testing behavior, add a `#coverage` dictionary to the `#testing` slot of your `.smalltalk.ston`:
+```javascript
+SmalltalkCISpec {
+  ...
+  #testing : {
+    ...
+    #coverage : {
+      #packages : [ 'Packages-To-Cover.*' ],
+      #classes : [ #ClassToCover, #'ClassToCover class' ],
+      #categories : [ 'Categories-To-Cover*' ]
+      #format : #coveralls
+    }
+  }
+}
+```
+The `#coverage` dictionary can contain the following options:
+- `#packages` (recommended)
+  - Measure coverage of all instance side methods in the provided packages
+- `#classes`
+  - Measures all methods of all provided classes (instance side)
+- `#categories`
+  - Measure coverage for all classes' methods as well as their meta classes' methods
+- `#format` (defaults to `#coveralls`)
+  - The output format of the Coverage data 
+  - May be either `#coveralls` or `#lcov`
+
+When running smalltalkCI on TravisCI or AppVeyor with the `#coveralls` coverage format, the results will be uploaded to [Coveralls](https://coveralls.io) automatically.
+Make sure your repository is [added to Coveralls](https://coveralls.io/repos/new).
+
+## Uploading with different CI-services/Coverage reporters
+To support as many combinantions of CI services and coverage reporters, smalltalkCI supports the [LCOV](http://ltp.sourceforge.net/coverage/lcov.php) coverage output format.
+
+When `#format` is set to `#lcov`, coveralls will write a file named `lcov.info` into the `${SMALLTALK_CI_BUILD}` directory.
+Most coverage services already support uploading coverage in the LCOV format with uploader scripts.
+
+For the most common usecases, see these instructions:
+- [Inspecting coverage locally](#inspecting-coverage-locally)
+- [Coveralls](#coveralls)
+  - [Travis CI](#coveralls-%26-travis-ci)
+  - [Github actions](#coveralls-%26-github-actions)
+- [CodeCov](#codecov)
+  - [Travis CI](#codecov-%26-travisci)
+  - [Github actions](#codecov-%26-github-actions)
+
+### Inspecting coverage locally
+On Linux distributions, LCOV is available as a set of tools that can generate a coverage report as HTML/CSS files.
+When running smalltalkCI with LCOV coverage enabled, the log will contain a message like this:
+```shell
+Writing LCOV coverage info to: /path/to/lcov.info
+```
+If you have LCOV installed, you can then generate the report:
+```bash
+cd /path/to
+genhtml lcov.info
+xdg-open index.html
+```
+The result will look something like this:
+
+<img src="resources/lcov-example.png" alt="An example LCOV report" width=75% />
+
+### [Coveralls](https://coveralls.io/)
+Uploading LCOV data to Coveralls is possible with the [Coveralls npm package](https://www.npmjs.com/package/coveralls).
+For most cases it is as simple as running:
+```bash
+npm install -g coveralls
+cat "${SMALLTALK_CI_BUILD}/lcov.info" | coveralls
+```
+
+#### Coveralls & Travis CI
+smalltalkCI will automatically upload coverage from TravisCI to Coveralls if the `#coveralls` output format is used.
+
+If you have to use the LCOV output for some reason, add this to your `.travis.yml`:
+```YAML
+after_success:
+  - npm install -g coveralls
+  - cat "${SMALLTALK_CI_BUILD}/lcov.info" | coveralls
+```
+
+
+#### Coveralls & Github Actions
+Coveralls provides a [premade Github action](https://github.com/marketplace/actions/coveralls-github-action) to upload coverage from Github CI.
+This action also allows you to upload and merge coverage from parallel CI runs.
+
+Extend your Github CI workflow like this:
+```YAML
+jobs:
+  test:
+    # ...
+    steps:
+      # ... Checkout project, run smalltalkCI ...
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Path to lcov file
+          # smalltalkCI will print this path should you need to adjust it
+          path-to-lcov: /home/runner/.smalltalkCI/_builds/lcov.info
+```
+And for multiple parallel runs:
+```YAML
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        smalltalk: [ Squeak64-trunk, Squeak64-5.3 ]
+        os: [ ubuntu-latest, macos-latest ]
+    name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
+    steps:
+      # ... Checkout project, run smalltalkCI ...
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Path to lcov file
+          # smalltalkCI will print this path should you need to adjust it
+          path-to-lcov: /home/runner/.smalltalkCI/_builds/lcov.info
+          # This name must be unique for each job
+          flag-name: ${{matrix.os}}-${{matrix.smalltalk}}
+          parallel: true
+  finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
+```
+
+### [CodeCov](https://codecov.io/)
+CodeCov provides an [uploader for bash](https://docs.codecov.io/docs/about-the-codecov-bash-uploader) that is compatible with smalltalkCI's LCOV output.
+You might have to point the uploader towards where the coverage output is located.
+smalltalkCI will print this path for you.
+
+Generally it will be:
+```bash
+bash <(curl -s https://codecov.io/bash) -s "${SMALLTALK_CI_BUILD}"
+```
+
+#### CodeCov & TravisCI
+Add this to your `.travis.yml`
+```yaml
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -s "${SMALLTALK_CI_BUILD}"
+```
+
+#### CodeCov & Github Actions
+CodeCov provides a [premade Github action](https://github.com/marketplace/actions/codecov) to upload coverage.
+To use it, extend your workflow description:
+```YAML
+jobs:
+  test:
+    # An example build matrix
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        smalltalk: [ Squeak64-trunk, Squeak64-5.3 ]
+        os: [ ubuntu-latest, macos-latest ]
+    # ...
+    steps:
+      # ... Checkout project, run smalltalkCI ...
+      - uses: codecov/codecov-action@v1
+        with:
+          # path to the LCOV file
+          # smalltalkCI will print this path, should you need to adjust it.
+          file: /home/runner/.smalltalkCI/_builds/lcov.info
+          # This name should be unique to identify the build job
+          name: ${{matrix.os}}-${{matrix.smalltalk}}
+          # Optional: Defaults to false
+          fail_ci_if_error: true
+```

@@ -33,7 +33,7 @@ way to load and test Smalltalk projects.
 - Supports Linux, macOS, and Windows and can be run locally (e.g. for debug
   purposes)
 - Exports test results in the JUnit XML format as part of the Travis build log
-- Supports [coverage testing](#coverage-testing) and publishes results to
+- Supports [coverage testing](https://github.com/hpi-swa/smalltalkCI/blob/master/COVERAGE.md) and publishes results to
   [coveralls.io][coveralls]
 
 
@@ -489,32 +489,7 @@ SmalltalkCISpec {
 
 #### Coverage Testing
 
-smalltalkCI supports coverage testing and sends coverage results automatically
-to [coveralls.io][coveralls] when the feature is enabled and when running on
-Travis CI or AppVeyor.
-Make sure you have [coveralls][coveralls] enabled for your GitHub repository.
-In order to enable coverage testing in smalltalkCI, the `#testing` slot needs to
-contain a `#coverage` dictionary.
-This dictionary can contain `#packages` (recommended), `#classes`, or
-`#categories`.
-smalltalkCI immitates the `TestRunner`'s behavior when using `#packages`.
-On the other hand, `#classes` will be resolved to all methods of all classes
-specified (instance side), while `#categories` will be resolved
-to all classes' methods as well as their meta classes' methods.
-
-```javascript
-SmalltalkCISpec {
-  ...
-  #testing : {
-    ...
-    #coverage : {
-      #packages : [ 'Packages-To-Cover.*' ],
-      #classes : [ #ClassToCover, #'ClassToCover class' ],
-      #categories : [ 'Categories-To-Cover*' ]
-    }
-  }
-}
-```
+See [COVERAGE.md](https://github.com/hpi-swa/smalltalkCI/blob/master/COVERAGE.md)
 
 #### Custom Scripts
 
