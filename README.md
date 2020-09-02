@@ -713,9 +713,9 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [coveralls]: https://coveralls.io/
 [download]: https://github.com/hpi-swa/smalltalkCI/archive/master.zip
 [esug]: http://www.esug.org/
-[esug_ita16]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/2016_512x512.png
-[esug_ita16_b]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/2016_64x64.png
-[esug_logo]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/logo.png
+[esug_ita16]: https://user-images.githubusercontent.com/2368856/91981109-a15e2d80-ed28-11ea-88bb-36b5f0b0ab95.png
+[esug_ita16_b]: https://user-images.githubusercontent.com/2368856/91981067-8f7c8a80-ed28-11ea-8fab-db2e96a28b8c.png
+[esug_logo]: https://user-images.githubusercontent.com/2368856/91981051-88ee1300-ed28-11ea-8eb1-3f1ef5d07c4a.png
 [filetree]: https://github.com/dalehenrich/filetree
 [gemstone]: https://gemtalksystems.com/
 [github_action]: https://github.com/marketplace/actions/setup-smalltalkci
