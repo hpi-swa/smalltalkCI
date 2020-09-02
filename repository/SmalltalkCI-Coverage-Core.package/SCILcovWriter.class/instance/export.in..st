@@ -1,11 +1,6 @@
 exporting
 export: codeCoverage in: projectDirectory
 
-	SmalltalkCI printToStdout: 'Writing LCOV coverage info to: ', self class lcovResultFilename ansiColor: SmalltalkCI ansiBlue.
-	SmalltalkCI 
-		forceNewFileNamed: self class lcovResultFilename
-		do: [ :stream |
-			self 
-				stream: stream;
-				projectDirectory: projectDirectory;
-				writeLineDataByFiles: (codeCoverage coverallsSourceFilesIn: self projectDirectory)].
+	self projectDirectory: projectDirectory.
+	SmalltalkCI printToStdout: 'Writing LCOV coverage info to: ', self lcovResultFilename ansiColor: SmalltalkCI ansiBlue, SmalltalkCI ansiBold.
+	self exportCoverallsData: (codeCoverage coverallsSourceFilesIn: self projectDirectory).

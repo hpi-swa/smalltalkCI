@@ -1,14 +1,17 @@
 testing
 testLcovEndToEnd
-	| stringStream |
+	| fileContents projDir |
 	self platformSupportsCoverageTesting ifFalse: [ ^ self ].
 	
-	stringStream := WriteStream on: ''.
+	projDir := SmalltalkCI buildDirectory.
 	SCILcovWriter new
 		spec: self class lcovSpec;
-		stream: stringStream;
-		projectDirectory: 'projDir';
-		writeLineDataByFiles: self class mockLineCoverage.
+		projectDirectory: projDir;
+		exportCoverallsData: self class mockLineCoverage.
 
-	self assert: self class lcovEndToEndOutput withUnixLineEndings
-		equals: stringStream contents.
+	SmalltalkCI
+		readOnlyFileNamed: projDir, SmalltalkCI pathNameDelimiter, 'coverage', SmalltalkCI pathNameDelimiter, 'lcov.info'
+		do: [:stream | fileContents := stream contents].
+	
+	self assert: (self class lcovEndToEndOutputIn: projDir) withUnixLineEndings
+		equals: fileContents.

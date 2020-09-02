@@ -39,7 +39,13 @@ Make sure your repository is [added to Coveralls](https://coveralls.io/repos/new
 ## Uploading with different CI-services/Coverage reporters
 To support as many combinantions of CI services and coverage reporters, smalltalkCI supports the [LCOV](http://ltp.sourceforge.net/coverage/lcov.php) coverage output format.
 
-When `#format` is set to `#lcov`, coveralls will write a file named `lcov.info` into the `${SMALLTALK_CI_BUILD}` directory.
+When `#format` is set to `#lcov`, coveralls will write a file containing LCOV coverage information to `coverage/lcov.info`, next to your `.smalltalk.ston`.
+
+**Note:** If you're unable to find the LCOV output file, look for this line in smalltalkCI's output:
+```shell
+Writing LCOV coverage info to: /path/to/coverage/lcov.info
+```
+
 Most coverage services already support uploading coverage in the LCOV format with uploader scripts.
 
 For the most common usecases, see these instructions:
@@ -53,13 +59,13 @@ For the most common usecases, see these instructions:
 
 ### Inspecting coverage locally
 On Linux distributions, LCOV is available as a set of tools that can generate a coverage report as HTML/CSS files.
-When running smalltalkCI with LCOV coverage enabled, the log will contain a message like this:
-```shell
-Writing LCOV coverage info to: /path/to/lcov.info
-```
-If you have LCOV installed, you can then generate the report:
+First, make sure you have LCOV coverage enabled in your `.smalltalk.ston`.
+Then navigate to your project directory (the directory containing your `.smalltalk.ston`), run smalltalkci and generate the LCOV report.
+
 ```bash
-cd /path/to
+/path/to/bin/smalltalkci
+# by default, smalltalkCI saves the coverage data at coverage/lcov.info, next to your .smalltalk.ston
+cd coverage
 genhtml lcov.info
 xdg-open index.html
 ```
@@ -82,7 +88,7 @@ If you have to use the LCOV output for some reason, add this to your `.travis.ym
 ```YAML
 after_success:
   - npm install -g coveralls
-  - cat "${SMALLTALK_CI_BUILD}/lcov.info" | coveralls
+  - cat "coverage/lcov.info" | coveralls
 ```
 
 
@@ -101,9 +107,6 @@ jobs:
         uses: coverallsapp/github-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          # Path to lcov file
-          # smalltalkCI will print this path should you need to adjust it
-          path-to-lcov: /home/runner/.smalltalkCI/_builds/lcov.info
 ```
 And for multiple parallel runs:
 ```YAML
@@ -121,9 +124,6 @@ jobs:
         uses: coverallsapp/github-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          # Path to lcov file
-          # smalltalkCI will print this path should you need to adjust it
-          path-to-lcov: /home/runner/.smalltalkCI/_builds/lcov.info
           # This name must be unique for each job
           flag-name: ${{matrix.os}}-${{matrix.smalltalk}}
           parallel: true
@@ -145,14 +145,14 @@ smalltalkCI will print this path for you.
 
 Generally it will be:
 ```bash
-bash <(curl -s https://codecov.io/bash) -s "${SMALLTALK_CI_BUILD}"
+bash <(curl -s https://codecov.io/bash)
 ```
 
 #### CodeCov & TravisCI
 Add this to your `.travis.yml`
 ```yaml
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -s "${SMALLTALK_CI_BUILD}"
+  - bash <(curl -s https://codecov.io/bash)
 ```
 
 #### CodeCov & Github Actions
@@ -172,9 +172,6 @@ jobs:
       # ... Checkout project, run smalltalkCI ...
       - uses: codecov/codecov-action@v1
         with:
-          # path to the LCOV file
-          # smalltalkCI will print this path, should you need to adjust it.
-          file: /home/runner/.smalltalkCI/_builds/lcov.info
           # This name should be unique to identify the build job
           name: ${{matrix.os}}-${{matrix.smalltalk}}
           # Optional: Defaults to false

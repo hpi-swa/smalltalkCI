@@ -1,6 +1,7 @@
 {
 	"class" : {
 		"allPackageNames" : "fn 6/22/2016 00:44",
+		"assureDirectoryExistence:" : "smalltalkCI 9/2/2020 15:57",
 		"classesInPackage:" : "fn 11/23/2016 15:37",
 		"codeCoverageClass" : "fn 10/8/2016 14:57",
 		"deleteFile:" : "fn 10/16/2016 16:14",
