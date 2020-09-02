@@ -78,7 +78,7 @@ Uploading LCOV data to Coveralls is possible with the [Coveralls npm package](ht
 For most cases it is as simple as running:
 ```bash
 npm install -g coveralls
-cat "${SMALLTALK_CI_BUILD}/lcov.info" | coveralls
+cat "coverage/lcov.info" | coveralls
 ```
 
 #### Coveralls & Travis CI
