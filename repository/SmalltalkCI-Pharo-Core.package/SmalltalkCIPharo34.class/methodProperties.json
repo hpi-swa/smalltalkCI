@@ -1,6 +1,7 @@
 {
+	"instance" : { },
 	"class" : {
-		"codeCoverageClass" : "GOC 10/3/2019 12:29",
-		"isPlatformCompatible" : "GOC 10/3/2019 12:14" },
-	"instance" : {
-		 } }
+		"isPlatformCompatible" : "GOC 10/3/2019 12:14",
+		"codeCoverageClass" : "GOC 10/3/2019 12:29"
+	}
+}

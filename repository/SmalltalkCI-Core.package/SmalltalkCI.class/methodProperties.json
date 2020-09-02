@@ -10,6 +10,7 @@
 		"ansiRed" : "fn 9/26/2016 16:11",
 		"ansiReset" : "fn 9/26/2016 16:11",
 		"ansiYellow" : "fn 9/26/2016 16:12",
+		"assureDirectoryExistence:" : "smalltalkCI 9/2/2020 17:46",
 		"basename:" : "fn 11/20/2017 14:10",
 		"buildDirectory" : "fn 10/12/2016 00:03",
 		"buildStatusFile" : "fn 10/12/2016 00:03",
