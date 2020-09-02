@@ -33,7 +33,7 @@ way to load and test Smalltalk projects.
 - Supports Linux, macOS, and Windows and can be run locally (e.g. for debug
   purposes)
 - Exports test results in the JUnit XML format as part of the Travis build log
-- Supports [coverage testing](https://github.com/hpi-swa/smalltalkCI/blob/master/COVERAGE.md) and publishes results to
+- Supports [coverage testing](https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md) and publishes results to
   [coveralls.io][coveralls]
 
 
@@ -489,7 +489,7 @@ SmalltalkCISpec {
 
 #### Coverage Testing
 
-See [COVERAGE.md](https://github.com/hpi-swa/smalltalkCI/blob/master/COVERAGE.md)
+See [COVERAGE.md](https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md)
 
 #### Custom Scripts
 

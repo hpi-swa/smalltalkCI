@@ -65,7 +65,7 @@ xdg-open index.html
 ```
 The result will look something like this:
 
-<img src="resources/lcov-example.png" alt="An example LCOV report" width=75% />
+<img src="https://user-images.githubusercontent.com/1346493/91981290-e2eed880-ed28-11ea-9abf-3d3323af5d84.png" alt="An example LCOV report" width=75% />
 
 ### [Coveralls](https://coveralls.io/)
 Uploading LCOV data to Coveralls is possible with the [Coveralls npm package](https://www.npmjs.com/package/coveralls).
