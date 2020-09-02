@@ -2,7 +2,7 @@ constants
 lcovEndToEndOutput
 
 	^ 'TN:
-SF:projDir/test.st
+SF:projDir', SmalltalkCI pathNameDelimiter, 'test.st
 DA:1,1
 DA:2,1
 DA:4,0
@@ -10,21 +10,21 @@ LH:2
 LF:3
 end_of_record
 TN:
-SF:projDir/test2.st
+SF:projDir', SmalltalkCI pathNameDelimiter, 'test2.st
 DA:1,1
 DA:2,1
 LH:2
 LF:2
 end_of_record
 TN:
-SF:projDir/test3.st
+SF:projDir', SmalltalkCI pathNameDelimiter, 'test3.st
 DA:1,0
 DA:2,0
 LH:0
 LF:2
 end_of_record
 TN:
-SF:projDir/test4.st
+SF:projDir', SmalltalkCI pathNameDelimiter, 'test4.st
 LH:0
 LF:0
 end_of_record
