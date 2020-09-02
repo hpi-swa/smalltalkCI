@@ -6,9 +6,9 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		 ],
-	"name" : "SmalltalkCIPharo34",
+		"allClassesToCover" ],
+	"name" : "SCIPharo34CodeCoverage",
 	"pools" : [
 		 ],
-	"super" : "SmalltalkCIPharo",
+	"super" : "SCICodeCoverage",
 	"type" : "normal" }
