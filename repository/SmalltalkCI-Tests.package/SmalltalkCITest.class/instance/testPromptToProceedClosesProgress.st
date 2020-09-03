@@ -2,6 +2,8 @@ testing
 testPromptToProceedClosesProgress
 
 	|progressMorph|
+	self platformUsesPromptToProceed ifFalse: [^ self].
+	
 	"Make sure we have a progress bar open"
 	progressMorph := SystemProgressMorph uniqueInstance
 		openInWorld; 
