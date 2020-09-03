@@ -24,17 +24,17 @@ way to load and test Smalltalk projects.
 
 ## Features
 
-- Simple configuration via [`.smalltalk.ston`](#minimal-smalltalkston-template),
-  [`.travis.yml`](#travisyml-template), [`appveyor.yml`](#appveyoryml-template),
-  and [`.gitlab-ci.yml`](#gitlab-ciyml-template)
 - Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
-- Runs on Travis CI's [container-based infrastructure][cbi]
-  ([*"Builds start in seconds"*][bsis])
+- Runs on GitHub Actions, Travis CI, AppVeyor, GitLab CI, and other CI services
+- Simple configuration via [`.smalltalk.ston`](#minimal-smalltalkston-template),
+  [`setup-smalltalkCI` action][github_action],
+  [`.travis.yml`](#travisyml-template),
+  [`appveyor.yml`](#appveyoryml-template), and
+  [`.gitlab-ci.yml`](#gitlab-ciyml-template)
 - Supports Linux, macOS, and Windows and can be run locally (e.g. for debug
   purposes)
-- Exports test results in the JUnit XML format as part of the Travis build log
-- Supports [coverage testing](https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md) and publishes results to
-  [coveralls.io][coveralls]
+- Supports [coverage testing][coverage_docs]
+- Exports test results in the JUnit XML format as part of the build log
 
 
 ## <a name="how-to-travis"/>How To Enable Travis CI For Your Smalltalk Project
@@ -674,9 +674,9 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [travis_url]: https://travis-ci.org/hpi-swa/smalltalkCI
 [appveyor_b]: https://ci.appveyor.com/api/projects/status/c2uchb5faykdrj3y/branch/master?svg=true
 [appveyor_url]: https://ci.appveyor.com/project/smalltalkCI/smalltalkci/branch/master
+[coverage_docs]: https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md
 [coveralls_b]: https://coveralls.io/repos/github/hpi-swa/smalltalkCI/badge.svg?branch=master
 [coveralls_url]: https://coveralls.io/github/hpi-swa/smalltalkCI?branch=master
-
 [appveyor]: https://www.appveyor.com/
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
 [build_matrix_appveyor]: https://www.appveyor.com/docs/build-configuration/#build-matrix
@@ -685,7 +685,6 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 [ci_skip]: https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build
 [clone]: https://help.github.com/articles/cloning-a-repository/
-[coveralls]: https://coveralls.io/
 [download]: https://github.com/hpi-swa/smalltalkCI/archive/master.zip
 [esug]: http://www.esug.org/
 [esug_ita16]: https://user-images.githubusercontent.com/2368856/91981109-a15e2d80-ed28-11ea-88bb-36b5f0b0ab95.png
