@@ -1,7 +1,7 @@
 SCICoverageWriter is an abstract superclass for coverage exporting.
 Subclasses of SCICoverageWriter are responsible for exporting to a specific coverage format (like coveralls or lcov.)
 
-It's subclasses need to implement the following methods
+Its subclasses need to implement the following methods
 - (class)>>#coverageFormat :
 	Should return a symbol specifying the user-facing symbol used to identify the coverage format.
 - (instance)>>#export:in:

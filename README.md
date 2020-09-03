@@ -489,7 +489,7 @@ SmalltalkCISpec {
 
 #### Coverage Testing
 
-See [COVERAGE.md](https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md)
+See [COVERAGE.md][coverage_docs].
 
 #### Custom Scripts
 
@@ -677,6 +677,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [coverage_docs]: https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md
 [coveralls_b]: https://coveralls.io/repos/github/hpi-swa/smalltalkCI/badge.svg?branch=master
 [coveralls_url]: https://coveralls.io/github/hpi-swa/smalltalkCI?branch=master
+
 [appveyor]: https://www.appveyor.com/
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
 [build_matrix_appveyor]: https://www.appveyor.com/docs/build-configuration/#build-matrix
