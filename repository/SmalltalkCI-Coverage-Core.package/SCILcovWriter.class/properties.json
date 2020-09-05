@@ -4,11 +4,12 @@
 		 ],
 	"classvars" : [
 		 ],
-	"commentStamp" : "smalltalkCI 8/28/2020 15:03",
+	"commentStamp" : "",
 	"instvars" : [
-		 ],
-	"name" : "SCICoverageWriter",
+		"stream",
+		"projectDirectory" ],
+	"name" : "SCILcovWriter",
 	"pools" : [
 		 ],
-	"super" : "SCIObjectWithSpec",
+	"super" : "SCICoverageWriter",
 	"type" : "normal" }

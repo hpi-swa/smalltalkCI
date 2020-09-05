@@ -24,17 +24,17 @@ way to load and test Smalltalk projects.
 
 ## Features
 
-- Simple configuration via [`.smalltalk.ston`](#minimal-smalltalkston-template),
-  [`.travis.yml`](#travisyml-template), [`appveyor.yml`](#appveyoryml-template),
-  and [`.gitlab-ci.yml`](#gitlab-ciyml-template)
 - Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
-- Runs on Travis CI's [container-based infrastructure][cbi]
-  ([*"Builds start in seconds"*][bsis])
+- Runs on GitHub Actions, Travis CI, AppVeyor, GitLab CI, and other CI services
+- Simple configuration via [`.smalltalk.ston`](#minimal-smalltalkston-template),
+  [`setup-smalltalkCI` action][github_action],
+  [`.travis.yml`](#travisyml-template),
+  [`appveyor.yml`](#appveyoryml-template), and
+  [`.gitlab-ci.yml`](#gitlab-ciyml-template)
 - Supports Linux, macOS, and Windows and can be run locally (e.g. for debug
   purposes)
-- Exports test results in the JUnit XML format as part of the Travis build log
-- Supports [coverage testing](#coverage-testing) and publishes results to
-  [coveralls.io][coveralls]
+- Supports [coverage testing][coverage_docs]
+- Exports test results in the JUnit XML format as part of the build log
 
 
 ## <a name="how-to-travis"/>How To Enable Travis CI For Your Smalltalk Project
@@ -489,32 +489,7 @@ SmalltalkCISpec {
 
 #### Coverage Testing
 
-smalltalkCI supports coverage testing and sends coverage results automatically
-to [coveralls.io][coveralls] when the feature is enabled and when running on
-Travis CI or AppVeyor.
-Make sure you have [coveralls][coveralls] enabled for your GitHub repository.
-In order to enable coverage testing in smalltalkCI, the `#testing` slot needs to
-contain a `#coverage` dictionary.
-This dictionary can contain `#packages` (recommended), `#classes`, or
-`#categories`.
-smalltalkCI immitates the `TestRunner`'s behavior when using `#packages`.
-On the other hand, `#classes` will be resolved to all methods of all classes
-specified (instance side), while `#categories` will be resolved
-to all classes' methods as well as their meta classes' methods.
-
-```javascript
-SmalltalkCISpec {
-  ...
-  #testing : {
-    ...
-    #coverage : {
-      #packages : [ 'Packages-To-Cover.*' ],
-      #classes : [ #ClassToCover, #'ClassToCover class' ],
-      #categories : [ 'Categories-To-Cover*' ]
-    }
-  }
-}
-```
+See [COVERAGE.md][coverage_docs].
 
 #### Custom Scripts
 
@@ -699,6 +674,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [travis_url]: https://travis-ci.org/hpi-swa/smalltalkCI
 [appveyor_b]: https://ci.appveyor.com/api/projects/status/c2uchb5faykdrj3y/branch/master?svg=true
 [appveyor_url]: https://ci.appveyor.com/project/smalltalkCI/smalltalkci/branch/master
+[coverage_docs]: https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md
 [coveralls_b]: https://coveralls.io/repos/github/hpi-swa/smalltalkCI/badge.svg?branch=master
 [coveralls_url]: https://coveralls.io/github/hpi-swa/smalltalkCI?branch=master
 
@@ -710,12 +686,11 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 [ci_skip]: https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build
 [clone]: https://help.github.com/articles/cloning-a-repository/
-[coveralls]: https://coveralls.io/
 [download]: https://github.com/hpi-swa/smalltalkCI/archive/master.zip
 [esug]: http://www.esug.org/
-[esug_ita16]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/2016_512x512.png
-[esug_ita16_b]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/2016_64x64.png
-[esug_logo]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/logo.png
+[esug_ita16]: https://user-images.githubusercontent.com/2368856/91981109-a15e2d80-ed28-11ea-88bb-36b5f0b0ab95.png
+[esug_ita16_b]: https://user-images.githubusercontent.com/2368856/91981067-8f7c8a80-ed28-11ea-8fab-db2e96a28b8c.png
+[esug_logo]: https://user-images.githubusercontent.com/2368856/91981051-88ee1300-ed28-11ea-8eb1-3f1ef5d07c4a.png
 [filetree]: https://github.com/dalehenrich/filetree
 [gemstone]: https://gemtalksystems.com/
 [github_action]: https://github.com/marketplace/actions/setup-smalltalkci

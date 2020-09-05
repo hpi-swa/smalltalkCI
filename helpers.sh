@@ -385,21 +385,21 @@ export_coveralls_data() {
     branch_name="${TRAVIS_BRANCH}"
     service_job_id="${TRAVIS_JOB_ID}"
     service_name="travis-ci"
-    service_pull_request="${TRAVIS_PULL_REQUEST}"
+    service_pull_request="${TRAVIS_PULL_REQUEST:-}"
     url="https://github.com/${TRAVIS_REPO_SLUG}.git"
   elif is_appveyor_build; then
     branch_name="${APPVEYOR_REPO_BRANCH}"
     service_job_id="${APPVEYOR_BUILD_ID}"
     service_job_number="${APPVEYOR_BUILD_NUMBER}"
     service_name="appveyor"
-    service_pull_request="${APPVEYOR_PULL_REQUEST_NUMBER}"
+    service_pull_request="${APPVEYOR_PULL_REQUEST_NUMBER:-}"
     url="https://github.com/${APPVEYOR_REPO_NAME}.git"
   elif is_gitlabci_build; then
     branch_name="${CI_COMMIT_REF_NAME}"
     service_job_id="${CI_BUILD_ID}"
     service_job_number="${CI_BUILD_NAME}"
     service_name="gitlab-ci"
-    service_pull_request="${CI_MERGE_REQUEST_IID}"
+    service_pull_request="${CI_MERGE_REQUEST_IID:-}"
     url="${CI_PROJECT_URL}"
   elif is_github_build; then
     if [[ "${GITHUB_REF}" == "refs/heads/"* ]]; then
