@@ -555,10 +555,10 @@ EXAMPLE:
 ### Collection Of Anonymous Build Metrics
 
 smalltalkCI collects anonymous build metrics (Smalltalk dialect, CI environment,
-build status, build duration) for public repositories when running on a CI platform.
-This allows to identify build errors caused by smalltalkCI updates and
-therefore helps to improve the service. It is possible to opt-out by using the
-`--no-tracking` option.
+build status, build duration) for public repositories when running on a supported
+CI platform. This allows to identify build errors caused by smalltalkCI updates
+and therefore helps to improve the service. It is possible to opt-out by using
+the `--no-tracking` option.
 
 ### Travis-specific Options
 
