@@ -16,7 +16,7 @@ SmalltalkCISpec {
     #coverage : {
       #packages : [ 'Packages-To-Cover.*' ],
       #classes : [ #ClassToCover, #'ClassToCover class' ],
-      #categories : [ 'Categories-To-Cover*' ]
+      #categories : [ 'Categories-To-Cover*' ],
       #format : #coveralls
     }
   }
