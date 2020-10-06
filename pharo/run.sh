@@ -295,9 +295,10 @@ pharo::run_script() {
 }
 
 ################################################################################
-# Load project into Pharo image.
+# Load just smalltalkCI project into Pharo image.
+# ADDED by SORABITO Inc.
 ################################################################################
-pharo::load_project() {
+pharo::load_smalltalk_ci_project() {
   pharo::run_script "
     | smalltalkCI |
     $(conditional_debug_halt)
@@ -306,6 +307,46 @@ pharo::load_project() {
         repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
         onConflict: [:ex | ex pass];
         load ] on: Warning do: [:w | w resume ].
+    smalltalkCI := (Smalltalk at: #SmalltalkCI).
+    smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
+  "
+}
+
+################################################################################
+# Run before scripts.
+# ADDED by SORABITO Inc.
+################################################################################
+pharo::run_before_scripts() {
+    print_info "Running before build scripts..."
+    if [ -n "${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER+set}" ]; then
+      for script_file in $( ls "${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER}" ); do
+        echo "Running --- ${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER}/${script_file}"
+        pharo::run_script "$(cat ${SMALLTALK_CI_BEFORE_BUILD_SCRIPTS_FOLDER}/${script_file})"
+      done
+    fi
+}
+
+################################################################################
+# Run after scripts.
+# ADDED by SORABITO Inc.
+################################################################################
+pharo::run_after_scripts() {
+    print_info "Running after build scripts..."
+    if [ -n "${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER+set}" ]; then
+      for script_file in $( ls "${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER}" ); do
+        echo "Running --- ${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER}/${script_file}"
+        pharo::run_script "$(cat ${SMALLTALK_CI_AFTER_BUILD_SCRIPTS_FOLDER}/${script_file})"
+      done
+    fi
+}
+
+################################################################################
+# Load project into Pharo image.
+# UPDATED by SORABITO Inc.
+################################################################################
+pharo::load_project() {
+  pharo::run_script "
+    | smalltalkCI |
     smalltalkCI := (Smalltalk at: #SmalltalkCI).
     smalltalkCI load: '$(resolve_path "${config_ston}")'.
     smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
@@ -332,7 +373,20 @@ pharo::test_project() {
 }
 
 ################################################################################
+# configure smalltalk repository
+# ADDED by SORABITO Inc.
+################################################################################
+configure_smalltalk_repository() {
+    smalltalk_repository="${SMALLTALK_REPOSITORY:=pharo-repository}"
+
+    ln -s "${TRAVIS_BUILD_DIR}/${smalltalk_repository}" "${SMALLTALK_CI_BUILD}/${smalltalk_repository}"
+
+    ln -s "${TRAVIS_BUILD_DIR}/patch" "${SMALLTALK_CI_BUILD}/patch"
+}
+
+################################################################################
 # Main entry point for Pharo builds.
+# UPDATED by SORABITO Inc.
 ################################################################################
 run_build() {
   if ! image_is_user_provided; then
@@ -350,7 +404,11 @@ run_build() {
     pharo::prepare_vm "${config_smalltalk}"
   fi
   if ston_includes_loading; then
+    configure_smalltalk_repository
+    pharo::load_smalltalk_ci_project
+    pharo::run_before_scripts
     pharo::load_project
+    pharo::run_after_scripts
     check_and_consume_build_status_file
   fi
   pharo::test_project
