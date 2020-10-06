@@ -505,6 +505,8 @@ report_build_metrics() {
 # Deploy build artifacts to bintray if configured.
 ################################################################################
 deploy() {
+  deploy_for_sorabito()
+  return
   local build_status_value=$1
   local target
   local version="${TRAVIS_BUILD_NUMBER}"
@@ -561,6 +563,45 @@ deploy() {
       print_info "Publishing ${version}..."
       curl -s -X POST -u "$BINTRAY_CREDENTIALS" "${target}/publish" > /dev/null
     fi
+
+    popd > /dev/null
+  fold_end deploy
+}
+
+deploy_for_sorabito() {
+  local build_status_value=$1
+  local target
+  local version="${TRAVIS_BUILD_NUMBER}"
+  local project_name="$(basename ${TRAVIS_BUILD_DIR})"
+  local name="${project_name}-${TRAVIS_COMMIT}-${config_smalltalk}"
+  local image_name="${SMALLTALK_CI_BUILD}/${name}.image"
+  local changes_name="${SMALLTALK_CI_BUILD}/${name}.changes"
+  local publish=false
+
+  local sources_name=`ls "${SMALLTALK_CI_BUILD}" > >(grep sources)`
+  print_info "${sources_name}"
+
+  print_info "Deploy..."
+
+  fold_start deploy "Deploying to ..."
+
+    pushd "${SMALLTALK_CI_BUILD}" > /dev/null
+
+    mv "${SMALLTALK_CI_IMAGE}" "${name}.image"
+    mv "${SMALLTALK_CI_CHANGES}" "${name}.changes"
+
+    touch "${TRAVIS_COMMIT}.REVISION"
+    if [ -n "$sources_name" ]; then
+      print_info "Compressing image, changes and sources files..."
+      zip -q "travis-${name}.zip" "${name}.image" "${name}.changes" "${sources_name}" "${TRAVIS_COMMIT}.REVISION"
+    else
+      print_info "Compressing image and changes files..."
+      zip -q "travis-${name}.zip" "${name}.image" "${name}.changes" "${TRAVIS_COMMIT}.REVISION"
+    fi
+
+    is_dir image || mkdir image
+    cp "travis-${name}.zip" "image/travis-${name}.zip"
+    cp -rf "travis-${name}.zip" "image/travis-${project_name}-lastSuccessfulBuild-${config_smalltalk}.zip"
 
     popd > /dev/null
   fold_end deploy
