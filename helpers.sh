@@ -505,7 +505,7 @@ report_build_metrics() {
 # Deploy build artifacts to bintray if configured.
 ################################################################################
 deploy() {
-  deploy_for_sorabito($1); return
+  deploy_for_sorabito "$1"; return
   local build_status_value=$1
   local target
   local version="${TRAVIS_BUILD_NUMBER}"
