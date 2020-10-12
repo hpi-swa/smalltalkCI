@@ -1,9 +1,9 @@
 testing-writer
 assertWriterUsesFormat: coverageFormat forSpec: aSpec
 
-	|writer|
-	writer := SmalltalkCI codeCoverageClass new
+	|writers|
+	writers := SmalltalkCI codeCoverageClass new
 		spec: aSpec;
-		coverageWriter.
+		coverageWriters.
 	
-	self assert: coverageFormat equals: writer class coverageFormat.
+	self assert: coverageFormat equals: writers first class coverageFormat.

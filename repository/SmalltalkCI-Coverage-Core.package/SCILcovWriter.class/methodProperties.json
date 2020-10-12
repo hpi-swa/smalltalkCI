@@ -2,7 +2,7 @@
 	"class" : {
 		"coverageFormat" : "smalltalkCI 8/28/2020 14:14" },
 	"instance" : {
-		"export:in:" : "smalltalkCI 9/2/2020 17:40",
+		"export:in:" : "smalltalkCI 10/12/2020 17:45",
 		"exportCoverallsData:" : "smalltalkCI 9/2/2020 17:37",
 		"lcovResultFilename" : "smalltalkCI 8/31/2020 12:36",
 		"lineEnding" : "smalltalkCI 8/28/2020 17:15",

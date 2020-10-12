@@ -1,4 +1,4 @@
 exporting
 exportResultsIn: projectDirectory
 	
-	self coverageWriter export: self in: projectDirectory.
+	self coverageWriters do: [:each | each export: self in: projectDirectory.]

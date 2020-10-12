@@ -10,7 +10,8 @@ SmalltalkCISpec {
   ],
   #testing : {
     #coverage : {
-      #categories : [ 'SmalltalkCI-*' ]
+      #categories : [ 'SmalltalkCI-*' ],
+      #format: [#stdout, #lcov, #coveralls]
     },
     #exclude : {
       #classes : [ #SCIExcludedTests ]

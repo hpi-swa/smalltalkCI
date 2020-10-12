@@ -7,6 +7,7 @@ export: codeCoverage in: projectDirectory
 		^ self].
 	data := self class coverallsBuildData.
 	data at: 'source_files' put: (codeCoverage coverallsSourceFilesIn: projectDirectory).
+	SmalltalkCI printToStdout: 'Writing Coveralls coverage info to: ', self class coverallsResultFilename.
 	SmalltalkCI
 		forceNewFileNamed: self class coverallsResultFilename
 		do: [ :stream | STON put: data asJsonOnStream: stream ].
