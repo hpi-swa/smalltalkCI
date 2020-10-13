@@ -5,6 +5,8 @@ It natively supports uploading coverage to [Coveralls][coveralls] from GitHub Ac
 
 Other CI services/Coverage reporters are supported by smalltalkCI with the [LCOV output format](#uploading-with-different-ci-services%2Fcoverage-reporters).
 
+smalltalkCI is also able to print its own coverage summary to stdout, where all methods are grouped by classes.
+
 ## Configuring coverage testing
 
 To enable coverage testing behavior, add a `#coverage` dictionary to the `#testing` slot of your `.smalltalk.ston`:
@@ -31,7 +33,8 @@ The `#coverage` dictionary can contain the following options:
   - Measure coverage for all classes' methods as well as their meta classes' methods
 - `#format` (defaults to `#coveralls`)
   - The output format of the Coverage data 
-  - May be either `#coveralls` or `#lcov`
+  - May be either `#coveralls`,`#lcov`, or `#stdout`
+  - May also be a list containing multiple output formats
 
 When running smalltalkCI on TravisCI or AppVeyor with the `#coveralls` coverage format, the results will be uploaded to [Coveralls][coveralls] automatically.
 Make sure your repository is [added to Coveralls][coveralls_new].
@@ -49,7 +52,8 @@ Writing LCOV coverage info to: /path/to/coverage/lcov.info
 Most coverage services already support uploading coverage in the LCOV format with uploader scripts.
 
 For the most common usecases, see these instructions:
-- [Inspecting coverage locally](#inspecting-coverage-locally)
+- [Coverage report on stdout](#coverage-report-on-stdout)
+- [Inspecting coverage locally](#generating-a-coverage-report-locally)
 - [Coveralls](#coveralls)
   - [Travis CI](#coveralls-%26-travis-ci)
   - [GitHub actions](#coveralls-%26-github-actions)
@@ -57,7 +61,13 @@ For the most common usecases, see these instructions:
   - [Travis CI](#codecov-%26-travisci)
   - [GitHub actions](#codecov-%26-github-actions)
 
-### Inspecting coverage locally
+### Coverage report on stdout
+smalltalkCI can optionally print a coverage report directly to stdout in the `Exporting Coverage...` step.
+To enable this feature, add `#stdout` to the `#format` coverage option.
+
+The coverage report will contain a list of classes. Fully covered classes are marked with a green checkmark and listed first, followed by classes that are only partially covered, listing which methods are missing coverage.
+
+### Generating a coverage report locally
 On Linux distributions, LCOV is available as a set of tools that can generate a coverage report as HTML/CSS files.
 First, make sure you have LCOV coverage enabled in your `.smalltalk.ston`.
 Then navigate to your project directory (the directory containing your `.smalltalk.ston`), run `bin/smalltalkci` and generate the LCOV report.
