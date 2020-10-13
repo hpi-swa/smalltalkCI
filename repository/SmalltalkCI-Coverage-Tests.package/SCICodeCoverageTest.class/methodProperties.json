@@ -1,5 +1,6 @@
 {
 	"class" : {
+		"allFormatsSpec" : "smalltalkCI 10/13/2020 19:24",
 		"coverallsSpec" : "smalltalkCI 8/28/2020 14:06",
 		"endToEndSpec" : "fn 11/22/2017 13:28",
 		"lcovEndToEndOutputIn:" : "smalltalkCI 9/2/2020 17:47",
@@ -18,4 +19,5 @@
 		"testLcovEndToEnd" : "smalltalkCI 9/2/2020 17:48",
 		"testLcovWriterClass" : "smalltalkCI 8/28/2020 14:16",
 		"testMethodReferences" : "fn 11/22/2017 14:39",
+		"testMultipleWriterClasses" : "smalltalkCI 10/13/2020 20:15",
 		"testUnknownWriterClass" : "smalltalkCI 10/12/2020 18:10" } }

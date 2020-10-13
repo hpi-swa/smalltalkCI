@@ -1,0 +1,8 @@
+{
+	"class" : {
+		"mockCoverage" : "smalltalkCI 10/13/2020 20:16",
+		"mockCoverageOutput" : "smalltalkCI 10/13/2020 20:25" },
+	"instance" : {
+		"setUp" : "smalltalkCI 10/13/2020 19:45",
+		"tearDown" : "smalltalkCI 10/13/2020 19:45",
+		"testStdoutCoverageEndToEnd" : "smalltalkCI 10/13/2020 20:14" } }

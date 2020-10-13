@@ -3,12 +3,9 @@
 		"ballot" : "smalltalkCI 10/4/2020 18:50",
 		"checkMark" : "smalltalkCI 10/4/2020 18:50",
 		"coverageFormat" : "smalltalkCI 10/4/2020 17:13",
-		"info" : "smalltalkCI 10/4/2020 19:09",
-		"warning" : "smalltalkCI 10/4/2020 18:50" },
+		"info" : "smalltalkCI 10/4/2020 19:09" },
 	"instance" : {
-		"addMethods:to:atKey:" : "smalltalkCI 10/4/2020 18:08",
 		"export:in:" : "smalltalkCI 10/13/2020 17:30",
-		"groupByClass:" : "smalltalkCI 10/4/2020 18:09",
 		"initialize" : "smalltalkCI 10/4/2020 17:23",
 		"printClass:coverage:" : "smalltalkCI 10/12/2020 17:43",
 		"printCoverageDetails:" : "smalltalkCI 10/12/2020 17:41",
