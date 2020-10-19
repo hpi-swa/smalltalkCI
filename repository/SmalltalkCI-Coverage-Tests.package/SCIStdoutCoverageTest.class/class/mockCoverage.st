@@ -16,5 +16,5 @@ mockCoverage
 			} collect: #methodReference);
 		excludedMethods: ({
 				(SCIStdoutCoverageTest class >> #mockCoverageOutput).
-				(SCIStdoutCoverageWriter >> #initialize).
+				(SCIStdoutCoverageWriter >> #sci)
 			} collect: #methodReference)
