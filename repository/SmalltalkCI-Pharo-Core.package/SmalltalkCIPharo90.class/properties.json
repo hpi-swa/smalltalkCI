@@ -1,11 +1,11 @@
 {
 	"commentStamp" : "",
-	"super" : "SCIMetacelloLoadSpec",
+	"super" : "SmalltalkCIPharo78",
 	"category" : "SmalltalkCI-Pharo-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "SCIPharoMetacelloLoadSpec",
+	"name" : "SmalltalkCIPharo90",
 	"type" : "normal"
 }
