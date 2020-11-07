@@ -16,6 +16,8 @@
 		"onUpgrade",
 		"repository",
 		"version",
+		"user",
+		"password",
 		"useLatestMetacello",
 		"ignoreImage" ],
 	"name" : "SCIMetacelloLoadSpec",

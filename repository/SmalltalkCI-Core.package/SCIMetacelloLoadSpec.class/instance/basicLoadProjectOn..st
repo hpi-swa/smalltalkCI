@@ -11,15 +11,17 @@ basicLoadProjectOn: aSmalltalkCI
 			self filetreeRepositoryIn: aSmalltalkCI projectDirectory ]);
 		baseline: self baseline;
 		configuration: self configuration;
-		version: self version.
-
+		version: self version;
+		username: self user;
+		password: self password.
+	
 	self ignoreImage ifTrue: [
 		metacello ignoreImage ].
 	self onConflict ifNotNil: [ :selector |
 		metacello onConflict: [ :ex :loaded :incoming | ex perform: selector ]].
 	self onUpgrade ifNotNil: [ :selector |
 		metacello onUpgrade: [ :ex :loaded :incoming | ex perform: selector ]].
-
+	
 	metacello copy get.	"compensate for older versions of Metacello"
 	self withExceptionHandlerDo: [ 
 		aSmalltalkCI performMetacelloLoad: [ 
