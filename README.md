@@ -416,7 +416,7 @@ SCIMonticelloLoadSpec {
   #versions : ['MyProject-Core-aa.12'],               // Load specific versions
   #usernameEnv : 'USERNAME_VAR',                      // Environment variable containing the username used for authentication
   #passwordEnv : 'PASSWORD_VAR',                      // Environment variable containing the password used for authentication
-  #platforms : [ #squeak, #pharo, #gemstone ],        // Define compatible platforms
+  #platforms : [ #squeak, #pharo, #gemstone ]         // Define compatible platforms
 }
 ```
 
