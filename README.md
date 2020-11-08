@@ -399,8 +399,6 @@ SCIMetacelloLoadSpec {
   #onWarningLog : true,                               // Log Warning messages to Transcript
   #platforms : [ #squeak, #pharo, #gemstone ],        // Define compatible platforms
   #repository : 'http://smalltalkhub.com/mc/...',     // Alternatively, define MC repository
-  #usernameEnv : 'GITHUB_USER',                       // Environment variable containing the username used for authentication
-  #passwordEnv : 'GITHUB_TOKEN',                      // Environment variable containing the password used for authentication
   #useLatestMetacello : true,                         // Upgrade Metacello before loading
   #version : '1.0.0'                                  // Define MC version (for MC Configurations only)
 }
@@ -416,7 +414,9 @@ SCIMonticelloLoadSpec {
   #url : 'http://ss3.gemtalksystems.com/ss/...',      // Define URL for repository
   #packages : ['MyProject-Core', 'MyProject-Tests'],  // Load packages and/or
   #versions : ['MyProject-Core-aa.12'],               // Load specific versions
-  #platforms : [ #squeak, #pharo, #gemstone ]         // Define compatible platforms
+  #usernameEnv : 'USERNAME_VAR',                      // Environment variable containing the username used for authentication
+  #passwordEnv : 'PASSWORD_VAR',                      // Environment variable containing the password used for authentication
+  #platforms : [ #squeak, #pharo, #gemstone ],        // Define compatible platforms
 }
 ```
 
