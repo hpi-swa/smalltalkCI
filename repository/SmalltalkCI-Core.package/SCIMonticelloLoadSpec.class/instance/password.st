@@ -1,4 +1,6 @@
 accessing
 password
 
-	^ password ifNil: [ ^ '' ]
+	password ifNotNil: [ ^ password ].
+	self passwordEnv ifNotNil: [ :env | ^ SmalltalkCI getEnv: env ].
+	^ ''

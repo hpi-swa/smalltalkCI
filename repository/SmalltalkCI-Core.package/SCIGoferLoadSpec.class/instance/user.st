@@ -1,4 +1,6 @@
 accessing
 user
 
-	^ user ifNil: [ ^ '' ]
+	user ifNotNil: [ ^ user ].
+	self userEnv ifNotNil: [ :env | ^ SmalltalkCI getEnv: env ].
+	^ ''

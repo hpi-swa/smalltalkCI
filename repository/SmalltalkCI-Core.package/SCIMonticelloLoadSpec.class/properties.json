@@ -9,6 +9,8 @@
 		"url",
 		"user",
 		"password",
+		"userEnv",
+		"passwordEnv",
 		"packages",
 		"versions",
 		"loadedClasses" ],
