@@ -11,9 +11,11 @@ basicLoadProjectOn: aSmalltalkCI
 			self filetreeRepositoryIn: aSmalltalkCI projectDirectory ]);
 		baseline: self baseline;
 		configuration: self configuration;
-		version: self version;
-		username: self user;
-		password: self password.
+		version: self version.
+	self user ifNotEmpty: [:currentUser |
+		metacello username: currentUser].
+	self password ifNotEmpty: [:currentPassword |
+		metacello password: currentPassword].
 	
 	self ignoreImage ifTrue: [
 		metacello ignoreImage ].
