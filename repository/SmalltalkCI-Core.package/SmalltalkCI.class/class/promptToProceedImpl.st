@@ -1,4 +1,4 @@
 helpers
 promptToProceedImpl
-	"Do nothing by default"
-	^ false
+	"Proceed by default"
+	^ true
