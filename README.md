@@ -669,8 +669,8 @@ problem.
 list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 
 
-[travis_b]: https://img.shields.io/travis/hpi-swa/smalltalkCI?logo=travis
-[travis_url]: https://travis-ci.org/hpi-swa/smalltalkCI
+[travis_b]: https://img.shields.io/travis/com/hpi-swa/smalltalkCI?logo=travis
+[travis_url]: https://travis-ci.com/hpi-swa/smalltalkCI
 [appveyor_b]: https://ci.appveyor.com/api/projects/status/c2uchb5faykdrj3y/branch/master?svg=true
 [appveyor_url]: https://ci.appveyor.com/project/smalltalkCI/smalltalkci/branch/master
 [coverage_docs]: https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md
