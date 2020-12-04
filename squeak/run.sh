@@ -316,7 +316,8 @@ squeak::load_project() {
     load ] on: Warning do: [:w | w resume ].
   smalltalkCI := Smalltalk at: #SmalltalkCI.
   smalltalkCI load: '$(resolve_path "${config_ston}")'.
-  smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
+  (smalltalkCI isHeadless or: [smalltalkCI promptToProceed])
+      ifTrue: [ smalltalkCI saveAndQuitImage ]
 EOL
 
   squeak::run_script "load.st"

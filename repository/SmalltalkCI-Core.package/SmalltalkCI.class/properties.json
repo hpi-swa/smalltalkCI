@@ -4,6 +4,7 @@
 		 ],
 	"classvars" : [
 		"DeprecationWarnings",
+		"IsColorful",
 		"PlatformClass",
 		"TravisID" ],
 	"commentStamp" : "",
