@@ -3,6 +3,7 @@
 		"classNamesNotUnderTest" : "fn 11/22/2017 18:05",
 		"coverallsDictFor:in:projectDirectory:coverageValue:" : "fn 8/6/2020 13:32",
 		"empty" : "smalltalkCI 10/10/2020 19:21",
+		"exportCoverage:in:" : "smalltalkCI 12/8/2020 15:42",
 		"filePathFor:in:" : "fn 11/22/2017 15:02",
 		"ignoredPackages" : "fn 11/26/2017 18:26",
 		"ignoredSelectors" : "fn 11/22/2017 11:23",

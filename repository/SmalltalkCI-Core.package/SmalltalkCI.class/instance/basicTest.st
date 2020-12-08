@@ -14,7 +14,7 @@ basicTest
 			self finishUpAfterTesting ].
 	coverage ifNotNil: [
 		self class printToStdout: 'Exporting coverage...' ansiColor: self class ansiBlue, self class ansiBold.
-		coverage exportResultsIn: self projectDirectory].
+		self executionClass exportCoverage: coverage in: self projectDirectory].
 	self reportResults: runner.
 	runner isSuccessful
 		ifFalse: [ SCIError signal: '[test failure]' ]
