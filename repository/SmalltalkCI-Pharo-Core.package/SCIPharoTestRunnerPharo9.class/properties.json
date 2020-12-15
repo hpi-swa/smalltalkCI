@@ -1,11 +1,11 @@
 {
 	"commentStamp" : "",
-	"super" : "TestCase",
-	"category" : "SmalltalkCI-Pharo-Tests",
+	"super" : "SCIPharoTestRunner",
+	"category" : "SmalltalkCI-Pharo-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "SCIPharoTestRunnerTest",
+	"name" : "SCIPharoTestRunnerPharo9",
 	"type" : "normal"
 }
