@@ -1,11 +1,14 @@
 {
-	"commentStamp" : "",
-	"super" : "SCICustomScript",
 	"category" : "SmalltalkCI-Pharo-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
-	"instvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
 	"name" : "SCIPharoCustomScript",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "SCICustomScript",
+	"type" : "normal" }
