@@ -18,4 +18,9 @@ cd smalltalkCI-*
 source env_vars
 popd > /dev/null
 
+# Set SSL_CERT_FILE for Pharo's libgit2 integration (https://github.com/hpi-swa/smalltalkCI/issues/494)
+if [[ -f "/etc/ssl/certs/ca-certificates.crt" ]]; then
+  export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
+fi
+
 "${SMALLTALK_CI_HOME}/bin/smalltalkci" $@
