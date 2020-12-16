@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:18.04
 
 # Install 32-bit dependencies
 RUN dpkg --add-architecture i386
