@@ -8,10 +8,14 @@ if [[ -z "$@" ]]; then
   exit 1
 fi
 
-echo "Downloading and extracting smalltalkCI..."
 pushd ~/ > /dev/null
-curl -sSL -o smalltalkCI.tar.gz https://github.com/hpi-swa/smalltalkCI/archive/master.tar.gz
-tar -xzf smalltalkCI.tar.gz; cd smalltalkCI-*; source env_vars
+if ! ls smalltalkCI-* 1> /dev/null 2>&1; then
+  echo "Downloading and extracting smalltalkCI..."
+  curl -sSL -o smalltalkCI.tar.gz https://github.com/hpi-swa/smalltalkCI/archive/master.tar.gz
+  tar -xzf smalltalkCI.tar.gz
+fi
+cd smalltalkCI-*
+source env_vars
 popd > /dev/null
 
 "${SMALLTALK_CI_HOME}/bin/smalltalkci" $@
