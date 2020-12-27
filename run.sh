@@ -222,6 +222,7 @@ select_smalltalk() {
   # Ask user to choose an image if one has not been selected yet
   if is_empty "${config_smalltalk}"; then
     PS3="Choose Smalltalk image: "
+    set -o posix  # fixes SIGINT during select
     select selection in $images; do
       case "${selection}" in
         Squeak*|Pharo*|GemStone*|Moose*)
@@ -233,6 +234,7 @@ select_smalltalk() {
           ;;
       esac
     done
+    set +o posix
   fi
 }
 
