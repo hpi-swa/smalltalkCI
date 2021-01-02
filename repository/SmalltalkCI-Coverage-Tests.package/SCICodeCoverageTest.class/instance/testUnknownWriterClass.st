@@ -6,5 +6,5 @@ testUnknownWriterClass
 	self should: [
 		SmalltalkCI codeCoverageClass new
 			spec: self class unknownWriterSpec;
-			coverageWriter]
+			coverageWriters]
 		raise: SCIError.

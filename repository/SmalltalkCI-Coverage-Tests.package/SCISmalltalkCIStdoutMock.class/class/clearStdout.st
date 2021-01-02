@@ -1,0 +1,4 @@
+mocking
+clearStdout
+
+	MockStdout := '' writeStream.

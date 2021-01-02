@@ -1,0 +1,9 @@
+{
+	"class" : {
+		"clearStdout" : "smalltalkCI 10/13/2020 19:44",
+		"getEnv:" : "smalltalkCI 10/13/2020 20:13",
+		"isPlatformCompatible" : "smalltalkCI 10/13/2020 19:44",
+		"stdout" : "smalltalkCI 10/13/2020 19:36",
+		"stdoutContents" : "smalltalkCI 10/13/2020 19:42" },
+	"instance" : {
+		 } }

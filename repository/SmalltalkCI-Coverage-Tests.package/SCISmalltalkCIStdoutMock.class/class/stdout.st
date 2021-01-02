@@ -1,0 +1,4 @@
+helpers
+stdout
+
+	^ MockStdout

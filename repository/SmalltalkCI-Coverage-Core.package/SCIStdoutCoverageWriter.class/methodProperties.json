@@ -1,0 +1,13 @@
+{
+	"class" : {
+		"ballot" : "smalltalkCI 10/4/2020 18:50",
+		"checkMark" : "smalltalkCI 10/4/2020 18:50",
+		"coverageFormat" : "smalltalkCI 10/4/2020 17:13",
+		"info" : "smalltalkCI 10/4/2020 19:09" },
+	"instance" : {
+		"export:in:" : "smalltalkCI 10/19/2020 14:13",
+		"printClass:coverage:" : "smalltalkCI 10/12/2020 17:43",
+		"printCoverageDetails:" : "smalltalkCI 10/12/2020 17:41",
+		"printNonEmptyCoverage:" : "smalltalkCI 10/19/2020 13:56",
+		"sci" : "smalltalkCI 10/19/2020 15:50",
+		"statusColor:" : "smalltalkCI 10/10/2020 20:07" } }

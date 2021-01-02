@@ -1,0 +1,4 @@
+mocking
+stdoutContents
+
+	^ MockStdout contents
