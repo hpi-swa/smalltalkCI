@@ -1,3 +1,5 @@
 executing
 filetreeRepositoryIn: aProjectDirectory
-	^ 'filetree://', aProjectDirectory, SmalltalkCI pathNameDelimiter, self directory
+	| projectLocation |
+	projectLocation := aProjectDirectory, SmalltalkCI pathNameDelimiter, self directory.
+	^ (self filetreeFormatIn: projectLocation), '://', projectLocation
