@@ -6,7 +6,7 @@ filetreeFormatIn: aProjectDirectory
 	Smalltalk globals
 		at: #STON
 		ifPresent: [ :stonClass | | file | 
-			file := (FileDirectory directoryEntryFor: aProjectDirectory) / '.properties'.
+			file := (FileDirectory on: aProjectDirectory) / '.properties'.
 			file exists ifTrue: [ file readStreamDo: [ :stream | (stonClass fromStream: stream) at: #format ifPresent: [ :value | format := value ] ] ] ].
 	
 	(format = #tonel and: [(Smalltalk globals includes: #TonelRepository) not]) ifTrue: [
