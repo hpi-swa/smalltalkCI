@@ -1,3 +1,3 @@
 executing
 repositorySchemeIn: aProjectDirectory
-	self subclassResponsibility
+	^ 'filetree'
