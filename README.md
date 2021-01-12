@@ -1,4 +1,4 @@
-# smalltalkCI [![GitHub Workflow Status][github_action_b]][github_action_url] [![Travis CI Status][travis_b]][travis_url] [![AppVeyor Status][appveyor_b]][appveyor_url] [![Coverage Status][coveralls_b]][coveralls_url]
+# smalltalkCI [![GitHub Workflow Status][github_action_b]][github_action_url] [![Travis CI Status][travis_b]][travis_url] [![AppVeyor Status][appveyor_b]][appveyor_url] [![Docker Build Status][docker_b]][docker_url] [![Coverage Status][coveralls_b]][coveralls_url]
 
 Community-supported framework for testing Smalltalk projects on Linux, OS X, and
 Windows with built-in support for [GitHub Actions][github_action],
@@ -682,13 +682,15 @@ problem.
 list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 
 
-[travis_b]: https://img.shields.io/travis/com/hpi-swa/smalltalkCI?logo=travis
-[travis_url]: https://travis-ci.com/hpi-swa/smalltalkCI
 [appveyor_b]: https://ci.appveyor.com/api/projects/status/c2uchb5faykdrj3y/branch/master?svg=true
 [appveyor_url]: https://ci.appveyor.com/project/smalltalkCI/smalltalkci/branch/master
 [coverage_docs]: https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md
 [coveralls_b]: https://coveralls.io/repos/github/hpi-swa/smalltalkCI/badge.svg?branch=master
 [coveralls_url]: https://coveralls.io/github/hpi-swa/smalltalkCI?branch=master
+[docker_b]: https://img.shields.io/docker/cloud/build/hpiswa/smalltalkci
+[docker_url]: https://hub.docker.com/r/hpiswa/smalltalkci
+[travis_b]: https://img.shields.io/travis/com/hpi-swa/smalltalkCI?logo=travis
+[travis_url]: https://travis-ci.com/hpi-swa/smalltalkCI
 
 [appveyor]: https://www.appveyor.com/
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
