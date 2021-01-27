@@ -253,9 +253,9 @@ find the input field "Test coverage parsing", and enter the following: `^TOTAL.+
 
 The previous steps should result in the following result on a GitLab merge request:
 
-<img src="./gitlab-ci-coverage-percent.png" alt="GitLab CI merge request ceneral coverage report" width=75% />
+<img src="./gitlab-ci-coverage-percent.png" alt="GitLab CI merge request ceneral coverage report" width=100% />
 
-<img src="./gitlab-ci-coverage-line.png" alt="GitLab CI merge request line coverage report" width=75% />
+<img src="./gitlab-ci-coverage-line.png" alt="GitLab CI merge request line coverage report" width=50% />
 
 [codecov_action]: https://github.com/marketplace/actions/codecov
 [codecov_uploader]: https://docs.codecov.io/docs/about-the-codecov-bash-uploader
