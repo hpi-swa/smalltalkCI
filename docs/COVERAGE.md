@@ -227,8 +227,9 @@ extract coverage:
       cobertura: $COVERAGE_DIR/coverage.xml
 ```
 
-To let GitLab CI parse the coverage percentage so that it can be [shown on a badge][gitlab coverage badge] 
-in the README, it is necessary to show this percentage in the log. You can do this using another python 
+GitLab CI can parse the coverage percentage from the CI log so that it can be [shown on a badge][gitlab coverage badge] 
+in the README or shown on the recap of a merge request (reporting increase or decrease from the merge target branch).  
+To enable this, you need to log this percentage during CI. You can do this easily using another python 
 package, [`pycobertura`][pycobertura]. The `.gitlab-ci.yml` configuration for the second job is updated 
 like this:
 
@@ -246,6 +247,15 @@ extract coverage:
     reports:
       cobertura: $COVERAGE_DIR/coverage.xml
 ```
+
+Also remember to set a regular expression that allows GitLab to parse this percentage. Under Settings>CI/CD>General pipelines,
+find the input field "Test coverage parsing", and enter the following: `^TOTAL.+?(\d+\.\d+\%)$`.
+
+The previous steps should result in the following result on a GitLab merge request:
+
+<img src="./gitlab-ci-coverage-percent.png" alt="GitLab CI merge request ceneral coverage report" width=75% />
+
+<img src="./gitlab-ci-coverage-line.png" alt="GitLab CI merge request line coverage report" width=75% />
 
 [codecov_action]: https://github.com/marketplace/actions/codecov
 [codecov_uploader]: https://docs.codecov.io/docs/about-the-codecov-bash-uploader
