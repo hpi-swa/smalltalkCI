@@ -257,6 +257,8 @@ The previous steps should result in the following result on a GitLab merge reque
 
 <img src="./gitlab-ci-coverage-line.png" alt="GitLab CI merge request line coverage report" width=50% />
 
+For a complete working example of a project setup using smalltalkCI on GitLab, see this public repository: [SmalltalkCI-Test][smalltalkci-test]
+
 [codecov_action]: https://github.com/marketplace/actions/codecov
 [codecov_uploader]: https://docs.codecov.io/docs/about-the-codecov-bash-uploader
 [codecov]: codecov_uploader
@@ -270,3 +272,4 @@ The previous steps should result in the following result on a GitLab merge reque
 [lcov cobertura]: https://libraries.io/pypi/lcov-cobertura-fix
 [gitlab ci badge]: https://docs.gitlab.com/ce/ci/pipelines/settings.html#test-coverage-report-badge
 [pycobertura]: https://pypi.org/project/pycobertura/
+[smalltalkci-test]: https://gitlab.com/aron.fiechter/smalltalkci-test
