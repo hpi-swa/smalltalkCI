@@ -253,9 +253,11 @@ find the input field "Test coverage parsing", and enter the following: `^TOTAL.+
 
 The previous steps should result in the following result on a GitLab merge request:
 
-<img src="./gitlab-ci-coverage-percent.png" alt="GitLab CI merge request ceneral coverage report" width=100% />
+<img src="https://user-images.githubusercontent.com/2368856/106434814-53358d80-6472-11eb-9c8f-27069cebd1b6.png" alt="GitLab CI merge request general coverage report" width=100% />
 
-<img src="./gitlab-ci-coverage-line.png" alt="GitLab CI merge request line coverage report" width=50% />
+<img src="https://user-images.githubusercontent.com/2368856/106434811-52046080-6472-11eb-858c-fdeca4c942cc.png" alt="GitLab CI merge request line coverage report" width=50% />
+
+
 
 For a complete working example of a project setup using smalltalkCI on GitLab, see this public repository: [SmalltalkCI-Test][smalltalkci-test]
 
