@@ -1,6 +1,18 @@
 name: smalltalkCI Self Test
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.appveyor.yml'
+      - '.travis.yml'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.appveyor.yml'
+      - '.travis.yml'
 
 jobs:
   build:
