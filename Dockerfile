@@ -6,7 +6,7 @@ RUN apt-get -qq update
 RUN apt-get -qq install bsdmainutils ca-certificates curl git unzip
 
 # Install 64-bit dependencies
-RUN apt-get -qq install libpulse0 libasound2 libgl1-mesa-glx
+RUN apt-get -qq install libpulse0 libasound2 libcairo2 libgl1-mesa-glx libfontconfig1
 
 # Install 32-bit dependencies
 RUN dpkg --add-architecture i386 && apt-get -qq update
