@@ -37,7 +37,7 @@ initialize() {
 
   if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
     # Try to determine absolute path to smalltalkCI
-    SMALLTALK_CI_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    export SMALLTALK_CI_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
     if [[ ! -f "${SMALLTALK_CI_HOME}/run.sh" ]]; then
       # Try to resolve symlink
