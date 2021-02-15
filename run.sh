@@ -309,6 +309,10 @@ parse_options() {
       config_tracking="false"
       shift
       ;;
+    --print-env)
+      print_env
+      exit 0
+      ;;
     -s | --smalltalk)
       config_smalltalk="${2:-}"
       shift 2

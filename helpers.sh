@@ -67,6 +67,7 @@ print_help() {
     --headful           Open vm in headful mode and do not close image.
     --image             Custom image for build (Squeak/Pharo).
     --install           Install symlink to this smalltalkCI instance.
+    --print-env         Print all environment variables used by smalltalkCI
     --no-color          Disable colored output
     --no-tracking       Disable collection of anonymous build metrics (TravisCI & AppVeyor only).
     -s | --smalltalk    Overwrite Smalltalk image selection.
@@ -108,6 +109,10 @@ print_config() {
   for var in ${!config_@}; do
     echo "${var}=${!var}"
   done
+}
+
+print_env() {
+  env | grep "SMALLTALK_CI_"
 }
 
 is_colorful() {

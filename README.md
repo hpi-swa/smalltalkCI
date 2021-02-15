@@ -542,6 +542,7 @@ OPTIONS:
   --headful           Open vm in headful mode and do not close image.
   --image             Custom image for build (Squeak/Pharo).
   --install           Install symlink to this smalltalkCI instance.
+  --print-env         Print all environment variables used by smalltalkCI
   --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
   -s | --smalltalk    Overwrite Smalltalk image selection.
   --uninstall         Remove symlink to any smalltalkCI instance.
