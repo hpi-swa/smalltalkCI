@@ -43,7 +43,7 @@ jobs:
       - name: Setup smalltalkCI
         uses: hpi-swa/setup-smalltalkCI@v1
         with:
-          smalltalk-version: ${{ matrix.smalltalk }}
+          smalltalk-image: ${{ matrix.smalltalk }}
       - name: Run smalltalkCI self test
         run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
         shell: bash
