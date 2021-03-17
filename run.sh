@@ -474,7 +474,7 @@ run() {
       source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
       ;;
     *)
-      print_error_and_exit "Unknown Smalltalk version '${config_smalltalk}'."
+      print_error_and_exit "Unknown Smalltalk image '${config_smalltalk}'."
       ;;
   esac
 
