@@ -350,7 +350,7 @@ parse_options() {
   if [[ "${#positional[@]}" -gt 1 ]]; then
     print_error_and_exit "Too many positional arguments: '${positional[*]:-}'"
   else
-    echo "${positional:-}"
+    config_first_arg_or_empty="${positional:-}"
   fi
 }
 
@@ -509,6 +509,7 @@ main() {
   local config_ston=""
   local config_clean="false"
   local config_debug="false"
+  local config_first_arg_or_empty=""
   local config_headless="true"
   local config_image=""
   local config_colorful="true"
@@ -516,12 +517,11 @@ main() {
   local config_verbose="false"
   local config_vm=""
   local config_vm_dir
-  local first_arg_or_empty
 
   initialize "$@"
-  first_arg_or_empty=$(parse_options "$@")
+  parse_options "$@"
   [[ "${config_verbose}" = "true" ]] && set -o xtrace
-  ensure_ston_config_exists "${first_arg_or_empty}"
+  ensure_ston_config_exists "${config_first_arg_or_empty}"
   check_clean_up
   select_smalltalk
   validate_configuration
