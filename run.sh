@@ -117,8 +117,11 @@ ensure_ston_config_exists() {
   local custom_ston=$1
 
   # STON provided as cmd line parameter can override $config_ston
-  if ! is_empty "${custom_ston}" && [[ ${custom_ston: -5} == ".ston" ]] && \
-      is_file "${custom_ston}"; then
+  if ! is_empty "${custom_ston}"; then
+    if [[ ${custom_ston: -5} != ".ston" ]] || ! is_file "${custom_ston}"; then
+      print_error_and_exit "User-provided configuration is not a STON-file or \
+could not be found at '${custom_ston}'."
+    fi
     config_ston="${custom_ston}"
     # Expand path if $config_ston does not start with / or ~
     if ! [[ "${config_ston:0:1}" =~ (\/|\~) ]]; then
@@ -271,9 +274,11 @@ validate_configuration() {
 #   All positional parameters
 ################################################################################
 parse_options() {
-  while :
+  local positional=()
+
+  while [[ $# -gt 0 ]]
   do
-    case "${1:-}" in
+    case "$1" in
     --clean)
       config_clean="true"
       shift
@@ -336,10 +341,17 @@ parse_options() {
       print_error_and_exit "Unknown option: $1"
       ;;
     *)
-      break
+      positional+=("$1")
+      shift
       ;;
     esac
   done
+
+  if [[ "${#positional[@]}" -gt 1 ]]; then
+    print_error_and_exit "Too many positional arguments: '${positional[*]:-}'"
+  else
+    echo "${positional:-}"
+  fi
 }
 
 ################################################################################
@@ -504,11 +516,12 @@ main() {
   local config_verbose="false"
   local config_vm=""
   local config_vm_dir
+  local first_arg_or_empty
 
   initialize "$@"
-  parse_options "$@"
+  first_arg_or_empty=$(parse_options "$@")
   [[ "${config_verbose}" = "true" ]] && set -o xtrace
-  ensure_ston_config_exists "${!#}"  # Use last argument for custom STON
+  ensure_ston_config_exists "${first_arg_or_empty}"
   check_clean_up
   select_smalltalk
   validate_configuration
