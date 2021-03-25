@@ -16,12 +16,10 @@
 		"onUpgrade",
 		"repository",
 		"version",
-		"user",
-		"password",
 		"useLatestMetacello",
 		"ignoreImage" ],
 	"name" : "SCIMetacelloLoadSpec",
 	"pools" : [
 		 ],
-	"super" : "SCIAbstractLoadSpec",
+	"super" : "SCIAbstractLoadSpecWithCredentials",
 	"type" : "normal" }

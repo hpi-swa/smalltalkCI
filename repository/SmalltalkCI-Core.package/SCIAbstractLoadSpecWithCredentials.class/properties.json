@@ -6,12 +6,12 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"url",
-		"packages",
-		"versions",
-		"loadedClasses" ],
-	"name" : "SCIGoferLoadSpec",
+		"user",
+		"password",
+		"userEnv",
+		"passwordEnv" ],
+	"name" : "SCIAbstractLoadSpecWithCredentials",
 	"pools" : [
 		 ],
-	"super" : "SCIAbstractLoadSpecWithCredentials",
+	"super" : "SCIAbstractLoadSpec",
 	"type" : "normal" }
