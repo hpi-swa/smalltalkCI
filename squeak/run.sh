@@ -352,7 +352,7 @@ EOL
 ################################################################################
 run_build() {
   if ! image_is_user_provided; then
-    is_tagged_build  # parse $SCIII_LATEST_RELEASE
+    ! is_tagged_build  # try to parse $SCIII_LATEST_RELEASE
     download_version="${SCIII_LATEST_RELEASE:-${config_smalltalk}}"
     if is_trunk_build; then
       config_smalltalk=${download_version} squeak::download_trunk_image
