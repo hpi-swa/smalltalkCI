@@ -194,7 +194,7 @@ is_sudo_enabled() {
 }
 
 is_tagged_build() {
-  if [[ ([[:digit:]]+) =~ "${config_smalltalk}" ]]; then
+  if [[ "${config_smalltalk}" =~ ([[:digit:]]+)  ]]; then
     export SCIII_SMALLTALK_VERSION="${BASH_REMATCH[1]}"
     return 0
   fi
