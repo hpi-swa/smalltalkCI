@@ -122,9 +122,13 @@ squeak::prepare_image() {
   fold_start prepare_image "Preparing ${config_smalltalk} image for CI..."
     cp "${SMALLTALK_CI_HOME}/squeak/prepare.st" \
        "${SMALLTALK_CI_BUILD}/prepare.st"
+    if is_tagged_build; then
+      [[:alpha:]]+-([[:digit:]]+) =~ "${config_smalltalk}"
+      export TRUNK_VERSION="${BASH_REMATCH[1]}"
+    fi
     squeak::run_script "prepare.st" || status=$?
   fold_end prepare_image
-
+  
   if is_nonzero "${status}"; then
     print_error_and_exit "Failed to prepare image for CI." "${status}"
   fi
@@ -360,7 +364,7 @@ run_build() {
   if ! vm_is_user_provided; then
     squeak::prepare_vm
   fi
-  if is_trunk_build || image_is_user_provided; then
+  if is_tagged_build || is_trunk_build || image_is_user_provided; then
     squeak::prepare_image
   fi
   if ston_includes_loading; then

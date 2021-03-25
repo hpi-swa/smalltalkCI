@@ -1,4 +1,4 @@
-| monitor |
+| monitor trunk_version |
 FileStream startUp: true.
 monitor := [ [
   FileStream stdout nextPutAll: '.'.
@@ -37,19 +37,31 @@ Installer gemsource
 "=============================================================================="
 
 "Update Squeak image"
-Smalltalk at: #MCMcmUpdater ifPresent: [ :updater |
-  [[ (updater respondsTo: #doUpdate)
-    ifTrue: [ updater doUpdate ]
-    ifFalse: [
-      (updater respondsTo: #updateFromDefaultRepository)
-        ifTrue: [ updater updateFromDefaultRepository ]
-        ifFalse: [ ((updater respondsTo: #default) and: [
-          updater default respondsTo: #doUpdate: ])
-            ifTrue: [ updater default doUpdate: false ] ] ] ]
-    on: Warning do: [ :ex | ex resume: true ]]
+(SmalltalkCI getEnv: 'TRUNK_VERSION') ifNotNil: [ :version |
+  trunk_version = version asNumber].
+Smalltalk classNamed: #MCMcmUpdater ifPresent: [ :updater |
+  [ [ trunk_version
+    ifNotNil: [
+      updater defaultUpdateURL: MCHttpRepository trunkUrlString.
+      updater default doUpdate: false upTo: trunk_version ]
+    ifNil: [ (updater respondsTo: #doUpdate)
+      ifTrue: [ updater doUpdate ]
+      ifFalse: [
+        (updater respondsTo: #updateFromDefaultRepository)
+          ifTrue: [ updater updateFromDefaultRepository ]
+          ifFalse: [ ((updater respondsTo: #default) and: [
+            updater default respondsTo: #doUpdate: ])
+              ifTrue: [ updater default doUpdate: false ] ] ] ] ] ]
+    on: Warning do: [ :ex | ex resume: true ]
       on: Error do: [ :ex |
         FileStream stdout nextPutAll: ex asString.
-        Smalltalk snapshot: true andQuit: true ]].
+        Smalltalk snapshot: true andQuit: true ] ].
+trunk_version ifNotNil: [
+  self
+    assert: SystemVersion current highestUpdate = trunk_version
+    descriptionBlock: [ 'Should be Trunk version <1p> now but is <2p>'
+      expandMacrosWith: SystemVersion current highestUpdate
+      with: trunk_version ] ].
 
 monitor terminate.
 monitor := nil.

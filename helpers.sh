@@ -193,7 +193,27 @@ is_sudo_enabled() {
   $(sudo -n true > /dev/null 2>&1)
 }
 
+is_tagged_build() {
+  if [[ ([[:digit:]]+) =~ "${config_smalltalk}" ]]; then
+    export SCIII_SMALLTALK_VERSION="${BASH_REMATCH[1]}"
+    return 0
+  fi
+  return 1
+}
+
 is_trunk_build() {
+  if is_tagged_build; then
+    case "${config_smalltalk}" in
+      Squeak*)
+        SQ_LATEST_RELEASE="19431"
+        if [ "${SCIII_SMALLTALK_VERSION}" -ge "${SQ_LATEST_RELEASE}" ]; then
+          return 0
+        fi
+        ;;
+    esac
+    return 1
+  fi
+
   case "${config_smalltalk}" in
     *"trunk"|*"Trunk"|*"latest"|*"Latest")
       return 0
