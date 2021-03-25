@@ -128,7 +128,7 @@ squeak::prepare_image() {
     fi
     squeak::run_script "prepare.st" || status=$?
   fold_end prepare_image
-  
+
   if is_nonzero "${status}"; then
     print_error_and_exit "Failed to prepare image for CI." "${status}"
   fi
