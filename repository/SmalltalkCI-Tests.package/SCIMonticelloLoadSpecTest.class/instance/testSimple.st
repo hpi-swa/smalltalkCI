@@ -3,8 +3,8 @@ testSimple
 	self assert: true equals: self spec packages isEmpty.
 	self assert: true equals: self spec versions isEmpty.
 	self assert: nil equals: self spec url.
-	self assert: '' equals: self spec user.
-	self assert: '' equals: self spec password.
+	self assert: nil equals: self spec user.
+	self assert: nil equals: self spec password.
 	self assert: nil equals: self spec userEnv.
 	self assert: nil equals: self spec passwordEnv.
 	
