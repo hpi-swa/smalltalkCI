@@ -18,19 +18,35 @@ readonly ANSI_RESET="\033[0m"
 readonly ANSI_CLEAR="\033[0K"
 
 print_info() {
-  printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
+  if is_colorful; then
+    printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
+  else
+    echo "$1"
+  fi
 }
 
 print_notice() {
-  printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
+  if is_colorful; then
+   printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
+  else
+    echo "$1"
+  fi
 }
 
 print_success() {
-  printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
+  if is_colorful; then
+   printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
+  else
+    echo "$1"
+  fi
 }
 
 print_error() {
-  printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
+  if is_colorful; then
+   printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
+  else
+    echo "$1"
+  fi
 }
 
 print_error_and_exit() {
@@ -51,6 +67,8 @@ print_help() {
     --headful           Open vm in headful mode and do not close image.
     --image             Custom image for build (Squeak/Pharo).
     --install           Install symlink to this smalltalkCI instance.
+    --print-env         Print all environment variables used by smalltalkCI
+    --no-color          Disable colored output
     --no-tracking       Disable collection of anonymous build metrics (TravisCI & AppVeyor only).
     -s | --smalltalk    Overwrite Smalltalk image selection.
     --uninstall         Remove symlink to any smalltalkCI instance.
@@ -91,6 +109,14 @@ print_config() {
   for var in ${!config_@}; do
     echo "${var}=${!var}"
   done
+}
+
+print_env() {
+  env | grep "SMALLTALK_CI_"
+}
+
+is_colorful() {
+  [[ "${config_colorful:-true}" == "true" ]]
 }
 
 is_empty() {
@@ -629,7 +655,11 @@ travis_jigger() {
     sleep 60
   done
 
-  echo -e "\n${ANSI_BOLD}${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
+  if is_colorful; then
+    echo -e "\n${ANSI_BOLD}${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
+  else
+    echo -e "\nTimeout (${timeout} minutes) reached. Terminating \"$@\"\n"
+  fi
   kill -9 $cmd_pid
 }
 
@@ -644,7 +674,11 @@ fold_start() {
     echo -en "travis_fold:start:${prefix}${identifier}\r${ANSI_CLEAR}"
     echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
   fi
-  echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
+  if is_colorful; then
+    echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
+  else
+    echo -e "${title}"
+  fi
 }
 
 fold_end() {
@@ -658,6 +692,10 @@ fold_end() {
     echo -en "travis_fold:end:${prefix}${identifier}\r${ANSI_CLEAR}"
   else
     duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
-    printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
+    if is_colorful; then
+      printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss${ANSI_RESET}\n" "${duration}"
+    else
+      printf " > Time to run: %ss\n" "${duration}"
+    fi
   fi
 }

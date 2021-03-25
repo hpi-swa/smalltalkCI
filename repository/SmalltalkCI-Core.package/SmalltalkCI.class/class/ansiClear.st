@@ -1,3 +1,5 @@
 ansi
 ansiClear
-	^ self escape, '[0K'
+	^ self isColorful
+		ifTrue: [ self escape, '[0K' ]
+		ifFalse: [ '' ]

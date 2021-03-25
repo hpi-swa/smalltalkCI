@@ -37,7 +37,7 @@ initialize() {
 
   if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
     # Try to determine absolute path to smalltalkCI
-    SMALLTALK_CI_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    export SMALLTALK_CI_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
     if [[ ! -f "${SMALLTALK_CI_HOME}/run.sh" ]]; then
       # Try to resolve symlink
@@ -117,8 +117,11 @@ ensure_ston_config_exists() {
   local custom_ston=$1
 
   # STON provided as cmd line parameter can override $config_ston
-  if ! is_empty "${custom_ston}" && [[ ${custom_ston: -5} == ".ston" ]] && \
-      is_file "${custom_ston}"; then
+  if ! is_empty "${custom_ston}"; then
+    if [[ ${custom_ston: -5} != ".ston" ]] || ! is_file "${custom_ston}"; then
+      print_error_and_exit "User-provided configuration is not a STON-file or \
+could not be found at '${custom_ston}'."
+    fi
     config_ston="${custom_ston}"
     # Expand path if $config_ston does not start with / or ~
     if ! [[ "${config_ston:0:1}" =~ (\/|\~) ]]; then
@@ -222,6 +225,7 @@ select_smalltalk() {
   # Ask user to choose an image if one has not been selected yet
   if is_empty "${config_smalltalk}"; then
     PS3="Choose Smalltalk image: "
+    set -o posix  # fixes SIGINT during select
     select selection in $images; do
       case "${selection}" in
         Squeak*|Pharo*|GemStone*|Moose*)
@@ -233,6 +237,7 @@ select_smalltalk() {
           ;;
       esac
     done
+    set +o posix
   fi
 }
 
@@ -269,9 +274,11 @@ validate_configuration() {
 #   All positional parameters
 ################################################################################
 parse_options() {
-  while :
+  local positional=()
+
+  while [[ $# -gt 0 ]]
   do
-    case "${1:-}" in
+    case "$1" in
     --clean)
       config_clean="true"
       shift
@@ -299,9 +306,17 @@ parse_options() {
       fi
       shift 2
       ;;
+    --no-color)
+      config_colorful="false"
+      shift
+      ;;
     --no-tracking)
       config_tracking="false"
       shift
+      ;;
+    --print-env)
+      print_env
+      exit 0
       ;;
     -s | --smalltalk)
       config_smalltalk="${2:-}"
@@ -326,10 +341,17 @@ parse_options() {
       print_error_and_exit "Unknown option: $1"
       ;;
     *)
-      break
+      positional+=("$1")
+      shift
       ;;
     esac
   done
+
+  if [[ "${#positional[@]}" -gt 1 ]]; then
+    print_error_and_exit "Too many positional arguments: '${positional[*]:-}'"
+  else
+    config_first_arg_or_empty="${positional:-}"
+  fi
 }
 
 ################################################################################
@@ -370,6 +392,7 @@ prepare_environment() {
 add_env_vars() {
   export SCIII_SMALLTALK="${config_smalltalk}"
   export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
+  export SCIII_COLORFUL="${config_colorful}"
   export SCIII_DEBUG="${config_debug}"
 }
 
@@ -463,7 +486,7 @@ run() {
       source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
       ;;
     *)
-      print_error_and_exit "Unknown Smalltalk version '${config_smalltalk}'."
+      print_error_and_exit "Unknown Smalltalk image '${config_smalltalk}'."
       ;;
   esac
 
@@ -486,8 +509,10 @@ main() {
   local config_ston=""
   local config_clean="false"
   local config_debug="false"
+  local config_first_arg_or_empty=""
   local config_headless="true"
   local config_image=""
+  local config_colorful="true"
   local config_tracking="true"
   local config_verbose="false"
   local config_vm=""
@@ -496,7 +521,7 @@ main() {
   initialize "$@"
   parse_options "$@"
   [[ "${config_verbose}" = "true" ]] && set -o xtrace
-  ensure_ston_config_exists "${!#}"  # Use last argument for custom STON
+  ensure_ston_config_exists "${config_first_arg_or_empty}"
   check_clean_up
   select_smalltalk
   validate_configuration

@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "BenoitVerhaeghe 12/11/2020 11:37",
+	"super" : "SmalltalkCIPharo78",
+	"category" : "SmalltalkCI-Pharo-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SmalltalkCIPharo9",
+	"type" : "normal"
+}

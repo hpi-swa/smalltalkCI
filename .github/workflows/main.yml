@@ -1,6 +1,18 @@
 name: smalltalkCI Self Test
 
-on: [push]
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.appveyor.yml'
+      - '.travis.yml'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.appveyor.yml'
+      - '.travis.yml'
 
 jobs:
   build:
@@ -21,6 +33,9 @@ jobs:
           - Pharo64-6.0
           - Moose64-8.0
           - Moose64-7.0
+        include:
+          - os: ubuntu-16.04
+            smalltalk: GemStone64-3.5.0
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
     steps:
@@ -28,16 +43,16 @@ jobs:
       - name: Setup smalltalkCI
         uses: hpi-swa/setup-smalltalkCI@v1
         with:
-          smalltalk-version: ${{ matrix.smalltalk }}
+          smalltalk-image: ${{ matrix.smalltalk }}
       - name: Run smalltalkCI self test
-        run: smalltalkci -s ${{ matrix.smalltalk }} --self-test
+        run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
         shell: bash
         if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false && ((contains(matrix.smalltalk, 'Pharo') || contains(matrix.smalltalk, 'Moose')) && matrix.os == 'windows-latest') == false
         timeout-minutes: 15
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run smalltalkCI self test and ignore failures
-        run: smalltalkci -s ${{ matrix.smalltalk }} --self-test || true
+        run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test || true
         shell: bash
         if: contains(matrix.smalltalk, 'trunk') || contains(matrix.smalltalk, 'alpha') || ((contains(matrix.smalltalk, 'Pharo') || contains(matrix.smalltalk, 'Moose')) && matrix.os == 'windows-latest')
         timeout-minutes: 15

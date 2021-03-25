@@ -1,8 +1,9 @@
 testing
 testSimple
-	| smalltalkCI |
+	| smalltalkCI path |
+	path := '/dir/to/project' copyReplaceAll: '/' with: SmalltalkCI pathNameDelimiter.
 	smalltalkCI := SmalltalkCI basicNew initialize.
-	smalltalkCI projectDirectory: '/dir/to/project'.
+	smalltalkCI projectDirectory: path.
 	self assert: '' equals: self spec directory.
 	self assert: #() equals: self spec load.
 	self deny: self spec onWarningLog.
@@ -21,8 +22,8 @@ testSimple
 		assert: '1.2.3' equals: self spec version;
 		assert: self spec onWarningLog;
 		deny: self spec useLatestMetacello;
-		assert: ('filetree:///dir/to/project', SmalltalkCI pathNameDelimiter, 'foodir')
-			equals: (self spec filetreeRepositoryIn: smalltalkCI projectDirectory).
+		assert: ('filetree://', path, SmalltalkCI pathNameDelimiter, 'foodir')
+			equals: (self spec repositoryUrlIn: smalltalkCI projectDirectory).
 		
 	self spec repository: 'repo'.	
 	self assert: 'repo' equals: (self spec repository)

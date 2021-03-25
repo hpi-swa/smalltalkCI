@@ -1,0 +1,3 @@
+executing
+repositorySchemeIn: aProjectDirectory
+	^ 'filetree'

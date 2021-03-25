@@ -56,6 +56,8 @@ For the most common usecases, see these instructions:
 - [CodeCov](#codecov)
   - [Travis CI](#codecov-%26-travisci)
   - [GitHub actions](#codecov-%26-github-actions)
+- [Cobertura](#cobertura)
+  - [GitLab CI](#cobertura-%26-gitlabci)
 
 ### Inspecting coverage locally
 On Linux distributions, LCOV is available as a set of tools that can generate a coverage report as HTML/CSS files.
@@ -178,6 +180,86 @@ jobs:
           fail_ci_if_error: true
 ```
 
+### [Cobertura][cobertura]
+
+Cobertura XML is a code coverage report format originally developed for Java, but many coverage 
+frameworks have plugins to support it for other languages.  
+smalltalkCI does not natively support it, but it is possible to convert an LCOV output to a 
+Cobertura XML using a few python scripts.
+
+For example, use [`lcov_cobertura`][lcov cobertura] to convert LCOV to Cobertura XML.
+
+#### Cobertura & GitLab CI
+
+[GitLab CI][gitlab ci coverage] supports coverage visualization using Cobertura XML. To do this, 
+you need to output the XML as an artifact from the GitLab CI job. Since you need to convert 
+the smalltalkCI LCOV output to Cobertura XML using a python package, you could add a second job to your 
+pipeline that uses a python base image, and pass the LCOV file as an artifact between jobs.  
+Here is an example configuration:
+
+```yml
+image: hpiswa/smalltalkci
+
+variables:
+  COVERAGE_DIR: /builds/yourproject/coverage
+
+stages:
+  - test
+  - coverage
+
+run tests:
+  stage: test
+  script: smalltalkci -s "Pharo64-8.0"
+  artifacts:
+    paths:
+      - $COVERAGE_DIR
+
+extract coverage:
+  stage: coverage
+  image: python:3.9-slim-buster
+  script:
+    - pip install lcov-cobertura-fix==1.6.1a2
+    - lcov_cobertura $COVERAGE_DIR/lcov.info --output $COVERAGE_DIR/coverage.xml
+  dependencies: 
+    - run tests
+  artifacts:
+    reports:
+      cobertura: $COVERAGE_DIR/coverage.xml
+```
+
+GitLab CI can parse the coverage percentage from the CI log so that it can be [shown on a badge][gitlab coverage badge] 
+in the README or shown on the recap of a merge request (reporting increase or decrease from the merge target branch).  
+To enable this, you need to log this percentage during CI. You can do this easily using another python 
+package, [`pycobertura`][pycobertura]. The `.gitlab-ci.yml` configuration for the second job is updated 
+like this:
+
+```yml
+extract coverage:
+  stage: coverage
+  image: python:3.9-slim-buster
+  script:
+    - pip install lcov-cobertura-fix==1.6.1a2 pycobertura
+    - lcov_cobertura $COVERAGE_DIR/lcov.info --output $COVERAGE_DIR/coverage.xml
+    - pycobertura show $COVERAGE_DIR/coverage.xml
+  dependencies: 
+    - run tests
+  artifacts:
+    reports:
+      cobertura: $COVERAGE_DIR/coverage.xml
+```
+
+Also remember to set a regular expression that allows GitLab to parse this percentage. Under Settings>CI/CD>General pipelines,
+find the input field "Test coverage parsing", and enter the following: `^TOTAL.+?(\d+\.\d+\%)$`.
+
+The previous steps should result in the following result on a GitLab merge request:
+
+<img src="https://user-images.githubusercontent.com/2368856/106434814-53358d80-6472-11eb-9c8f-27069cebd1b6.png" alt="GitLab CI merge request general coverage report" width=100% />
+
+<img src="https://user-images.githubusercontent.com/2368856/106434811-52046080-6472-11eb-858c-fdeca4c942cc.png" alt="GitLab CI merge request line coverage report" width=50% />
+
+
+
+For a complete working example of a project setup using smalltalkCI on GitLab, see this public repository: [SmalltalkCI-Test][smalltalkci-test]
 
 [codecov_action]: https://github.com/marketplace/actions/codecov
 [codecov_uploader]: https://docs.codecov.io/docs/about-the-codecov-bash-uploader
@@ -187,3 +269,9 @@ jobs:
 [coveralls_npm]: https://www.npmjs.com/package/coveralls
 [coveralls]: https://coveralls.io
 [lcov]: http://ltp.sourceforge.net/coverage/lcov.php
+[cobertura]: https://cobertura.github.io/cobertura/
+[gitlab ci coverage]: https://docs.gitlab.com/ce/user/project/merge_requests/test_coverage_visualization.html
+[lcov cobertura]: https://libraries.io/pypi/lcov-cobertura-fix
+[gitlab ci badge]: https://docs.gitlab.com/ce/ci/pipelines/settings.html#test-coverage-report-badge
+[pycobertura]: https://pypi.org/project/pycobertura/
+[smalltalkci-test]: https://gitlab.com/aron.fiechter/smalltalkci-test
