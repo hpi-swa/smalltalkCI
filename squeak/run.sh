@@ -122,10 +122,7 @@ squeak::prepare_image() {
   fold_start prepare_image "Preparing ${config_smalltalk} image for CI..."
     cp "${SMALLTALK_CI_HOME}/squeak/prepare.st" \
        "${SMALLTALK_CI_BUILD}/prepare.st"
-    if is_tagged_build; then
-      [[:alpha:]]+-([[:digit:]]+) =~ "${config_smalltalk}"
-      export TRUNK_VERSION="${BASH_REMATCH[1]}"
-    fi
+    is_tagged_build  # parse SCIII_SMALLTALK_VERSION
     squeak::run_script "prepare.st" || status=$?
   fold_end prepare_image
 

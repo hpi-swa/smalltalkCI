@@ -37,7 +37,7 @@ Installer gemsource
 "=============================================================================="
 
 "Update Squeak image"
-(SmalltalkCI getEnv: 'TRUNK_VERSION') ifNotNil: [ :version |
+(SmalltalkCI getEnv: 'SCIII_SMALLTALK_VERSION') ifNotNil: [ :version |
   trunk_version = version asNumber].
 Smalltalk classNamed: #MCMcmUpdater ifPresent: [ :updater |
   [ [ trunk_version
