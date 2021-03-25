@@ -1,6 +1,6 @@
 executing
 basicLoadProjectOn: aSmalltalkCI
-	| metacello |
+	| metacello metacelloPassword metacelloUser |
 	
 	aSmalltalkCI class requireMetacello.
 	self updateMetacelloIfRequested.
@@ -11,9 +11,11 @@ basicLoadProjectOn: aSmalltalkCI
 			self repositoryUrlIn: aSmalltalkCI projectDirectory ]);
 		baseline: self baseline;
 		configuration: self configuration;
-		version: self version;
-		username: self user;
-		password: self password.
+		version: self version.
+	((metacelloUser := self user) isEmptyOrNil and: [(metacelloPassword := self password) isEmptyOrNil]) ifFalse: [
+		metacello
+			username: metacelloUser;
+			password: metacelloPassword].
 	
 	self ignoreImage ifTrue: [
 		metacello ignoreImage ].
