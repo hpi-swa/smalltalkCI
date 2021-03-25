@@ -7,15 +7,11 @@
 	"commentStamp" : "",
 	"instvars" : [
 		"url",
-		"user",
-		"password",
-		"userEnv",
-		"passwordEnv",
 		"packages",
 		"versions",
 		"loadedClasses" ],
 	"name" : "SCIMonticelloLoadSpec",
 	"pools" : [
 		 ],
-	"super" : "SCIAbstractLoadSpec",
+	"super" : "SCIAbstractLoadSpecWithCredentials",
 	"type" : "normal" }
