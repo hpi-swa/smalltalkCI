@@ -24,7 +24,7 @@ jobs:
           - Squeak64-5.2
           - Squeak64-5.1
           - Squeak64-trunk
-          - Squeak64-19442
+          - Squeak64-18242
           - Pharo64-stable
           - Pharo64-alpha
           - Pharo64-9.0

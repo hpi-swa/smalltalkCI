@@ -194,8 +194,10 @@ is_sudo_enabled() {
 }
 
 is_tagged_build() {
-  if [[ "${config_smalltalk}" =~ ([[:digit:]]+)  ]]; then
-    export SCIII_SMALLTALK_VERSION="${BASH_REMATCH[1]}"
+  if [[ "${config_smalltalk}" =~ ^(Squeak(32|64))?-([[:digit:]]+)$ ]]; then
+    source "${SMALLTALK_CI_HOME}/squeak/version_tags.sh"
+    export SCIII_SMALLTALK_VERSION="${BASH_REMATCH[-1]}"
+    export SCIII_LATEST_RELEASE="${BASH_REMATCH[1]}-$(squeak::latest_release_before ${SCIII_SMALLTALK_VERSION})"
     return 0
   fi
   return 1
@@ -205,11 +207,12 @@ is_trunk_build() {
   if is_tagged_build; then
     case "${config_smalltalk}" in
       Squeak*)
-        SQ_LATEST_RELEASE="19431"
-        if [ "${SCIII_SMALLTALK_VERSION}" -ge "${SQ_LATEST_RELEASE}" ]; then
+        if config_smalltalk="${SCIII_LATEST_RELEASE}" is_trunk_build; then
           return 0
+        else
+          return 1
         fi
-        ;;
+      ;;
     esac
     return 1
   fi

@@ -352,10 +352,11 @@ EOL
 ################################################################################
 run_build() {
   if ! image_is_user_provided; then
+    download_version="${SCIII_LATEST_RELEASE:-${config_smalltalk}}"
     if is_trunk_build; then
-      squeak::download_trunk_image
+      config_smalltalk=${download_version} squeak::download_trunk_image
     else
-      squeak::download_image "${config_smalltalk}"
+      squeak::download_image ${download_version}
     fi
   fi
   if ! vm_is_user_provided; then
