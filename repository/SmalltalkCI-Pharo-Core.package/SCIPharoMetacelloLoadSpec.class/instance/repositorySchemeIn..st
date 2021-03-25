@@ -1,5 +1,5 @@
 private
-filetreeFormatIn: location
+repositorySchemeIn: location
 	"If available in the project properties file read the format from here. If not defaults to filetree"
 
 	| format |

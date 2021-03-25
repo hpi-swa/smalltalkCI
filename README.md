@@ -1,4 +1,4 @@
-# smalltalkCI [![GitHub Workflow Status][github_action_b]][github_action_url] [![Travis CI Status][travis_b]][travis_url] [![AppVeyor Status][appveyor_b]][appveyor_url] [![Coverage Status][coveralls_b]][coveralls_url]
+# smalltalkCI [![GitHub Workflow Status][github_action_b]][github_action_url] [![Travis CI Status][travis_b]][travis_url] [![AppVeyor Status][appveyor_b]][appveyor_url] [![Docker Build Status][docker_b]][docker_url] [![Coverage Status][coveralls_b]][coveralls_url]
 
 Community-supported framework for testing Smalltalk projects on Linux, OS X, and
 Windows with built-in support for [GitHub Actions][github_action],
@@ -542,6 +542,7 @@ OPTIONS:
   --headful           Open vm in headful mode and do not close image.
   --image             Custom image for build (Squeak/Pharo).
   --install           Install symlink to this smalltalkCI instance.
+  --print-env         Print all environment variables used by smalltalkCI
   --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
   -s | --smalltalk    Overwrite Smalltalk image selection.
   --uninstall         Remove symlink to any smalltalkCI instance.
@@ -612,26 +613,26 @@ problem.
     [Heimdall](https://github.com/DuneSt/Heimdall),
     [MaterialDesignLite](https://github.com/DuneSt/MaterialDesignLite),
     [PrismCodeDisplayer](https://github.com/DuneSt/PrismCodeDisplayer).
-- [@dynacase](https://github.com/dynacase/):
-    [borm-editor](https://github.com/dynacase/borm-editor),
-    [borm-model](https://github.com/dynacase/borm-model),
-    [borm-persistence](https://github.com/dynacase/borm-persistence),
-    [class-editor](https://github.com/dynacase/class-editor),
-    [demo-editor](https://github.com/dynacase/demo-editor),
-    [dynacase](https://github.com/dynacase/dynacase),
-    [dynacase-model](https://github.com/dynacase/dynacase-model),
-    [fsm-editor](https://github.com/dynacase/fsm-editor).
 - [@HPI-BP2015H](https://github.com/HPI-BP2015H):
     [squeak-parable](https://github.com/HPI-BP2015H/squeak-parable).
-- [@HPI-SWA-Teaching](https://github.com/HPI-SWA-Teaching):
-    [Algernon-Launcher](https://github.com/HPI-SWA-Teaching/Algernon-Launcher).
 - [@hpi-swa](https://github.com/hpi-swa):
     [animations](https://github.com/hpi-swa/animations),
     [Ohm-S](https://github.com/hpi-swa/Ohm-S),
-    [vivide](https://github.com/hpi-swa/vivide).
+    [signals](https://github.com/hpi-swa/signals),
+    [Squot](https://github.com/hpi-swa/Squot),
+    [vivide](https://github.com/hpi-swa/vivide),
+    [widgets](https://github.com/hpi-swa/widgets).
+- [@HPI-SWA-Teaching](https://github.com/HPI-SWA-Teaching):
+    [Algernon-Launcher](https://github.com/HPI-SWA-Teaching/Algernon-Launcher),
+    [AutoTDD](https://github.com/hpi-swa-teaching/AutoTDD),
+    [SpreadSheetTool](https://github.com/hpi-swa-teaching/SpreadSheetTool),
+    [TelegramClient](https://github.com/hpi-swa-teaching/TelegramClient),
+    [SwaLint](https://github.com/hpi-swa-teaching/SwaLint).
 - [@marianopeck](https://github.com/marianopeck):
     [OSSubprocess](https://github.com/marianopeck/OSSubprocess),
     [FFICHeaderExtractor](https://github.com/marianopeck/FFICHeaderExtractor).
+- [@Metacello](https://github.com/Metacello):
+    [metacello](https://github.com/Metacello/metacello).
 - [@newapplesho](https://github.com/newapplesho):
     [aws-sdk-smalltalk](https://github.com/newapplesho/aws-sdk-smalltalk),
     [elasticsearch-smalltalk](https://github.com/newapplesho/elasticsearch-smalltalk),
@@ -643,6 +644,14 @@ problem.
     [twilio-smalltalk](https://github.com/newapplesho/twilio-smalltalk).
 - [@ObjectProfile](https://github.com/ObjectProfile):
     [Roassal2](https://github.com/ObjectProfile/Roassal2).
+- [@OpenPonk](https://github.com/OpenPonk):
+    [borm-editor](https://github.com/OpenPonk/borm-editor),
+    [borm-model](https://github.com/OpenPonk/borm-model),
+    [class-editor](https://github.com/OpenPonk/class-editor),
+    [demo-editor](https://github.com/OpenPonk/demo-editor),
+    [fsm-editor](https://github.com/OpenPonk/fsm-editor).
+- [@OpenSmalltalk](https://github.com/OpenSmalltalk):
+    [opensmalltalk-vm](https://github.com/OpenSmalltalk/opensmalltalk-vm).
 - [@pharo-project](https://github.com/pharo-project):
     [pharo-project-proposals](https://github.com/pharo-project/pharo-project-proposals).
 - [@PolyMathOrg](https://github.com/PolyMathOrg):
@@ -653,6 +662,11 @@ problem.
     [Seaside](https://github.com/SeasideSt/Seaside).
 - [@SergeStinckwich](https://github.com/SergeStinckwich):
     [PlayerST](https://github.com/SergeStinckwich/PlayerST).
+- [@squeak-smalltalk](https://github.com/squeak-smalltalk):
+    [squeak-app](https://github.com/squeak-smalltalk/squeak-app),
+    [squeak-filesystem](https://github.com/squeak-smalltalk/squeak-filesystem),
+    [squeak-ston](https://github.com/squeak-smalltalk/squeak-ston),
+    [squeak-tonel](https://github.com/squeak-smalltalk/squeak-tonel).
 - [@theseion](https://github.com/theseion):
     [Fuel](https://github.com/theseion/Fuel).
 - [@Uko](https://github.com/Uko):
@@ -669,13 +683,15 @@ problem.
 list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 
 
-[travis_b]: https://img.shields.io/travis/hpi-swa/smalltalkCI?logo=travis
-[travis_url]: https://travis-ci.org/hpi-swa/smalltalkCI
 [appveyor_b]: https://ci.appveyor.com/api/projects/status/c2uchb5faykdrj3y/branch/master?svg=true
 [appveyor_url]: https://ci.appveyor.com/project/smalltalkCI/smalltalkci/branch/master
 [coverage_docs]: https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md
 [coveralls_b]: https://coveralls.io/repos/github/hpi-swa/smalltalkCI/badge.svg?branch=master
 [coveralls_url]: https://coveralls.io/github/hpi-swa/smalltalkCI?branch=master
+[docker_b]: https://img.shields.io/docker/cloud/build/hpiswa/smalltalkci
+[docker_url]: https://hub.docker.com/r/hpiswa/smalltalkci
+[travis_b]: https://img.shields.io/travis/com/hpi-swa/smalltalkCI?logo=travis
+[travis_url]: https://travis-ci.com/hpi-swa/smalltalkCI
 
 [appveyor]: https://www.appveyor.com/
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
