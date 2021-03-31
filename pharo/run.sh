@@ -100,7 +100,7 @@ moose::get_image_url() {
         echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
       ;;
      "Moose64-8"*)
-      echo "https://ci.inria.fr/moose/view/Moose%208.0/job/Moose-8/ARCHITECTURE=64,PHARO=80,VERSION=development,VM=vm/lastSuccessfulBuild/artifact/Moose.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-stable.zip"
       ;;
     *)
       print_error_and_exit "Unsupported Pharo version '${smalltalk_name}'."
