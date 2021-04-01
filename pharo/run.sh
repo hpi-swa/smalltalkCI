@@ -304,8 +304,9 @@ pharo::load_project() {
     [ Metacello new
         baseline: 'SmalltalkCI';
         repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-        onConflict: [:ex | ex pass];
-        load ] on: Warning do: [:w | w resume ].
+        onUpgrade: [ :ex | ex useIncoming ];
+        onConflictUseIncoming;
+        load ] on: Warning do: [ :w | w resume ].
     smalltalkCI := (Smalltalk at: #SmalltalkCI).
     smalltalkCI load: '$(resolve_path "${config_ston}")'.
     (smalltalkCI isHeadless or: [smalltalkCI promptToProceed])
@@ -324,8 +325,9 @@ pharo::test_project() {
     [ Metacello new
         baseline: 'SmalltalkCI';
         repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-        onConflict: [:ex | ex pass];
-        load ] on: Warning do: [:w | w resume ].
+        onUpgrade: [ :ex | ex useIncoming ];
+        onConflictUseIncoming;
+        load ] on: Warning do: [ :w | w resume ].
         Smalltalk at: #SmalltalkCI
     ].
     smalltalkCI test: '$(resolve_path "${config_ston}")'
