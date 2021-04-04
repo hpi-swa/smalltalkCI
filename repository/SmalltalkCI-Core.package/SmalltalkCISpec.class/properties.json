@@ -15,7 +15,7 @@
 		"postTesting",
 		"name",
 		"specName",
-		"testSuite" ],
+		"suiteClass" ],
 	"name" : "SmalltalkCISpec",
 	"pools" : [
 		 ],
