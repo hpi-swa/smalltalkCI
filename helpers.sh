@@ -8,6 +8,8 @@ readonly GITHUB_API="https://api.github.com"
 readonly COVERALLS_API="https://coveralls.io/api/v1/jobs"
 readonly COVERALLS_OPTIONAL_KEYS="flag_name parallel repo_token service_job_id
   service_job_number service_name service_number service_pull_request"
+readonly JQ_BASE_URL="https://github.com/stedolan/jq/releases/download/jq-1.6"
+jq_binary=""
 
 readonly ANSI_BOLD="\033[1m"
 readonly ANSI_RED="\033[31m"
@@ -374,13 +376,40 @@ to_lowercase() {
   echo $1 | tr "[:upper:]" "[:lower:]"
 }
 
+ensure_jq_binary() {
+  if ! is_empty "${jq_binary}"; then
+    return 0
+  elif program_exists "jq"; then
+    jq_binary="jq"
+    return 0
+  fi
+  jq_binary="${SMALLTALK_CI_HOME}/bin/jq"
+  if ! is_file "${jq_binary}"; then
+    case "$(uname -s)" in
+      "Linux")
+        download_file "${JQ_BASE_URL}/jq-linux64" "${jq_binary}"
+        chmod +x "${jq_binary}"
+        ;;
+      "Darwin")
+        download_file "${JQ_BASE_URL}/jq-osx-amd64" "${jq_binary}"
+        chmod +x "${jq_binary}"
+        ;;
+      "CYGWIN_NT-"*|"MINGW64_NT-"*)
+        download_file "${JQ_BASE_URL}/jq-win64.exe" "${jq_binary}"
+        chmod +x "${jq_binary}"
+        ;;
+      *)
+        print_error_and_exit "Unsupported platform '$(uname -s)'."
+        ;;
+    esac
+  fi
+}
+
 git_log() {
   local format_value=$1
   local output
-  output=$(git --no-pager log -1 --pretty=format:"${format_value}")
-  echo "${output//\"/\\\"}" # Escape double quotes
+  echo "$(git --no-pager log -1 --pretty=format:"${format_value}" | "${jq_binary}" -Rs .)"
 }
-
 
 export_coveralls_data() {
   local branch_name="unknown"
@@ -449,18 +478,20 @@ export_coveralls_data() {
     fi
   done
 
+  ensure_jq_binary # required for git_log
+
   cat >"${SMALLTALK_CI_BUILD}/coveralls_build_data.json" <<EOL
 {
   ${optional_values}
   "git": {
     "branch": "${branch_name}",
     "head": {
-      "author_email": "$(git_log "%ae")",
-      "author_name": "$(git_log "%aN")",
-      "committer_email": "$(git_log "%ce")",
-      "committer_name": "$(git_log "%cN")",
-      "id": "$(git_log "%H")",
-      "message": "$(git_log "%s")"
+      "author_email": $(git_log "%ae"),
+      "author_name": $(git_log "%aN"),
+      "committer_email": $(git_log "%ce"),
+      "committer_name": $(git_log "%cN"),
+      "id": $(git_log "%H"),
+      "message": $(git_log "%s")
     },
     "remotes": [
       {

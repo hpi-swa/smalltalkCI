@@ -1,5 +1,6 @@
 _builds
 _cache
+/bin/jq
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
 *.un~
