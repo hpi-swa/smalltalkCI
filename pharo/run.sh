@@ -85,7 +85,7 @@ moose::get_image_url() {
 
   case "${smalltalk_name}" in
     "Moose64-trunk"|"Moose-trunk")
-      echo "https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-stable.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose9-development.zip"
       ;;
     "Moose32-trunk")
       moose_name="moose-7.0"
@@ -101,6 +101,9 @@ moose::get_image_url() {
       ;;
      "Moose64-8"*)
       echo "https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-stable.zip"
+      ;;
+      "Moose64-9"*)
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose9-development.zip"
       ;;
     *)
       print_error_and_exit "Unsupported Pharo version '${smalltalk_name}'."
