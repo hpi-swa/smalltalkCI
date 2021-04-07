@@ -89,20 +89,20 @@ moose::get_image_url() {
       ;;
     "Moose32-trunk")
       moose_name="moose-7.0"
-        echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
+      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
       ;;
     "Moose64-7"*)
       moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)-64bit"
-        echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
+      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
       ;;
     "Moose32-6"*|"Moose-6"*|"Moose32-7"*|"Moose-7"*)
       moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)"
-        echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
+      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
       ;;
-     "Moose64-8"*)
+    "Moose64-8"*)
       echo "https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-stable.zip"
       ;;
-      "Moose64-9"*)
+    "Moose64-9"*)
       echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose9-development.zip"
       ;;
     *)
