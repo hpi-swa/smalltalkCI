@@ -106,7 +106,7 @@ moose::get_image_url() {
       echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose9-development.zip"
       ;;
     *)
-      print_error_and_exit "Unsupported Pharo version '${smalltalk_name}'."
+      print_error_and_exit "Unsupported Moose version '${smalltalk_name}'."
       ;;
   esac
 
