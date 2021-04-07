@@ -127,10 +127,10 @@ pharo::get_vm_url() {
     "Pharo64-alpha")
       echo "get.pharo.org/64/vmLatest90"
       ;;
-    "Pharo64-9.0")
+    "Pharo64-9.0"|"Moose64-9.0"|"Moose64-trunk")
       echo "get.pharo.org/64/vm90"
       ;;
-    "Pharo64-stable"|"Pharo64-8.0"|"Moose64-8.0"|"Moose64-trunk")
+    "Pharo64-stable"|"Pharo64-8.0"|"Moose64-8.0")
       echo "get.pharo.org/64/vm80"
       ;;
     "Pharo64-7.0"|"Moose64-7.0")
