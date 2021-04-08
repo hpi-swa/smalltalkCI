@@ -38,9 +38,9 @@ Installer gemsource
 
 "Update Squeak image"
 [ [ (SmalltalkCI getEnv: 'SCIII_SMALLTALK_VERSION') ifNotNil: [ :version |
-  Installer new primMerge: 'MonticelloConfigurations-ct.167.mcz' from: MCRepository inbox; flag: #todo "ct: preview".
-  trunk_version = version asNumber].
-Smalltalk classNamed: #MCMcmUpdater ifPresent: [ :updater |
+  trunk_version = version asNumber.
+  Installer new primMerge: 'MonticelloConfigurations-ct.167.mcz' from: MCRepository inbox; flag: #todo "ct: preview"].
+(Smalltalk classNamed: #MCMcmUpdater) ifNotNil: [ :updater |
   trunk_version
     ifNotNil: [
       updater defaultUpdateURL: MCHttpRepository trunkUrlString.

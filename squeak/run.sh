@@ -120,9 +120,8 @@ squeak::prepare_image() {
   local status=0
   
   fold_start prepare_image "Preparing ${config_smalltalk} image for CI..."
-    cp "${SMALLTALK_CI_HOME}/squeak/prepare.st" \
-       "${SMALLTALK_CI_BUILD}/prepare.st"
     is_tagged_build  # parse SCIII_SMALLTALK_VERSION
+    sed "s/(SmalltalkCI getEnv: 'SCIII_SMALLTALK_VERSION')/${SCIII_SMALLTALK_VERSION:-nil}/" "${SMALLTALK_CI_HOME}/squeak/prepare.st" > "${SMALLTALK_CI_BUILD}/prepare.st"  # SmalltalkCI will be installed later into the image
     squeak::run_script "prepare.st" || status=$?
   fold_end prepare_image
 
