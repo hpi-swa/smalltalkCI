@@ -37,11 +37,11 @@ Installer gemsource
 "=============================================================================="
 
 "Update Squeak image"
-(SmalltalkCI getEnv: 'SCIII_SMALLTALK_VERSION') ifNotNil: [ :version |
+[ [ (SmalltalkCI getEnv: 'SCIII_SMALLTALK_VERSION') ifNotNil: [ :version |
   Installer new primMerge: 'MonticelloConfigurations-ct.166.mcz' from: MCRepository inbox; flag: #todo "ct: preview".
   trunk_version = version asNumber].
 Smalltalk classNamed: #MCMcmUpdater ifPresent: [ :updater |
-  [ [ trunk_version
+  trunk_version
     ifNotNil: [
       updater defaultUpdateURL: MCHttpRepository trunkUrlString.
       updater default doUpdate: false upToUpdate: trunk_version ]
@@ -52,17 +52,17 @@ Smalltalk classNamed: #MCMcmUpdater ifPresent: [ :updater |
           ifTrue: [ updater updateFromDefaultRepository ]
           ifFalse: [ ((updater respondsTo: #default) and: [
             updater default respondsTo: #doUpdate: ])
-              ifTrue: [ updater default doUpdate: false ] ] ] ] ] ]
-    on: Warning do: [ :ex | ex resume: true ]
-      on: Error do: [ :ex |
-        FileStream stdout nextPutAll: ex asString.
-        Smalltalk snapshot: true andQuit: true ] ].
+              ifTrue: [ updater default doUpdate: false ] ] ] ] ].
 trunk_version ifNotNil: [
   self
-    assert: SystemVersion current highestUpdate = trunk_version
-    descriptionBlock: [ 'Should be Trunk version <1p> now but is <2p>'
+    assert: SystemVersion current highestUpdate >= trunk_version
+    descriptionBlock: [ 'Should be Trunk version <1p> or higher now but is <2p>'
       expandMacrosWith: SystemVersion current highestUpdate
-      with: trunk_version ] ].
+      with: trunk_version ] ] ]
+  on: Warning do: [ :ex | ex resume: true ] ]
+  on: Error do: [ :ex |
+    FileStream stdout nextPutAll: ex asString.
+    Smalltalk snapshot: true andQuit: true ].
 
 monitor terminate.
 monitor := nil.
