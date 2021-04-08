@@ -120,8 +120,8 @@ squeak::prepare_image() {
   local status=0
   
   fold_start prepare_image "Preparing ${config_smalltalk} image for CI..."
-    cp "${SMALLTALK_CI_HOME}/squeak/prepare.st" \
-       "${SMALLTALK_CI_BUILD}/prepare.st"
+    is_tagged_build  # parse SCIII_SMALLTALK_VERSION
+    sed "s/(SmalltalkCI getEnv: 'SCIII_SMALLTALK_VERSION')/${SCIII_SMALLTALK_VERSION:-nil}/" "${SMALLTALK_CI_HOME}/squeak/prepare.st" > "${SMALLTALK_CI_BUILD}/prepare.st"  # SmalltalkCI will be installed later into the image
     squeak::run_script "prepare.st" || status=$?
   fold_end prepare_image
 
@@ -351,16 +351,18 @@ EOL
 ################################################################################
 run_build() {
   if ! image_is_user_provided; then
+    ! is_tagged_build  # try to parse $SCIII_LATEST_RELEASE
+    download_version="${SCIII_LATEST_RELEASE:-${config_smalltalk}}"
     if is_trunk_build; then
-      squeak::download_trunk_image
+      config_smalltalk=${download_version} squeak::download_trunk_image
     else
-      squeak::download_image "${config_smalltalk}"
+      squeak::download_image ${download_version}
     fi
   fi
   if ! vm_is_user_provided; then
     squeak::prepare_vm
   fi
-  if is_trunk_build || image_is_user_provided; then
+  if is_tagged_build || is_trunk_build || image_is_user_provided; then
     squeak::prepare_image
   fi
   if ston_includes_loading; then
