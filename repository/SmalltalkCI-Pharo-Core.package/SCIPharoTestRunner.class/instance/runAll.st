@@ -7,5 +7,5 @@ runAll
 	
 	currentEnvironment := self class environment classNamed: #CurrentExecutionEnvironment.
 	currentEnvironment runTestsBy: [
-		suite tests do: [ :each | each run: self ]
+		suite run: self 
 	]
