@@ -5,3 +5,4 @@ totalTests
 	results valuesDo: [ :clsResults |
 		size := size + clsResults size ].
 	^ size
+ 

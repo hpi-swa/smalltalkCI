@@ -1,6 +1,9 @@
 {
-	"class" : {
-		"isPlatformCompatible" : "BenoitVerhaeghe 12/15/2020 10:00",
-		"testRunnerClass" : "BenoitVerhaeghe 12/15/2020 10:00" },
 	"instance" : {
-		"imageInfo" : "BenoitVerhaeghe 12/15/2020 10:00" } }
+		"imageInfo" : "BenoitVerhaeghe 12/15/2020 10:00"
+	},
+	"class" : {
+		"testRunnerClass" : "BenoitVerhaeghe 12/15/2020 10:00",
+		"isPlatformCompatible" : "BenoitVerhaeghe 12/15/2020 10:00"
+	}
+}
