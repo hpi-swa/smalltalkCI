@@ -91,8 +91,8 @@ squeak::download_prepared_image() {
 squeak::download_trunk_image() {
   local target
   local download_name
-  local git_tag="v2.9.2" # 32bit/64bit are kept in sync
-  local update_level="19536" # 32bit/64bit are kept in sync
+  local git_tag="v2.9.6" # 32bit/64bit are kept in sync
+  local update_level="20447" # 32bit/64bit are kept in sync
 
   if is_64bit; then
     download_name="Squeak64-trunk-${update_level}.tar.gz"
