@@ -324,11 +324,11 @@ download_file() {
 
   if program_exists "curl"; then
     curl --fail --silent --show-error --location \
-      --retry 3 --retry-delay 5 --max-time 30 \
+      --retry 3 --retry-delay 5 --max-time 300 \
       -o "${target}" "${url}" || print_error_and_exit \
         "curl failed to download ${url} to '${target}'."
   elif program_exists "wget"; then
-    wget -t 3 --retry-connrefused --waitretry=5 --read-timeout=20 --timeout=15 \
+    wget -t 3 --retry-connrefused --waitretry=5 --read-timeout=20 --timeout=300 \
       --no-dns-cache -q -O "${target}" "${url}" || print_error_and_exit \
         "wget failed to download ${url} to '${target}'."
   else
