@@ -7,4 +7,4 @@ runClasses: aCollectionOfClasses spec: aSCISpec
       asSortedCollection: [ :a :b | a name <= b name ].
   classes
     do: [ :each | suite addTest: each suite ].
-  ^ self runSuite: suite spec: aSCISpec 
+  ^ self runSuite: suite spec: aSCISpec
