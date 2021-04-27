@@ -6,5 +6,5 @@ runClasses: aCollectionOfClasses spec: aSCISpec
     select: [ :each | (each includesBehavior: TestCase) and: [ each isAbstract not ] ])
       asSortedCollection: [ :a :b | a name <= b name ].
   classes
-    do: [ :each | suite addTests: each suite allTests ].
+    do: [ :each | suite addTest: each suite ].
   ^ self runSuite: suite spec: aSCISpec
