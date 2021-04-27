@@ -7,4 +7,4 @@ printStart
     		print: '" failures="', runner failedTests asString;
     		print: '" errors="', runner erroredTests asString;
     		print: '" time="', (runner suiteTime / 1000.0) asString , '">';
-		newLine 
+		newLine

@@ -1,15 +1,16 @@
 {
-	"commentStamp" : "",
-	"super" : "SCIObjectWithSpec",
 	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
 	"instvars" : [
 		"suite",
 		"suiteTime",
-		"results"
-	],
+		"results" ],
 	"name" : "SCITestRunner",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "SCIObjectWithSpec",
+	"type" : "normal" }
