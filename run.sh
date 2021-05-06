@@ -320,6 +320,10 @@ parse_options() {
       ;;
     -s | --smalltalk)
       config_smalltalk="${2:-}"
+      if is_empty "${config_smalltalk}"; then
+        print_error_and_exit "-s | --smalltalk option requires an argument \
+(e.g. 'smalltalkci -s Squeak64-trunk')."
+      fi
       shift 2
       ;;
     -v | --verbose)
