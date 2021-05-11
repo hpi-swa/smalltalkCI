@@ -9,6 +9,10 @@ readonly BINTRAY_API="https://api.bintray.com/content"
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
 readonly GITHUB_REPO_URL="https://github.com/hpi-swa/smalltalkCI"
 
+# Indicates whether any secondary action was chosen that makes the execution
+# of the actual build process optional. See ensure_ston_config_exists.
+first_action=""
+
 ################################################################################
 # Locate $SMALLTALK_CI_HOME and load helpers.
 ################################################################################
@@ -525,9 +529,6 @@ main() {
   local config_verbose="false"
   local config_vm=""
   local config_vm_dir
-  # Indicates whether any secondary action was chosen that makes the execution
-  # of the actual build process optional. See ensure_ston_config_exists.
-  local first_action=""
 
   initialize "$@"
   parse_options "$@"
