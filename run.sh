@@ -173,7 +173,6 @@ could not be found at '${custom_ston}'."
     fi
     read -p "Continue with build progress? (y/N): " user_input
     [[ "${user_input}" != "y" ]] && exit 0
-    true
   elif ! is_file "${config_ston}"; then
     print_error_and_exit "STON configuration could not be found at \
 '${config_ston}'."
