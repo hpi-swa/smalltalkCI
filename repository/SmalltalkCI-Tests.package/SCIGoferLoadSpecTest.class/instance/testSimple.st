@@ -5,8 +5,8 @@ testSimple
 	self assert: nil equals: self spec url.
 	self assert: '' equals: self spec user.
 	self assert: '' equals: self spec password.
-	self assert: nil equals: self spec userEnv.
-	self assert: nil equals: self spec passwordEnv.
+	self assert: nil equals: self spec usernameEnvVar.
+	self assert: nil equals: self spec passwordEnvVar.
 	
 	self spec packages: #('foo' 'bar').
 	self assert: 2 equals: self spec packages size.
@@ -16,11 +16,11 @@ testSimple
 	
 	self spec
 		url: 'http://example.com';
-		userEnv: 'FOO_USER';
-		passwordEnv: 'FOO_PASS'.
+		usernameEnvVar: 'FOO_USER';
+		passwordEnvVar: 'FOO_PASS'.
 	self assert: 'http://example.com' equals: self spec url.
-	self assert: 'FOO_USER' equals: self spec userEnv.
-	self assert: 'FOO_PASS' equals: self spec passwordEnv.
+	self assert: 'FOO_USER' equals: self spec usernameEnvVar.
+	self assert: 'FOO_PASS' equals: self spec passwordEnvVar.
 	
 	SCIMockSmalltalkCI installDuring: [
 		SCIMockSmalltalkCI

@@ -8,8 +8,8 @@
 	"instvars" : [
 		"user",
 		"password",
-		"userEnv",
-		"passwordEnv" ],
+		"usernameEnvVar",
+		"passwordEnvVar" ],
 	"name" : "SCIAbstractLoadSpecWithCredentials",
 	"pools" : [
 		 ],
