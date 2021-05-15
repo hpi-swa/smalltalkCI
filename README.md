@@ -72,13 +72,13 @@ they can take up a lot of space on your drive.*
 | [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  |
 | ---------------- | ---------------- | -------------------- | --------------- |
 | `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.5.x`   | `Moose64-trunk` |
-| `Squeak64-5.3`   | `Pharo64-stable` | `GemStone64-3.4.x`   | `Moose64-8.0`   |
-| `Squeak64-5.2`   | `Pharo64-9.0`    | `GemStone64-3.3.x`   | `Moose64-7.0`   |
-| `Squeak64-5.1`   | `Pharo64-8.0`    | `GemStone64-3.2.x`   | `Moose32-trunk` |
-| `Squeak32-trunk` | `Pharo64-7.0`    | `Gemstone64-3.1.0.x` | `Moose32-7.0`   |
-| `Squeak32-5.3`   | `Pharo64-6.1`    | `Gemstone64-2.4.x`   | `Moose32-6.1`   |
-| `Squeak32-5.2`   | `Pharo64-6.0`    |                      | `Moose32-6.0`   |
-| `Squeak32-5.1`   | `Pharo32-alpha`  |                      |                 |
+| `Squeak64-5.3`   | `Pharo64-stable` | `GemStone64-3.4.x`   | `Moose64-9.0`   |
+| `Squeak64-5.2`   | `Pharo64-9.0`    | `GemStone64-3.3.x`   | `Moose64-8.0`   |
+| `Squeak64-5.1`   | `Pharo64-8.0`    | `GemStone64-3.2.x`   | `Moose64-7.0`   |
+| `Squeak32-trunk` | `Pharo64-7.0`    | `Gemstone64-3.1.0.x` | `Moose32-trunk` |
+| `Squeak32-5.3`   | `Pharo64-6.1`    | `Gemstone64-2.4.x`   | `Moose32-7.0`   |
+| `Squeak32-5.2`   | `Pharo64-6.0`    |                      | `Moose32-6.1`   |
+| `Squeak32-5.1`   | `Pharo32-alpha`  |                      | `Moose32-6.0`   |
 | `Squeak32-5.0`   | `Pharo32-stable` |                      |                 |
 | `Squeak32-4.6`   | `Pharo32-9.0`    |                      |                 |
 | `Squeak32-4.5`   | `Pharo32-8.0`    |                      |                 |
@@ -399,8 +399,8 @@ SCIMetacelloLoadSpec {
   #onWarningLog : true,                               // Log Warning messages to Transcript
   #platforms : [ #squeak, #pharo, #gemstone ],        // Define compatible platforms
   #repository : 'http://smalltalkhub.com/mc/...',     // Alternatively, define MC repository
-  #usernameEnv : 'GITHUB_USER',                       // Environment variable containing the username used for authentication
-  #passwordEnv : 'GITHUB_TOKEN',                      // Environment variable containing the password used for authentication
+  #usernameEnvVar : 'GITHUB_USER',                    // Environment variable containing the username used for authentication
+  #passwordEnvVar : 'GITHUB_TOKEN',                   // Environment variable containing the password used for authentication
   #useLatestMetacello : true,                         // Upgrade Metacello before loading
   #version : '1.0.0'                                  // Define MC version (for MC Configurations only)
 }
@@ -416,8 +416,8 @@ SCIMonticelloLoadSpec {
   #url : 'http://ss3.gemtalksystems.com/ss/...',      // Define URL for repository
   #packages : ['MyProject-Core', 'MyProject-Tests'],  // Load packages and/or
   #versions : ['MyProject-Core-aa.12'],               // Load specific versions
-  #usernameEnv : 'USERNAME_VAR',                      // Environment variable containing the username used for authentication
-  #passwordEnv : 'PASSWORD_VAR',                      // Environment variable containing the password used for authentication
+  #usernameEnvVar : 'USERNAME_VAR',                      // Environment variable containing the username used for authentication
+  #passwordEnvVar : 'PASSWORD_VAR',                      // Environment variable containing the password used for authentication
   #platforms : [ #squeak, #pharo, #gemstone ]         // Define compatible platforms
 }
 ```
@@ -431,8 +431,8 @@ SCIGoferLoadSpec {
   #url : 'http://smalltalkhub.com/mc/...',            // Define URL for repository
   #packages : ['MyProject-Core', 'MyProject-Tests'],  // Load packages and/or
   #versions : ['MyProject-Core-aa.12'],               // Load specific versions
-  #usernameEnv : 'USERNAME_VAR',                      // Environment variable containing the username used for authentication
-  #passwordEnv : 'PASSWORD_VAR',                      // Environment variable containing the password used for authentication
+  #usernameEnvVar : 'USERNAME_VAR',                      // Environment variable containing the username used for authentication
+  #passwordEnvVar : 'PASSWORD_VAR',                      // Environment variable containing the password used for authentication
   #platforms : [ #squeak, #pharo, #gemstone ]         // Define compatible platforms
 }
 ```

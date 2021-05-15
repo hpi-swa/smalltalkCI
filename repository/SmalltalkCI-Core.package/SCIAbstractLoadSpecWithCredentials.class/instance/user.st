@@ -2,5 +2,5 @@ accessing
 user
 
 	user ifNotNil: [ ^ user ].
-	self userEnv ifNotNil: [ :env | ^ SmalltalkCI getEnv: env ].
+	self usernameEnvVar ifNotNil: [ :env | ^ SmalltalkCI getEnv: env ].
 	^ nil
