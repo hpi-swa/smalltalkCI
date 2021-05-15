@@ -8,8 +8,8 @@ testSimple
 	self assert: #() equals: self spec load.
 	self assert: nil equals: self spec user.
 	self assert: nil equals: self spec password.
-	self assert: nil equals: self spec userEnv.
-	self assert: nil equals: self spec passwordEnv.
+	self assert: nil equals: self spec usernameEnvVar.
+	self assert: nil equals: self spec passwordEnvVar.
 	self deny: self spec onWarningLog.
 	self deny: self spec useLatestMetacello.
 
@@ -17,8 +17,8 @@ testSimple
 		directory: 'foodir';
 		load: #('FooLoad');
 		version: '1.2.3';
-		userEnv: 'FOO_USER';
-		passwordEnv: 'FOO_PASS';
+		usernameEnvVar: 'FOO_USER';
+		passwordEnvVar: 'FOO_PASS';
 		onWarningLog: true;
 		useLatestMetacello: false.
 	
@@ -26,8 +26,8 @@ testSimple
 		assert: 'foodir' equals: self spec directory;
 		assert: 'FooLoad' equals: self spec load first;
 		assert: '1.2.3' equals: self spec version;
-		assert: 'FOO_USER' equals: self spec userEnv;
-		assert: 'FOO_PASS' equals: self spec passwordEnv;
+		assert: 'FOO_USER' equals: self spec usernameEnvVar;
+		assert: 'FOO_PASS' equals: self spec passwordEnvVar;
 		assert: self spec onWarningLog;
 		deny: self spec useLatestMetacello;
 		assert: ('filetree://', path, SmalltalkCI pathNameDelimiter, 'foodir')
