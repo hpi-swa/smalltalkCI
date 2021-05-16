@@ -1,4 +1,4 @@
 accessing
 password
 
-	^ password ifNil: [ ^ '' ]
+	^ super password ifNil: ['']
