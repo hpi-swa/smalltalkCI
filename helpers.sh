@@ -242,6 +242,10 @@ is_headless() {
   [[ "${config_headless}" = "true" ]]
 }
 
+starts_with() {
+  [[ "$1" == "$2"* ]]
+}
+
 ston_includes_loading() {
   grep -Fq "#loading" "${config_ston}"
 }

@@ -1,6 +1,6 @@
 executing
 basicLoadProjectOn: aSmalltalkCI
-	| metacello |
+	| metacello metacelloPassword metacelloUser |
 	
 	aSmalltalkCI class requireMetacello.
 	self updateMetacelloIfRequested.
@@ -12,14 +12,18 @@ basicLoadProjectOn: aSmalltalkCI
 		baseline: self baseline;
 		configuration: self configuration;
 		version: self version.
-
+	((metacelloUser := self user) isEmptyOrNil and: [(metacelloPassword := self password) isEmptyOrNil]) ifFalse: [
+		metacello
+			username: metacelloUser;
+			password: metacelloPassword].
+	
 	self ignoreImage ifTrue: [
 		metacello ignoreImage ].
 	self onConflict ifNotNil: [ :selector |
 		metacello onConflict: [ :ex :loaded :incoming | ex perform: selector ]].
 	self onUpgrade ifNotNil: [ :selector |
 		metacello onUpgrade: [ :ex :loaded :incoming | ex perform: selector ]].
-
+	
 	metacello copy get.	"compensate for older versions of Metacello"
 	self withExceptionHandlerDo: [ 
 		aSmalltalkCI performMetacelloLoad: [ 

@@ -9,6 +9,10 @@ readonly BINTRAY_API="https://api.bintray.com/content"
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
 readonly GITHUB_REPO_URL="https://github.com/hpi-swa/smalltalkCI"
 
+# Indicates whether any secondary action was chosen that makes the execution
+# of the actual build process optional. See ensure_ston_config_exists.
+first_action=""
+
 ################################################################################
 # Locate $SMALLTALK_CI_HOME and load helpers.
 ################################################################################
@@ -163,7 +167,13 @@ could not be found at '${custom_ston}'."
     esac
   fi
 
-  if ! is_file "${config_ston}"; then
+  if ! is_empty "${first_action}"; then
+    if ! is_file "${config_ston}"; then
+      exit
+    fi
+    read -p "Continue with build progress? (y/N): " user_input
+    [[ "${user_input}" != "y" ]] && exit 0
+  elif ! is_file "${config_ston}"; then
     print_error_and_exit "STON configuration could not be found at \
 '${config_ston}'."
   fi
@@ -190,6 +200,9 @@ locate_ston_config() {
   elif is_file "${project_home}/.${DEFAULT_STON_CONFIG}"; then
     config_ston="${project_home}/.${DEFAULT_STON_CONFIG}"
   else
+    if ! is_empty "${first_action}"; then
+      exit
+    fi
     print_error_and_exit "No STON file named '.${DEFAULT_STON_CONFIG}' found \
 in ${project_home}."
   fi
@@ -320,6 +333,10 @@ parse_options() {
       ;;
     -s | --smalltalk)
       config_smalltalk="${2:-}"
+      if is_empty "${config_smalltalk}"; then
+        print_error_and_exit "-s | --smalltalk option requires an argument \
+(e.g. 'smalltalkci -s Squeak64-trunk')."
+      fi
       shift 2
       ;;
     -v | --verbose)
@@ -421,27 +438,21 @@ raise_rtprio_limit() {
 ################################################################################
 check_clean_up() {
   local user_input
-  local question1="Are you sure you want to clear builds and cache? (y/N): "
-  local question2="Continue with build progress? (y/N): "
-  if [[ "${config_clean}" = "true" ]]; then
-    print_info "cache at '${SMALLTALK_CI_CACHE}'."
-    print_info "builds at '${SMALLTALK_CI_BUILD_BASE}'."
-    if is_dir "${SMALLTALK_CI_CACHE}" || \
-        is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
-      read -p "${question1}" user_input
-      if [[ "${user_input}" = "y" ]]; then
-        clean_up
-      fi
-    else
-      print_notice "Nothing to clean up."
-    fi
-    if is_empty "${config_smalltalk}" || is_empty "${config_ston}"; then
-      exit  # User did not supply enough arguments to continue
-    fi
-    read -p "${question2}" user_input
-    [[ "${user_input}" != "y" ]] && exit 0
+  if [[ "${config_clean}" != "true" ]]; then
+    return 0
   fi
-  return 0
+  print_info "cache at '${SMALLTALK_CI_CACHE}'."
+  print_info "builds at '${SMALLTALK_CI_BUILD_BASE}'."
+  if is_dir "${SMALLTALK_CI_CACHE}" || \
+      is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+    read -p "Are you sure you want to clear builds and cache? (y/N): " user_input
+    if [[ "${user_input}" = "y" ]]; then
+      clean_up
+    fi
+  else
+    print_notice "Nothing to clean up."
+  fi
+  first_action="check_cleanup"
 }
 
 ################################################################################
@@ -521,8 +532,8 @@ main() {
   initialize "$@"
   parse_options "$@"
   [[ "${config_verbose}" = "true" ]] && set -o xtrace
-  ensure_ston_config_exists "${config_first_arg_or_empty}"
   check_clean_up
+  ensure_ston_config_exists "${config_first_arg_or_empty}"
   select_smalltalk
   validate_configuration
   config_vm_dir="${SMALLTALK_CI_VMS}/${config_smalltalk}"

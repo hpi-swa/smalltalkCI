@@ -46,7 +46,9 @@ jobs:
         with:
           smalltalk-image: ${{ matrix.smalltalk }}
       - name: Run smalltalkCI self test
-        run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
+        run: |
+          tests/all_tests.sh
+          bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
         shell: bash
         if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false && ((contains(matrix.smalltalk, 'Pharo') || contains(matrix.smalltalk, 'Moose')) && matrix.os == 'windows-latest') == false
         timeout-minutes: 15

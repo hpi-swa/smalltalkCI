@@ -7,7 +7,7 @@
 	"instance" : {
 		"baseline" : "fn 1/10/2016 11:44",
 		"baseline:" : "fn 1/10/2016 11:44",
-		"basicLoadProjectOn:" : "tobe 1/8/2021 17:05",
+		"basicLoadProjectOn:" : "ct 3/25/2021 15:36",
 		"configuration" : "fn 1/10/2016 11:45",
 		"configuration:" : "fn 1/10/2016 11:44",
 		"directory" : "fn 8/28/2016 19:20",
@@ -33,7 +33,8 @@
 		"repository:" : "fn 1/10/2016 11:44",
 		"repositorySchemeIn:" : "fn 1/12/2021 14:29",
 		"repositoryUrlIn:" : "tobe 1/8/2021 17:06",
-		"updateMetacelloIfRequested" : "fn 10/13/2016 14:53",
+		"requiresLatestMetacello" : "ct 11/8/2020 17:39",
+		"updateMetacelloIfRequested" : "ct 11/8/2020 17:08",
 		"useLatestMetacello" : "fn 10/13/2016 17:18",
 		"useLatestMetacello:" : "fn 10/13/2016 14:30",
 		"version" : "fn 2/20/2016 21:25",
