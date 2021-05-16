@@ -9,7 +9,6 @@ serializeError: error of: aTestCase
 	context := context copyTo: testCaseMethodContext.
 
 	[ Smalltalk at: #FuelOutStackDebugAction ifPresent: [ :fosda |
-		fosda serializeTestFailureContext: context sender
-		toFileNamed: aTestCase class name asString,'-', aTestCase selector, '.fuel' ]]
+		fosda serializeStackFromContext: context sender ] ]
 	on: Error
 	do: [ :err | "simply continue..." ]
