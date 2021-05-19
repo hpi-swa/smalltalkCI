@@ -89,7 +89,13 @@ handle_exit() {
 ################################################################################
 handle_error() {
   local error_code=$?
+  local num_crash_lines=250
   local i
+
+  if is_file "${SMALLTALK_CI_BUILD}/crash.dmp"; then
+    print_notice "Found a crash.dmp. Here are the first ${num_crash_lines} lines:"
+    head -n ${num_crash_lines} "${SMALLTALK_CI_BUILD}/crash.dmp"
+  fi
 
   printf "\n"
   print_notice "Error with status code ${error_code}:"
