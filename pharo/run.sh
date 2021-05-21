@@ -304,15 +304,20 @@ pharo::load_project() {
   pharo::run_script "
     | smalltalkCI |
     $(conditional_debug_halt)
-    [ Metacello new
-        baseline: 'SmalltalkCI';
-        repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-        onUpgrade: [ :ex | ex useIncoming ];
-        onConflictUseIncoming;
-        load ] on: Warning do: [ :w | w resume ].
-    smalltalkCI := (Smalltalk at: #SmalltalkCI).
+    [ | metacello |
+        metacello := Metacello new
+            baseline: 'SmalltalkCI';
+            repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
+            onUpgrade: [ :ex | ex useIncoming ].
+        (Metacello canUnderstand: #onConflictUseIncoming)
+            ifTrue: [ metacello onConflictUseIncoming ]
+            ifFalse: [ metacello onConflict: [ :ex | ex useIncoming ] ].
+        metacello load ]
+            on: Warning
+            do: [ :w | w resume ].
+    smalltalkCI := Smalltalk at: #SmalltalkCI.
     smalltalkCI load: '$(resolve_path "${config_ston}")'.
-    (smalltalkCI isHeadless or: [smalltalkCI promptToProceed])
+    (smalltalkCI isHeadless or: [ smalltalkCI promptToProceed ])
       ifTrue: [ smalltalkCI saveAndQuitImage ]
   "
 }
@@ -324,15 +329,21 @@ pharo::test_project() {
   pharo::run_script "
     | smalltalkCI |
     $(conditional_debug_halt)
-    smalltalkCI := Smalltalk at: #SmalltalkCI ifAbsent: [
-    [ Metacello new
-        baseline: 'SmalltalkCI';
-        repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-        onUpgrade: [ :ex | ex useIncoming ];
-        onConflictUseIncoming;
-        load ] on: Warning do: [ :w | w resume ].
-        Smalltalk at: #SmalltalkCI
-    ].
+    smalltalkCI := Smalltalk
+        at: #SmalltalkCI
+        ifAbsent: [
+            [ | metacello |
+                metacello := Metacello new
+                    baseline: 'SmalltalkCI';
+                    repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
+                    onUpgrade: [ :ex | ex useIncoming ].
+                (Metacello canUnderstand: #onConflictUseIncoming)
+                    ifTrue: [ metacello onConflictUseIncoming ]
+                    ifFalse: [ metacello onConflict: [ :ex | ex useIncoming ] ].
+                metacello load ]
+                    on: Warning
+                    do: [ :w | w resume ].
+            Smalltalk at: #SmalltalkCI ].
     smalltalkCI test: '$(resolve_path "${config_ston}")'
   "
 }
