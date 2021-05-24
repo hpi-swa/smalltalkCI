@@ -1,10 +1,10 @@
 {
+	"class" : {
+		 },
 	"instance" : {
-		"setUpSqueakPackages:" : "GOC 10/3/2019 09:36",
-		"setUpPharo3And4Packages:" : "GOC 10/3/2019 11:30",
+		"baseline:" : "mml 5/24/2021 20:44",
 		"setUpGemStonePackages:" : "GOC 10/3/2019 09:36",
+		"setUpPharo3And4Packages:" : "GOC 10/3/2019 11:30",
 		"setUpPharo5AndGreaterPackages:" : "GOC 10/3/2019 11:30",
-		"baseline:" : "GOC 10/3/2019 11:30"
-	},
-	"class" : { }
-}
+		"setUpSqueak53AndLowerPackages:" : "mml 5/24/2021 21:03",
+		"setUpSqueak54AndGreaterPackages:" : "mml 5/24/2021 21:03" } }

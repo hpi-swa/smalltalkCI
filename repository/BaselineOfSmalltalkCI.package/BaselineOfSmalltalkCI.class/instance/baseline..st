@@ -15,7 +15,8 @@ baseline: spec
 				group: 'tests' with: #('SmalltalkCI-Tests');
 				yourself
 			].
-	self setUpSqueakPackages: spec.
+	self setUpSqueak53AndLowerPackages: spec.
+	self setUpSqueak54AndGreaterPackages: spec.
 	self setUpPharo3And4Packages: spec.
 	self setUpPharo5AndGreaterPackages: spec.
 	self setUpGemStonePackages: spec

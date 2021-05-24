@@ -1,5 +1,5 @@
 baseline
-setUpSqueakPackages: spec
+setUpSqueak53AndLowerPackages: spec
 
 	spec
 		for: #squeakCommon
@@ -10,7 +10,7 @@ setUpSqueakPackages: spec
 				yourself
 			].
 	spec
-		for: #squeak
+		for: #('squeak4.x' 'squeak5.0.x' 'squeak5.1.x' 'squeak5.2.x' 'squeak5.3.x')
 		do: [ spec
 				package: 'STON-Core';
 				package: 'STON-Tests';
