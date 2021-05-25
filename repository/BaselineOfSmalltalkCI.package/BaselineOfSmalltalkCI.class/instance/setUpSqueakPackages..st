@@ -12,7 +12,10 @@ setUpSqueakPackages: spec
 	spec
 		for: #squeak
 		do: [ spec
-				baseline: 'Ston' with: [ spec repository: 'github://squeak-smalltalk/squeak-ston:squeak/repository'];
+				baseline: 'Ston' with: [
+					spec
+						repository: 'github://squeak-smalltalk/squeak-ston:squeak/repository';
+						loads: 'Core'];
 
 				package: 'SmalltalkCI-Core'
 					with: [ spec
