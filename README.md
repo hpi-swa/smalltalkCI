@@ -164,11 +164,12 @@ smalltalk:
 ### `appveyor.yml` Template
 
 ```yml
+# This is a 64-bit environment, so use 64-bit Cygwin
 environment:
-  CYG_ROOT: C:\cygwin
-  CYG_BASH: C:\cygwin\bin\bash
-  CYG_CACHE: C:\cygwin\var\cache\setup
-  CYG_EXE: C:\cygwin\setup-x86.exe
+  CYG_ROOT: C:\cygwin64
+  CYG_BASH: C:\cygwin64\bin\bash
+  CYG_CACHE: C:\cygwin64\var\cache\setup
+  CYG_EXE: C:\cygwin64\setup-x86_64.exe
   CYG_MIRROR: http://cygwin.mirror.constant.com
   SCI_RUN: /cygdrive/c/smalltalkCI-master/bin/smalltalkci
   matrix:
