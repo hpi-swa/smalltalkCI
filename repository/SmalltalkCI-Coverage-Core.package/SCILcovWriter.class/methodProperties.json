@@ -1,0 +1,18 @@
+{
+	"instance" : {
+		"lcovResultFilename" : "smalltalkCI 8/31/2020 12:36",
+		"writeLines:" : "smalltalkCI 8/28/2020 17:17",
+		"lineEnding" : "smalltalkCI 8/28/2020 17:15",
+		"writeLineDataByFiles:" : "smalltalkCI 8/28/2020 16:56",
+		"projectDirectory" : "smalltalkCI 8/28/2020 16:50",
+		"exportCoverallsData:" : "smalltalkCI 5/27/2021 21:43",
+		"projectDirectory:" : "smalltalkCI 8/28/2020 16:50",
+		"stream:" : "smalltalkCI 8/28/2020 15:30",
+		"stream" : "smalltalkCI 8/28/2020 15:29",
+		"export:in:" : "smalltalkCI 5/27/2021 21:43",
+		"writeLineDataForFile:" : "smalltalkCI 8/28/2020 17:16"
+	},
+	"class" : {
+		"coverageFormat" : "smalltalkCI 8/28/2020 14:14"
+	}
+}

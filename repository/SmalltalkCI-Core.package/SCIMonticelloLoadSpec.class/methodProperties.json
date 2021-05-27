@@ -1,0 +1,27 @@
+{
+	"instance" : {
+		"repository" : "fn 6/9/2016 15:21",
+		"addLoadedClassesFrom:" : "fn 6/21/2016 23:42",
+		"isComplete" : "fn 6/9/2016 15:21",
+		"versionNumberOf:" : "fn 6/9/2016 12:52",
+		"basicLoadProjectOn:" : "fn 6/9/2016 11:51",
+		"loadedClasses:" : "fn 6/9/2016 09:39",
+		"url" : "fn 6/9/2016 09:06",
+		"user" : "ct 3/25/2021 14:31",
+		"versions" : "fn 6/9/2016 10:23",
+		"packages" : "fn 6/9/2016 10:24",
+		"versions:" : "fn 6/9/2016 08:57",
+		"extractVersionsFromPackages:" : "fn 6/13/2016 09:29",
+		"loadVersion:repository:" : "fn 6/13/2016 09:29",
+		"password" : "ct 3/25/2021 14:31",
+		"loadVersions:" : "fn 6/9/2016 09:23",
+		"packages:" : "fn 6/9/2016 08:57",
+		"url:" : "fn 6/9/2016 09:06",
+		"loadedClasses" : "fn 6/9/2016 09:51"
+	},
+	"class" : {
+		"new" : "fn 6/13/2016 09:30",
+		"platformClass" : "fn 10/2/2018 09:16",
+		"isPlatformCompatible" : "fn 6/13/2016 09:20"
+	}
+}

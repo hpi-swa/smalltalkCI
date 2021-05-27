@@ -1,0 +1,11 @@
+{
+	"instance" : {
+		"allClassesToCover" : ""
+	},
+	"class" : {
+		"md5Of:" : "",
+		"packageNameForClass:" : "",
+		"methodReferenceFor:selector:" : "",
+		"linesOf:" : ""
+	}
+}
