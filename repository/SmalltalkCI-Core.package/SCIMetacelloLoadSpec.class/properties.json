@@ -1,10 +1,10 @@
 {
-	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
+	"super" : "SCIAbstractLoadSpecWithCredentials",
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
 	"instvars" : [
 		"baseline",
 		"configuration",
@@ -17,9 +17,8 @@
 		"repository",
 		"version",
 		"useLatestMetacello",
-		"ignoreImage" ],
+		"ignoreImage"
+	],
 	"name" : "SCIMetacelloLoadSpec",
-	"pools" : [
-		 ],
-	"super" : "SCIAbstractLoadSpecWithCredentials",
-	"type" : "normal" }
+	"type" : "normal"
+}

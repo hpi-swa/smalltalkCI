@@ -1,3 +1,3 @@
 constants
 skipExceptions
-	^ ExceptionSet new, TestSkip
+	^ ExceptionSet new, (Smalltalk at: #TestSkip)

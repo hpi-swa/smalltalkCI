@@ -2,6 +2,6 @@ class organization
 classesWithCategoryNames: categoryNames
 	| classes |
 	classes := Set new.
-	categoryNames do: [ :name |
-		classes addAll: (self classesInCategory: name) ].
+	categoryNames do: [ :eachName |
+		classes addAll: (self classesInCategory: eachName) ].
 	^ classes
