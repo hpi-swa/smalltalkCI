@@ -1,14 +1,15 @@
 {
-	"commentStamp" : "",
-	"super" : "SCICoverageWriter",
 	"category" : "SmalltalkCI-Coverage-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
 	"instvars" : [
 		"stream",
-		"projectDirectory"
-	],
+		"projectDirectory" ],
 	"name" : "SCILcovWriter",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "SCICoverageWriter",
+	"type" : "normal" }

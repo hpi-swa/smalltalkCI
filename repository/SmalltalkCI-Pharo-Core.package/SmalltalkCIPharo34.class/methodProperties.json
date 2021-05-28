@@ -1,7 +1,6 @@
 {
-	"instance" : { },
 	"class" : {
-		"isPlatformCompatible" : "GOC 10/3/2019 12:14",
-		"codeCoverageClass" : "smalltalkCI 5/27/2021 21:52"
-	}
-}
+		"codeCoverageClass" : "GOC 10/3/2019 12:29",
+		"isPlatformCompatible" : "GOC 10/3/2019 12:14" },
+	"instance" : {
+		 } }

@@ -1,8 +1,5 @@
 {
-	"instance" : {
-		"fileInFrom:" : "fn 11/1/2017 14:05"
-	},
 	"class" : {
-		"isPlatformCompatible" : "fn 11/1/2017 11:43"
-	}
-}
+		"isPlatformCompatible" : "fn 11/1/2017 11:43" },
+	"instance" : {
+		"fileInFrom:" : "fn 11/1/2017 14:05" } }
