@@ -1,10 +1,9 @@
 accessing
 testError
 
-	self passedUnexpectedly
-		ifTrue: [ | error |
-			error := TestFailure new.
-			error messageText: 'Test passed unexpectedly'.
-			^ error ].
+	self passedUnexpectedly ifTrue: [ 
+		^ TestFailure new
+			messageText: 'Test passed unexpectedly';
+			yourself ].
 
 	^ testError
