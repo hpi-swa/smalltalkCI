@@ -9,8 +9,7 @@
 		"TravisID" ],
 	"commentStamp" : "",
 	"instvars" : [
-		"projectDirectory",
-		"coverageWrappers" ],
+		"projectDirectory" ],
 	"name" : "SmalltalkCI",
 	"pools" : [
 		 ],
