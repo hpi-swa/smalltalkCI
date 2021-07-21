@@ -28,6 +28,7 @@ jobs:
           - Squeak32-4.5
           - Pharo64-stable
           - Pharo64-alpha
+          - Pharo64-10
           - Pharo64-9.0
           - Pharo64-8.0
           - Pharo64-7.0
