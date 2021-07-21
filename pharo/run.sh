@@ -21,6 +21,9 @@ pharo::get_image_url() {
     "Pharo64-stable")
       echo "get.pharo.org/64/stable"
       ;;
+    "Pharo64-10")
+      echo "get.pharo.org/64/100"
+      ;;
     "Pharo64-9.0")
       echo "get.pharo.org/64/90"
       ;;
@@ -42,6 +45,9 @@ pharo::get_image_url() {
     "Pharo32-stable"|"Pharo-stable")
       echo "get.pharo.org/stable"
       ;;
+    "Pharo32-10")
+        echo "get.pharo.org/32/100"
+        ;;
     "Pharo32-9.0")
         echo "get.pharo.org/32/90"
         ;;
@@ -126,6 +132,9 @@ pharo::get_vm_url() {
     # NOTE: vmLatestXX should be updated every time new Pharo is released
     "Pharo64-alpha")
       echo "get.pharo.org/64/vmLatest90"
+      ;;
+    "Pharo64-10")
+      echo "get.pharo.org/64/vm100"
       ;;
     "Pharo64-9.0"|"Moose64-9.0"|"Moose64-trunk")
       echo "get.pharo.org/64/vm90"
