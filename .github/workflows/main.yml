@@ -52,6 +52,8 @@ jobs:
           - os: macos-latest
             smalltalk: Pharo32-3.0
           - os: windows-latest
+            smalltalk: Pharo64-10
+          - os: windows-latest
             smalltalk: Pharo64-6.0
         include:
           - os: ubuntu-16.04
