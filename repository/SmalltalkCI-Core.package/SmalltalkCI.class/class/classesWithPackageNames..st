@@ -2,6 +2,6 @@ class organization
 classesWithPackageNames: packageNames
 	| classes |
 	classes := Set new.
-	packageNames do: [ :name |
-		classes addAll: (self classesInPackage: name) ].
+	packageNames do: [ :eachName |
+		classes addAll: (self classesInPackage: eachName) ].
 	^ classes

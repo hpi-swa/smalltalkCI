@@ -7,13 +7,11 @@
 	"commentStamp" : "",
 	"instvars" : [
 		"url",
-		"user",
-		"password",
 		"packages",
 		"versions",
 		"loadedClasses" ],
 	"name" : "SCIGoferLoadSpec",
 	"pools" : [
 		 ],
-	"super" : "SCIAbstractLoadSpec",
+	"super" : "SCIAbstractLoadSpecWithCredentials",
 	"type" : "normal" }

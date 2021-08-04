@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "",
+	"super" : "TestSuite",
+	"category" : "SmalltalkCI-Pharo-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [
+		"Counter"
+	],
+	"instvars" : [ ],
+	"name" : "SCIDummyTestSuite",
+	"type" : "normal"
+}

@@ -91,8 +91,8 @@ squeak::download_prepared_image() {
 squeak::download_trunk_image() {
   local target
   local download_name
-  local git_tag="v2.9.2" # 32bit/64bit are kept in sync
-  local update_level="19536" # 32bit/64bit are kept in sync
+  local git_tag="v2.9.6" # 32bit/64bit are kept in sync
+  local update_level="20447" # 32bit/64bit are kept in sync
 
   if is_64bit; then
     download_name="Squeak64-trunk-${update_level}.tar.gz"
@@ -153,8 +153,8 @@ squeak::get_vm_details() {
   local vm_path_linux_suffix="ht"
 
   if is_trunk_build; then
-    git_tag="v2.9.1"
-    osvm_version="202003021730"
+    git_tag="v2.9.6"
+    osvm_version="202101260417"
   else 
     case "${smalltalk_name}" in
       "Squeak64-5.3")
@@ -316,7 +316,8 @@ squeak::load_project() {
     load ] on: Warning do: [:w | w resume ].
   smalltalkCI := Smalltalk at: #SmalltalkCI.
   smalltalkCI load: '$(resolve_path "${config_ston}")'.
-  smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
+  (smalltalkCI isHeadless or: [smalltalkCI promptToProceed])
+      ifTrue: [ smalltalkCI saveAndQuitImage ]
 EOL
 
   squeak::run_script "load.st"

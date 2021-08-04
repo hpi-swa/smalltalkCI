@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Tests",
+	"classinstvars" : [
+		"envVars" ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "ct 11/7/2020 18:57",
+	"instvars" : [
+		 ],
+	"name" : "SCIMockSmalltalkCI",
+	"pools" : [
+		 ],
+	"super" : "SCIObjectWithSpec",
+	"type" : "normal" }

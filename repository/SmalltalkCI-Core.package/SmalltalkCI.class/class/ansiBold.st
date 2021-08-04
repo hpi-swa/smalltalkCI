@@ -1,3 +1,5 @@
 ansi
 ansiBold
-	^ self escape, '[1m'
+	^ self isColorful
+		ifTrue: [ self escape, '[1m' ]
+		ifFalse: [ '' ]

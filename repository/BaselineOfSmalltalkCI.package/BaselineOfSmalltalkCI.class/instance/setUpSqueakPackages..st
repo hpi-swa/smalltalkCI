@@ -12,15 +12,18 @@ setUpSqueakPackages: spec
 	spec
 		for: #squeak
 		do: [ spec
-				package: 'STON-Core';
-				package: 'STON-Tests';
+				baseline: 'Ston' with: [
+					spec
+						repository: 'github://squeak-smalltalk/squeak-ston:squeak/repository';
+						loads: 'Core'];
+
 				package: 'SmalltalkCI-Core'
 					with: [ spec
-						requires: #('STON-Core');
+						requires: #('Ston');
 						includes: #('SmalltalkCI-Squeak-Core')
 					];
 				package: 'SmalltalkCI-Squeak-Core'
 					with: [ spec requires: #('SmalltalkCI-Core' 'SmalltalkCI-Coverage-Core') ];
 				package: 'SmalltalkCI-Squeak-Tests' with: [ spec requires: #('SmalltalkCI-Squeak-Core') ].
-			spec group: 'tests' with: #('SmalltalkCI-Squeak-Tests' 'SmalltalkCI-Coverage-Tests' 'STON-Tests')
+			spec group: 'tests' with: #('SmalltalkCI-Squeak-Tests' 'SmalltalkCI-Coverage-Tests')
 			]
