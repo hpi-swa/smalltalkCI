@@ -31,8 +31,10 @@ gemstone::prepare_gsdevkit_home() {
 
         cp ${GS_HOME}/tests/sys/local/gsdevkit_bin/* ${GS_HOME}/sys/local/gsdevkit_bin
 
-        # Operating system setup already performed
-        touch ${GS_HOME}/bin/.gsdevkitSysSetup
+        if is_travis_build; then
+          # Operating system setup already performed on Travis CI
+          touch ${GS_HOME}/bin/.gsdevkitSysSetup
+        fi
 
         # Make sure the GsDevKit_home is using $SMALLTALK_CI_HOME in $GS_HOME/shared/repos
         ln -s ${SMALLTALK_CI_HOME} ${GS_HOME}/shared/repos/smalltalkCI

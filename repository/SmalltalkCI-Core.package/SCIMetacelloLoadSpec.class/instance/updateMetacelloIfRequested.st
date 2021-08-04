@@ -1,3 +1,4 @@
 private
 updateMetacelloIfRequested
-	self useLatestMetacello ifTrue: [ self class updateMetacello ]
+	(self useLatestMetacello or: [ self requiresLatestMetacello ])
+		ifTrue: [ self class updateMetacello ]

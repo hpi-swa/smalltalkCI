@@ -8,6 +8,8 @@ readonly GITHUB_API="https://api.github.com"
 readonly COVERALLS_API="https://coveralls.io/api/v1/jobs"
 readonly COVERALLS_OPTIONAL_KEYS="flag_name parallel repo_token service_job_id
   service_job_number service_name service_number service_pull_request"
+readonly JQ_BASE_URL="https://github.com/stedolan/jq/releases/download/jq-1.6"
+jq_binary=""
 
 readonly ANSI_BOLD="\033[1m"
 readonly ANSI_RED="\033[31m"
@@ -18,19 +20,35 @@ readonly ANSI_RESET="\033[0m"
 readonly ANSI_CLEAR="\033[0K"
 
 print_info() {
-  printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
+  if is_colorful; then
+    printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
+  else
+    echo "$1"
+  fi
 }
 
 print_notice() {
-  printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
+  if is_colorful; then
+   printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
+  else
+    echo "$1"
+  fi
 }
 
 print_success() {
-  printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
+  if is_colorful; then
+   printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
+  else
+    echo "$1"
+  fi
 }
 
 print_error() {
-  printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
+  if is_colorful; then
+   printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
+  else
+    echo "$1"
+  fi
 }
 
 print_error_and_exit() {
@@ -51,6 +69,8 @@ print_help() {
     --headful           Open vm in headful mode and do not close image.
     --image             Custom image for build (Squeak/Pharo).
     --install           Install symlink to this smalltalkCI instance.
+    --print-env         Print all environment variables used by smalltalkCI
+    --no-color          Disable colored output
     --no-tracking       Disable collection of anonymous build metrics (TravisCI & AppVeyor only).
     -s | --smalltalk    Overwrite Smalltalk image selection.
     --uninstall         Remove symlink to any smalltalkCI instance.
@@ -93,6 +113,14 @@ print_config() {
   done
 }
 
+print_env() {
+  env | grep "SMALLTALK_CI_"
+}
+
+is_colorful() {
+  [[ "${config_colorful:-true}" == "true" ]]
+}
+
 is_empty() {
   local var=$1
 
@@ -130,9 +158,7 @@ is_int() {
 }
 
 program_exists() {
-  local program=$1
-
-  [[ $(command -v "${program}" 2> /dev/null) ]]
+  command -v "$1" &> /dev/null
 }
 
 is_travis_build() {
@@ -214,6 +240,10 @@ is_spur_image() {
 
 is_headless() {
   [[ "${config_headless}" = "true" ]]
+}
+
+starts_with() {
+  [[ "$1" == "$2"* ]]
 }
 
 ston_includes_loading() {
@@ -298,11 +328,11 @@ download_file() {
 
   if program_exists "curl"; then
     curl --fail --silent --show-error --location \
-      --retry 3 --retry-delay 5 --max-time 30 \
+      --retry 3 --retry-delay 5 --max-time 300 \
       -o "${target}" "${url}" || print_error_and_exit \
         "curl failed to download ${url} to '${target}'."
   elif program_exists "wget"; then
-    wget -t 3 --retry-connrefused --waitretry=5 --read-timeout=20 --timeout=15 \
+    wget -t 3 --retry-connrefused --waitretry=5 --read-timeout=20 --timeout=300 \
       --no-dns-cache -q -O "${target}" "${url}" || print_error_and_exit \
         "wget failed to download ${url} to '${target}'."
   else
@@ -350,13 +380,40 @@ to_lowercase() {
   echo $1 | tr "[:upper:]" "[:lower:]"
 }
 
+ensure_jq_binary() {
+  if ! is_empty "${jq_binary}"; then
+    return 0
+  elif program_exists "jq"; then
+    jq_binary="jq"
+    return 0
+  fi
+  jq_binary="${SMALLTALK_CI_HOME}/bin/jq"
+  if ! is_file "${jq_binary}"; then
+    case "$(uname -s)" in
+      "Linux")
+        download_file "${JQ_BASE_URL}/jq-linux64" "${jq_binary}"
+        chmod +x "${jq_binary}"
+        ;;
+      "Darwin")
+        download_file "${JQ_BASE_URL}/jq-osx-amd64" "${jq_binary}"
+        chmod +x "${jq_binary}"
+        ;;
+      "CYGWIN_NT-"*|"MINGW64_NT-"*)
+        download_file "${JQ_BASE_URL}/jq-win64.exe" "${jq_binary}"
+        chmod +x "${jq_binary}"
+        ;;
+      *)
+        print_error_and_exit "Unsupported platform '$(uname -s)'."
+        ;;
+    esac
+  fi
+}
+
 git_log() {
   local format_value=$1
   local output
-  output=$(git --no-pager log -1 --pretty=format:"${format_value}")
-  echo "${output//\"/\\\"}" # Escape double quotes
+  echo "$(git --no-pager log -1 --pretty=format:"${format_value}" | "${jq_binary}" -Rs .)"
 }
-
 
 export_coveralls_data() {
   local branch_name="unknown"
@@ -425,18 +482,20 @@ export_coveralls_data() {
     fi
   done
 
+  ensure_jq_binary # required for git_log
+
   cat >"${SMALLTALK_CI_BUILD}/coveralls_build_data.json" <<EOL
 {
   ${optional_values}
   "git": {
     "branch": "${branch_name}",
     "head": {
-      "author_email": "$(git_log "%ae")",
-      "author_name": "$(git_log "%aN")",
-      "committer_email": "$(git_log "%ce")",
-      "committer_name": "$(git_log "%cN")",
-      "id": "$(git_log "%H")",
-      "message": "$(git_log "%s")"
+      "author_email": $(git_log "%ae"),
+      "author_name": $(git_log "%aN"),
+      "committer_email": $(git_log "%ce"),
+      "committer_name": $(git_log "%cN"),
+      "id": $(git_log "%H"),
+      "message": $(git_log "%s")
     },
     "remotes": [
       {
@@ -669,7 +728,11 @@ travis_jigger() {
     sleep 60
   done
 
-  echo -e "\n${ANSI_BOLD}${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
+  if is_colorful; then
+    echo -e "\n${ANSI_BOLD}${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
+  else
+    echo -e "\nTimeout (${timeout} minutes) reached. Terminating \"$@\"\n"
+  fi
   kill -9 $cmd_pid
 }
 
@@ -684,7 +747,11 @@ fold_start() {
     echo -en "travis_fold:start:${prefix}${identifier}\r${ANSI_CLEAR}"
     echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
   fi
-  echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
+  if is_colorful; then
+    echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
+  else
+    echo -e "${title}"
+  fi
 }
 
 fold_end() {
@@ -698,6 +765,10 @@ fold_end() {
     echo -en "travis_fold:end:${prefix}${identifier}\r${ANSI_CLEAR}"
   else
     duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
-    printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
+    if is_colorful; then
+      printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss${ANSI_RESET}\n" "${duration}"
+    else
+      printf " > Time to run: %ss\n" "${duration}"
+    fi
   fi
 }

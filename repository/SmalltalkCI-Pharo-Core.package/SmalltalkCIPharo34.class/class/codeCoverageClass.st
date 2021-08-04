@@ -1,4 +1,4 @@
 compatibility
 codeCoverageClass
 
-	^ SCIPharo34CodeCoverage
+	^ Smalltalk at: #SCIPharo34CodeCoverage

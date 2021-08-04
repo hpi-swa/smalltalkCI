@@ -1,4 +1,4 @@
 testing
 testSkip
-	TestSkip signal.
+	self skip.
 	self fail: 'Test should have been skipped'
