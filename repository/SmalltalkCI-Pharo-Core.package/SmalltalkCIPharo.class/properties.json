@@ -1,14 +1,15 @@
 {
-	"category" : "SmalltalkCI-Pharo-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		"StdOut" ],
 	"commentStamp" : "",
-	"instvars" : [
-		"suiteName" ],
-	"name" : "SmalltalkCIPharo",
-	"pools" : [
-		 ],
 	"super" : "SmalltalkCI",
-	"type" : "normal" }
+	"category" : "SmalltalkCI-Pharo-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [
+		"StdOut"
+	],
+	"instvars" : [
+		"suiteName"
+	],
+	"name" : "SmalltalkCIPharo",
+	"type" : "normal"
+}
