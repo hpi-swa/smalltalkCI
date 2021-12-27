@@ -641,23 +641,23 @@ timer_nanoseconds() {
     format="+%s000000000" # fallback to second precision on darwin (does not support %N)
   fi
 
-  $cmd -u $format
+  "$cmd" -u $format
 }
 
 travis_wait() {
   local timeout="${SMALLTALK_CI_TIMEOUT:-}"
 
-  local cmd="$@"
+  local cmd=( "$@" )
 
   if ! is_int "${timeout}"; then
-    $cmd
+    "${cmd[@]}"
     return $?
   fi
 
-  $cmd &
+  "${cmd[@]}" &
   local cmd_pid=$!
 
-  travis_jigger $! $timeout $cmd &
+  travis_jigger $! "$timeout" "${cmd[@]}" &
   local jigger_pid=$!
   local result
 
@@ -668,7 +668,7 @@ travis_wait() {
   }
 
   if [ $result -ne 0 ]; then
-    print_error_and_exit "The command $cmd exited with $result."
+    print_error_and_exit "The command ${cmd[*]} exited with $result."
   fi
 
   return $result
