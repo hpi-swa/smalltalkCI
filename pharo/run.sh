@@ -109,7 +109,7 @@ moose::get_image_url() {
       echo "https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-old-stable-Pharo64-8.0.zip"
       ;;
     "Moose64-9"*)
-      echo "https://github.com/moosetechnology/Moose/releases/download/v9.0.0/Moose9-stable-Pharo64-9.0.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/v9.x.x/Moose9-stable-Pharo64-9.0.zip"
       ;;
     "Moose64-10"*)
       echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose10-development-Pharo64-10.zip"
