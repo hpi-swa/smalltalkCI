@@ -18,7 +18,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        os: [ ubuntu-latest, macos-latest, windows-2019 ]
         smalltalk:
           - Squeak64-trunk
           - Squeak64-5.3
@@ -51,9 +51,9 @@ jobs:
             smalltalk: Pharo32-alpha
           - os: macos-latest
             smalltalk: Pharo32-3.0
-          - os: windows-latest
+          - os: windows-2019
             smalltalk: Pharo64-10
-          - os: windows-latest
+          - os: windows-2019
             smalltalk: Pharo64-6.0
         include:
           - os: ubuntu-18.04
