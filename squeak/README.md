@@ -3,6 +3,8 @@
 *For 64/32-bit trunk images with update level 20447 or higher.*
 
 ```smalltalk
+"Close wizard."
+PreferenceWizardMorph allInstancesDo: [:ea | ea abandon].
 "Ensure Metacello is loaded."
 Metacello new.
 "Ensure Tonel is loaded."
