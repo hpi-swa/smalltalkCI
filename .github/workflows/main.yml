@@ -18,7 +18,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        os: [ ubuntu-latest, macos-latest, windows-2019 ]
         smalltalk:
           - Squeak64-trunk
           - Squeak64-5.3
@@ -37,9 +37,9 @@ jobs:
           - Pharo32-stable
           - Pharo32-alpha
           - Pharo32-3.0
+          - Moose64-10
           - Moose64-9.0
           - Moose64-8.0
-          - Moose64-7.0
         exclude: # exclude 32bit builds on macOS
           - os: macos-latest
             smalltalk: Squeak32-trunk
@@ -51,12 +51,12 @@ jobs:
             smalltalk: Pharo32-alpha
           - os: macos-latest
             smalltalk: Pharo32-3.0
-          - os: windows-latest
+          - os: windows-2019
             smalltalk: Pharo64-10
-          - os: windows-latest
+          - os: windows-2019
             smalltalk: Pharo64-6.0
         include:
-          - os: ubuntu-16.04
+          - os: ubuntu-18.04
             smalltalk: GemStone64-3.5.0
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
