@@ -164,7 +164,7 @@ pharo::get_vm_url() {
       echo "get.pharo.org/64/vm60"
       ;;
     "Pharo32-alpha"|"Pharo-alpha")
-      echo "get.pharo.org/vmLatest100"
+      echo "get.pharo.org/vmLatest110"
       ;;
     "Pharo-stable"|"Pharo32-stable")
       echo "get.pharo.org/vm100"
