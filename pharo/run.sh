@@ -148,7 +148,7 @@ pharo::get_vm_url() {
     "Pharo64-10"|"Moose64-10"|"Moose64-trunk")
       echo "get.pharo.org/64/vm100"
       ;;
-    "Pharo-stable"|"Pharo32-stable"|"Pharo64-9.0"|"Moose64-9.0")
+    "Pharo64-9.0"|"Moose64-9.0")
       echo "get.pharo.org/vm90"
       ;;
     "Pharo64-8.0"|"Moose64-8.0")
@@ -165,6 +165,9 @@ pharo::get_vm_url() {
       ;;
     "Pharo32-alpha"|"Pharo-alpha")
       echo "get.pharo.org/vmLatest100"
+      ;;
+    "Pharo-stable"|"Pharo32-stable")
+      echo "get.pharo.org/vm100"
       ;;
     "Pharo32-11")
       echo "get.pharo.org/vm110"
