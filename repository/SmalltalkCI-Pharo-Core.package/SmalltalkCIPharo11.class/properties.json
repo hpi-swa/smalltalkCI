@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Pharo-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SmalltalkCIPharo11",
+	"pools" : [
+		 ],
+	"super" : "SmalltalkCIPharo9",
+	"type" : "normal" }
