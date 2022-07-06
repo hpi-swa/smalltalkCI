@@ -14,6 +14,10 @@ squeak::download_image() {
   local git_tag
 
   case "${smalltalk_name}" in
+    "Squeak64-6.0")
+      download_name="Squeak64-6.0-22104.tar.gz"
+      git_tag="v3.0.0"
+      ;;
     "Squeak64-5.3")
       download_name="Squeak64-5.3-19438.tar.gz"
       git_tag="v2.9.4"
@@ -25,6 +29,10 @@ squeak::download_image() {
     "Squeak64-5.1")
       download_name="Squeak64-5.1-16555.tar.gz"
       git_tag="v2.9.4"
+      ;;
+    "Squeak32-6.0")
+      download_name="Squeak32-6.0-22104.tar.gz"
+      git_tag="v3.0.0"
       ;;
     "Squeak32-5.3")
       download_name="Squeak32-5.3-19438.tar.gz"
@@ -157,6 +165,10 @@ squeak::get_vm_details() {
     osvm_version="202206021410"
   else 
     case "${smalltalk_name}" in
+      "Squeak32-6.0"|"Squeak64-6.0")
+        git_tag="v2.9.9"
+        osvm_version="202206021410"
+        ;;
       "Squeak64-5.3")
         git_tag="v2.9.1"
         osvm_version="202003021730"
