@@ -158,6 +158,7 @@ squeak::get_vm_details() {
   local vm_file_ext
   local vm_filename
   local vm_path
+  local vm_path_linux_name=""
   local vm_path_linux_suffix="ht"
 
   if is_trunk_build; then
@@ -192,13 +193,18 @@ squeak::get_vm_details() {
       vm_file_ext="tar.gz"
       if [[ "${require_spur}" -eq 1 ]]; then
         if is_64bit; then
-          vm_path="${config_vm_dir}/sqcogspur64linux${vm_path_linux_suffix}/squeak"
+          vm_path_linux_name="sqcogspur64linux"
         else
-          vm_path="${config_vm_dir}/sqcogspurlinux${vm_path_linux_suffix}/squeak"
+          if [[ "${osvm_version}" -ge "202206021410" ]]; then
+            vm_path_linux_name="sqcogspur32linux"
+          else
+            vm_path_linux_name="sqcogspurlinux"
+          fi
         fi
       else
-        vm_path="${config_vm_dir}/sqcoglinux${vm_path_linux_suffix}/squeak"
+        vm_path_linux_name="sqcoglinux"
       fi
+      vm_path="${config_vm_dir}/${vm_path_linux_name}${vm_path_linux_suffix}/squeak"
       ;;
     "Darwin")
       if is_64bit; then
