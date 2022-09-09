@@ -1,4 +1,4 @@
-testing
+tests
 testLcovEndToEnd
 	| fileContents projDir |
 	self platformSupportsCoverageTesting ifFalse: [ ^ self ].

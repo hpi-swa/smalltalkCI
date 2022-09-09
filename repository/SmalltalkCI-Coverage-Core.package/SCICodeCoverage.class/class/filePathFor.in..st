@@ -1,16 +1,22 @@
 helpers
-filePathFor: aMethodReference in: aDirectoryName 
-	"Generates the filename for the file where the method related to aCompiledMethod is specified in.
-	aDirectoryName (a String) states the subfolder in the projectDirectory where the method comes from."
-	| method class package instanceOrClass |
-	method := aMethodReference selector.
+filePathFor: aMethodReference in: directoryName
+	"Generates the filename for the file where the method related to aMethodReference is specified in.
+	directoryName (a String) states the subfolder in the projectDirectory where the method comes from."
+	| selector class package behaviorType instanceOrClass |
+	selector := aMethodReference selector.
 	class := aMethodReference actualClass.
-	class isMeta
-		ifTrue: [ instanceOrClass := 'class' ]
-		ifFalse: [ instanceOrClass := 'instance' ].
-	package := self packageNameForClass: class.
-	^ aDirectoryName, SmalltalkCI pathNameDelimiter,
+	package := self packageNameForMethod: aMethodReference.
+	behaviorType := (self packageNameForClass: class) = package
+		ifFalse: ['extension']
+		ifTrue:
+			[class isTrait
+				ifTrue: ['trait']
+				ifFalse: ['class']].
+	instanceOrClass := class isMeta
+		ifTrue: ['class']
+		ifFalse: ['instance'].
+	^ directoryName, SmalltalkCI pathNameDelimiter,
 		package, '.package', SmalltalkCI pathNameDelimiter,
-		class name, '.class', SmalltalkCI pathNameDelimiter,
+		class instanceSide name, '.', behaviorType , SmalltalkCI pathNameDelimiter,
 		instanceOrClass, SmalltalkCI pathNameDelimiter,
-		(method asString replaceAll: $: with: $.), '.st'
+		(self fileNameForSelector: selector), '.st'

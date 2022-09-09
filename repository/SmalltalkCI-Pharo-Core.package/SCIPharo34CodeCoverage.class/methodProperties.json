@@ -3,6 +3,7 @@
 		"linesOf:" : "GOC 10/3/2019 12:33",
 		"md5Of:" : "GOC 10/3/2019 12:33",
 		"methodReferenceFor:selector:" : "GOC 10/3/2019 12:33",
-		"packageNameForClass:" : "GOC 10/3/2019 12:33" },
+		"packageNameForClass:" : "GOC 10/3/2019 12:33",
+		"packageNameForMethod:" : "ct 9/10/2022 00:28" },
 	"instance" : {
 		"allClassesToCover" : "GOC 10/3/2019 12:33" } }
