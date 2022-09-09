@@ -1,4 +1,4 @@
-testing
+tests
 testEndToEnd
 	| block coverage |
 	self platformSupportsCoverageTesting ifFalse: [ ^ self ].
