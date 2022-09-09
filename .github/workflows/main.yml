@@ -13,6 +13,7 @@ on:
       - 'docs/**'
       - '.appveyor.yml'
       - '.travis.yml'
+  workflow_dispatch:
 
 jobs:
   build:
