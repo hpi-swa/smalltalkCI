@@ -378,9 +378,7 @@ run_build() {
   if ! vm_is_user_provided; then
     squeak::prepare_vm
   fi
-  if is_trunk_build || image_is_user_provided; then
-    squeak::prepare_image
-  fi
+  squeak::prepare_image
   if ston_includes_loading; then
     squeak::load_project
     check_and_consume_build_status_file
