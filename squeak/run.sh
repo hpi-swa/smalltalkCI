@@ -122,7 +122,7 @@ squeak::download_trunk_image() {
 }
 
 ################################################################################
-# Ensure Metacello is installed and image is up-to-date.
+# Ensure the image is up-to-date.
 ################################################################################
 squeak::prepare_image() {
   local status=0
