@@ -72,15 +72,17 @@ they can take up a lot of space on your drive.*
 | [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  |
 | ---------------- | ---------------- | -------------------- | --------------- |
 | `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.5.x`   | `Moose64-trunk` |
-| `Squeak64-5.3`   | `Pharo64-stable` | `GemStone64-3.4.x`   | `Moose64-9.0`   | 
-| `Squeak64-5.2`   | `Pharo64-10`     | `GemStone64-3.3.x`   | `Moose64-8.0`   |
-| `Squeak64-5.1`   | `Pharo64-9.0`    | `GemStone64-3.2.x`   | `Moose64-7.0`   |
-| `Squeak64-trunk` | `Pharo64-8.0`    | `GemStone64-3.1.0.x` | `Moose64-trunk` |
-| `Squeak32-5.3`   | `Pharo64-7.0`    | `Gemstone64-2.4.x`   | `Moose32-6.1`   |
-| `Squeak32-5.2`   | `Pharo64-6.1`    |                      | `Moose32-6.0`   |
-| `Squeak32-5.1`   | `Pharo64-6.0`    |                      |                 |
-| `Squeak32-5.0`   | `Pharo32-alpha`  |                      |                 |
-| `Squeak32-4.6`   | `Pharo32-stable` |                      |                 |
+| `Squeak64-6.0`   | `Pharo64-stable` | `GemStone64-3.4.x`   | `Moose64-10`    | 
+| `Squeak64-5.3`   | `Pharo64-11`     | `GemStone64-3.3.x`   | `Moose64-9.0`   |
+| `Squeak64-5.2`   | `Pharo64-10`     | `GemStone64-3.2.x`   | `Moose64-8.0`   |
+| `Squeak64-5.1`   | `Pharo64-9.0`    | `GemStone64-3.1.0.x` | `Moose64-7.0`   |
+| `Squeak32-trunk` | `Pharo64-8.0`    | `Gemstone64-2.4.x`   | `Moose32-trunk` |
+| `Squeak32-6.0`   | `Pharo64-7.0`    |                      | `Moose32-6.1`   |
+| `Squeak32-5.3`   | `Pharo64-6.1`    |                      | `Moose32-6.0`   |
+| `Squeak32-5.2`   | `Pharo32-6.0`    |                      |                 |
+| `Squeak32-5.1`   | `Pharo32-alpha`  |                      |                 |
+| `Squeak32-5.0`   | `Pharo32-stable` |                      |                 |
+| `Squeak32-4.6`   | `Pharo32-11`     |                      |                 |
 | `Squeak32-4.5`   | `Pharo32-10`     |                      |                 |
 |                  | `Pharo32-9.0`    |                      |                 |
 |                  | `Pharo32-8.0`    |                      |                 |

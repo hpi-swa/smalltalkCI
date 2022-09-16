@@ -14,6 +14,10 @@ squeak::download_image() {
   local git_tag
 
   case "${smalltalk_name}" in
+    "Squeak64-6.0")
+      download_name="Squeak64-6.0-22104.tar.gz"
+      git_tag="v3.0.0"
+      ;;
     "Squeak64-5.3")
       download_name="Squeak64-5.3-19438.tar.gz"
       git_tag="v2.9.4"
@@ -25,6 +29,10 @@ squeak::download_image() {
     "Squeak64-5.1")
       download_name="Squeak64-5.1-16555.tar.gz"
       git_tag="v2.9.4"
+      ;;
+    "Squeak32-6.0")
+      download_name="Squeak32-6.0-22104.tar.gz"
+      git_tag="v3.0.0"
       ;;
     "Squeak32-5.3")
       download_name="Squeak32-5.3-19438.tar.gz"
@@ -91,8 +99,8 @@ squeak::download_prepared_image() {
 squeak::download_trunk_image() {
   local target
   local download_name
-  local git_tag="v2.9.6" # 32bit/64bit are kept in sync
-  local update_level="20447" # 32bit/64bit are kept in sync
+  local git_tag="v2.9.8" # 32bit/64bit are kept in sync
+  local update_level="21469" # 32bit/64bit are kept in sync
 
   if is_64bit; then
     download_name="Squeak64-trunk-${update_level}.tar.gz"
@@ -150,13 +158,18 @@ squeak::get_vm_details() {
   local vm_file_ext
   local vm_filename
   local vm_path
+  local vm_path_linux_name=""
   local vm_path_linux_suffix="ht"
 
   if is_trunk_build; then
-    git_tag="v2.9.6"
-    osvm_version="202101260417"
+    git_tag="v2.9.9"
+    osvm_version="202206021410"
   else 
     case "${smalltalk_name}" in
+      "Squeak32-6.0"|"Squeak64-6.0")
+        git_tag="v2.9.9"
+        osvm_version="202206021410"
+        ;;
       "Squeak64-5.3")
         git_tag="v2.9.1"
         osvm_version="202003021730"
@@ -180,13 +193,18 @@ squeak::get_vm_details() {
       vm_file_ext="tar.gz"
       if [[ "${require_spur}" -eq 1 ]]; then
         if is_64bit; then
-          vm_path="${config_vm_dir}/sqcogspur64linux${vm_path_linux_suffix}/squeak"
+          vm_path_linux_name="sqcogspur64linux"
         else
-          vm_path="${config_vm_dir}/sqcogspurlinux${vm_path_linux_suffix}/squeak"
+          if [[ "${osvm_version}" -ge "202206021410" ]]; then
+            vm_path_linux_name="sqcogspur32linux"
+          else
+            vm_path_linux_name="sqcogspurlinux"
+          fi
         fi
       else
-        vm_path="${config_vm_dir}/sqcoglinux${vm_path_linux_suffix}/squeak"
+        vm_path_linux_name="sqcoglinux"
       fi
+      vm_path="${config_vm_dir}/${vm_path_linux_name}${vm_path_linux_suffix}/squeak"
       ;;
     "Darwin")
       if is_64bit; then

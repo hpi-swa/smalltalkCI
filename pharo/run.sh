@@ -21,6 +21,9 @@ pharo::get_image_url() {
     "Pharo64-stable")
       echo "get.pharo.org/64/stable"
       ;;
+    "Pharo64-11")
+      echo "get.pharo.org/64/110"
+      ;;
     "Pharo64-10")
       echo "get.pharo.org/64/100"
       ;;
@@ -45,6 +48,9 @@ pharo::get_image_url() {
     "Pharo32-stable"|"Pharo-stable")
       echo "get.pharo.org/stable"
       ;;
+    "Pharo32-11")
+        echo "get.pharo.org/32/110"
+        ;;
     "Pharo32-10")
         echo "get.pharo.org/32/100"
         ;;
@@ -91,7 +97,7 @@ moose::get_image_url() {
 
   case "${smalltalk_name}" in
     "Moose64-trunk"|"Moose-trunk")
-      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose9-development.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose10-development-Pharo64-10.zip"
       ;;
     "Moose32-trunk")
       moose_name="moose-7.0"
@@ -106,10 +112,13 @@ moose::get_image_url() {
       echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
       ;;
     "Moose64-8"*)
-      echo "https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-stable.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-old-stable-Pharo64-8.0.zip"
       ;;
     "Moose64-9"*)
-      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose9-development.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/v9.x.x/Moose9-stable-Pharo64-9.0.zip"
+      ;;
+    "Moose64-10"*)
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose10-development-Pharo64-10.zip"
       ;;
     *)
       print_error_and_exit "Unsupported Moose version '${smalltalk_name}'."
@@ -131,15 +140,18 @@ pharo::get_vm_url() {
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
     "Pharo64-alpha")
-      echo "get.pharo.org/64/vmLatest100"
+      echo "get.pharo.org/64/vmLatest110"
       ;;
     "Pharo64-stable")
-      echo "get.pharo.org/64/vm90"
-      ;;
-    "Pharo64-10")
       echo "get.pharo.org/64/vm100"
       ;;
-    "Pharo-stable"|"Pharo32-stable"|"Pharo64-9.0"|"Moose64-9.0"|"Moose64-trunk")
+    "Pharo64-11")
+      echo "get.pharo.org/64/vm110"
+      ;;
+    "Pharo64-10"|"Moose64-10"|"Moose64-trunk")
+      echo "get.pharo.org/64/vm100"
+      ;;
+    "Pharo64-9.0"|"Moose64-9.0")
       echo "get.pharo.org/vm90"
       ;;
     "Pharo64-8.0"|"Moose64-8.0")
@@ -155,7 +167,13 @@ pharo::get_vm_url() {
       echo "get.pharo.org/64/vm60"
       ;;
     "Pharo32-alpha"|"Pharo-alpha")
-      echo "get.pharo.org/vmLatest100"
+      echo "get.pharo.org/vmLatest110"
+      ;;
+    "Pharo-stable"|"Pharo32-stable")
+      echo "get.pharo.org/vm100"
+      ;;
+    "Pharo32-11")
+      echo "get.pharo.org/vm110"
       ;;
     "Pharo32-10")
       echo "get.pharo.org/vm100"
