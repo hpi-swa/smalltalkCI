@@ -2,6 +2,7 @@
 	"class" : {
 		"allPackageNames" : "fn 6/22/2016 00:44",
 		"assureDirectoryExistence:" : "smalltalkCI 9/2/2020 15:57",
+		"chooseOptionFrom:title:" : "ct 5/25/2022 14:04",
 		"classesInPackage:" : "fn 11/23/2016 15:37",
 		"codeCoverageClass" : "fn 10/8/2016 14:57",
 		"deleteFile:" : "fn 10/16/2016 16:14",
@@ -25,7 +26,7 @@
 		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:37",
 		"primEnvironmentAt:" : "fn 10/9/2016 21:02",
 		"primGetEnvironmentStrings" : "fn 10/9/2016 21:01",
-		"promptToProceedImpl" : "LM 9/4/2020 16:23",
+		"promptToProceedImpl" : "ct 5/25/2022 14:06",
 		"quitImage" : "fn 10/11/2016 18:42",
 		"readOnlyFileNamed:do:" : "fn 11/20/2017 13:34",
 		"saveImage" : "fn 10/4/2016 16:34",

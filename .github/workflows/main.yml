@@ -13,21 +13,25 @@ on:
       - 'docs/**'
       - '.appveyor.yml'
       - '.travis.yml'
+  workflow_dispatch:
 
 jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        os: [ ubuntu-latest, macos-latest, windows-2019 ]
         smalltalk:
           - Squeak64-trunk
+          - Squeak64-6.0
           - Squeak64-5.3
           - Squeak64-5.2
           - Squeak64-5.1
           - Squeak32-trunk
+          - Squeak32-6.0
           - Squeak32-4.5
           - Pharo64-stable
           - Pharo64-alpha
+          - Pharo64-11
           - Pharo64-10
           - Pharo64-9.0
           - Pharo64-8.0
@@ -37,12 +41,14 @@ jobs:
           - Pharo32-stable
           - Pharo32-alpha
           - Pharo32-3.0
+          - Moose64-10
           - Moose64-9.0
           - Moose64-8.0
-          - Moose64-7.0
         exclude: # exclude 32bit builds on macOS
           - os: macos-latest
             smalltalk: Squeak32-trunk
+          - os: macos-latest
+            smalltalk: Squeak32-6.0
           - os: macos-latest
             smalltalk: Squeak32-4.5
           - os: macos-latest
@@ -51,9 +57,9 @@ jobs:
             smalltalk: Pharo32-alpha
           - os: macos-latest
             smalltalk: Pharo32-3.0
-          - os: windows-latest
+          - os: windows-2019
             smalltalk: Pharo64-10
-          - os: windows-latest
+          - os: windows-2019
             smalltalk: Pharo64-6.0
         include:
           - os: ubuntu-18.04
@@ -71,14 +77,14 @@ jobs:
           tests/all_tests.sh
           bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
         shell: bash
-        if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false
+        if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false && contains(matrix.smalltalk, 'Squeak32-6.0') == false
         timeout-minutes: 15
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run smalltalkCI self test and ignore failures
         run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test || true
         shell: bash
-        if: contains(matrix.smalltalk, 'trunk') || contains(matrix.smalltalk, 'alpha')
+        if: contains(matrix.smalltalk, 'trunk') || contains(matrix.smalltalk, 'alpha') || contains(matrix.smalltalk, 'Squeak32-6.0')
         timeout-minutes: 15
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

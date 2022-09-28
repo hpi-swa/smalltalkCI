@@ -1,0 +1,4 @@
+compatibility
+testRunnerClass
+
+	^ SCIPharoTestRunnerPharo10
