@@ -189,6 +189,10 @@ is_mingw64_build() {
   [[ $(uname -s) = "MINGW64_NT-"* ]]
 }
 
+is_msys2_build() {
+  [[ $(uname -s) = "MSYS_NT-"* ]]
+}
+
 is_sudo_enabled() {
   $(sudo -n true > /dev/null 2>&1)
 }
@@ -358,7 +362,7 @@ extract_file() {
 resolve_path() {
   local path=$1
 
-  if is_cygwin_build || is_mingw64_build; then
+  if is_cygwin_build || is_mingw64_build || is_msys2_build; then
     echo $(cygpath -w "${path}")
   else
     echo "${path}"
@@ -398,7 +402,7 @@ ensure_jq_binary() {
         download_file "${JQ_BASE_URL}/jq-osx-amd64" "${jq_binary}"
         chmod +x "${jq_binary}"
         ;;
-      "CYGWIN_NT-"*|"MINGW64_NT-"*)
+      "CYGWIN_NT-"*|"MINGW64_NT-"*|"MSYS_NT-"*)
         download_file "${JQ_BASE_URL}/jq-win64.exe" "${jq_binary}"
         chmod +x "${jq_binary}"
         ;;

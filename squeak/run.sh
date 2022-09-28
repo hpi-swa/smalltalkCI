@@ -215,7 +215,7 @@ squeak::get_vm_details() {
       vm_file_ext="dmg"
       vm_path="${config_vm_dir}/Squeak.app/Contents/MacOS/Squeak"
       ;;
-    "CYGWIN_NT-"*|"MINGW64_NT-"*)
+    "CYGWIN_NT-"*|"MINGW64_NT-"*|"MSYS_NT-"*)
       if is_64bit; then
         vm_arch="win64x64"
       else
