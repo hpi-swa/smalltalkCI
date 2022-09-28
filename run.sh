@@ -21,7 +21,7 @@ initialize() {
 
   # Set up traps, otherwise fail if OS is not supported
   case "$(uname -s)" in
-    "Linux"|"Darwin"|"CYGWIN_NT-"*|"MINGW64_NT-"*)
+    "Linux"|"Darwin"|"CYGWIN_NT-"*|"MINGW64_NT-"*|"MSYS_NT-"*)
       trap handle_exit EXIT
       trap handle_error ERR
       trap handle_interrupt INT
