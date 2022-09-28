@@ -56,11 +56,14 @@ or [download][download] smalltalkCI and then you are able to initiate a local
 build in headful mode like this:
 
 ```bash
-bin/smalltalkci --headful /path/to/your/project/.smalltalk.ston
+bin/smalltalkci -s <IMAGE> --headful /path/to/your/project/.smalltalk.ston
 ```
 
-`IMAGE` can be one of the [supported images](#images). You may also want to
+`<IMAGE>` can be one of the [supported images](#images). You may also want to
 have a look at [all supported options](#further-configuration).
+
+On Windows, you need to run smalltalkCI from a Bash shell such as the
+[Git Bash](https://gitforwindows.org/) or Cygwin, MinGW, or MSYS2.
 
 *Please note: All builds will be stored in `_builds` within smalltalkCI's
 directory. You may want to delete single or all builds if you don't need them as
