@@ -14,24 +14,33 @@ SmalltalkCISpec {
   #testing : {
     ...
     #coverage : {
-      #packages : [ 'Packages-To-Cover.*' ],
-      #classes : [ #ClassToCover, #'ClassToCover class' ],
-      #categories : [ 'Categories-To-Cover*' ],
+      #packages : [ 'SomePackage', 'SomePack*' ],
+      #classes : [ #ClassToCover ],
+      #categories : [ 'SomeClassCategory', 'SomeClassCat*' ],
       #format : #coveralls
     }
   }
 }
 ```
+
 The `#coverage` dictionary can contain the following options:
+
 - `#packages` (recommended)
-  - Measure coverage of all instance side methods in the provided packages
+  - Measure coverage of all methods in the provided packages (including extension methods)
+  - Items that end with a trailing `*` (or `.*`) match all packages that start with the given name
 - `#classes`
-  - Measures all methods of all provided classes (instance side)
+  - Measures all methods of all provided classes (from both their instance and their class sides)
 - `#categories`
-  - Measure coverage for all classes' methods as well as their meta classes' methods
+  - Measure coverage for all classes' and metaclasses' methods in the provided system categories (does NOT include extension methods)
+  - Items that end with a trailing `*` or `.*` match all packages that start with the given name
 - `#format` (defaults to `#coveralls`)
   - The output format of the Coverage data 
   - May be either `#coveralls` or `#lcov`
+
+If multiple of the option `#packages`, `#classes`, and `#categories` are provided, the union of all matched methods is used for coverage testing.
+
+> **Warning**  
+> *Traits* are currently not fully supported. In the coverage reports, methods that are defined in or inherited from a trait might be missing or incorrectly displayed as uncovered. See [#362 (comment)](https://github.com/hpi-swa/smalltalkCI/issues/362#issuecomment-1003247630).
 
 When running smalltalkCI on TravisCI or AppVeyor with the `#coveralls` coverage format, the results will be uploaded to [Coveralls][coveralls] automatically.
 Make sure your repository is [added to Coveralls][coveralls_new].
@@ -49,15 +58,18 @@ Writing LCOV coverage info to: /path/to/coverage/lcov.info
 Most coverage services already support uploading coverage in the LCOV format with uploader scripts.
 
 For the most common usecases, see these instructions:
-- [Inspecting coverage locally](#inspecting-coverage-locally)
-- [Coveralls](#coveralls)
-  - [Travis CI](#coveralls-%26-travis-ci)
-  - [GitHub actions](#coveralls-%26-github-actions)
-- [CodeCov](#codecov)
-  - [Travis CI](#codecov-%26-travisci)
-  - [GitHub actions](#codecov-%26-github-actions)
-- [Cobertura](#cobertura)
-  - [GitLab CI](#cobertura-%26-gitlabci)
+- [Coverage Testing](#coverage-testing)
+  - [Configuring coverage testing](#configuring-coverage-testing)
+  - [Uploading with different CI-services/Coverage reporters](#uploading-with-different-ci-servicescoverage-reporters)
+    - [Inspecting coverage locally](#inspecting-coverage-locally)
+    - [Coveralls](#coveralls)
+      - [Coveralls & Travis CI](#coveralls--travis-ci)
+      - [Coveralls & GitHub Actions](#coveralls--github-actions)
+    - [CodeCov](#codecov)
+      - [CodeCov & TravisCI](#codecov--travisci)
+      - [CodeCov & GitHub Actions](#codecov--github-actions)
+    - [Cobertura](#cobertura)
+      - [Cobertura & GitLab CI](#cobertura--gitlab-ci)
 
 ### Inspecting coverage locally
 On Linux distributions, LCOV is available as a set of tools that can generate a coverage report as HTML/CSS files.
