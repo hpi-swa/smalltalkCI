@@ -2,4 +2,5 @@ helpers
 eventualUserReferencesOf: methodReferenceInATrait
 
 	^ (methodReferenceInATrait respondsTo: #eventualUserReferences)
-		and: [methodReferenceInATrait eventualUserReferences]
+		ifTrue: [methodReferenceInATrait eventualUserReferences]
+		ifFalse: [#()]
