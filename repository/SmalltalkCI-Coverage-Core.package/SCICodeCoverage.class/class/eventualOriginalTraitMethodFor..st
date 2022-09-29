@@ -2,4 +2,4 @@ helpers
 eventualOriginalTraitMethodFor: aCompiledMethod
 
 	^ (aCompiledMethod respondsTo: #eventualOriginalTraitMethod)
-		and: [aCompiledMethod eventualOriginalTraitMethod]
+		ifTrue: [aCompiledMethod eventualOriginalTraitMethod]
