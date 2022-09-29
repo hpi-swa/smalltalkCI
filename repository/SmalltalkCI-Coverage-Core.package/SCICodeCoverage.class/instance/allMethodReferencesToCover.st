@@ -6,4 +6,4 @@ allMethodReferencesToCover
 	
 	methods := methods , self extensionMethodsForPackages asArray.
 	
-	^ methods
+	^ methods reject: [:method | self class cannotBeCovered: method]

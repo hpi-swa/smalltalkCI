@@ -39,8 +39,9 @@ The `#coverage` dictionary can contain the following options:
 
 If multiple of the option `#packages`, `#classes`, and `#categories` are provided, the union of all matched methods is used for coverage testing.
 
-> **Warning**  
-> *Traits* are currently not fully supported. In the coverage reports, methods that are defined in or inherited from a trait might be missing or incorrectly displayed as uncovered. See [#362 (comment)](https://github.com/hpi-swa/smalltalkCI/issues/362#issuecomment-1003247630).
+*Traits* in the specified packages, classes, or categories are honored as well.
+The coverage of traits is captured globally: Even if a specified trait method is used by another class that is not covered, the trait will be marked as covered.
+This follows the behavior of SUnit in Squeak.
 
 When running smalltalkCI on TravisCI or AppVeyor with the `#coveralls` coverage format, the results will be uploaded to [Coveralls][coveralls] automatically.
 Make sure your repository is [added to Coveralls][coveralls_new].
