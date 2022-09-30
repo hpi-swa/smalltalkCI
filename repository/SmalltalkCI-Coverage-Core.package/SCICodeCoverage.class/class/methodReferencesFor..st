@@ -1,5 +1,5 @@
 helpers
 methodReferencesFor: classes
 	^ (classes gather: [ :cls |
-		cls selectors collect: [ :selector |
+		(self localSelectorsIn: cls) collect: [ :selector |
 			self methodReferenceFor: cls selector: selector ]]) asOrderedCollection
