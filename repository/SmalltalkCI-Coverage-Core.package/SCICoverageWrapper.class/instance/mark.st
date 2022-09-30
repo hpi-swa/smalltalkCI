@@ -2,9 +2,9 @@ private
 mark
 	hasRun := true.
 	
-	(SCICodeCoverage methodIsTraitMethod: method) ifTrue:
+	(CodeCoverageClass methodIsTraitMethod: method) ifTrue:
 		["update original (shared) trait method"
-		(SCICodeCoverage eventualOriginalTraitMethodFor: method) ifNotNil: [:original |
+		(CodeCoverageClass eventualOriginalTraitMethodFor: method) ifNotNil: [:original |
 			| installedOriginal |
 			installedOriginal := original methodReference compiledMethod.
 			(installedOriginal respondsTo: #mark) ifTrue:

@@ -7,5 +7,6 @@ startUp
 	
 	"Methods in traits are copied to their users. Wrap these copies as well to catch all evaluations of the original trait method."
 	methodsForWrappers := includedMethods , (self eventualUsersForTraitsIn: methods).
+	SCICoverageWrapper updateCodeCoverageClass.
 	coverageWrappers := methodsForWrappers collect: [ :each | SCICoverageWrapper on: each ].
 	coverageWrappers do: [ :each | each install ]
