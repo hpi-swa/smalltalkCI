@@ -71,7 +71,7 @@ print_help() {
     --install           Install symlink to this smalltalkCI instance.
     --print-env         Print all environment variables used by smalltalkCI
     --no-color          Disable colored output
-    --no-tracking       Disable collection of anonymous build metrics (TravisCI & AppVeyor only).
+    --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
     -s | --smalltalk    Overwrite Smalltalk image selection.
     --uninstall         Remove symlink to any smalltalkCI instance.
     -v | --verbose      Enable 'set -x'.
@@ -648,7 +648,7 @@ timer_nanoseconds() {
   "$cmd" -u $format
 }
 
-travis_wait() {
+run_script() {
   local timeout="${SMALLTALK_CI_TIMEOUT:-}"
 
   local cmd=( "$@" )
@@ -661,7 +661,7 @@ travis_wait() {
   "${cmd[@]}" &
   local cmd_pid=$!
 
-  travis_jigger $! "$timeout" "${cmd[@]}" &
+  run_jigger $! "$timeout" "${cmd[@]}" &
   local jigger_pid=$!
   local result
 
@@ -678,8 +678,8 @@ travis_wait() {
   return $result
 }
 
-travis_jigger() {
-  # helper method for travis_wait()
+run_jigger() {
+  # helper method for run_script()
   local cmd_pid=$1
   shift
   local timeout=$1 # in minutes
@@ -703,11 +703,12 @@ travis_jigger() {
 fold_start() {
   local identifier=$1
   local title=$2
-  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
 
   timer_start_time=$(timer_nanoseconds)
-  travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
+
   if is_travis_build; then
+    local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
+    travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
     echo -en "travis_fold:start:${prefix}${identifier}\r${ANSI_CLEAR}"
     echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
   fi
@@ -720,11 +721,12 @@ fold_start() {
 
 fold_end() {
   local identifier=$1
-  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
+
   local timer_end_time=$(timer_nanoseconds)
   local duration=$(($timer_end_time-$timer_start_time))
 
   if is_travis_build; then
+    local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
     echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
     echo -en "travis_fold:end:${prefix}${identifier}\r${ANSI_CLEAR}"
   else
