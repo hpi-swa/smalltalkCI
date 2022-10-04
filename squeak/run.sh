@@ -83,7 +83,7 @@ squeak::download_prepared_image() {
   print_info "Extracting image..."
   extract_file "${target}" "${SMALLTALK_CI_BUILD}"
   # TODO: cleanup soon, some archives still include TravisCI.(image|changes)
-  if ! is_file "${SMALLTALK_CI_IMAGE}"; then 
+  if ! is_file "${SMALLTALK_CI_IMAGE}"; then
     mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_IMAGE}"
     mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_CHANGES}"
   fi
@@ -126,7 +126,7 @@ squeak::download_trunk_image() {
 ################################################################################
 squeak::prepare_image() {
   local status=0
-  
+
   fold_start prepare_image "Preparing ${config_smalltalk} image for CI..."
     cp "${SMALLTALK_CI_HOME}/squeak/prepare.st" \
        "${SMALLTALK_CI_BUILD}/prepare.st"
@@ -164,7 +164,7 @@ squeak::get_vm_details() {
   if is_trunk_build; then
     git_tag="v2.9.9"
     osvm_version="202206021410"
-  else 
+  else
     case "${smalltalk_name}" in
       "Squeak32-6.0"|"Squeak64-6.0")
         git_tag="v2.9.9"
@@ -317,7 +317,7 @@ squeak::run_script() {
       ;;
   esac
 
-  travis_wait "${resolved_vm}" ${vm_flags} "${resolved_image}" "${script}"
+  run_script "${resolved_vm}" ${vm_flags} "${resolved_image}" "${script}"
 }
 
 ################################################################################

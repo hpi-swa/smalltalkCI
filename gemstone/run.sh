@@ -1,7 +1,7 @@
 ################################################################################
 # This file provides GemStone support for smalltalkCI. It is used in the context
 # of a smalltalkCI build and it is not meant to be executed by itself.
-################################################################################ 
+################################################################################
 
 local CLIENT_NAME="travisClient"
 local DEFAULT_DEVKIT_BRANCH="master"
@@ -66,7 +66,7 @@ gemstone::prepare_stone() {
   fi
 
   if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone"; then
-    print_info "Creating GemStone extent cache..." 
+    print_info "Creating GemStone extent cache..."
     mkdir "${SMALLTALK_CI_CACHE}/gemstone"
     if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/extents"; then
       mkdir "${SMALLTALK_CI_CACHE}/gemstone/extents"
@@ -83,15 +83,15 @@ gemstone::prepare_stone() {
     fold_start prepare_cache "Preparing Travis caches..."
       if ! is_dir "${SMALLTALK_CI_VMS}/Pharo-3.0"; then
         mkdir -p "${SMALLTALK_CI_VMS}/Pharo-3.0"
-        print_info "Downloading Pharo-3.0 vm to cache" 
+        print_info "Downloading Pharo-3.0 vm to cache"
         pushd "${SMALLTALK_CI_VMS}/Pharo-3.0" > /dev/null
           download_file "get.pharo.org/vm30" "$(pwd)/zeroconfig"
           bash "$(pwd)/zeroconfig"
         popd > /dev/null
       fi
-  
+
       if ! is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}"; then
-        print_info "Downloading Pharo-3.0 image to cache..." 
+        print_info "Downloading Pharo-3.0 image to cache..."
         pushd ${SMALLTALK_CI_CACHE} > /dev/null
           download_file "get.pharo.org/30" "$(pwd)/pharo30_zeroconfig"
           bash "$(pwd)/pharo30_zeroconfig"
@@ -99,10 +99,10 @@ gemstone::prepare_stone() {
           mv "Pharo.changes" "${PHARO_CHANGES_FILE}"
         popd > /dev/null
       fi
-  
+
       if is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}"; then
         if is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
-          print_info "Utilizing cached gsDevKitCommandLine image..." 
+          print_info "Utilizing cached gsDevKitCommandLine image..."
           cp "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}" ${GS_HOME}/shared/pharo/Pharo.image
           cp "${SMALLTALK_CI_CACHE}/${PHARO_CHANGES_FILE}" ${GS_HOME}/shared/pharo/Pharo.changes
           ln -s "${SMALLTALK_CI_VMS}/Pharo-3.0/pharo" ${GS_HOME}/shared/pharo/pharo
@@ -129,7 +129,7 @@ gemstone::prepare_stone() {
       else
         ${GS_HOME}/bin/createStone -t "${gemstone_cached_extent_file}" ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}"
       fi
-  
+
       if ! is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
         cp ${GS_HOME}/shared/pharo/gsDevKitCommandLine.* "${SMALLTALK_CI_CACHE}/gemstone/pharo/"
       fi
@@ -206,7 +206,7 @@ gemstone::load_project() {
   local status=0
 
   fold_start load_server_project "Loading server project..."
-    travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T ${GSCI_TOC:-100000} << EOF || status=$?
+    run_script ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T ${GSCI_TOC:-100000} << EOF || status=$?
       iferr 1 stk
       iferr 2 stack
       iferr 3 exit 1
@@ -245,7 +245,7 @@ gemstone::test_project() {
   local status=0
   local failing_clients=()
 
-  travis_wait ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T ${GSCI_TOC:-100000} << EOF || status=$?
+  run_script ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T ${GSCI_TOC:-100000} << EOF || status=$?
     iferr 1 stk
     iferr 2 stack
     iferr 3 exit 1
@@ -265,7 +265,7 @@ EOF
   if is_not_empty  "${DEVKIT_CLIENT_NAMES:-}"; then
     for client_name in "${DEVKIT_CLIENT_NAMES[@]}"
     do
-      travis_wait ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
+      run_script ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
 
       if is_nonzero "${status}"; then
         print_error_and_exit "Error while testing client project ${client_name}."
