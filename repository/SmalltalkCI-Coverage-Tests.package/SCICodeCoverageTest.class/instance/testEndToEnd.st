@@ -1,4 +1,4 @@
-testing
+tests
 testEndToEnd
 	| block coverage |
 	self platformSupportsCoverageTesting ifFalse: [ ^ self ].
@@ -17,7 +17,9 @@ testEndToEnd
 	self
 		assert: (SCICodeCoverageTestTarget>>#someInstanceMethod) methodReference
 		equals: coverage coveredMethods first.
-	self assert: (coverage excludedMethods includes:
+	self deny: (coverage includedMethods includes:
+		(SCICodeCoverageTestTarget>>#someAbstractInstanceMethod) methodReference).
+	self deny: (coverage excludedMethods includes:
 		(SCICodeCoverageTestTarget>>#someAbstractInstanceMethod) methodReference).
 
 	self assert: (coverage includedMethods anySatisfy: [ :ea | ea actualClass == SCICodeCoverageTestTargetOther]).

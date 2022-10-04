@@ -1,13 +1,15 @@
 {
 	"class" : {
-		"on:" : "fn 3/26/2018 14:55" },
+		"on:" : "fn 3/26/2018 14:55",
+		"updateCodeCoverageClass" : "ct 9/30/2022 14:46" },
 	"instance" : {
 		"doesNotUnderstand:" : "fn 3/26/2018 14:55",
 		"flushCache" : "fn 3/26/2018 14:55",
 		"hasRun" : "fn 3/26/2018 14:55",
 		"initializeOn:" : "fn 3/26/2018 14:55",
 		"install" : "fn 3/26/2018 14:55",
-		"mark" : "fn 3/26/2018 14:55",
+		"mark" : "ct 9/30/2022 14:46",
 		"reference" : "fn 3/26/2018 14:55",
+		"respondsTo:" : "ct 9/29/2022 13:55",
 		"run:with:in:" : "fn 3/26/2018 14:55",
 		"uninstall" : "fn 3/26/2018 14:55" } }
