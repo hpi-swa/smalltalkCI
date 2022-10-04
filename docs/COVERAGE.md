@@ -58,18 +58,15 @@ Writing LCOV coverage info to: /path/to/coverage/lcov.info
 Most coverage services already support uploading coverage in the LCOV format with uploader scripts.
 
 For the most common usecases, see these instructions:
-- [Coverage Testing](#coverage-testing)
-  - [Configuring coverage testing](#configuring-coverage-testing)
-  - [Uploading with different CI-services/Coverage reporters](#uploading-with-different-ci-servicescoverage-reporters)
-    - [Inspecting coverage locally](#inspecting-coverage-locally)
-    - [Coveralls](#coveralls)
-      - [Coveralls & Travis CI](#coveralls--travis-ci)
-      - [Coveralls & GitHub Actions](#coveralls--github-actions)
-    - [CodeCov](#codecov)
-      - [CodeCov & TravisCI](#codecov--travisci)
-      - [CodeCov & GitHub Actions](#codecov--github-actions)
-    - [Cobertura](#cobertura)
-      - [Cobertura & GitLab CI](#cobertura--gitlab-ci)
+- [Inspecting coverage locally](#inspecting-coverage-locally)
+- [Coveralls](#coveralls)
+  - [Travis CI](#coveralls--travis-ci)
+  - [GitHub Actions](#coveralls--github-actions)
+- [CodeCov](#codecov)
+  - [Travis CI](#codecov--travisci)
+  - [GitHub Actions](#codecov--github-actions)
+- [Cobertura](#cobertura)
+  - [GitLab CI](#cobertura--gitlab-ci)
 
 ### Inspecting coverage locally
 On Linux distributions, LCOV is available as a set of tools that can generate a coverage report as HTML/CSS files.
@@ -162,7 +159,7 @@ Generally it will be:
 bash <(curl -s https://codecov.io/bash)
 ```
 
-#### CodeCov & TravisCI
+#### CodeCov & Travis CI
 Add this to your `.travis.yml`
 ```yml
 after_success:
