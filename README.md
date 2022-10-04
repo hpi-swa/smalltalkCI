@@ -45,7 +45,7 @@ way to load and test Smalltalk projects.
    [FileTree][filetree]).
 2. Enable a CI service for your repository (e.g., [GitHub Actions][github_actions], [Travis CI][travisHowTo], autc.).
 3. Create a config file for your CI service ([see below for templates](#templates)) and specify the [Smalltalk image(s)](#images) you want your project to be tested against.
-4. Create a [`.smalltalk.ston` file](#minimal-.smalltalk-.ston) and specify how to load and test your project.
+4. Create a [`.smalltalk.ston` file](#minimal-smalltalkston-template) and specify how to load and test your project.
 5. Push all of this to your repository and enjoy your fast Smalltalk builds!
 
 
@@ -97,7 +97,7 @@ they can take up a lot of space on your drive.*
 
 ## Templates
 
-### <a name="minimal-.smalltalk.ston"/>Minimal `.smalltalk.ston` Template
+### <a name="minimal-smalltalkston-template"/>Minimal `.smalltalk.ston` Template
 
 The following `SmalltalkCISpec` will load `BaselineOfMyProject` using
 Metacello/FileTree from the `./packages` directory in Squeak, Pharo, and
