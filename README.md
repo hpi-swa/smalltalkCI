@@ -1,4 +1,6 @@
-# smalltalkCI [![GitHub Workflow Status][github_action_b]][github_action_url] [![Travis CI Status][travis_b]][travis_url] [![AppVeyor Status][appveyor_b]][appveyor_url] [![Docker Build Status][docker_b]][docker_url] [![Coverage Status][coveralls_b]][coveralls_url]
+# smalltalkCI
+
+[![GitHub Workflow Status][github_action_b]][github_action_url] [![Travis CI Status][travis_b]][travis_url] [![AppVeyor Status][appveyor_b]][appveyor_url] [![Docker Build Status][docker_b]][docker_url] [![Coverage Status][coveralls_b]][coveralls_url]
 
 Community-supported framework for testing Smalltalk projects on Linux, OS X, and
 Windows with built-in support for [GitHub Actions][github_action],
@@ -122,7 +124,7 @@ For GitHub Action templates, please refer to the Marketplace listing of the
 [`setup-smalltalkCI` action][github_action].
 
 
-### `.travis.yml` Template
+### <a name="travisyml-template"/>Travis CI Template (`.travis.yml`)
 
 ```yml
 language: smalltalk
@@ -166,7 +168,7 @@ smalltalk:
 
 ```
 
-### `appveyor.yml` Template
+### <a name="appveyoryml-template"/>AppVeyor Template (`appveyor.yml`)
 
 ```yml
 # This is a 64-bit environment, so use 64-bit Cygwin
@@ -222,7 +224,7 @@ Pharo327.0:
 ### Advanced Templates
 
 <details>
-<summary>`.travis.yml` template with multiple smalltalkCI configurations</summary>
+<summary><code>.travis.yml</code> template with multiple smalltalkCI configurations</summary>
 
 The build matrix can be expanded with multiple smalltalkCI configuration files
 using the `smalltalk_config` key:
@@ -267,7 +269,7 @@ SmalltalkCISpec {
 </details>
 
 <details>
-<summary>`.travis.yml` template with additional jobs</summary>
+<summary><code>.travis.yml</code> template with additional jobs</summary>
 
 It is possible to add additional jobs to the [build matrix][build_matrix_travis]
 using the `smalltalk_config` key:
@@ -304,7 +306,7 @@ matrix:
 </details>
 
 <details>
-  <summary>`appveyor.yml` template with additional jobs</summary>
+  <summary><code>appveyor.yml</code> template with additional jobs</summary>
 
 It is possible to add additional jobs to the
 [build matrix][build_matrix_appveyor] using `environment.matrix` as follows:
