@@ -575,6 +575,8 @@ the `--no-tracking` option.
 
 ### Travis-specific Options
 
+#### Travis Timeouts
+
 Jobs on Travis CI [timeout if they don't produce output for
 more than 10 minutes][travisTimeout]. In case of long running tests, it
 is possible to increase this timeout by setting `$SMALLTALK_CI_TIMEOUT` in your
@@ -588,7 +590,7 @@ env:
 The above sets the timeout to 30 minutes. Please note that Travis CI enforces
 [a total build timeout of 50 minutes][travisTimeout].
 
-### Using A Different smalltalkCI Branch Or Fork
+#### Using A Different smalltalkCI Branch Or Fork
 
 By default, the smalltalkCI master branch is used to perform a build. It is
 possible to select a different smalltalkCI branch or fork for testing/debugging
