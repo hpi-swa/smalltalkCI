@@ -544,7 +544,7 @@ debugging purposes or when used locally:
 ```
 USAGE: bin/smalltalkci [options] /path/to/project/your_smalltalk.ston
 
-This program prepares Smalltalk images/vms, loads projects and runs tests.
+This program prepares Smalltalk images/vms, loads projects, and runs tests.
 
 OPTIONS:
   --clean             Clear cache and delete builds.
@@ -554,6 +554,7 @@ OPTIONS:
   --image             Custom image for build (Squeak/Pharo).
   --install           Install symlink to this smalltalkCI instance.
   --print-env         Print all environment variables used by smalltalkCI
+  --no-color          Disable colored output
   --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
   -s | --smalltalk    Overwrite Smalltalk image selection.
   --uninstall         Remove symlink to any smalltalkCI instance.
@@ -561,7 +562,7 @@ OPTIONS:
   --vm                Custom VM for build (Squeak/Pharo).
 
 EXAMPLE:
-  bin/smalltalkci -s "Squeak-trunk" --headful /path/to/project/.smalltalk.ston
+  bin/smalltalkci -s "Squeak64-trunk" --headfull /path/to/project/.smalltalk.ston
 ```
 
 ### Collection Of Anonymous Build Metrics
