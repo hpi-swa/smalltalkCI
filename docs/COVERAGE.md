@@ -43,6 +43,9 @@ If multiple of the option `#packages`, `#classes`, and `#categories` are provide
 The coverage of traits is captured globally: Even if a specified trait method is used by another class that is not covered, the trait will be marked as covered.
 This follows the behavior of SUnit in Squeak.
 
+> **Warning**  
+> *Traits* are currently only supported in Squeak 6.1Alpha and newer. For other Smalltalk versions, methods that are defined in a trait wil incorrectly be displayed as uncovered in coverage reports until these versions receive support for the required Traits protocol. See [#572](https://github.com/hpi-swa/smalltalkCI/pull/572) for more details.
+
 When running smalltalkCI on TravisCI or AppVeyor with the `#coveralls` coverage format, the results will be uploaded to [Coveralls][coveralls] automatically.
 Make sure your repository is [added to Coveralls][coveralls_new].
 
