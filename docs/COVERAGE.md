@@ -33,7 +33,7 @@ The `#coverage` dictionary can contain the following options:
   - The output format of the Coverage data 
   - May be either `#coveralls` or `#lcov`
 
-When running smalltalkCI on TravisCI or AppVeyor with the `#coveralls` coverage format, the results will be uploaded to [Coveralls][coveralls] automatically.
+When running smalltalkCI on Travis CI or AppVeyor with the `#coveralls` coverage format, the results will be uploaded to [Coveralls][coveralls] automatically.
 Make sure your repository is [added to Coveralls][coveralls_new].
 
 ## Uploading with different CI-services/Coverage reporters
@@ -54,7 +54,7 @@ For the most common usecases, see these instructions:
   - [Travis CI](#coveralls-%26-travis-ci)
   - [GitHub actions](#coveralls-%26-github-actions)
 - [CodeCov](#codecov)
-  - [Travis CI](#codecov-%26-travisci)
+  - [Travis CI](#codecov-%26-travis-ci)
   - [GitHub actions](#codecov-%26-github-actions)
 - [Cobertura](#cobertura)
   - [GitLab CI](#cobertura-%26-gitlabci)
@@ -150,7 +150,7 @@ Generally it will be:
 bash <(curl -s https://codecov.io/bash)
 ```
 
-#### CodeCov & TravisCI
+#### CodeCov & Travis CI
 Add this to your `.travis.yml`
 ```yml
 after_success:

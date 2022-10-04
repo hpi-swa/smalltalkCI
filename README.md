@@ -13,7 +13,7 @@ way to load and test Smalltalk projects.
 ## Table Of Contents
 
 - [Features](#features)
-- [How to enable Travis CI for your Smalltalk project](#how-to-travis)
+- [How to enable Continuous Integration for your Smalltalk project](#how-to-ci)
 - [How to test your Smalltalk project locally](#how-to-local)
 - [List Of Supported Images](#images)
 - [Templates](#templates)
@@ -37,16 +37,14 @@ way to load and test Smalltalk projects.
 - Exports test results in the JUnit XML format as part of the build log
 
 
-## <a name="how-to-travis"/>How To Enable Travis CI For Your Smalltalk Project
+## <a name="how-to-ci"/>How To Enable Continuous Integration For Your Smalltalk Project
 
 1. Export your project in a [compatible format](#load-specs) (e.g.
    [FileTree][filetree]).
-2. [Enable Travis CI for your repository][travisHowTo].
-3. Create a `.travis.yml` and specifiy the [Smalltalk image(s)](#images) you
-   want your project to be tested against.
-4. Create a `.smalltalk.ston` ([see below for templates](#templates)) and
-   specify how to load and test your project.
-5. Push all of this to GitHub and enjoy your fast Smalltalk builds!
+2. Enable a CI service for your repository (e.g., [GitHub Actions][github_actions], [Travis CI][travisHowTo], autc.).
+3. Create a config file for your CI service ([see below for templates](#templates)) and specify the [Smalltalk image(s)](#images) you want your project to be tested against.
+4. Create a [`.smalltalk.ston` file](#minimal-.smalltalk-.ston) and specify how to load and test your project.
+5. Push all of this to your repository and enjoy your fast Smalltalk builds!
 
 
 ## <a name="how-to-local"/>How To Test Your Smalltalk Project Locally
@@ -95,9 +93,9 @@ they can take up a lot of space on your drive.*
 |                  |                  |                      |                 |
 
 
-## <a name="templates"/>Templates
+## Templates
 
-### Minimal `.smalltalk.ston` Template
+### <a name="minimal-.smalltalk.ston"/>Minimal `.smalltalk.ston` Template
 
 The following `SmalltalkCISpec` will load `BaselineOfMyProject` using
 Metacello/FileTree from the `./packages` directory in Squeak, Pharo, and
@@ -722,6 +720,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [github_action]: https://github.com/marketplace/actions/setup-smalltalkci
 [github_action_b]: https://img.shields.io/github/workflow/status/hpi-swa/smalltalkCI/smalltalkCI%20Self%20Test?logo=github
 [github_action_url]: https://github.com/hpi-swa/smalltalkCI/actions
+[github_actions]: https://github.com/features/actions
 [gitlab_ci_cd]: https://about.gitlab.com/features/gitlab-ci-cd/
 [gofer]: http://www.lukas-renggli.ch/blog/gofer
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
