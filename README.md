@@ -1,10 +1,10 @@
 # smalltalkCI
 
-[![GitHub Workflow Status][github_action_b]][github_action_url] [![Travis CI Status][travis_b]][travis_url] [![AppVeyor Status][appveyor_b]][appveyor_url] [![Docker Build Status][docker_b]][docker_url] [![Coverage Status][coveralls_b]][coveralls_url]
+[![GitHub Workflow Status][github_action_b]][github_action_url] [![Coverage Status][coveralls_b]][coveralls_url]
 
 Community-supported framework for testing Smalltalk projects on Linux, OS X, and
 Windows with built-in support for [GitHub Actions][github_action],
-[Travis CI][travisCI], [AppVeyor][appveyor], and [GitLab CI/CD][gitlab_ci_cd].
+[GitLab CI/CD][gitlab_ci_cd], [Travis CI][travisCI], and [AppVeyor][appveyor].
 
 It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy
 way to load and test Smalltalk projects.
@@ -15,9 +15,9 @@ way to load and test Smalltalk projects.
 ## Table Of Contents
 
 - [Features](#features)
-- [How to enable Continuous Integration for your Smalltalk project](#how-to-ci)
+- [How to set up Continuous Integration for your Smalltalk project](#how-to-ci)
 - [How to test your Smalltalk project locally](#how-to-local)
-- [List Of Supported Images](#images)
+- [List of Supported Images](#images)
 - [Templates](#templates)
 - [Further Configuration](#further-configuration)
 - [Contributing](#contributing)
@@ -27,23 +27,23 @@ way to load and test Smalltalk projects.
 ## Features
 
 - Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
-- Runs on GitHub Actions, Travis CI, AppVeyor, GitLab CI, and other CI services
+- Runs on GitHub Actions, GitLab CI, Travis CI, AppVeyor, and other CI services
 - Simple configuration via [`.smalltalk.ston`](#minimal-smalltalkston-template),
   [`setup-smalltalkCI` action][github_action],
-  [`.travis.yml`](#travisyml-template),
-  [`appveyor.yml`](#appveyoryml-template), and
-  [`.gitlab-ci.yml`](#gitlab-ciyml-template)
-- Supports Linux, macOS, and Windows and can be run locally (e.g. for debug
+  [`.gitlab-ci.yml`](#gitlab-ci-template),
+  [`.travis.yml`](#travis-ci-template), and
+  [`appveyor.yml`](#appveyor-template)
+- Supports Linux, macOS, and Windows and can be run locally (e.g. for debugging
   purposes)
 - Supports [coverage testing][coverage_docs]
 - Exports test results in the JUnit XML format as part of the build log
 
 
-## <a name="how-to-ci"/>How To Enable Continuous Integration For Your Smalltalk Project
+## <a name="how-to-ci"/>How To Set Up Continuous Integration For Your Smalltalk Project
 
-1. Export your project in a [compatible format](#load-specs) (e.g.
-   [FileTree][filetree]).
-2. Enable a CI service for your repository (e.g., [GitHub Actions][github_actions], [Travis CI][travisHowTo], autc.).
+1. Export your project in a [compatible format](#load-specs) (e.g.,
+   [Tonel][tonel] or [FileTree][filetree]).
+2. Enable a CI service for your repository (e.g., [GitHub Actions][github_actions]).
 3. Create a config file for your CI service ([see below for templates](#templates)) and specify the [Smalltalk image(s)](#images) you want your project to be tested against.
 4. Create a [`.smalltalk.ston` file](#minimal-smalltalkston-template) and specify how to load and test your project.
 5. Push all of this to your repository and enjoy your fast Smalltalk builds!
@@ -52,8 +52,8 @@ way to load and test Smalltalk projects.
 ## <a name="how-to-local"/>How To Test Your Smalltalk Project Locally
 
 You can use smalltalkCI to run your project's tests locally. Just [clone][clone]
-or [download][download] smalltalkCI and then you are able to initiate a local
-build in headful mode like this:
+or [download][download] smalltalkCI and then you can initiate a local build in
+headful mode like this:
 
 ```bash
 bin/smalltalkci -s <IMAGE> --headful /path/to/your/project/.smalltalk.ston
@@ -62,15 +62,15 @@ bin/smalltalkci -s <IMAGE> --headful /path/to/your/project/.smalltalk.ston
 `<IMAGE>` can be one of the [supported images](#images). You may also want to
 have a look at [all supported options](#further-configuration).
 
-On Windows, you need to run smalltalkCI from a Bash shell such as the
-[Git Bash](https://gitforwindows.org/) or Cygwin, MinGW, or MSYS2.
+On Windows, you need to run smalltalkCI from a Bash shell such as 
+[Git Bash][git_bash] or Cygwin, MinGW, or MSYS2.
 
 *Please note: All builds will be stored in `_builds` within smalltalkCI's
 directory. You may want to delete single or all builds if you don't need them as
 they can take up a lot of space on your drive.*
 
 
-## <a name="images"/>List Of Supported Images
+## <a name="images"/>List of Supported Images
 
 | [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  |
 | ---------------- | ---------------- | -------------------- | --------------- |
@@ -118,13 +118,40 @@ SmalltalkCISpec {
 }
 ```
 
-### GitHub Action Template
+### GitHub Action Templates
 
 For GitHub Action templates, please refer to the Marketplace listing of the
 [`setup-smalltalkCI` action][github_action].
 
+### GitLab CI Template
 
-### <a name="travisyml-template"/>Travis CI Template (`.travis.yml`)
+<details>
+<summary><code>.gitlab-ci.yml</code></summary>
+
+```yml
+image: hpiswa/smalltalkci
+
+Squeak64Trunk:
+  script: smalltalkci -s "Squeak64-trunk"
+
+Squeak325.1:
+  script: smalltalkci -s "Squeak32-5.1"
+
+Pharo64Alpha:
+  script: smalltalkci -s "Pharo64-alpha"
+
+Pharo327.0:
+  script: smalltalkci -s "Pharo32-7.0"
+
+# ...
+```
+
+</details>
+
+### Travis CI Templates
+
+<details>
+<summary><code>.travis.yml</code></summary>
 
 ```yml
 language: smalltalk
@@ -168,63 +195,10 @@ smalltalk:
 
 ```
 
-### <a name="appveyoryml-template"/>AppVeyor Template (`appveyor.yml`)
-
-```yml
-# This is a 64-bit environment, so use 64-bit Cygwin
-environment:
-  CYG_ROOT: C:\cygwin64
-  CYG_BASH: C:\cygwin64\bin\bash
-  CYG_CACHE: C:\cygwin64\var\cache\setup
-  CYG_EXE: C:\cygwin64\setup-x86_64.exe
-  CYG_MIRROR: http://cygwin.mirror.constant.com
-  SCI_RUN: /cygdrive/c/smalltalkCI-master/bin/smalltalkci
-  matrix:
-    # Currently, only Squeak and Pharo images are supported on AppVeyor.
-    - SMALLTALK: Squeak64-trunk
-    - SMALLTALK: Squeak64-5.0
-    - SMALLTALK: Pharo64-alpha
-    - SMALLTALK: Pharo64-6.0
-    # ...
-
-platform:
-  - x64
-
-install:
-  - '%CYG_EXE% -dgnqNO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip'
-  - ps: Start-FileDownload "https://github.com/hpi-swa/smalltalkCI/archive/master.zip" "C:\smalltalkCI.zip"
-  - 7z x C:\smalltalkCI.zip -oC:\ -y > NULL
-
-build: false
-
-test_script:
-  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN"'
-```
-
-### `.gitlab-ci.yml` Template
-
-```yml
-image: hpiswa/smalltalkci
-
-Squeak64Trunk:
-  script: smalltalkci -s "Squeak64-trunk"
-
-Squeak325.1:
-  script: smalltalkci -s "Squeak32-5.1"
-
-Pharo64Alpha:
-  script: smalltalkci -s "Pharo64-alpha"
-
-Pharo327.0:
-  script: smalltalkci -s "Pharo32-7.0"
-
-# ...
-```
-
-### Advanced Templates
+</details>
 
 <details>
-<summary><code>.travis.yml</code> template with multiple smalltalkCI configurations</summary>
+<summary><code>.travis.yml</code> with multiple smalltalkCI configurations</summary>
 
 The build matrix can be expanded with multiple smalltalkCI configuration files
 using the `smalltalk_config` key:
@@ -269,7 +243,7 @@ SmalltalkCISpec {
 </details>
 
 <details>
-<summary><code>.travis.yml</code> template with additional jobs</summary>
+<summary><code>.travis.yml</code> with additional jobs</summary>
 
 It is possible to add additional jobs to the [build matrix][build_matrix_travis]
 using the `smalltalk_config` key:
@@ -305,8 +279,46 @@ matrix:
 
 </details>
 
+### AppVeyor Templates
+
 <details>
-  <summary><code>appveyor.yml</code> template with additional jobs</summary>
+<summary><code>appveyor.yml</code></summary>
+
+```yml
+# This is a 64-bit environment, so use 64-bit Cygwin
+environment:
+  CYG_ROOT: C:\cygwin64
+  CYG_BASH: C:\cygwin64\bin\bash
+  CYG_CACHE: C:\cygwin64\var\cache\setup
+  CYG_EXE: C:\cygwin64\setup-x86_64.exe
+  CYG_MIRROR: http://cygwin.mirror.constant.com
+  SCI_RUN: /cygdrive/c/smalltalkCI-master/bin/smalltalkci
+  matrix:
+    # Currently, only Squeak and Pharo images are supported on AppVeyor.
+    - SMALLTALK: Squeak64-trunk
+    - SMALLTALK: Squeak64-5.0
+    - SMALLTALK: Pharo64-alpha
+    - SMALLTALK: Pharo64-6.0
+    # ...
+
+platform:
+  - x64
+
+install:
+  - '%CYG_EXE% -dgnqNO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip'
+  - ps: Start-FileDownload "https://github.com/hpi-swa/smalltalkCI/archive/master.zip" "C:\smalltalkCI.zip"
+  - 7z x C:\smalltalkCI.zip -oC:\ -y > NULL
+
+build: false
+
+test_script:
+  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN"'
+```
+
+</details>
+
+<details>
+  <summary><code>appveyor.yml</code> with additional jobs</summary>
 
 It is possible to add additional jobs to the
 [build matrix][build_matrix_appveyor] using `environment.matrix` as follows:
@@ -352,7 +364,6 @@ test_script:
 | `Pharo64-alpha`  | `.bleedingEdge.ston` |
 
 </details>
-
 
 ## Further Configuration
 
@@ -400,7 +411,7 @@ SCIMetacelloLoadSpec {
   #configuration : 'MyProject',                       // Alternatively, define MC Configuration
   #directory : 'packages',                            // Path to packages if FileTree is used
   #failOn : [ #OCUndeclaredVariableWarning ],         // Fail build on provided list of Warnings
-  #ignoreImage : true,                                // If true, Metacello will force the load of a package, overriding a previous existing one
+  #ignoreImage : true,                                // If true, Metacello will force a load of a package, overriding a previously existing one
   #load : [ 'default' ],                              // Define MC load attributes
   #onConflict : #useIncoming,                         // When there is a conflict between loaded sources and incoming sources (can be #useIncoming|#useLoaded)
   #onUpgrade : #useIncoming,                          // When loaded sources are an older version than incoming sources (can be #useIncoming|#useLoaded)
@@ -496,7 +507,7 @@ SmalltalkCISpec {
     #failOnSCIDeprecationWarnings : false, // Fail if a deprecated smalltalkCI API is used
     #failOnZeroTests : false, // Pass builds that did not run any tests
     #hidePassingTests : true, // Hide passing tests when printing to stdout
-    #serializeError: false // (default: true) Disable serialization of failing testcase (e.g. with Fuel in Pharo)
+    #serializeError: false // (default: true) Disable serialization of failing test case (e.g. with Fuel in Pharo)
   }
 }
 ```
@@ -509,7 +520,7 @@ See [COVERAGE.md][coverage_docs].
 
 It is possible to run custom scripts before and after the loading and
 testing phases (`preLoading`, `postLoading`, `preTesting`, `postTesting`).
-smalltalkCI is able to *file in* single files, lists of files, and
+smalltalkCI can *file in* single files, lists of files, and
 `SCICustomScript`s which can be used to only run certain scripts on certain
 platforms.
 
@@ -565,14 +576,14 @@ OPTIONS:
   --vm                Custom VM for build (Squeak/Pharo).
 
 EXAMPLE:
-  bin/smalltalkci -s "Squeak64-trunk" --headfull /path/to/project/.smalltalk.ston
+  bin/smalltalkci -s "Squeak64-trunk" --headful /path/to/project/.smalltalk.ston
 ```
 
 ### Collection Of Anonymous Build Metrics
 
 smalltalkCI collects anonymous build metrics (Smalltalk dialect, CI environment,
 build status, build duration) for public repositories when running on a supported
-CI platform. This allows to identify build errors caused by smalltalkCI updates
+CI platform. This helps to identify build errors caused by smalltalkCI updates
 and therefore helps to improve the service. It is possible to opt-out by using
 the `--no-tracking` option.
 
@@ -581,7 +592,7 @@ the `--no-tracking` option.
 #### Travis Timeouts
 
 Jobs on Travis CI [timeout if they don't produce output for
-more than 10 minutes][travisTimeout]. In case of long running tests, it
+more than 10 minutes][travisTimeout]. In the case of long-running tests, it
 is possible to increase this timeout by setting `$SMALLTALK_CI_TIMEOUT` in your
 `.travis.yml` to a value greater than 10:
 
@@ -700,15 +711,9 @@ problem.
 list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 
 
-[appveyor_b]: https://ci.appveyor.com/api/projects/status/c2uchb5faykdrj3y/branch/master?svg=true
-[appveyor_url]: https://ci.appveyor.com/project/smalltalkCI/smalltalkci/branch/master
 [coverage_docs]: https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md
 [coveralls_b]: https://coveralls.io/repos/github/hpi-swa/smalltalkCI/badge.svg?branch=master
 [coveralls_url]: https://coveralls.io/github/hpi-swa/smalltalkCI?branch=master
-[docker_b]: https://img.shields.io/docker/cloud/build/hpiswa/smalltalkci
-[docker_url]: https://hub.docker.com/r/hpiswa/smalltalkci
-[travis_b]: https://img.shields.io/travis/com/hpi-swa/smalltalkCI?logo=travis
-[travis_url]: https://travis-ci.com/hpi-swa/smalltalkCI
 
 [appveyor]: https://www.appveyor.com/
 [bsis]: http://docs.travis-ci.com/user/migrating-from-legacy/#Builds-start-in-seconds
@@ -725,6 +730,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [esug_logo]: https://user-images.githubusercontent.com/2368856/91981051-88ee1300-ed28-11ea-8eb1-3f1ef5d07c4a.png
 [filetree]: https://github.com/dalehenrich/filetree
 [gemstone]: https://gemtalksystems.com/
+[git_bash]: https://gitforwindows.org/
 [github_action]: https://github.com/marketplace/actions/setup-smalltalkci
 [github_action_b]: https://img.shields.io/github/workflow/status/hpi-swa/smalltalkCI/smalltalkCI%20Self%20Test?logo=github
 [github_action_url]: https://github.com/hpi-swa/smalltalkCI/actions
@@ -743,7 +749,8 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [pullRequests]: https://help.github.com/articles/using-pull-requests/
 [squeak]: http://squeak.org/
 [ston]: https://github.com/svenvc/ston/blob/master/ston-paper.md#smalltalk-object-notation-ston
-[templates]:https://github.com/hpi-swa/smalltalkCI/wiki#templates
+[templates]: https://github.com/hpi-swa/smalltalkCI#templates
+[tonel]: https://github.com/pharo-vcs/tonel
 [travisCI]: http://travis-ci.org/
-[travisHowTo]: http://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI%3A
+[travis_howto]: https://docs.travis-ci.com/user/tutorial/
 [travisTimeout]: https://docs.travis-ci.com/user/customizing-the-build/#Build-Timeouts
