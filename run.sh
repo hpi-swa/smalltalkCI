@@ -358,7 +358,6 @@ parse_options() {
       ;;
     -- | --self-test)
       shift
-      break
       ;;
     -*)
       print_error_and_exit "Unknown option: $1"
