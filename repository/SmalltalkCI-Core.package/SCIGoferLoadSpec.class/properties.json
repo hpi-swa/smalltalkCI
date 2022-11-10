@@ -1,17 +1,16 @@
 {
-	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
+	"super" : "SCIAbstractLoadSpecWithCredentials",
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
 	"instvars" : [
 		"url",
 		"packages",
 		"versions",
-		"loadedClasses" ],
+		"loadedClasses"
+	],
 	"name" : "SCIGoferLoadSpec",
-	"pools" : [
-		 ],
-	"super" : "SCIAbstractLoadSpecWithCredentials",
-	"type" : "normal" }
+	"type" : "normal"
+}

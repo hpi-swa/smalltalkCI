@@ -1,14 +1,13 @@
 {
-	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
-	"instvars" : [
-		"path" ],
-	"name" : "SCICustomScript",
-	"pools" : [
-		 ],
 	"super" : "SCIAbstractLoadSpec",
-	"type" : "normal" }
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"path"
+	],
+	"name" : "SCICustomScript",
+	"type" : "normal"
+}
