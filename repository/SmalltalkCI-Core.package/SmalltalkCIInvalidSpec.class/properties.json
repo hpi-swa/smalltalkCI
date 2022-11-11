@@ -1,14 +1,13 @@
 {
-	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
-	"instvars" : [
-		"originalError" ],
-	"name" : "SmalltalkCIInvalidSpec",
-	"pools" : [
-		 ],
 	"super" : "SmalltalkCISpec",
-	"type" : "normal" }
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"originalError"
+	],
+	"name" : "SmalltalkCIInvalidSpec",
+	"type" : "normal"
+}
