@@ -1,4 +1,3 @@
 executing
 load
-	self class withBuildStatusReportingDo: [ self basicLoad ].
-	self postLoad
+	self class withBuildStatusReportingDo: [ self basicLoad ]

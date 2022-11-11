@@ -1,13 +1,14 @@
 {
-	"commentStamp" : "",
-	"super" : "Object",
 	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
 	"instvars" : [
-		"platforms"
-	],
+		"platforms" ],
 	"name" : "SCIPlatformDependent",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }

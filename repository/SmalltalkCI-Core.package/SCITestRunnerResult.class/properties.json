@@ -1,17 +1,18 @@
 {
-	"commentStamp" : "",
-	"super" : "Object",
 	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"classvars" : [ ],
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
 	"instvars" : [
 		"testCase",
 		"testError",
 		"time",
 		"stack",
-		"skipped"
-	],
+		"skipped" ],
 	"name" : "SCITestRunnerResult",
-	"type" : "normal"
-}
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }
