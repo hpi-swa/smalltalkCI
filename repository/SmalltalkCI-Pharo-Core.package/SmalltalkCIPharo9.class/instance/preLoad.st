@@ -5,6 +5,9 @@ preLoad
 		createRepository) register. ] 
 		on: Error 
 		do: [ :e |
-		      	 self class printWarningToStdout: 'Could not register the tested repository with Iceberg.'.
-		      	 self class printWarningToStdout: 'If you need to use Iceberg features in the CI, see github.com/hpi-swa/setup-smalltalkCI'.
-			 self class printWarningToStdout: e printString ]
+		      	 self class printWarningToStdout: (String streamContents: [ :s |
+			 	s << 'Could not register the tested repository with Iceberg.';
+				  cr;
+				  << 'If you need to use Iceberg features in the CI, see github.com/hpi-swa/setup-smalltalkCI';
+				  cr;
+			 	  << e printString ])]
