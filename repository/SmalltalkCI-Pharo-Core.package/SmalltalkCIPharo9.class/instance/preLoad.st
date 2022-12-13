@@ -8,7 +8,7 @@ preLoad
 		      	 self class printWarningToStdout: (String streamContents: [ :s |
 			 	s << 'Could not register the tested repository with Iceberg.';
 				  cr;
-				  << 'If you need to use Iceberg features in the CI, you need to have the full git history available.'
+				  << 'If you need to use Iceberg features in the CI, you need to have the full git history available.';
 				  cr;
 				  << 'see github.com/hpi-swa/setup-smalltalkCI for an example in Github Action.';
 				  cr;
