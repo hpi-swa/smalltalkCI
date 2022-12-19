@@ -19,7 +19,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-2019 ]
+        os: [ ubuntu-20.04, macos-latest, windows-2019 ]
         smalltalk:
           - Squeak64-trunk
           - Squeak64-6.0
