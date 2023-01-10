@@ -2,5 +2,7 @@
 	"class" : {
 		"isPlatformCompatible" : "MaxLeske 7/11/2017 22:19" },
 	"instance" : {
-		"repositorySchemeIn:" : "fn 1/8/2021 17:12:57",
+   	        "repositorySchemeIn:" : "fn 1/8/2021 17:12:57",
+	        "usesIceberg:" : "Hogoww 10/01/2023 06:47",
+ 	        "usesIceberg" : "Hogoww 10/01/2023 06:47",
 		"withLoadWarningsHandlerDo:" : "MaxLeske 7/11/2017 22:14" } }

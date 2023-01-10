@@ -17,7 +17,6 @@
 		"repository",
 		"version",
 	        "useLatestMetacello",
-	        "usesIceberg",
 		"ignoreImage" ],
 	"name" : "SCIMetacelloLoadSpec",
 	"pools" : [

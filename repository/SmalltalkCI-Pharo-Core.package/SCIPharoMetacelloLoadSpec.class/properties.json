@@ -5,7 +5,8 @@
 	"classvars" : [
 		 ],
 	"commentStamp" : "",
-	"instvars" : [
+        "instvars" : [
+	      "usesIceberg"
 		 ],
 	"name" : "SCIPharoMetacelloLoadSpec",
 	"pools" : [
