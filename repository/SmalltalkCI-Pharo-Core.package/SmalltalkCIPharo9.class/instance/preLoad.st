@@ -1,5 +1,10 @@
 executing
 preLoad
+	(spec loading anySatisfy: [ :aLoadingSpec |
+	      aLoadingSpec usesIceberg isNotNil
+	      		   and: [ aLoadingSpec usesIceberg ])
+	      ifFalse: [ ^ self ].
+	      
 	[ (IceRepositoryCreator new
 		location: projectDirectory asFileReference;
 		createRepository) register. ] 

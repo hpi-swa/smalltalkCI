@@ -16,7 +16,8 @@
 		"onUpgrade",
 		"repository",
 		"version",
-		"useLatestMetacello",
+	        "useLatestMetacello",
+	        "usesIceberg",
 		"ignoreImage" ],
 	"name" : "SCIMetacelloLoadSpec",
 	"pools" : [
