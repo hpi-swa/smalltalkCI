@@ -1,8 +1,6 @@
 executing
 preLoad
-	(spec loading anySatisfy: [ :aLoadingSpec |
-	      aLoadingSpec usesIceberg isNotNil
-	      		   and: [ aLoadingSpec usesIceberg ]])
+	(spec loading anySatisfy: [ :aLoadingSpec | aLoadingSpec usesIceberg ])
 	      ifFalse: [ ^ self ].
 	      
 	[ (IceRepositoryCreator new
