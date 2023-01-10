@@ -733,7 +733,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [gemstone]: https://gemtalksystems.com/
 [git_bash]: https://gitforwindows.org/
 [github_action]: https://github.com/marketplace/actions/setup-smalltalkci
-[github_action_b]: https://img.shields.io/github/workflow/status/hpi-swa/smalltalkCI/smalltalkCI%20Self%20Test?logo=github
+[github_action_b]: https://img.shields.io/github/actions/workflow/status/hpi-swa/smalltalkCI/main.yml?branch=master
 [github_action_url]: https://github.com/hpi-swa/smalltalkCI/actions
 [github_actions]: https://github.com/features/actions
 [gitlab_ci_cd]: https://about.gitlab.com/features/gitlab-ci-cd/
