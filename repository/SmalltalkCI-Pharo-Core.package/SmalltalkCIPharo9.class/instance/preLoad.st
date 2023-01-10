@@ -2,7 +2,7 @@ executing
 preLoad
 	(spec loading anySatisfy: [ :aLoadingSpec |
 	      aLoadingSpec usesIceberg isNotNil
-	      		   and: [ aLoadingSpec usesIceberg ])
+	      		   and: [ aLoadingSpec usesIceberg ]])
 	      ifFalse: [ ^ self ].
 	      
 	[ (IceRepositoryCreator new
