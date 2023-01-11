@@ -422,7 +422,7 @@ SCIMetacelloLoadSpec {
   #passwordEnvVar : 'GITHUB_TOKEN',                   // Environment variable containing the password used for authentication
   #useLatestMetacello : true,                         // Upgrade Metacello before loading
   #version : '1.0.0'                                  // Define MC version (for MC Configurations only)
-  #usesIceberg : true				      // Pharo Only | Register the tested repository with Iceberg
+  #registerInIceberg : true				      // Pharo Only | Register the tested repository with Iceberg
 }
 ```
 
