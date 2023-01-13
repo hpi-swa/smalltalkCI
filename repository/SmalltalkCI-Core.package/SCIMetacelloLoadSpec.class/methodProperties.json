@@ -36,7 +36,7 @@
 		"requiresLatestMetacello" : "ct 11/8/2020 17:39",
 		"updateMetacelloIfRequested" : "ct 11/8/2020 17:08",
 		"useLatestMetacello" : "fn 10/13/2016 17:18",
-		"useLatestMetacello:" : "fn 10/13/2016 14:30",
+	        "useLatestMetacello:" : "fn 10/13/2016 14:30",
 		"version" : "fn 2/20/2016 21:25",
 		"version:" : "fn 2/20/2016 21:25",
 		"withExceptionHandlerDo:" : "MaxLeske 7/11/2017 22:07",
