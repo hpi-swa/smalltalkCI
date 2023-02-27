@@ -229,6 +229,7 @@ select_smalltalk() {
                 GemStone64-3.5.0 GemStone64-3.4.3 GemStone64-3.3.9
                 GemStone64-3.3.2 GemStone64-3.3.0 GemStone64-3.2.12
                 GemStone64-3.1.0.6
+                GToolkit-release
                 Moose64-trunk Moose64-10 Moose64-9.0 Moose64-8.0 Moose64-7.0
                 Moose32-trunk Moose32-8.0 Moose32-7.0 Moose32-6.1 Moose32-6.0"
 
@@ -247,7 +248,7 @@ select_smalltalk() {
     set -o posix  # fixes SIGINT during select
     select selection in $images; do
       case "${selection}" in
-        Squeak*|Pharo*|GemStone*|Moose*)
+        Squeak*|Pharo*|GemStone*|GToolkit*|Moose*)
           config_smalltalk="${selection}"
           break
           ;;
@@ -500,6 +501,10 @@ run() {
     GemStone*)
       print_info "Starting GemStone build..."
       source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
+      ;;
+    GToolkit*)
+      print_info "Starting GToolkit build..."
+      source "${SMALLTALK_CI_HOME}/gtoolkit/run.sh"
       ;;
     *)
       print_error_and_exit "Unknown Smalltalk image '${config_smalltalk}'."
