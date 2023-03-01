@@ -3,58 +3,96 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-################################################################################
-# Select GToolkit image download url. Exit if smalltalk_name is unsupported.
-# Arguments:
-#   smalltalk_name
-# Return:
-#   GToolkit image download url
-################################################################################
+gtoolkit::latest_release_version() {
 
-gtoolkit::get_gt_url() {
-  local smalltalk_name=$1
+  # Get release JSON from GH API (via https://fabianlee.org/2021/02/16/bash-determining-latest-github-release-tag-and-version/)
+  local url=https://api.github.com/repos/feenkcom/gtoolkit/releases/latest
+  local json=$(curl -sL $url)
 
-  case "${smalltalk_name}" in
-    "GToolkit-release")
-      #echo "https://dl.feenk.com/gt/GlamorousToolkitLinux64-release.zip"
-      echo "https://dl.feenk.com/gt/GlamorousToolkitOSXM1-release.zip"
+  # Find the tag name line in the JSON
+  local versionLine=$(echo "$json" | grep tag_name)
+
+  # Scrape the value (adapted from https://stackoverflow.com/a/19394523)
+  local version=$(echo "$versionLine" | awk -F ': ' '/tag_name/ {gsub("\",?","");print $2}')
+
+  echo "$version"
+}
+
+gtoolkit::architecture() {
+  local gt_architecture
+
+  case "$(hardware_platform)" in
+    "arm64")
+      gt_architecture="aarch64"
       ;;
-    *)
-      print_error_and_exit "Unsupported GToolkit version '${smalltalk_name}'."
+    "x86_64")
+      gt_architecture="x86_64"
       ;;
   esac
+
+  echo "$gt_architecture"
+}
+
+gtoolkit::archive_basename() {
+  local gt_architecture=$(gtoolkit::architecture)
+  local gt_platform
+  local gt_release=$(gtoolkit::latest_release_version)
+
+  if is_linux_build; then
+    gt_platform="Linux"
+  elif is_windows_build; then
+    if [[ "$gt_architecture" == "aarch64" ]]; then
+      print_error_and_exit "unsupported build platform '$(uname -s)'."
+    fi
+    gt_platform="Windows"
+  elif is_mac_build; then
+    gt_platform="MacOS"
+  else
+    print_error_and_exit "unsupported build platform '$(uname -s)'."
+  fi
+
+  echo "GlamorousToolkit-${gt_platform}-${gt_architecture}-${gt_release}"
+}
+
+gtoolkit::archive_url() {
+  local gt_release=$(gtoolkit::latest_release_version)
+  local url_base="https://github.com/feenkcom/gtoolkit/releases/download"
+
+  echo "${url_base}/${gt_release}/$(gtoolkit::archive_basename).zip"
+}
+
+gtoolkit::vm_path() {
+  local result
+
+  if is_linux_build; then
+    result="bin/GlamorousToolkit-cli"
+  elif is_windows_build; then
+    result="bin/GlamorousToolkit-cli.exe"
+  elif is_mac_build; then
+    result="GlamorousToolkit.app/Contents/MacOS/GlamorousToolkit-cli"
+  else
+    print_error_and_exit "unsupported build platform '$(uname -s)'."
+  fi
+
+  echo "${result}"
 }
 
 ################################################################################
 # Download and move vm if necessary.
 # Globals:
 #   SMALLTALK_CI_VM
-# Arguments:
-#   smalltalk_name
 ################################################################################
+
 gtoolkit::prepare_vm() {
-  local smalltalk_name=$1
+  local vm_path="$(gtoolkit::vm_path)"
 
   # Skip in case vm is already set up
   if is_file "${SMALLTALK_CI_VM}"; then
     return 0
   fi
 
-  if ! is_dir "${config_vm_dir}"; then
-    is_dir "${config_vm_dir}" || mkdir -p "${config_vm_dir}"
-    pushd "${config_vm_dir}" > /dev/null
-    fold_start download_vm "Downloading ${smalltalk_name} vm..."
-      download_file "${gtoolkit_vm_url}" "${gtoolkit_zeroconf}"
-      bash "${gtoolkit_zeroconf}"
-    fold_end download_vm
-    popd > /dev/null
-  fi
+  export SMALLTALK_CI_VM="${SMALLTALK_CI_BUILD}/${vm_path}"
 
-  if is_headless; then
-    echo "${config_vm_dir}/gtoolkit \"\$@\"" > "${SMALLTALK_CI_VM}"
-  else
-    echo "${config_vm_dir}/gtoolkit-ui \"\$@\"" > "${SMALLTALK_CI_VM}"
-  fi
   chmod +x "${SMALLTALK_CI_VM}"
 
   if ! is_file "${SMALLTALK_CI_VM}"; then
@@ -63,29 +101,29 @@ gtoolkit::prepare_vm() {
 }
 
 ################################################################################
-# Download image if necessary and copy it to build folder.
+# Download GT (image and VM) if necessary and copy it to build folder.
 # Globals:
 #   SMALLTALK_CI_BUILD
 #   SMALLTALK_CI_CACHE
 # Arguments:
 #   smalltalk_name
 ################################################################################
-gtoolkit::download_gt() {
-  local smalltalk_name=$1
-  local gtoolkit_image_url="$(gtoolkit::get_gt_url "${smalltalk_name}")"
-  local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}.zip"
-  #local gtoolkit_zeroconf="${target}/zeroconfig"
+
+gtoolkit::prepare_gt() {
+  local smalltalk_name=$1 #Ignore currently because we are only supporting `release`
+  local gtoolkit_image_url="$(gtoolkit::archive_url)"
+  local download_name="$(gtoolkit::archive_basename)"
+  local target="${SMALLTALK_CI_CACHE}/${download_name}.zip"
 
   if ! is_file "${target}"; then
-    #pushd "${target}" > /dev/null
     fold_start download_image "Downloading ${smalltalk_name} image..."
       download_file "${gtoolkit_image_url}" "${target}"
     fold_end download_image
-    #popd > /dev/null
   fi
 
-  print_info "Extracting image..."
+  print_info "Extracting GT..."
   extract_file "${target}" "${SMALLTALK_CI_BUILD}"
+  echo "${download_name}" > "${SMALLTALK_CI_BUILD}"/version
 
   print_info "Preparing GToolkit image..."
   if ! is_file "${SMALLTALK_CI_IMAGE}"; then
@@ -93,18 +131,15 @@ gtoolkit::download_gt() {
     mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_CHANGES}"
   fi
 
-  #export SMALLTALK_CI_VM="${SMALLTALK_CI_BUILD}/bin/GlamorousToolkit-cli"
-  export SMALLTALK_CI_VM="${SMALLTALK_CI_BUILD}/GlamorousToolkit.app/Contents/MacOS/GlamorousToolkit-cli"
-
-  #From Pharo, not in Squeak. Not sure if/how to adapt
-  #if ls "${SMALLTALK_CI_BUILD}/"*.sources 1> /dev/null 2>&1; then
-  #  mv "${SMALLTALK_CI_BUILD}/"*.sources "${SMALLTALK_CI_BUILD}"
-  #fi
+  if ! vm_is_user_provided; then
+    gtoolkit::prepare_vm
+  fi
 
   if ! is_file "${SMALLTALK_CI_IMAGE}"; then
     print_error_and_exit "Failed to prepare image at '${SMALLTALK_CI_IMAGE}'."
   fi
 }
+
 
 ################################################################################
 # Run a Smalltalk script.
@@ -178,17 +213,9 @@ gtoolkit::test_project() {
 ################################################################################
 run_build() {
   if ! image_is_user_provided; then
-    case "${config_smalltalk}" in
-      GToolkit*)
-        gtoolkit::download_gt "${config_smalltalk}"
-        ;;
-      #Pharo had Moose as a second option here. Maybe we don't need the switch at all?
-    esac
+    gtoolkit::prepare_gt "${config_smalltalk}"
   fi
 
-  if ! vm_is_user_provided; then
-    gtoolkit::prepare_vm "${config_smalltalk}"
-  fi
   if ston_includes_loading; then
     gtoolkit::load_project
     check_and_consume_build_status_file

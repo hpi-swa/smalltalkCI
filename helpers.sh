@@ -193,6 +193,18 @@ is_msys2_build() {
   [[ $(uname -s) = "MSYS_NT-"* ]]
 }
 
+is_mac_build() {
+  [[ $(uname -s) = "Darwin" ]]
+}
+
+is_windows_build() {
+  is_cygwin_build ] || is_mingw64_build || is_msys2_build
+}
+
+hardware_platform() {
+  echo "$(uname -m)"
+}
+
 is_sudo_enabled() {
   $(sudo -n true > /dev/null 2>&1)
 }
