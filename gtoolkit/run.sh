@@ -143,6 +143,7 @@ gtoolkit::prepare_gt() {
 
 ################################################################################
 # Run a Smalltalk script.
+# NB. copy/pasted from Pharo
 ################################################################################
 gtoolkit::run_script() {
   local script=$1
@@ -159,6 +160,7 @@ gtoolkit::run_script() {
 
 ################################################################################
 # Load project into GToolkit image.
+# NB. copy/pasted from Pharo
 ################################################################################
 gtoolkit::load_project() {
   gtoolkit::run_script "
@@ -184,6 +186,7 @@ gtoolkit::load_project() {
 
 ################################################################################
 # Run tests for project.
+# NB. copy/pasted from Pharo
 ################################################################################
 gtoolkit::test_project() {
   gtoolkit::run_script "
