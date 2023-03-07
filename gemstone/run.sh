@@ -3,17 +3,21 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-local CLIENT_NAME="travisClient"
-local DEFAULT_DEVKIT_BRANCH="master"
-local DEFAULT_GS_HOME="${SMALLTALK_CI_BUILD}/GsDevKit_home"
-local DEVKIT_BRANCH="${DEFAULT_DEVKIT_BRANCH}"
-local DEVKIT_CLIENT_NAMES=()
-local DEVKIT_CLIENTS=()
-local DEVKIT_DOWNLOAD="https://github.com/GsDevKit/GsDevKit_home.git"
-local PHARO_CHANGES_FILE="Pharo-3.0.changes"
-local PHARO_IMAGE_FILE="Pharo-3.0.image"
 local STONE_NAME="travis"
-local USE_DEFAULT_HOME="true"
+local SUPERDOIT_BRANCH=v3
+local SUPERDOIT_DOWNLOAD=git@github.com:dalehenrich/smalltalkCI.git
+local SUPERDOIT_DOWNLOAD=https://github.com/dalehenrich/superDoit.git
+
+################################################################################
+# Clone the superDoit project, install GemStone 3.6.5.
+################################################################################
+gemstone::prepare_superdoit() {
+    fold_start clone_superDoit "Cloning superDoit..."
+      pushd "${SMALLTALK_CI_BUILD}"
+        git clone -b "${SUPERDOIT_BRANCH}" --depth 1 "${SUPERDOIT_DOWNLOAD}"
+			popd
+    fold_end clone_superDoit
+}
 
 ################################################################################
 # Clone the GsDevKit_home project.
@@ -294,33 +298,6 @@ EOF
 # Main entry point for GemStone builds.
 ################################################################################
 run_build() {
-  gemstone::parse_options "$@"
-
-  # To bypass cached behavior for local build, export TRAVIS_CACHE_ENABLED
-  # before calling run.sh
-  if is_empty "${TRAVIS_CACHE_ENABLED:-}"; then
-    TRAVIS_CACHE_ENABLED="true"
-    if is_empty "${CASHER_DIR:-}"; then
-      if is_travis_build; then
-        TRAVIS_CACHE_ENABLED="false"
-      fi
-    fi
-  fi
-  export TRAVIS_CACHE_ENABLED
-
-  gemstone::prepare_gsdevkit_home
-  gemstone::prepare_stone "${config_smalltalk}"
-  gemstone::prepare_optional_clients
-  gemstone::load_project
-  gemstone::test_project
-}
-
-################################################################################
-# Handle GemStone-specific options.
-################################################################################
-gemstone::parse_options() {
-  local devkit_client_args
-
   case "$(uname -s)" in
     "Linux"|"Darwin")
       ;;
@@ -329,47 +306,12 @@ gemstone::parse_options() {
       ;;
   esac
 
-  GS_HOME="${DEFAULT_GS_HOME}"
-
-  if is_not_empty "${GSCI_DEVKIT_BRANCH:-}"; then
-    DEVKIT_BRANCH="${GSCI_DEVKIT_BRANCH}"
-  fi
-
-  while :
-  do
-    case "${1:-}" in
-      --gs-HOME=*)
-        GS_HOME="${1#*=}"
-        shift
-        USE_DEFAULT_HOME="false"
-        ;;
-      --gs-BRANCH=*)
-        DEVKIT_BRANCH="${1#*=}"
-        shift
-        ;;
-      --gs-CLIENTS=*)
-        devkit_client_args="${1#*=}"
-        shift
-        ;;
-      --gs-*)
-        print_error_and_exit "Unknown GemStone-specific option: $1"
-        ;;
-      "")
-        break
-        ;;
-      *)
-        shift
-        ;;
-    esac
-  done
-
-  if is_empty "${devkit_client_args:-}" && is_not_empty "${GSCI_CLIENTS:-}"; then
-    devkit_client_args=${GSCI_CLIENTS}
-  fi
-
-  if is_not_empty "${devkit_client_args:-}"; then
-    IFS=' '; read -ra DEVKIT_CLIENTS <<< "${devkit_client_args}"
-  fi
-
-  export GS_HOME
+	gemstone::prepare_superdoit
+#  gemstone::prepare_gsdevkit_home
+#  gemstone::prepare_stone "${config_smalltalk}"
+#  gemstone::prepare_optional_clients
+#  gemstone::load_project
+#  gemstone::test_project
 }
+
+
