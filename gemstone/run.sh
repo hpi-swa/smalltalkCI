@@ -3,54 +3,44 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-local STONE_NAME="travis"
-local SUPERDOIT_BRANCH=v3
+local STONE_NAME="smalltalkci"
+local SUPERDOIT_BRANCH=v3.1
 local SUPERDOIT_DOWNLOAD=git@github.com:dalehenrich/smalltalkCI.git
 local SUPERDOIT_DOWNLOAD=https://github.com/dalehenrich/superDoit.git
+local GSDEVKIT_STONES_BRANCH=v1.1
+local GSDEVKIT_STONES_DOWNLOAD=git@github.com:GsDevKit/GsDevKit_stones.git
+local GSDEVKIT_STONES_DOWNLOAD=https://github.com/GsDevKit/GsDevKit_stones.git
+local STONES_REGISTRY_NAME=smalltalkCI_run
 
 ################################################################################
 # Clone the superDoit project, install GemStone 3.6.5.
 ################################################################################
-gemstone::prepare_superdoit() {
-    fold_start clone_superDoit "Cloning superDoit..."
-      pushd "${SMALLTALK_CI_BUILD}"
-        git clone -b "${SUPERDOIT_BRANCH}" --depth 1 "${SUPERDOIT_DOWNLOAD}"
-			popd
-    fold_end clone_superDoit
+gemstone::prepare_superDoit() {
+	fold_start clone_superDoit "Cloning superDoit..."
+		pushd "${SMALLTALK_CI_BUILD}"
+			git clone -b "${SUPERDOIT_BRANCH}" --depth 1 "${SUPERDOIT_DOWNLOAD}"
+			export PATH="`pwd`/superDoit/bin:$PATH"
+			fold_start install_superDoit_gemstone "Downloading GemStone for superDoit..."
+				install.sh
+				versionReport.solo
+			fold_end install_superDoit_gemstone
+		popd
+	fold_end clone_superDoit
 }
 
 ################################################################################
-# Clone the GsDevKit_home project.
+# Clone the GsDevKit_stones project
 ################################################################################
-gemstone::prepare_gsdevkit_home() {
-  if [[ "${USE_DEFAULT_HOME}" = "true" ]]; then
-    fold_start clone_gsdevkit "Cloning GsDevKit..."
-      pushd "${SMALLTALK_CI_BUILD}"
-        git clone -b "${DEVKIT_BRANCH}" --depth 1 "${DEVKIT_DOWNLOAD}"
-        cd "${GS_HOME}"
-        # pre-clone /sys/local, so that travis can skip backups
-        ${GS_HOME}/bin/private/clone_sys_local
-        # arrange to skip backups
-        cp ${GS_HOME}/tests/sys/local/client/tode-scripts/* ${GS_HOME}/sys/local/client/tode-scripts
-
-        cp ${GS_HOME}/tests/sys/local/gsdevkit_bin/* ${GS_HOME}/sys/local/gsdevkit_bin
-
-        if is_travis_build; then
-          # Operating system setup already performed on Travis CI
-          touch ${GS_HOME}/bin/.gsdevkitSysSetup
-        fi
-
-        # Make sure the GsDevKit_home is using $SMALLTALK_CI_HOME in $GS_HOME/shared/repos
-        ln -s ${SMALLTALK_CI_HOME} ${GS_HOME}/shared/repos/smalltalkCI
-
-      popd
-    fold_end clone_gsdevkit
-
-    export GS_TRAVIS=true # install special key files for running GemStone on Travis hosts
-
-  else
-    print_info "Using existing GsDevKit_home clone: \${GS_HOME}=${GS_HOME}"
-  fi
+gemstone::prepare_gsdevkit_stones() {
+	fold_start clone_gsdevkit_stones "Cloning GsDevKit_stones..."
+		pushd "${SMALLTALK_CI_BUILD}"
+			git clone -b "${GSDEVKIT_STONES_BRANCH}" --depth 1 "${GSDEVKIT_STONES_DOWNLOAD}"
+			export PATH="`pwd`/GsDevKit_stones/bin:$PATH"
+		popd
+		export STONES_DATA_HOME="$SMALLTALK_CI_BUILD/.stones_data_home"
+		createRegistry.solo $STONES_REGISTRY_NAME
+		registryReport.solo
+	fold_end clone_gsdevkit_stones
 }
 
 ################################################################################
@@ -61,141 +51,9 @@ gemstone::prepare_stone() {
 
   gemstone_version="$(echo $1 | cut -f2 -d-)"
 
-  local gemstone_cached_extent_file="${SMALLTALK_CI_CACHE}/gemstone/extents/${gemstone_version}_extent0.tode.dbf"
-
-  if [[ "${USE_DEFAULT_HOME}" = "true" ]]; then
-    fold_start install_server "Installing server..."
-      ${GS_HOME}/bin/installServer
-    fold_end install_server
-  fi
-
-  if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone"; then
-    print_info "Creating GemStone extent cache..."
-    mkdir "${SMALLTALK_CI_CACHE}/gemstone"
-    if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/extents"; then
-      mkdir "${SMALLTALK_CI_CACHE}/gemstone/extents"
-    fi
-    if ! is_dir "${SMALLTALK_CI_CACHE}/gemstone/pharo"; then
-      mkdir "${SMALLTALK_CI_CACHE}/gemstone/pharo"
-    fi
-  fi
-
-  if [[ "${TRAVIS_CACHE_ENABLED:-}" = "false" ]] ||
-       [[ "${GS_HOME}" != "${DEFAULT_GS_HOME}" ]]; then
-    print_info "Travis dependency cache not being used"
-  else
-    fold_start prepare_cache "Preparing Travis caches..."
-      if ! is_dir "${SMALLTALK_CI_VMS}/Pharo-3.0"; then
-        mkdir -p "${SMALLTALK_CI_VMS}/Pharo-3.0"
-        print_info "Downloading Pharo-3.0 vm to cache"
-        pushd "${SMALLTALK_CI_VMS}/Pharo-3.0" > /dev/null
-          download_file "get.pharo.org/vm30" "$(pwd)/zeroconfig"
-          bash "$(pwd)/zeroconfig"
-        popd > /dev/null
-      fi
-
-      if ! is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}"; then
-        print_info "Downloading Pharo-3.0 image to cache..."
-        pushd ${SMALLTALK_CI_CACHE} > /dev/null
-          download_file "get.pharo.org/30" "$(pwd)/pharo30_zeroconfig"
-          bash "$(pwd)/pharo30_zeroconfig"
-          mv "Pharo.image" "${PHARO_IMAGE_FILE}"
-          mv "Pharo.changes" "${PHARO_CHANGES_FILE}"
-        popd > /dev/null
-      fi
-
-      if is_file "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}"; then
-        if is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
-          print_info "Utilizing cached gsDevKitCommandLine image..."
-          cp "${SMALLTALK_CI_CACHE}/${PHARO_IMAGE_FILE}" ${GS_HOME}/shared/pharo/Pharo.image
-          cp "${SMALLTALK_CI_CACHE}/${PHARO_CHANGES_FILE}" ${GS_HOME}/shared/pharo/Pharo.changes
-          ln -s "${SMALLTALK_CI_VMS}/Pharo-3.0/pharo" ${GS_HOME}/shared/pharo/pharo
-          ln -s "${SMALLTALK_CI_VMS}/Pharo-3.0/pharo-ui" ${GS_HOME}/shared/pharo/pharo-ui
-          ln -s "${SMALLTALK_CI_VMS}/Pharo-3.0/pharo-vm" ${GS_HOME}/shared/pharo/pharo-vm
-          cp "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image" ${GS_HOME}/shared/pharo/
-          cp "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.changes" ${GS_HOME}/shared/pharo/
-        fi
-      fi
-    fold_end prepare_cache
-  fi
-
   fold_start create_stone "Creating stone..."
-    if is_file "${GS_HOME}/bin/.smalltalkCI_create_arg_supported"; then
-      config_stone_create_arg="-z ${config_ston}"
-    fi
-
-    if [[ "${TRAVIS_CACHE_ENABLED:-}" = "false" ]]; then
       ${GS_HOME}/bin/createStone ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}"
-    else
-      if ! is_file "${gemstone_cached_extent_file}"; then
-        ${GS_HOME}/bin/createStone ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}"
-        cp "${GS_HOME}/server/stones/${STONE_NAME}/snapshots/extent0.tode.dbf" ${gemstone_cached_extent_file}
-      else
-        ${GS_HOME}/bin/createStone -t "${gemstone_cached_extent_file}" ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}"
-      fi
-
-      if ! is_file "${SMALLTALK_CI_CACHE}/gemstone/pharo/gsDevKitCommandLine.image"; then
-        cp ${GS_HOME}/shared/pharo/gsDevKitCommandLine.* "${SMALLTALK_CI_CACHE}/gemstone/pharo/"
-      fi
-    fi
   fold_end create_stone
-}
-
-################################################################################
-# Optionally create GemStone clients.
-################################################################################
-gemstone::prepare_optional_clients() {
-  local client_version
-  local client_extension
-  local client_name
-
-  if is_empty "${DEVKIT_CLIENTS:-}"; then
-    return
-  fi
-
-  for version in "${DEVKIT_CLIENTS[@]}"
-  do
-    case "${version}" in
-      "Pharo32-6.0"|"Pharo-6.0")
-        client_version="Pharo6.0"
-        client_extension="Pharo6.0"
-        ;;
-      "Pharo32-6.1"|"Pharo-6.1")
-        client_version="Pharo6.1"
-        client_extension="Pharo6.1"
-        ;;
-      "Pharo32-5.0"|"Pharo-5.0")
-        client_version="Pharo5.0"
-        client_extension="Pharo5.0"
-        ;;
-      "Pharo32-4.0"|"Pharo-4.0")
-        client_version="Pharo4.0"
-        client_extension="Pharo4.0"
-        ;;
-      "Pharo32-3.0"|"Pharo-3.0")
-        client_version="Pharo3.0"
-        client_extension="Pharo3.0"
-        ;;
-      *)
-        print_error_and_exit "Unsupported client version '${version}'."
-        ;;
-    esac
-
-    client_name="${CLIENT_NAME}_${client_extension}"
-    DEVKIT_CLIENT_NAMES+=( "${client_name}" )
-
-    gemstone::prepare_client "${client_version}" "${client_name}"
-  done
-}
-
-gemstone::prepare_client() {
-  local client_version=$1
-  local client_name=$2
-
-  fold_start "create_${client_name}" "Creating client ${client_name}..."
-    ${GS_HOME}/bin/createClient -t pharo "${client_name}" -v ${client_version} -s "${STONE_NAME}" -z "${config_ston}"
-  fold_end "create_${client_name}"
-  check_and_consume_build_status_file
 }
 
 ################################################################################
@@ -306,9 +164,9 @@ run_build() {
       ;;
   esac
 
-	gemstone::prepare_superdoit
-#  gemstone::prepare_gsdevkit_home
-#  gemstone::prepare_stone "${config_smalltalk}"
+	gemstone::prepare_superDoit
+	gemstone::prepare_gsdevkit_stones
+  gemstone::prepare_stone "${config_smalltalk}"
 #  gemstone::prepare_optional_clients
 #  gemstone::load_project
 #  gemstone::test_project
