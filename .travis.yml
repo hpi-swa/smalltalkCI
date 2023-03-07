@@ -24,10 +24,10 @@ aliases:
 jobs:
   include:
     - stage: "Prioritized jobs"
-      smalltalk: Squeak-5.1
-    - smalltalk: Pharo-stable
-    - smalltalk: GemStone-3.3.2
-      env: GSCI_CLIENTS="Pharo-5.0 Pharo-4.0 Pharo-3.0"
+      smalltalk: Squeak64-5.3
+    - smalltalk: Pharo32-stable
+    - smalltalk: GemStone64-3.5.0
+      env: GSCI_CLIENTS="Pharo32-5.0 Pharo32-4.0 Pharo32-3.0"
       <<: *with-gemstone-cache-enabled
 
     - language: bash
@@ -35,83 +35,99 @@ jobs:
       sudo: false
       script: tests/all_tests.sh
 
-    - smalltalk: Squeak-5.1
+    - smalltalk: Squeak32-5.3
       os: osx
-    - smalltalk: Pharo-stable
+    - smalltalk: Pharo32-stable
       os: osx
-    - smalltalk: GemStone-3.3.2
+    - smalltalk: GemStone64-3.5.0
       os: osx
       <<: *with-gemstone-cache-enabled
 
-    - smalltalk: Squeak-5.1
+    - smalltalk: Squeak32-5.3
       <<: *ensure-smalltalkci-can-fail
-    - smalltalk: Pharo-stable
+    - smalltalk: Pharo32-stable
       <<: *ensure-smalltalkci-can-fail
-    - smalltalk: GemStone-3.3.2
+    - smalltalk: GemStone64-3.5.0
       <<: *ensure-smalltalkci-can-fail
-      env: GSCI_CLIENTS="Pharo-5.0 Pharo-3.0" # latest and oldest clients
+      env: GSCI_CLIENTS="Pharo32-5.0 Pharo32-3.0" # latest and oldest clients
       <<: *with-gemstone-cache-enabled
 
     - stage: "Allowed failures"
-      smalltalk: Squeak-trunk
+      smalltalk: Squeak64-trunk
     - smalltalk: Pharo64-stable
     - smalltalk: Pharo64-alpha
-    - smalltalk: Pharo-alpha
-    - smalltalk: Moose-trunk
+    - smalltalk: Pharo32-alpha
+    - smalltalk: Moose32-trunk
 
     - stage: "Linux jobs"
-      smalltalk: Squeak-5.0
-    - smalltalk: Squeak-4.6
-    - smalltalk: Squeak-4.5
+      smalltalk: Squeak64-5.2
+    - smalltalk: Squeak32-5.1
+    - smalltalk: Squeak32-5.0
+    - smalltalk: Squeak32-4.6
+    - smalltalk: Squeak32-4.5
+    - smalltalk: Pharo64-9.0
+    - smalltalk: Pharo64-8.0
     - smalltalk: Pharo64-7.0
     - smalltalk: Pharo64-6.1
     - smalltalk: Pharo64-6.0
-    - smalltalk: Pharo-7.0
-    - smalltalk: Pharo-6.0
-    - smalltalk: Pharo-6.1
-    - smalltalk: Pharo-5.0
-    - smalltalk: Pharo-4.0
-    - smalltalk: Pharo-3.0
-    - smalltalk: Moose-6.0
-    - smalltalk: GemStone-3.2.15
+    - smalltalk: Pharo32-9.0
+    - smalltalk: Pharo32-8.0
+    - smalltalk: Pharo32-7.0
+    - smalltalk: Pharo32-6.0
+    - smalltalk: Pharo32-6.1
+    - smalltalk: Pharo32-5.0
+    - smalltalk: Pharo32-4.0
+    - smalltalk: Pharo32-3.0
+    - smalltalk: Moose64-8.0
+    - smalltalk: Moose64-7.0
+    - smalltalk: Moose32-7.0
+    - smalltalk: Moose32-6.0
+    - smalltalk: GemStone64-3.4.3
       <<: *with-gemstone-cache-enabled
-    - smalltalk: GemStone-3.1.0.6
+    - smalltalk: GemStone64-3.3.9
+      <<: *with-gemstone-cache-enabled
+    - smalltalk: GemStone64-3.2.17
+      <<: *with-gemstone-cache-enabled
+    - smalltalk: GemStone64-3.1.0.6
       <<: *with-gemstone-cache-enabled
 
     - stage: "Mac jobs"
-      smalltalk: Squeak-5.0
+      smalltalk: Squeak64-5.2
       os: osx
-    - smalltalk: Squeak-4.6
+    - smalltalk: Squeak32-5.1
       os: osx
-    - smalltalk: Squeak-4.5
+    - smalltalk: Squeak32-5.0
       os: osx
-    - smalltalk: Pharo-7.0
+    - smalltalk: Squeak32-4.6
       os: osx
-    - smalltalk: Pharo-6.0
+    - smalltalk: Squeak32-4.5
       os: osx
-    - smalltalk: Pharo-6.1
+    - smalltalk: Pharo32-9.0
       os: osx
-    - smalltalk: Pharo-5.0
+    - smalltalk: Pharo32-8.0
       os: osx
-    - smalltalk: Pharo-4.0
+    - smalltalk: Pharo32-7.0
       os: osx
-    - smalltalk: Pharo-3.0
-      os: osx      
-#    - smalltalk: GemStone-3.2.14
+    - smalltalk: Pharo32-6.0
+      os: osx
+    - smalltalk: Pharo32-6.1
+      os: osx
+    - smalltalk: Pharo32-5.0
+      os: osx
+    - smalltalk: Pharo32-4.0
+      os: osx
+    - smalltalk: Pharo32-3.0
+      os: osx
+#    - smalltalk: GemStone64-3.2.14
 #      os: osx
 ##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
-#    - smalltalk: GemStone-3.1.0.6
+#    - smalltalk: GemStone64-3.1.0.6
 #      os: osx
 ##      env: GSCI_DEVKIT_BRANCH=dev  # only use for development
 
   allow_failures:
-    - smalltalk: Squeak-trunk
+    - smalltalk: Squeak64-trunk
     - smalltalk: Pharo64-alpha
-    - smalltalk: Pharo-alpha
-    - smalltalk: Moose-trunk
-    # Temporarily allow 64bit images to fail (see #331)
-    - smalltalk: Pharo64-stable
-    - smalltalk: Pharo64-7.0
-    - smalltalk: Pharo64-6.1
-    - smalltalk: Pharo64-6.0
+    - smalltalk: Pharo32-alpha
+    - smalltalk: Moose32-trunk
   fast_finish: true

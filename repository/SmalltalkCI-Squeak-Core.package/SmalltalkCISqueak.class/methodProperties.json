@@ -1,10 +1,13 @@
 {
 	"class" : {
 		"allPackageNames" : "fn 6/22/2016 00:44",
+		"assureDirectoryExistence:" : "smalltalkCI 9/2/2020 15:57",
+		"chooseOptionFrom:title:" : "ct 5/25/2022 14:04",
 		"classesInPackage:" : "fn 11/23/2016 15:37",
 		"codeCoverageClass" : "fn 10/8/2016 14:57",
 		"deleteFile:" : "fn 10/16/2016 16:14",
 		"deprecationWarning" : "fn 3/26/2018 14:56",
+		"extensionMethodsInPackage:" : "ct 9/29/2022 16:49",
 		"fileExists:" : "fn 4/14/2016 00:55",
 		"forceNewFileNamed:do:" : "fn 11/21/2017 11:55",
 		"getAuthor" : "fn 1/31/2016 21:37",
@@ -24,6 +27,7 @@
 		"platformSymbol" : "EstebanLorenzano 1/26/2016 17:37",
 		"primEnvironmentAt:" : "fn 10/9/2016 21:02",
 		"primGetEnvironmentStrings" : "fn 10/9/2016 21:01",
+		"promptToProceedImpl" : "ct 5/25/2022 14:06",
 		"quitImage" : "fn 10/11/2016 18:42",
 		"readOnlyFileNamed:do:" : "fn 11/20/2017 13:34",
 		"saveImage" : "fn 10/4/2016 16:34",
@@ -33,8 +37,11 @@
 		"workingDirectory" : "fn 10/16/2016 16:29" },
 	"instance" : {
 		"adjustDefaultTimeoutIfRequested" : "fn 11/9/2016 17:16",
-		"finishUpAfterLoading" : "fn 11/1/2017 12:06",
+		"finishUpAfterLoading" : "fn 12/11/2018 10:59",
+		"finishUpAfterTesting" : "fn 12/11/2018 11:00",
 		"imageInfo" : "fn 10/21/2016 16:20",
-		"prepareForLoading" : "fn 11/1/2017 12:06",
-		"prepareForTesting" : "fn 11/1/2017 12:06",
-		"readSTONSpec:" : "fn 11/20/2017 13:49" } }
+		"installCustomToolSet" : "fn 12/11/2018 10:58",
+		"prepareForLoading" : "fn 12/11/2018 10:59",
+		"prepareForTesting" : "fn 12/11/2018 10:59",
+		"readSTONSpec:" : "fn 11/20/2017 13:49",
+		"uninstallCustomToolSet" : "fn 12/11/2018 10:58" } }

@@ -1,3 +1,5 @@
 ansi
 ansiRed
-	^ self escape, '[31m'
+	^ self isColorful
+		ifTrue: [ self escape, '[31m' ]
+		ifFalse: [ '' ]

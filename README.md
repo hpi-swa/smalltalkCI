@@ -1,8 +1,10 @@
-# smalltalkCI [![Build Status][travis_b]][travis_url] [![AppVeyor status][appveyor_b]][appveyor_url] [![Coverage Status][coveralls_b]][coveralls_url]
+# smalltalkCI
+
+[![GitHub Workflow Status][github_action_b]][github_action_url] [![Coverage Status][coveralls_b]][coveralls_url]
 
 Community-supported framework for testing Smalltalk projects on Linux, OS X, and
-Windows with built-in support for [Travis CI][travisCI], [AppVeyor][appveyor],
-and [GitLab CI/CD][gitlab_ci_cd].
+Windows with built-in support for [GitHub Actions][github_action],
+[GitLab CI/CD][gitlab_ci_cd], [Travis CI][travisCI], and [AppVeyor][appveyor].
 
 It is inspired by [builderCI][builderCI] and aims to provide a uniform and easy
 way to load and test Smalltalk projects.
@@ -13,9 +15,9 @@ way to load and test Smalltalk projects.
 ## Table Of Contents
 
 - [Features](#features)
-- [How to enable Travis CI for your Smalltalk project](#how-to-travis)
+- [How to set up Continuous Integration for your Smalltalk project](#how-to-ci)
 - [How to test your Smalltalk project locally](#how-to-local)
-- [List Of Supported Images](#images)
+- [List of Supported Images](#images)
 - [Templates](#templates)
 - [Further Configuration](#further-configuration)
 - [Contributing](#contributing)
@@ -24,66 +26,81 @@ way to load and test Smalltalk projects.
 
 ## Features
 
-- Simple configuration via [`.smalltalk.ston`](#minimal-smalltalkston-template),
-  [`.travis.yml`](#travisyml-template), [`appveyor.yml`](#appveyoryml-template),
-  and [`.gitlab-ci.yml`](#gitlab-ciyml-template)
 - Compatible across different Smalltalk dialects (Squeak, Pharo, GemStone)
-- Runs on Travis CI's [container-based infrastructure][cbi]
-  ([*"Builds start in seconds"*][bsis])
-- Supports Linux, macOS, and Windows and can be run locally (e.g. for debug
+- Runs on GitHub Actions, GitLab CI, Travis CI, AppVeyor, and other CI services
+- Simple configuration via [`.smalltalk.ston`](#minimal-smalltalkston-template),
+  [`setup-smalltalkCI` action][github_action],
+  [`.gitlab-ci.yml`](#gitlab-ci-template),
+  [`.travis.yml`](#travis-ci-template), and
+  [`appveyor.yml`](#appveyor-template)
+- Supports Linux, macOS, and Windows and can be run locally (e.g. for debugging
   purposes)
-- Exports test results in the JUnit XML format as part of the Travis build log
-- Supports [coverage testing](#coverage-testing) and publishes results to
-  [coveralls.io][coveralls]
+- Supports [coverage testing][coverage_docs]
+- Exports test results in the JUnit XML format as part of the build log
 
 
-## <a name="how-to-travis"/>How To Enable Travis CI For Your Smalltalk Project
+## <a name="how-to-ci"/>How To Set Up Continuous Integration For Your Smalltalk Project
 
-1. Export your project in a [compatible format](#load-specs) (e.g.
-   [FileTree][filetree]).
-2. [Enable Travis CI for your repository][travisHowTo].
-3. Create a `.travis.yml` and specifiy the [Smalltalk image(s)](#images) you
-   want your project to be tested against.
-4. Create a `.smalltalk.ston` ([see below for templates](#templates)) and
-   specify how to load and test your project.
-5. Push all of this to GitHub and enjoy your fast Smalltalk builds!
+1. Export your project in a [compatible format](#load-specs) (e.g.,
+   [Tonel][tonel] or [FileTree][filetree]).
+2. Enable a CI service for your repository (e.g., [GitHub Actions][github_actions]).
+3. Create a config file for your CI service ([see below for templates](#templates)) and specify the [Smalltalk image(s)](#images) you want your project to be tested against.
+4. Create a [`.smalltalk.ston` file](#minimal-smalltalkston-template) and specify how to load and test your project.
+5. Push all of this to your repository and enjoy your fast Smalltalk builds!
 
 
 ## <a name="how-to-local"/>How To Test Your Smalltalk Project Locally
 
 You can use smalltalkCI to run your project's tests locally. Just [clone][clone]
-or [download][download] smalltalkCI and then you are able to initiate a local
-build in headful mode like this:
+or [download][download] smalltalkCI and then you can initiate a local build in
+headful mode like this:
 
 ```bash
-bin/smalltalkci --headful /path/to/your/project/.smalltalk.ston
+bin/smalltalkci -s <IMAGE> --headful /path/to/your/project/.smalltalk.ston
 ```
 
-`IMAGE` can be one of the [supported images](#images). You may also want to
+`<IMAGE>` can be one of the [supported images](#images). You may also want to
 have a look at [all supported options](#further-configuration).
+
+On Windows, you need to run smalltalkCI from a Bash shell such as 
+[Git Bash][git_bash] or Cygwin, MinGW, or MSYS2.
 
 *Please note: All builds will be stored in `_builds` within smalltalkCI's
 directory. You may want to delete single or all builds if you don't need them as
 they can take up a lot of space on your drive.*
 
 
-## <a name="images"/>List Of Supported Images
+## <a name="images"/>List of Supported Images
 
-| [Squeak][squeak] | [Pharo][pharo]     | [GemStone][gemstone] | [Moose][moose] |
-| ---------------- | ------------------ | -------------------- | -------------- |
-| `Squeak-trunk`   | `Pharo(64)-alpha`  | `GemStone-3.3.x`     | `Moose-trunk`  |
-| `Squeak-5.1`     | `Pharo(64)-stable` | `GemStone-3.2.x`     | `Moose-6.1`    |
-| `Squeak-5.0`     | `Pharo(64)-7.0`    | `GemStone-3.1.0.x`   | `Moose-6.0`    |
-| `Squeak-4.6`     | `Pharo(64)-6.1`    | `Gemstone-2.4.x`     |                |
-| `Squeak-4.5`     | `Pharo(64)-6.0`    |                      |                |
-|                  | `Pharo-5.0`        |                      |                |
-|                  | `Pharo-4.0`        |                      |                |
-|                  | `Pharo-3.0`        |                      |                |
+| [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  |
+| ---------------- | ---------------- | -------------------- | --------------- |
+| `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.5.x`   | `Moose64-trunk` |
+| `Squeak64-6.0`   | `Pharo64-stable` | `GemStone64-3.4.x`   | `Moose64-10`    | 
+| `Squeak64-5.3`   | `Pharo64-11`     | `GemStone64-3.3.x`   | `Moose64-9.0`   |
+| `Squeak64-5.2`   | `Pharo64-10`     | `GemStone64-3.2.x`   | `Moose64-8.0`   |
+| `Squeak64-5.1`   | `Pharo64-9.0`    | `GemStone64-3.1.0.x` | `Moose64-7.0`   |
+| `Squeak32-trunk` | `Pharo64-8.0`    | `Gemstone64-2.4.x`   | `Moose32-trunk` |
+| `Squeak32-6.0`   | `Pharo64-7.0`    |                      | `Moose32-6.1`   |
+| `Squeak32-5.3`   | `Pharo64-6.1`    |                      | `Moose32-6.0`   |
+| `Squeak32-5.2`   | `Pharo32-6.0`    |                      |                 |
+| `Squeak32-5.1`   | `Pharo32-alpha`  |                      |                 |
+| `Squeak32-5.0`   | `Pharo32-stable` |                      |                 |
+| `Squeak32-4.6`   | `Pharo32-11`     |                      |                 |
+| `Squeak32-4.5`   | `Pharo32-10`     |                      |                 |
+|                  | `Pharo32-9.0`    |                      |                 |
+|                  | `Pharo32-8.0`    |                      |                 |
+|                  | `Pharo32-7.0`    |                      |                 |
+|                  | `Pharo32-6.1`    |                      |                 |
+|                  | `Pharo32-6.0`    |                      |                 |
+|                  | `Pharo32-5.0`    |                      |                 |
+|                  | `Pharo32-4.0`    |                      |                 |
+|                  | `Pharo32-3.0`    |                      |                 |
+|                  |                  |                      |                 |
 
 
-## <a name="templates"/>Templates
+## Templates
 
-### Minimal `.smalltalk.ston` Template
+### <a name="minimal-smalltalkston-template"/>Minimal `.smalltalk.ston` Template
 
 The following `SmalltalkCISpec` will load `BaselineOfMyProject` using
 Metacello/FileTree from the `./packages` directory in Squeak, Pharo, and
@@ -101,7 +118,40 @@ SmalltalkCISpec {
 }
 ```
 
-### `.travis.yml` Template
+### GitHub Action Templates
+
+For GitHub Action templates, please refer to the Marketplace listing of the
+[`setup-smalltalkCI` action][github_action].
+
+### GitLab CI Template
+
+<details>
+<summary><code>.gitlab-ci.yml</code></summary>
+
+```yml
+image: hpiswa/smalltalkci
+
+Squeak64Trunk:
+  script: smalltalkci -s "Squeak64-trunk"
+
+Squeak325.1:
+  script: smalltalkci -s "Squeak32-5.1"
+
+Pharo64Alpha:
+  script: smalltalkci -s "Pharo64-alpha"
+
+Pharo327.0:
+  script: smalltalkci -s "Pharo32-7.0"
+
+# ...
+```
+
+</details>
+
+### Travis CI Templates
+
+<details>
+<summary><code>.travis.yml</code></summary>
 
 ```yml
 language: smalltalk
@@ -114,30 +164,24 @@ os:
 
 # Select compatible Smalltalk image(s)
 smalltalk:
-  - Squeak-trunk
-  - Squeak-5.1
-  - Squeak-5.0
-  - Squeak-4.6
-  - Squeak-4.5
-
-  - Pharo-alpha
-  - Pharo-stable
-  - Pharo-7.0
-  - Pharo-6.1
-  - Pharo-6.0
-  - Pharo-5.0
-  - Pharo-4.0
-  - Pharo-3.0
-
+  - Squeak64-trunk
+  - Squeak64-5.1
+  - Squeak32-4.6
+  - Squeak32-4.5
+  # ...
   - Pharo64-alpha
   - Pharo64-stable
   - Pharo64-7.0
   - Pharo64-6.1
-  - Pharo64-6.0
-
-  - GemStone-3.3.0
-  - GemStone-3.2.12
-  - GemStone-3.1.0.6
+  # ...
+  - Pharo32-alpha
+  - Pharo32-stable
+  - Pharo32-6.1
+  # ...
+  - GemStone64-3.3.2
+  - GemStone64-3.2.12
+  - GemStone64-3.1.0.6
+  # ...
 
 # Override `script` to customize smalltalkCI invocation, e.g.:
 #script:
@@ -151,62 +195,10 @@ smalltalk:
 
 ```
 
-### `appveyor.yml` Template
-
-```yml
-environment:
-  CYG_ROOT: C:\cygwin
-  CYG_BASH: C:\cygwin\bin\bash
-  CYG_CACHE: C:\cygwin\var\cache\setup
-  CYG_EXE: C:\cygwin\setup-x86.exe
-  CYG_MIRROR: http://cygwin.mirror.constant.com
-  SCI_RUN: /cygdrive/c/smalltalkCI-master/bin/smalltalkci
-  matrix:
-    # Currently, only Squeak and Pharo images are supported on AppVeyor.
-    - SMALLTALK: Squeak-trunk
-    - SMALLTALK: Squeak-5.0
-    - SMALLTALK: Pharo-6.0
-    - SMALLTALK: Pharo-5.0
-    # ...
-
-platform:
-  - x86
-
-install:
-  - '%CYG_EXE% -dgnqNO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip'
-  - ps: Start-FileDownload "https://github.com/hpi-swa/smalltalkCI/archive/master.zip" "C:\smalltalkCI.zip"
-  - 7z x C:\smalltalkCI.zip -oC:\ -y > NULL
-
-build: false
-
-test_script:
-  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN"'
-```
-
-### `.gitlab-ci.yml` Template
-
-```yml
-image: hpiswa/smalltalkci
-
-SqueakTrunk:
-  script: smalltalkci -s "Squeak-trunk"
-
-Squeak5.1:
-  script: smalltalkci -s "Squeak-5.1"
-
-PharoAlpha:
-  script: smalltalkci -s "Pharo-alpha"
-  
-Pharo7.0:
-  script: smalltalkci -s "Pharo-7.0"
-
-# ...
-```
-
-### Advanced Templates
+</details>
 
 <details>
-<summary>`.travis.yml` template with multiple smalltalkCI configurations</summary>
+<summary><code>.travis.yml</code> with multiple smalltalkCI configurations</summary>
 
 The build matrix can be expanded with multiple smalltalkCI configuration files
 using the `smalltalk_config` key:
@@ -216,8 +208,8 @@ language: smalltalk
 sudo: false
 
 smalltalk:
-  - Squeak-trunk
-  - Pharo-alpha
+  - Squeak64-trunk
+  - Pharo64-alpha
 
 smalltalk_config:
   - .smalltalk.ston
@@ -241,17 +233,17 @@ SmalltalkCISpec {
 
 #### Resulting build matrix
 
-| Smalltalk      | Config               | OS    |
-| -------------- | -------------------- | ----- |
-| `Squeak-trunk` | `.smalltalk.ston`    | Linux |
-| `Squeak-trunk` | `.bleedingEdge.ston` | Linux |
-| `Pharo-alpha`  | `.smalltalk.ston`    | Linux |
-| `Pharo-alpha`  | `.bleedingEdge.ston` | Linux |
+| Smalltalk        | Config               | OS    |
+| ---------------- | -------------------- | ----- |
+| `Squeak64-trunk` | `.smalltalk.ston`    | Linux |
+| `Squeak64-trunk` | `.bleedingEdge.ston` | Linux |
+| `Pharo64-alpha`  | `.smalltalk.ston`    | Linux |
+| `Pharo64-alpha`  | `.bleedingEdge.ston` | Linux |
 
 </details>
 
 <details>
-<summary>`.travis.yml` template with additional jobs</summary>
+<summary><code>.travis.yml</code> with additional jobs</summary>
 
 It is possible to add additional jobs to the [build matrix][build_matrix_travis]
 using the `smalltalk_config` key:
@@ -263,14 +255,14 @@ sudo: false
 os: osx
 
 smalltalk:
-  - Squeak-5.1
-  - Pharo-6.0
+  - Squeak32-5.1
+  - Pharo32-6.0
 
 matrix:
   include:
-    - smalltalk: Squeak-trunk
+    - smalltalk: Squeak64-trunk
       smalltalk_config: .bleedingEdge.ston
-    - smalltalk: Pharo-alpha
+    - smalltalk: Pharo64-alpha
       smalltalk_config: .bleedingEdge.ston
   allow_failures: # Allow bleeding edge builds to fail
     - smalltalk_config: .bleedingEdge.ston
@@ -278,17 +270,55 @@ matrix:
 
 #### Resulting build matrix
 
-| Smalltalk      | Config               | OS    |
-| -------------- | -------------------- | ----- |
-| `Squeak-5.1`   | `.smalltalk.ston`    | macOS |
-| `Pharo-6.0`    | `.smalltalk.ston`    | macOS |
-| `Squeak-trunk` | `.bleedingEdge.ston` | macOS |
-| `Pharo-alpha`  | `.bleedingEdge.ston` | macOS |
+| Smalltalk        | Config               | OS    |
+| ---------------- | -------------------- | ----- |
+| `Squeak32-5.1`   | `.smalltalk.ston`    | macOS |
+| `Pharo32-6.0`    | `.smalltalk.ston`    | macOS |
+| `Squeak64-trunk` | `.bleedingEdge.ston` | macOS |
+| `Pharo64-alpha`  | `.bleedingEdge.ston` | macOS |
+
+</details>
+
+### AppVeyor Templates
+
+<details>
+<summary><code>appveyor.yml</code></summary>
+
+```yml
+# This is a 64-bit environment, so use 64-bit Cygwin
+environment:
+  CYG_ROOT: C:\cygwin64
+  CYG_BASH: C:\cygwin64\bin\bash
+  CYG_CACHE: C:\cygwin64\var\cache\setup
+  CYG_EXE: C:\cygwin64\setup-x86_64.exe
+  CYG_MIRROR: http://cygwin.mirror.constant.com
+  SCI_RUN: /cygdrive/c/smalltalkCI-master/bin/smalltalkci
+  matrix:
+    # Currently, only Squeak and Pharo images are supported on AppVeyor.
+    - SMALLTALK: Squeak64-trunk
+    - SMALLTALK: Squeak64-5.0
+    - SMALLTALK: Pharo64-alpha
+    - SMALLTALK: Pharo64-6.0
+    # ...
+
+platform:
+  - x64
+
+install:
+  - '%CYG_EXE% -dgnqNO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip'
+  - ps: Start-FileDownload "https://github.com/hpi-swa/smalltalkCI/archive/master.zip" "C:\smalltalkCI.zip"
+  - 7z x C:\smalltalkCI.zip -oC:\ -y > NULL
+
+build: false
+
+test_script:
+  - '%CYG_BASH% -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; $SCI_RUN"'
+```
 
 </details>
 
 <details>
-  <summary>`appveyor.yml` template with additional jobs</summary>
+  <summary><code>appveyor.yml</code> with additional jobs</summary>
 
 It is possible to add additional jobs to the
 [build matrix][build_matrix_appveyor] using `environment.matrix` as follows:
@@ -303,11 +333,11 @@ environment:
   SCI_RUN: /cygdrive/c/SMALLTALKCI-master/bin/smalltalkci
 
   matrix:
-    - SMALLTALK: Squeak-5.1
-    - SMALLTALK: Squeak-trunk
+    - SMALLTALK: Squeak32-5.1
+    - SMALLTALK: Squeak64-trunk
       SMALLTALK_CONFIG: .bleedingEdge.ston
-    - SMALLTALK: Pharo-6.0
-    - SMALLTALK: Pharo-alpha
+    - SMALLTALK: Pharo32-6.0
+    - SMALLTALK: Pharo64-alpha
       SMALLTALK_CONFIG: .bleedingEdge.ston
 
 platform:
@@ -326,15 +356,14 @@ test_script:
 
 #### Resulting build matrix
 
-| Smalltalk      | Config               |
-| -------------- | -------------------- |
-| `Squeak-5.1`   | `.smalltalk.ston`    |
-| `Squeak-trunk` | `.bleedingEdge.ston` |
-| `Pharo-6.0`    | `.smalltalk.ston`    |
-| `Pharo-alpha`  | `.bleedingEdge.ston` |
+| Smalltalk        | Config               |
+| ---------------- | -------------------- |
+| `Squeak32-5.1`   | `.smalltalk.ston`    |
+| `Squeak64-trunk` | `.bleedingEdge.ston` |
+| `Pharo32-6.0`    | `.smalltalk.ston`    |
+| `Pharo64-alpha`  | `.bleedingEdge.ston` |
 
 </details>
-
 
 ## Further Configuration
 
@@ -381,14 +410,19 @@ SCIMetacelloLoadSpec {
   #baseline : 'MyProject',                            // Define MC Baseline
   #configuration : 'MyProject',                       // Alternatively, define MC Configuration
   #directory : 'packages',                            // Path to packages if FileTree is used
-  #repository : 'http://smalltalkhub.com/mc/...',     // Alternatively, define MC repository
-  #onWarningLog : true,                               // Log Warning messages to Transcript
   #failOn : [ #OCUndeclaredVariableWarning ],         // Fail build on provided list of Warnings
-  #useLatestMetacello : true,                         // Upgrade Metacello before loading
+  #ignoreImage : true,                                // If true, Metacello will force a load of a package, overriding a previously existing one
   #load : [ 'default' ],                              // Define MC load attributes
+  #onConflict : #useIncoming,                         // When there is a conflict between loaded sources and incoming sources (can be #useIncoming|#useLoaded)
+  #onUpgrade : #useIncoming,                          // When loaded sources are an older version than incoming sources (can be #useIncoming|#useLoaded)
+  #onWarningLog : true,                               // Log Warning messages to Transcript
   #platforms : [ #squeak, #pharo, #gemstone ],        // Define compatible platforms
-  #version : '1.0.0'                                  // Define MC version (for MC
-                                                      // Configurations only)
+  #repository : 'http://smalltalkhub.com/mc/...',     // Alternatively, define MC repository
+  #usernameEnvVar : 'GITHUB_USER',                    // Environment variable containing the username used for authentication
+  #passwordEnvVar : 'GITHUB_TOKEN',                   // Environment variable containing the password used for authentication
+  #useLatestMetacello : true,                         // Upgrade Metacello before loading
+  #version : '1.0.0'                                  // Define MC version (for MC Configurations only)
+  #registerInIceberg : true                           // Pharo Only | Register the tested repository in Iceberg
 }
 ```
 
@@ -402,6 +436,8 @@ SCIMonticelloLoadSpec {
   #url : 'http://ss3.gemtalksystems.com/ss/...',      // Define URL for repository
   #packages : ['MyProject-Core', 'MyProject-Tests'],  // Load packages and/or
   #versions : ['MyProject-Core-aa.12'],               // Load specific versions
+  #usernameEnvVar : 'USERNAME_VAR',                   // Environment variable containing the username used for authentication
+  #passwordEnvVar : 'PASSWORD_VAR',                   // Environment variable containing the password used for authentication
   #platforms : [ #squeak, #pharo, #gemstone ]         // Define compatible platforms
 }
 ```
@@ -415,6 +451,8 @@ SCIGoferLoadSpec {
   #url : 'http://smalltalkhub.com/mc/...',            // Define URL for repository
   #packages : ['MyProject-Core', 'MyProject-Tests'],  // Load packages and/or
   #versions : ['MyProject-Core-aa.12'],               // Load specific versions
+  #usernameEnvVar : 'USERNAME_VAR',                   // Environment variable containing the username used for authentication
+  #passwordEnvVar : 'PASSWORD_VAR',                   // Environment variable containing the password used for authentication
   #platforms : [ #squeak, #pharo, #gemstone ]         // Define compatible platforms
 }
 ```
@@ -469,45 +507,21 @@ SmalltalkCISpec {
     #defaultTimeout : 30, // In seconds (Squeak, and Pharo 6 or later)
     #failOnSCIDeprecationWarnings : false, // Fail if a deprecated smalltalkCI API is used
     #failOnZeroTests : false, // Pass builds that did not run any tests
-    #hidePassingTests : true // Hide passing tests when printing to stdout
+    #hidePassingTests : true, // Hide passing tests when printing to stdout
+    #serializeError: false // (default: true) Disable serialization of failing test case (e.g. with Fuel in Pharo)
   }
 }
 ```
 
 #### Coverage Testing
 
-smalltalkCI supports coverage testing and sends coverage results automatically
-to [coveralls.io][coveralls] when the feature is enabled and when running on
-Travis CI or AppVeyor.
-Make sure you have [coveralls][coveralls] enabled for your GitHub repository.
-In order to enable coverage testing in smalltalkCI, the `#testing` slot needs to
-contain a `#coverage` dictionary.
-This dictionary can contain `#packages` (recommended), `#classes`, or
-`#categories`.
-smalltalkCI immitates the `TestRunner`'s behavior when using `#packages`.
-On the other hand, `#classes` will be resolved to all methods of all classes
-specified (instance side), while `#categories` will be resolved
-to all classes' methods as well as their meta classes' methods.
-
-```javascript
-SmalltalkCISpec {
-  ...
-  #testing : {
-    ...
-    #coverage : {
-      #packages : [ 'Packages-To-Cover.*' ],
-      #classes : [ #ClassToCover, #'ClassToCover class' ],
-      #categories : [ 'Categories-To-Cover*' ]
-    }
-  }
-}
-```
+See [COVERAGE.md][coverage_docs].
 
 #### Custom Scripts
 
 It is possible to run custom scripts before and after the loading and
 testing phases (`preLoading`, `postLoading`, `preTesting`, `postTesting`).
-smalltalkCI is able to *file in* single files, lists of files, and
+smalltalkCI can *file in* single files, lists of files, and
 `SCICustomScript`s which can be used to only run certain scripts on certain
 platforms.
 
@@ -545,7 +559,7 @@ debugging purposes or when used locally:
 ```
 USAGE: bin/smalltalkci [options] /path/to/project/your_smalltalk.ston
 
-This program prepares Smalltalk images/vms, loads projects and runs tests.
+This program prepares Smalltalk images/vms, loads projects, and runs tests.
 
 OPTIONS:
   --clean             Clear cache and delete builds.
@@ -554,6 +568,8 @@ OPTIONS:
   --headful           Open vm in headful mode and do not close image.
   --image             Custom image for build (Squeak/Pharo).
   --install           Install symlink to this smalltalkCI instance.
+  --print-env         Print all environment variables used by smalltalkCI
+  --no-color          Disable colored output
   --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
   -s | --smalltalk    Overwrite Smalltalk image selection.
   --uninstall         Remove symlink to any smalltalkCI instance.
@@ -561,22 +577,23 @@ OPTIONS:
   --vm                Custom VM for build (Squeak/Pharo).
 
 EXAMPLE:
-  bin/smalltalkci -s "Squeak-trunk" --headful /path/to/project/.smalltalk.ston
+  bin/smalltalkci -s "Squeak64-trunk" --headful /path/to/project/.smalltalk.ston
 ```
 
 ### Collection Of Anonymous Build Metrics
 
 smalltalkCI collects anonymous build metrics (Smalltalk dialect, CI environment,
-build status, build duration) for public repositories when running on Travis CI
-or AppVeyor.
-This allows to identify build errors caused by smalltalkCI updates and
-therefore helps to improve the service. It is possible to opt-out by using the
-`--no-tracking` option.
+build status, build duration) for public repositories when running on a supported
+CI platform. This helps to identify build errors caused by smalltalkCI updates
+and therefore helps to improve the service. It is possible to opt-out by using
+the `--no-tracking` option.
 
 ### Travis-specific Options
 
+#### Travis Timeouts
+
 Jobs on Travis CI [timeout if they don't produce output for
-more than 10 minutes][travisTimeout]. In case of long running tests, it
+more than 10 minutes][travisTimeout]. In the case of long-running tests, it
 is possible to increase this timeout by setting `$SMALLTALK_CI_TIMEOUT` in your
 `.travis.yml` to a value greater than 10:
 
@@ -588,7 +605,7 @@ env:
 The above sets the timeout to 30 minutes. Please note that Travis CI enforces
 [a total build timeout of 50 minutes][travisTimeout].
 
-### Using A Different smalltalkCI Branch Or Fork
+#### Using A Different smalltalkCI Branch Or Fork
 
 By default, the smalltalkCI master branch is used to perform a build. It is
 possible to select a different smalltalkCI branch or fork for testing/debugging
@@ -625,26 +642,26 @@ problem.
     [Heimdall](https://github.com/DuneSt/Heimdall),
     [MaterialDesignLite](https://github.com/DuneSt/MaterialDesignLite),
     [PrismCodeDisplayer](https://github.com/DuneSt/PrismCodeDisplayer).
-- [@dynacase](https://github.com/dynacase/):
-    [borm-editor](https://github.com/dynacase/borm-editor),
-    [borm-model](https://github.com/dynacase/borm-model),
-    [borm-persistence](https://github.com/dynacase/borm-persistence),
-    [class-editor](https://github.com/dynacase/class-editor),
-    [demo-editor](https://github.com/dynacase/demo-editor),
-    [dynacase](https://github.com/dynacase/dynacase),
-    [dynacase-model](https://github.com/dynacase/dynacase-model),
-    [fsm-editor](https://github.com/dynacase/fsm-editor).
 - [@HPI-BP2015H](https://github.com/HPI-BP2015H):
     [squeak-parable](https://github.com/HPI-BP2015H/squeak-parable).
-- [@HPI-SWA-Teaching](https://github.com/HPI-SWA-Teaching):
-    [Algernon-Launcher](https://github.com/HPI-SWA-Teaching/Algernon-Launcher).
 - [@hpi-swa](https://github.com/hpi-swa):
     [animations](https://github.com/hpi-swa/animations),
     [Ohm-S](https://github.com/hpi-swa/Ohm-S),
-    [vivide](https://github.com/hpi-swa/vivide).
+    [signals](https://github.com/hpi-swa/signals),
+    [Squot](https://github.com/hpi-swa/Squot),
+    [vivide](https://github.com/hpi-swa/vivide),
+    [widgets](https://github.com/hpi-swa/widgets).
+- [@HPI-SWA-Teaching](https://github.com/HPI-SWA-Teaching):
+    [Algernon-Launcher](https://github.com/HPI-SWA-Teaching/Algernon-Launcher),
+    [AutoTDD](https://github.com/hpi-swa-teaching/AutoTDD),
+    [SpreadSheetTool](https://github.com/hpi-swa-teaching/SpreadSheetTool),
+    [TelegramClient](https://github.com/hpi-swa-teaching/TelegramClient),
+    [SwaLint](https://github.com/hpi-swa-teaching/SwaLint).
 - [@marianopeck](https://github.com/marianopeck):
     [OSSubprocess](https://github.com/marianopeck/OSSubprocess),
     [FFICHeaderExtractor](https://github.com/marianopeck/FFICHeaderExtractor).
+- [@Metacello](https://github.com/Metacello):
+    [metacello](https://github.com/Metacello/metacello).
 - [@newapplesho](https://github.com/newapplesho):
     [aws-sdk-smalltalk](https://github.com/newapplesho/aws-sdk-smalltalk),
     [elasticsearch-smalltalk](https://github.com/newapplesho/elasticsearch-smalltalk),
@@ -656,6 +673,14 @@ problem.
     [twilio-smalltalk](https://github.com/newapplesho/twilio-smalltalk).
 - [@ObjectProfile](https://github.com/ObjectProfile):
     [Roassal2](https://github.com/ObjectProfile/Roassal2).
+- [@OpenPonk](https://github.com/OpenPonk):
+    [borm-editor](https://github.com/OpenPonk/borm-editor),
+    [borm-model](https://github.com/OpenPonk/borm-model),
+    [class-editor](https://github.com/OpenPonk/class-editor),
+    [demo-editor](https://github.com/OpenPonk/demo-editor),
+    [fsm-editor](https://github.com/OpenPonk/fsm-editor).
+- [@OpenSmalltalk](https://github.com/OpenSmalltalk):
+    [opensmalltalk-vm](https://github.com/OpenSmalltalk/opensmalltalk-vm).
 - [@pharo-project](https://github.com/pharo-project):
     [pharo-project-proposals](https://github.com/pharo-project/pharo-project-proposals).
 - [@PolyMathOrg](https://github.com/PolyMathOrg):
@@ -666,6 +691,11 @@ problem.
     [Seaside](https://github.com/SeasideSt/Seaside).
 - [@SergeStinckwich](https://github.com/SergeStinckwich):
     [PlayerST](https://github.com/SergeStinckwich/PlayerST).
+- [@squeak-smalltalk](https://github.com/squeak-smalltalk):
+    [squeak-app](https://github.com/squeak-smalltalk/squeak-app),
+    [squeak-filesystem](https://github.com/squeak-smalltalk/squeak-filesystem),
+    [squeak-ston](https://github.com/squeak-smalltalk/squeak-ston),
+    [squeak-tonel](https://github.com/squeak-smalltalk/squeak-tonel).
 - [@theseion](https://github.com/theseion):
     [Fuel](https://github.com/theseion/Fuel).
 - [@Uko](https://github.com/Uko):
@@ -682,10 +712,7 @@ problem.
 list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 
 
-[travis_b]: https://travis-ci.org/hpi-swa/smalltalkCI.svg?branch=master
-[travis_url]: https://travis-ci.org/hpi-swa/smalltalkCI
-[appveyor_b]: https://ci.appveyor.com/api/projects/status/c2uchb5faykdrj3y/branch/master?svg=true
-[appveyor_url]: https://ci.appveyor.com/project/smalltalkCI/smalltalkci/branch/master
+[coverage_docs]: https://github.com/hpi-swa/smalltalkCI/blob/master/docs/COVERAGE.md
 [coveralls_b]: https://coveralls.io/repos/github/hpi-swa/smalltalkCI/badge.svg?branch=master
 [coveralls_url]: https://coveralls.io/github/hpi-swa/smalltalkCI?branch=master
 
@@ -697,14 +724,18 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [cbi]: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 [ci_skip]: https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build
 [clone]: https://help.github.com/articles/cloning-a-repository/
-[coveralls]: https://coveralls.io/
 [download]: https://github.com/hpi-swa/smalltalkCI/archive/master.zip
 [esug]: http://www.esug.org/
-[esug_ita16]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/2016_512x512.png
-[esug_ita16_b]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/2016_64x64.png
-[esug_logo]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/esug/logo.png
+[esug_ita16]: https://user-images.githubusercontent.com/2368856/91981109-a15e2d80-ed28-11ea-88bb-36b5f0b0ab95.png
+[esug_ita16_b]: https://user-images.githubusercontent.com/2368856/91981067-8f7c8a80-ed28-11ea-8fab-db2e96a28b8c.png
+[esug_logo]: https://user-images.githubusercontent.com/2368856/91981051-88ee1300-ed28-11ea-8eb1-3f1ef5d07c4a.png
 [filetree]: https://github.com/dalehenrich/filetree
 [gemstone]: https://gemtalksystems.com/
+[git_bash]: https://gitforwindows.org/
+[github_action]: https://github.com/marketplace/actions/setup-smalltalkci
+[github_action_b]: https://img.shields.io/github/actions/workflow/status/hpi-swa/smalltalkCI/main.yml?branch=master
+[github_action_url]: https://github.com/hpi-swa/smalltalkCI/actions
+[github_actions]: https://github.com/features/actions
 [gitlab_ci_cd]: https://about.gitlab.com/features/gitlab-ci-cd/
 [gofer]: http://www.lukas-renggli.ch/blog/gofer
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
@@ -719,7 +750,8 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [pullRequests]: https://help.github.com/articles/using-pull-requests/
 [squeak]: http://squeak.org/
 [ston]: https://github.com/svenvc/ston/blob/master/ston-paper.md#smalltalk-object-notation-ston
-[templates]:https://github.com/hpi-swa/smalltalkCI/wiki#templates
+[templates]: https://github.com/hpi-swa/smalltalkCI#templates
+[tonel]: https://github.com/pharo-vcs/tonel
 [travisCI]: http://travis-ci.org/
-[travisHowTo]: http://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI%3A
+[travis_howto]: https://docs.travis-ci.com/user/tutorial/
 [travisTimeout]: https://docs.travis-ci.com/user/customizing-the-build/#Build-Timeouts

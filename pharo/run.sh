@@ -21,6 +21,18 @@ pharo::get_image_url() {
     "Pharo64-stable")
       echo "get.pharo.org/64/stable"
       ;;
+    "Pharo64-11")
+      echo "get.pharo.org/64/110"
+      ;;
+    "Pharo64-10")
+      echo "get.pharo.org/64/100"
+      ;;
+    "Pharo64-9.0")
+      echo "get.pharo.org/64/90"
+      ;;
+    "Pharo64-8.0")
+      echo "get.pharo.org/64/80"
+      ;;
     "Pharo64-7.0")
       echo "get.pharo.org/64/70"
       ;;
@@ -30,28 +42,40 @@ pharo::get_image_url() {
     "Pharo64-6.0")
       echo "get.pharo.org/64/60"
       ;;
-    "Pharo-alpha")
+    "Pharo32-alpha"|"Pharo-alpha")
       echo "get.pharo.org/alpha"
       ;;
-    "Pharo-stable")
+    "Pharo32-stable"|"Pharo-stable")
       echo "get.pharo.org/stable"
       ;;
-    "Pharo-7.0")
+    "Pharo32-11")
+        echo "get.pharo.org/32/110"
+        ;;
+    "Pharo32-10")
+        echo "get.pharo.org/32/100"
+        ;;
+    "Pharo32-9.0")
+        echo "get.pharo.org/32/90"
+        ;;
+    "Pharo32-8.0")
+        echo "get.pharo.org/80"
+        ;;
+    "Pharo32-7.0"|"Pharo-7.0")
       echo "get.pharo.org/70"
       ;;
-    "Pharo-6.0")
+    "Pharo32-6.0"|"Pharo-6.0")
       echo "get.pharo.org/60"
       ;;
-    "Pharo-6.1")
+    "Pharo32-6.1"|"Pharo-6.1")
       echo "get.pharo.org/61"
       ;;
-    "Pharo-5.0")
+    "Pharo32-5.0"|"Pharo-5.0")
       echo "get.pharo.org/50"
       ;;
-    "Pharo-4.0")
+    "Pharo32-4.0"|"Pharo-4.0")
       echo "get.pharo.org/40"
       ;;
-    "Pharo-3.0")
+    "Pharo32-3.0"|"Pharo-3.0")
       echo "get.pharo.org/30"
       ;;
     *)
@@ -72,19 +96,35 @@ moose::get_image_url() {
   local moose_name
 
   case "${smalltalk_name}" in
-    "Moose-trunk")
-      moose_name="moose-6.1"
+    "Moose64-trunk"|"Moose-trunk")
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose10-development-Pharo64-10.zip"
       ;;
-    "Moose-6"*)
-      moose_name="$(to_lowercase "${smalltalk_name}")"
+    "Moose32-trunk")
+      moose_name="moose-7.0"
+      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
+      ;;
+    "Moose64-7"*)
+      moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)-64bit"
+      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
+      ;;
+    "Moose32-6"*|"Moose-6"*|"Moose32-7"*|"Moose-7"*)
+      moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)"
+      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
+      ;;
+    "Moose64-8"*)
+      echo "https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-old-stable-Pharo64-8.0.zip"
+      ;;
+    "Moose64-9"*)
+      echo "https://github.com/moosetechnology/Moose/releases/download/v9.x.x/Moose9-stable-Pharo64-9.0.zip"
+      ;;
+    "Moose64-10"*)
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose10-development-Pharo64-10.zip"
       ;;
     *)
-      print_error_and_exit "Unsupported Pharo version '${smalltalk_name}'."
+      print_error_and_exit "Unsupported Moose version '${smalltalk_name}'."
       ;;
   esac
 
-  echo "https://ci.inria.fr/moose/job/${moose_name}/\
-lastSuccessfulBuild/artifact/${moose_name}.zip"
 }
 
 ################################################################################
@@ -100,36 +140,66 @@ pharo::get_vm_url() {
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
     "Pharo64-alpha")
-      echo "get.pharo.org/64/vmLatest70"
+      echo "get.pharo.org/64/vmLatest110"
       ;;
-    "Pharo64-7.0")
+    "Pharo64-stable")
+      echo "get.pharo.org/64/vm100"
+      ;;
+    "Pharo64-11")
+      echo "get.pharo.org/64/vm110"
+      ;;
+    "Pharo64-10"|"Moose64-10"|"Moose64-trunk")
+      echo "get.pharo.org/64/vm100"
+      ;;
+    "Pharo64-9.0"|"Moose64-9.0")
+      echo "get.pharo.org/vm90"
+      ;;
+    "Pharo64-8.0"|"Moose64-8.0")
+      echo "get.pharo.org/64/vm80"
+      ;;
+    "Pharo64-7.0"|"Moose64-7.0")
       echo "get.pharo.org/64/vm70"
       ;;
-    "Pharo64-stable"|"Pharo64-6.1")
+    "Pharo64-6.1")
       echo "get.pharo.org/64/vm61"
       ;;
     "Pharo64-6.0")
       echo "get.pharo.org/64/vm60"
       ;;
-    "Pharo-alpha")
-      echo "get.pharo.org/vmLatest70"
+    "Pharo32-alpha"|"Pharo-alpha")
+      echo "get.pharo.org/vmLatest110"
       ;;
-    "Pharo-7.0")
+    "Pharo-stable"|"Pharo32-stable")
+      echo "get.pharo.org/vm100"
+      ;;
+    "Pharo32-11")
+      echo "get.pharo.org/vm110"
+      ;;
+    "Pharo32-10")
+      echo "get.pharo.org/vm100"
+      ;;
+    "Pharo32-9.0")
+      echo "get.pharo.org/vm90"
+      ;;
+    "Pharo32-8.0"|"Moose32-8.0"|"Moose32-trunk")
+      echo "get.pharo.org/vm80"
+      ;;
+    "Pharo32-7.0"|"Pharo-7.0"|"Moose32-7.0"|"Moose-7.0")
       echo "get.pharo.org/vm70"
       ;;
-    "Pharo-stable"|"Pharo-6.1"|"Moose-trunk"|"Moose-6.1")
+    "Pharo32-6.1"|"Moose32-6.1"|"Pharo-6.1"|"Moose-6.1")
       echo "get.pharo.org/vm61"
       ;;
-    "Pharo-6.0")
+    "Pharo32-6.0"|"Pharo-6.0")
       echo "get.pharo.org/vm60"
       ;;
-    "Pharo-5.0"|"Moose-6.0")
+    "Pharo32-5.0"|"Moose32-6.0"|"Pharo-5.0"|"Moose-6.0")
       echo "get.pharo.org/vm50"
       ;;
-    "Pharo-4.0")
+    "Pharo32-4.0"|"Pharo-4.0")
       echo "get.pharo.org/vm40"
       ;;
-    "Pharo-3.0")
+    "Pharo32-3.0"|"Pharo-3.0")
       echo "get.pharo.org/vm30"
       ;;
     *)
@@ -257,7 +327,7 @@ pharo::run_script() {
     vm_flags="--no-quit"
   fi
 
-  travis_wait "${resolved_vm}" "${resolved_image}" --no-default-preferences eval ${vm_flags} "${script}"
+  run_script "${resolved_vm}" "${resolved_image}" --no-default-preferences eval ${vm_flags} "${script}"
 }
 
 ################################################################################
@@ -267,14 +337,21 @@ pharo::load_project() {
   pharo::run_script "
     | smalltalkCI |
     $(conditional_debug_halt)
-    [ Metacello new
-        baseline: 'SmalltalkCI';
-        repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-        onConflict: [:ex | ex pass];
-        load ] on: Warning do: [:w | w resume ].
-    smalltalkCI := (Smalltalk at: #SmalltalkCI).
+    [ | metacello |
+        metacello := Metacello new
+            baseline: 'SmalltalkCI';
+            repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
+            onUpgrade: [ :ex | ex useIncoming ].
+        (Metacello canUnderstand: #onConflictUseIncoming)
+            ifTrue: [ metacello onConflictUseIncoming ]
+            ifFalse: [ metacello onConflict: [ :ex | ex useIncoming ] ].
+        metacello load ]
+            on: Warning
+            do: [ :w | w resume ].
+    smalltalkCI := Smalltalk at: #SmalltalkCI.
     smalltalkCI load: '$(resolve_path "${config_ston}")'.
-    smalltalkCI isHeadless ifTrue: [ smalltalkCI saveAndQuitImage ]
+    (smalltalkCI isHeadless or: [ smalltalkCI promptToProceed ])
+      ifTrue: [ smalltalkCI saveAndQuitImage ]
   "
 }
 
@@ -285,14 +362,21 @@ pharo::test_project() {
   pharo::run_script "
     | smalltalkCI |
     $(conditional_debug_halt)
-    smalltalkCI := Smalltalk at: #SmalltalkCI ifAbsent: [
-    [ Metacello new
-        baseline: 'SmalltalkCI';
-        repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-        onConflict: [:ex | ex pass];
-        load ] on: Warning do: [:w | w resume ].
-        Smalltalk at: #SmalltalkCI
-    ].
+    smalltalkCI := Smalltalk
+        at: #SmalltalkCI
+        ifAbsent: [
+            [ | metacello |
+                metacello := Metacello new
+                    baseline: 'SmalltalkCI';
+                    repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
+                    onUpgrade: [ :ex | ex useIncoming ].
+                (Metacello canUnderstand: #onConflictUseIncoming)
+                    ifTrue: [ metacello onConflictUseIncoming ]
+                    ifFalse: [ metacello onConflict: [ :ex | ex useIncoming ] ].
+                metacello load ]
+                    on: Warning
+                    do: [ :w | w resume ].
+            Smalltalk at: #SmalltalkCI ].
     smalltalkCI test: '$(resolve_path "${config_ston}")'
   "
 }

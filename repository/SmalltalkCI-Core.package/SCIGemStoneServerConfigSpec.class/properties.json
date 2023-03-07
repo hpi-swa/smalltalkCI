@@ -1,7 +1,7 @@
 {
 	"category" : "SmalltalkCI-Core",
 	"classinstvars" : [
-		"DefaultSessionName" ],
+		 ],
 	"classvars" : [
 		"DefaultSessionName" ],
 	"commentStamp" : "",

@@ -1,15 +1,15 @@
 {
 	"category" : "SmalltalkCI-Core",
 	"classinstvars" : [
-		"PlatformClass",
-		"TravisID",
-		"DeprecationWarnings" ],
-	"classvars" : [
 		 ],
+	"classvars" : [
+		"DeprecationWarnings",
+		"IsColorful",
+		"PlatformClass",
+		"TravisID" ],
 	"commentStamp" : "",
 	"instvars" : [
-		"projectDirectory",
-		"coverageWrappers" ],
+		"projectDirectory" ],
 	"name" : "SmalltalkCI",
 	"pools" : [
 		 ],

@@ -2,7 +2,7 @@ testing
 testTravisFold
 	| stream result index |
 	stream := WriteStream on: (String new: 1000).
-	SmalltalkCI travisFold: 'Some Stage Title' id: 'stage_id' on: stream block: [ stream nextPutAll: '@@@' ].
+	SmalltalkCI platformClass travisFold: 'Some Stage Title' id: 'stage_id' on: stream block: [ stream nextPutAll: '@@@' ].
 	result := stream contents.
 	"Check content and respect order"
 	index := result findString: 'travis_fold:start:stage_id'.

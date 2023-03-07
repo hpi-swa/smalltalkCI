@@ -1,0 +1,27 @@
+{
+	"instance" : {
+		"tonelSourceDirectoryFor:" : "GabrielOmarCotelli 4/6/2018 19:50",
+		"startUp" : "GabrielOmarCotelli 4/6/2018 18:50",
+		"theMetaClassOf:" : "GabrielOmarCotelli 2/20/2019 18:03",
+		"coverallsSourceFilesIn:" : "smalltalkCI 4/9/2018 10:59",
+		"finishUp" : "GabrielOmarCotelli 4/6/2018 18:48",
+		"tonelCoverallsSourceFilesIn:" : "smalltalkCI 4/9/2018 11:01",
+		"allClassesToCover" : "GabrielOmarCotelli 8/25/2018 11:27",
+		"tonelMethodCoverageStatusFor:" : "GabrielOmarCotelli 4/17/2018 21:13",
+		"tonelCoverageFor:in:" : "smalltalkCI 4/9/2018 10:55",
+		"tonelCoverallsSourceFileFor:in:" : "smalltalkCI 4/9/2018 10:45",
+		"isInTonelFormat:" : "GabrielOmarCotelli 4/6/2018 18:40"
+	},
+	"class" : {
+		"isExcluded:" : "GOC 10/2/2019 13:47",
+		"isInTonelFormatCodeLocatedAt:" : "GabrielOmarCotelli 4/6/2018 13:13",
+		"md5Of:" : "fn 11/22/2017 14:42",
+		"methodReferenceFor:selector:" : "fn 11/22/2016 18:16",
+		"tonelFilePathFor:in:" : "GabrielOmarCotelli 2/20/2019 18:02",
+		"linesOf:" : "fn 11/22/2017 14:41",
+		"filePathFor:in:" : "GabrielOmarCotelli 4/6/2018 18:55",
+		"packageNameForClass:" : "fn 10/8/2016 15:12",
+		"packageNameForMethod:" : "ct 9/10/2022 00:28",
+		"theNonMetaClassOf:" : "GabrielOmarCotelli 2/20/2019 18:03"
+	}
+}

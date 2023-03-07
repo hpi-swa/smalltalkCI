@@ -1,5 +1,5 @@
 executing
 prepareForTesting
-	self prepareForLoading.
+	self installCustomToolSet.
 	self adjustDefaultTimeoutIfRequested.
 	super prepareForTesting

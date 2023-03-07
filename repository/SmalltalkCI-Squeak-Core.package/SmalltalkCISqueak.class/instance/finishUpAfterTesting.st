@@ -1,0 +1,4 @@
+executing
+finishUpAfterTesting
+	self uninstallCustomToolSet.
+	super finishUpAfterTesting

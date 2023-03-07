@@ -1,0 +1,4 @@
+compatibility
+assureDirectoryExistence: aDirectory
+
+	FileSystem disk ensureCreateDirectory: aDirectory
