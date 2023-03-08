@@ -5,26 +5,32 @@
 
 local STONE_NAME="smalltalkci"
 local SUPERDOIT_BRANCH=v3.1
-local SUPERDOIT_DOWNLOAD=git@github.com:dalehenrich/smalltalkCI.git
 local SUPERDOIT_DOWNLOAD=https://github.com/dalehenrich/superDoit.git
+local SUPERDOIT_DOWNLOAD=git@github.com:dalehenrich/superDoit.git
 local GSDEVKIT_STONES_BRANCH=v1.1
-local GSDEVKIT_STONES_DOWNLOAD=git@github.com:GsDevKit/GsDevKit_stones.git
 local GSDEVKIT_STONES_DOWNLOAD=https://github.com/GsDevKit/GsDevKit_stones.git
+local GSDEVKIT_STONES_DOWNLOAD=git@github.com:GsDevKit/GsDevKit_stones.git
 local STONES_REGISTRY_NAME=smalltalkCI_run
+local STONES_STONES_HOME=$SMALLTALK_CI_BUILD/stones
+local STONES_PROJECTS_HOME=$SMALLTALK_CI_BUILD/repos
 
 ################################################################################
 # Clone the superDoit project, install GemStone 3.6.5.
 ################################################################################
 gemstone::prepare_superDoit() {
 	fold_start clone_superDoit "Cloning superDoit..."
-		pushd "${SMALLTALK_CI_BUILD}"
-			git clone -b "${SUPERDOIT_BRANCH}" --depth 1 "${SUPERDOIT_DOWNLOAD}"
-			export PATH="`pwd`/superDoit/bin:$PATH"
-			fold_start install_superDoit_gemstone "Downloading GemStone for superDoit..."
-				install.sh
-				versionReport.solo
-			fold_end install_superDoit_gemstone
-		popd
+		if [ ! -d "${SMALLTALK_CI_BUILD}/superDoit" ] ; then
+			pushd "${SMALLTALK_CI_BUILD}"
+				git clone -b "${SUPERDOIT_BRANCH}" --depth 1 "${SUPERDOIT_DOWNLOAD}"
+				mkdir $STONES_PROJECTS_HOME
+				mkdir $STONES_STONES_HOME
+				export PATH="`pwd`/superDoit/bin:$PATH"
+				fold_start install_superDoit_gemstone "Downloading GemStone for superDoit..."
+					install.sh
+					versionReport.solo
+				fold_end install_superDoit_gemstone
+			popd
+		fi
 	fold_end clone_superDoit
 }
 
@@ -34,11 +40,15 @@ gemstone::prepare_superDoit() {
 gemstone::prepare_gsdevkit_stones() {
 	fold_start clone_gsdevkit_stones "Cloning GsDevKit_stones..."
 		pushd "${SMALLTALK_CI_BUILD}"
-			git clone -b "${GSDEVKIT_STONES_BRANCH}" --depth 1 "${GSDEVKIT_STONES_DOWNLOAD}"
+			if [ ! -d "${SMALLTALK_CI_BUILD}/GsDevKit_stones" ] ; then
+				git clone -b "${GSDEVKIT_STONES_BRANCH}" --depth 1 "${GSDEVKIT_STONES_DOWNLOAD}"
+			fi
 			export PATH="`pwd`/GsDevKit_stones/bin:$PATH"
 		popd
 		export STONES_DATA_HOME="$SMALLTALK_CI_BUILD/.stones_data_home"
-		createRegistry.solo $STONES_REGISTRY_NAME
+		if [ ! -d "$STONES_DATA_HOME" ] ; then
+			createRegistry.solo $STONES_REGISTRY_NAME
+		fi
 		registryReport.solo
 	fold_end clone_gsdevkit_stones
 }
@@ -51,8 +61,12 @@ gemstone::prepare_stone() {
 
   gemstone_version="$(echo $1 | cut -f2 -d-)"
 
+	echo "createStone.solo --registry=$STONES_REGISTRY_NAME --template=minimal_seaside --projectsHome=$STONES_PROJECTS_HOME --root=$STONES_STONES_HOME/$STONE_NAME ${gemstone_version}"
   fold_start create_stone "Creating stone..."
-      ${GS_HOME}/bin/createStone ${config_stone_create_arg:-} "${STONE_NAME}" "${gemstone_version}"
+		registerProduct.solo --force --registry=$STONES_REGISTRY_NAME \
+				--productPath=${SMALLTALK_CI_BUILD}/superDoit/gemstone/products/GemStone64Bit${gemstone_version}-x86_64.Linux ${gemstone_version} --debugGem
+		createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
+				--projectsHome=$STONES_PROJECTS_HOME --root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}" --debugGem
   fold_end create_stone
 }
 
