@@ -35,6 +35,21 @@ gemstone::prepare_superDoit() {
 }
 
 ################################################################################
+# Prepare environment for running GemStone
+################################################################################
+gemstone::prepare_gemstone() {
+echo "[Info] Creating /opt/gemstone directory"
+  if [ ! -e /opt/gemstone ]
+    then
+    sudo mkdir -p /opt/gemstone /opt/gemstone/log /opt/gemstone/locks
+    sudo chown $USER:${GROUPS[0]} /opt/gemstone /opt/gemstone/log /opt/gemstone/locks
+    sudo chmod 770 /opt/gemstone /opt/gemstone/log /opt/gemstone/locks
+  else
+    echo "[Warning] /opt/gemstone directory already exists"
+    echo "to replace it, remove or rename it and rerun this script"
+  fi
+}
+################################################################################
 # Clone the GsDevKit_stones project
 ################################################################################
 gemstone::prepare_gsdevkit_stones() {
