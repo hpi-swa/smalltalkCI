@@ -22,7 +22,7 @@ gemstone::prepare_superDoit() {
 		if [ ! -d "$STONES_PROJECTS_HOME/superDoit" ] ; then
 			fold_start clone_superDoit "Cloning superDoit..."
 				git clone -b "${SUPERDOIT_BRANCH}" --depth 1 "${SUPERDOIT_DOWNLOAD}"
- 				export PATH="`pwd`/superDoit/bin:$PATH"
+ 				export PATH="`pwd`/superDoit/bin:`pwd`/superDoit/examples/utility:$PATH"
 				fold_start install_superDoit_gemstone "Downloading GemStone for superDoit..."
 					install.sh
 					versionReport.solo
