@@ -64,10 +64,10 @@ jobs:
 #            smalltalk: Pharo64-10
 #          - os: windows-2019
 #            smalltalk: Pharo64-6.0
-        include:
-          - os: ubuntu-20.04
-            smalltalk: GemStone64-3.6.5
-            timeout-minutes: 30
+#        include:
+#          - os: ubuntu-20.04
+#            smalltalk: GemStone64-3.6.5
+#            timeout-minutes: 30
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
     steps:
