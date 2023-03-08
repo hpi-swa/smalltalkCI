@@ -18,20 +18,20 @@ local STONES_PROJECTS_HOME=$SMALLTALK_CI_BUILD/repos
 # Clone the superDoit project, install GemStone 3.6.5.
 ################################################################################
 gemstone::prepare_superDoit() {
-	fold_start clone_superDoit "Cloning superDoit..."
-		if [ ! -d "${SMALLTALK_CI_BUILD}/superDoit" ] ; then
-			pushd "${SMALLTALK_CI_BUILD}"
+	pushd $STONES_PROJECTS_HOME
+		if [ ! -d "$STONES_PROJECTS_HOME/superDoit" ] ; then
+			fold_start clone_superDoit "Cloning superDoit..."
 				git clone -b "${SUPERDOIT_BRANCH}" --depth 1 "${SUPERDOIT_DOWNLOAD}"
-				mkdir $STONES_PROJECTS_HOME
-				mkdir $STONES_STONES_HOME
-				export PATH="`pwd`/superDoit/bin:$PATH"
+ 				export PATH="`pwd`/superDoit/bin:$PATH"
 				fold_start install_superDoit_gemstone "Downloading GemStone for superDoit..."
 					install.sh
 					versionReport.solo
 				fold_end install_superDoit_gemstone
-			popd
+			fold_end clone_superDoit
+		else
+         export PATH="`pwd`/superDoit/bin:$PATH"
 		fi
-	fold_end clone_superDoit
+	popd
 }
 
 ################################################################################
@@ -39,8 +39,8 @@ gemstone::prepare_superDoit() {
 ################################################################################
 gemstone::prepare_gsdevkit_stones() {
 	fold_start clone_gsdevkit_stones "Cloning GsDevKit_stones..."
-		pushd "${SMALLTALK_CI_BUILD}"
-			if [ ! -d "${SMALLTALK_CI_BUILD}/GsDevKit_stones" ] ; then
+		pushd "$STONES_PROJECTS_HOME"
+			if [ ! -d "$STONES_PROJECTS_HOME/GsDevKit_stones" ] ; then
 				git clone -b "${GSDEVKIT_STONES_BRANCH}" --depth 1 "${GSDEVKIT_STONES_DOWNLOAD}"
 			fi
 			export PATH="`pwd`/GsDevKit_stones/bin:$PATH"
@@ -64,7 +64,7 @@ gemstone::prepare_stone() {
 	echo "createStone.solo --registry=$STONES_REGISTRY_NAME --template=minimal_seaside --projectsHome=$STONES_PROJECTS_HOME --root=$STONES_STONES_HOME/$STONE_NAME ${gemstone_version}"
   fold_start create_stone "Creating stone..."
 		registerProduct.solo --force --registry=$STONES_REGISTRY_NAME \
-				--productPath=${SMALLTALK_CI_BUILD}/superDoit/gemstone/products/GemStone64Bit${gemstone_version}-x86_64.Linux ${gemstone_version} --debugGem
+				--productPath=$STONES_PROJECTS_HOME/superDoit/gemstone/products/GemStone64Bit${gemstone_version}-x86_64.Linux ${gemstone_version} --debugGem
 		createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
 				--projectsHome=$STONES_PROJECTS_HOME --root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}" --debugGem
   fold_end create_stone
@@ -177,6 +177,13 @@ run_build() {
       print_error_and_exit "GemStone is not supported on '$(uname -s)'"
       ;;
   esac
+
+	if [ ! -d "$STONES_PROJECTS_HOME" ] ; then
+		mkdir $STONES_PROJECTS_HOME
+	fi
+	if [ ! -d "$STONES_STONES_HOME" ] ; then
+		mkdir $STONES_STONES_HOME
+	fi
 
 	gemstone::prepare_superDoit
 	gemstone::prepare_gsdevkit_stones
