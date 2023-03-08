@@ -200,6 +200,7 @@ run_build() {
 		mkdir $STONES_STONES_HOME
 	fi
 
+	gemstone::prepare_gemstone
 	gemstone::prepare_superDoit
 	gemstone::prepare_gsdevkit_stones
   gemstone::prepare_stone "${config_smalltalk}"
