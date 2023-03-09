@@ -14,6 +14,27 @@ local STONES_REGISTRY_NAME=smalltalkCI_run
 local STONES_STONES_HOME=$SMALLTALK_CI_BUILD/stones
 local STONES_PROJECTS_HOME=$SMALLTALK_CI_BUILD/repos
 
+vers=`echo "${config_smalltalk}" | sed 's/GemStone64-//'`
+
+PLATFORM="`uname -sm | tr ' ' '-'`"
+case "$PLATFORM" in
+    Darwin-arm64)
+			local GEMSTONE_PRODUCT_NAME="GemStone64Bit${vers}-arm64.Darwin"
+			;;
+    Darwin-x86_64)
+			local GEMSTONE_PRODUCT_NAME="GemStone64Bit${vers}-i386.Darwin"
+			;;
+		Linux-x86_64)
+		local GEMSTONE_PRODUCT_NAME="GemStone64Bit${vers}-x86_64.Linux"
+      ;;
+		*)
+			echo "This script should only be run on Mac (Darwin-i386 or Darwin-arm64), or Linux (Linux-x86_64) ). The result from \"uname -sm\" is \"`uname -sm`\""
+			exit 1
+      ;;
+esac
+
+echo "GEMSTONE_PRODUCT_NAME=$GEMSTONE_PRODUCT_NAME"
+
 ################################################################################
 # Clone the superDoit project, install GemStone 3.6.5.
 ################################################################################
@@ -77,13 +98,11 @@ gemstone::prepare_stone() {
   gemstone_version="$(echo $1 | cut -f2 -d-)"
 
   fold_start create_stone "Creating stone..."
-		ls -l $STONES_PROJECTS_HOME/superDoit/gemstone/products/GemStone64Bit${gemstone_version}-x86_64.Linux/bin
 		registerProduct.solo --force --registry=$STONES_REGISTRY_NAME \
-				--productPath=$STONES_PROJECTS_HOME/superDoit/gemstone/products/GemStone64Bit${gemstone_version}-x86_64.Linux ${gemstone_version}
-		ls -l $STONES_PROJECTS_HOME/superDoit/gemstone/products/GemStone64Bit${gemstone_version}-x86_64.Linux/bin
+				--productPath=$STONES_PROJECTS_HOME/superDoit/gemstone/products/${GEMSTONE_PRODUCT_NAME} ${gemstone_version} --debugGem
 		createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
 				--projectsHome=$STONES_PROJECTS_HOME --start \
-				--root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}"
+				--root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}" --debugGem
   fold_end create_stone
 }
 
