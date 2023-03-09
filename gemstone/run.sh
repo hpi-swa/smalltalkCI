@@ -78,10 +78,10 @@ gemstone::prepare_stone() {
 
   fold_start create_stone "Creating stone..."
 		registerProduct.solo --force --registry=$STONES_REGISTRY_NAME \
-				--productPath=$STONES_PROJECTS_HOME/superDoit/gemstone/products/GemStone64Bit${gemstone_version}-x86_64.Linux ${gemstone_version} --debugGem
+				--productPath=$STONES_PROJECTS_HOME/superDoit/gemstone/products/GemStone64Bit${gemstone_version}-x86_64.Linux ${gemstone_version}
 		createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
 				--projectsHome=$STONES_PROJECTS_HOME --start \
-				--root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}" --debugGem
+				--root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}"
   fold_end create_stone
 }
 
