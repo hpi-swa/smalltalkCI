@@ -77,8 +77,10 @@ gemstone::prepare_stone() {
   gemstone_version="$(echo $1 | cut -f2 -d-)"
 
   fold_start create_stone "Creating stone..."
+		ls -l $STONES_PROJECTS_HOME/superDoit/gemstone/products/GemStone64Bit${gemstone_version}-x86_64.Linux/bin
 		registerProduct.solo --force --registry=$STONES_REGISTRY_NAME \
 				--productPath=$STONES_PROJECTS_HOME/superDoit/gemstone/products/GemStone64Bit${gemstone_version}-x86_64.Linux ${gemstone_version}
+		ls -l $STONES_PROJECTS_HOME/superDoit/gemstone/products/GemStone64Bit${gemstone_version}-x86_64.Linux/bin
 		createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
 				--projectsHome=$STONES_PROJECTS_HOME --start \
 				--root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}"
