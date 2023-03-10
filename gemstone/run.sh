@@ -13,6 +13,7 @@ local GSDEVKIT_STONES_DOWNLOAD=https://github.com/GsDevKit/GsDevKit_stones.git
 local STONES_REGISTRY_NAME=smalltalkCI_run
 local STONES_STONES_HOME=$SMALLTALK_CI_BUILD/stones
 local STONES_PROJECTS_HOME=$SMALLTALK_CI_BUILD/repos
+local STONES_PRODUCTS=$SMALLTALK_CI_BUILD/products
 
 vers=`echo "${config_smalltalk}" | sed 's/GemStone64-//'`
 
@@ -36,7 +37,7 @@ esac
 echo "GEMSTONE_PRODUCT_NAME=$GEMSTONE_PRODUCT_NAME"
 
 ################################################################################
-# Clone the superDoit project, install GemStone 3.6.5.
+# Clone the superDoit project, install GemStone
 ################################################################################
 gemstone::prepare_superDoit() {
 	pushd $STONES_PROJECTS_HOME
@@ -98,11 +99,17 @@ gemstone::prepare_stone() {
   gemstone_version="$(echo $1 | cut -f2 -d-)"
 
   fold_start create_stone "Creating stone..."
-		registerProduct.solo --force --registry=$STONES_REGISTRY_NAME \
-				--productPath=$STONES_PROJECTS_HOME/superDoit/gemstone/products/${GEMSTONE_PRODUCT_NAME} ${gemstone_version} --debugGem
+		registerProductDirectory.solo --registry=$STONES_REGISTRY_NAME --productDirectory=$STONES_PRODUCTS
+		if [ "$gemstone_version" = "3.6.5" ] ; then
+			"matches superDoit gemstone version, so reuse the download"
+			registerProduct.solo --force --registry=$STONES_REGISTRY_NAME \
+				--productPath=$STONES_PROJECTS_HOME/superDoit/gemstone/products/${GEMSTONE_PRODUCT_NAME} ${gemstone_version}
+		else
+			downloadGemStone.solo --directory=$STONES_PRODUCTS --registry=$STONES_REGISTRY_NAME ${gemstone_version}
+		fi
 		createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
 				--projectsHome=$STONES_PROJECTS_HOME --start \
-				--root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}" --debugGem
+				--root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}"
   fold_end create_stone
 }
 
@@ -214,6 +221,9 @@ run_build() {
       ;;
   esac
 
+	if [ ! -d "$STONES_PRODUCTS" ] ; then
+		mkdir $STONES_PRODUCTS
+	fi
 	if [ ! -d "$STONES_PROJECTS_HOME" ] ; then
 		mkdir $STONES_PROJECTS_HOME
 	fi
