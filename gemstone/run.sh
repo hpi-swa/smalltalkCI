@@ -101,7 +101,7 @@ gemstone::prepare_stone() {
   fold_start create_stone "Creating stone..."
 		registerProductDirectory.solo --registry=$STONES_REGISTRY_NAME --productDirectory=$STONES_PRODUCTS
 		if [ "$gemstone_version" = "3.6.5" ] ; then
-			"matches superDoit gemstone version, so reuse the download"
+			# matches superDoit gemstone version, so reuse the download
 			registerProduct.solo --force --registry=$STONES_REGISTRY_NAME \
 				--productPath=$STONES_PROJECTS_HOME/superDoit/gemstone/products/${GEMSTONE_PRODUCT_NAME} ${gemstone_version}
 		else
