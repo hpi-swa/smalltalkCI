@@ -14,6 +14,7 @@ local STONES_REGISTRY_NAME=smalltalkCI_run
 local STONES_STONES_HOME=$SMALLTALK_CI_BUILD/stones
 local STONES_PROJECTS_HOME=$SMALLTALK_CI_BUILD/repos
 local STONES_PRODUCTS=$SMALLTALK_CI_BUILD/products
+local STONES_PROJECT_SET_NAME=devkit
 
 vers=`echo "${config_smalltalk}" | sed 's/GemStone64-//'`
 
@@ -85,6 +86,9 @@ gemstone::prepare_gsdevkit_stones() {
 		export STONES_DATA_HOME="$SMALLTALK_CI_BUILD/.stones_data_home"
 		if [ ! -d "$STONES_DATA_HOME" ] ; then
 			createRegistry.solo $STONES_REGISTRY_NAME
+			createProjectSet.solo --registry=$STONES_REGISTRY_NAME --projectSet=$STONES_PROJECT_SET_NAME \
+				                 --from=$STONES_PROJECTS_HOME/GsDevKit_stones/bin/gsdevkitProjectSpecs.ston \
+												 --key=server --https
 		fi
 		registryReport.solo
 	fold_end clone_gsdevkit_stones
