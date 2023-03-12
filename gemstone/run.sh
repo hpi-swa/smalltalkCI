@@ -89,6 +89,8 @@ gemstone::prepare_gsdevkit_stones() {
 			createProjectSet.solo --registry=$STONES_REGISTRY_NAME --projectSet=$STONES_PROJECT_SET_NAME \
 				                 --from=$STONES_PROJECTS_HOME/GsDevKit_stones/bin/gsdevkitProjectSpecs.ston \
 												 --key=server --https
+			cloneProjectsFromProjectSet.solo  --registry=$STONES_REGISTRY_NAME --projectSet=$STONES_PROJECT_SET_NAME \
+				                 --projectsHome=$STONES_PROJECTS_HOME --debugGem
 		fi
 		registryReport.solo
 	fold_end clone_gsdevkit_stones
