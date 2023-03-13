@@ -116,6 +116,12 @@ gemstone::prepare_stone() {
 		createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
 				--projectsHome=$STONES_PROJECTS_HOME --start \
 				--root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}"
+		pushd $STONES_STONES_HOME/$STONE_NAME
+			export GEMSTONE="`pwd`/product"
+			export PATH=$GEMSTONE/bin:$PATH
+			export STONES_PROJECTS_HOME=$STONES_PROJECTS_HOME
+			loadTode.stone -D
+		popd
   fold_end create_stone
 }
 
@@ -241,7 +247,6 @@ run_build() {
 	gemstone::prepare_superDoit
 	gemstone::prepare_gsdevkit_stones
   gemstone::prepare_stone "${config_smalltalk}"
-#  gemstone::prepare_optional_clients
 #  gemstone::load_project
 #  gemstone::test_project
 }
