@@ -3,6 +3,8 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
+set -x
+
 local STONE_NAME="smalltalkci"
 local SUPERDOIT_BRANCH=v3.1
 local SUPERDOIT_DOWNLOAD=git@github.com:dalehenrich/superDoit.git
@@ -47,7 +49,7 @@ gemstone::prepare_superDoit() {
 				git clone -b "${SUPERDOIT_BRANCH}" --depth 1 "${SUPERDOIT_DOWNLOAD}"
  				export PATH="`pwd`/superDoit/bin:`pwd`/superDoit/examples/utility:$PATH"
 				fold_start install_superDoit_gemstone "Downloading GemStone for superDoit..."
-					install.sh
+					install.sh $GS_ALTERNATE_PRODUCTS
 					versionReport.solo
 				fold_end install_superDoit_gemstone
 			fold_end clone_superDoit
@@ -106,10 +108,9 @@ gemstone::prepare_stone() {
 
   fold_start create_stone "Creating stone..."
 		registerProductDirectory.solo --registry=$STONES_REGISTRY_NAME --productDirectory=$STONES_PRODUCTS
-		if [ "$gemstone_version" = "3.6.5" ] ; then
+		if [ "$GS_ALTERNATE_PRODUCTS"x != "x" ] ; then
 			# matches superDoit gemstone version, so reuse the download
-			registerProduct.solo --force --registry=$STONES_REGISTRY_NAME \
-				--productPath=$STONES_PROJECTS_HOME/superDoit/gemstone/products/${GEMSTONE_PRODUCT_NAME} ${gemstone_version}
+			registerProduct.solo --registry=$STONES_REGISTRY_NAME --fromDirectory=$GS_ALTERNATE_PRODUCTS ${gemstone_version}
 		else
 			downloadGemStone.solo --directory=$STONES_PRODUCTS --registry=$STONES_REGISTRY_NAME ${gemstone_version}
 		fi
@@ -137,25 +138,14 @@ gemstone::load_project() {
   local status=0
 
   fold_start load_server_project "Loading server project..."
-    run_script ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T ${GSCI_TOC:-100000} << EOF || status=$?
-      iferr 1 stk
-      iferr 2 stack
-      iferr 3 exit 1
-      login
-      run
-      GsDeployer bulkMigrate: [
-        Metacello new
-          baseline: 'SmalltalkCI';
-          repository: 'filetree://${SMALLTALK_CI_HOME}/repository';
-          load: 'Core'.
-        System commitTransaction.
-        (Smalltalk at: #SmalltalkCI) load: '${config_ston}'.
-      ].
-%
-      logout
-      exit 0
-EOF
-  fold_end load_server_project
+ 	pushd $STONES_STONES_HOME/$STONE_NAME
+		export GEMSTONE="`pwd`/product"
+		export PATH=$GEMSTONE/bin:$PATH
+		export STONES_PROJECTS_HOME=$STONES_PROJECTS_HOME
+		loadSmalltalkCIProject.ston --config_ston=${config_ston} -D
+		status=$?
+	popd
+ fold_end load_server_project
 
   if is_nonzero "${status}"; then
     print_error_and_exit "Failed to load project."
@@ -174,57 +164,34 @@ EOF
 ################################################################################
 gemstone::test_project() {
   local status=0
-  local failing_clients=()
 
-  run_script ${GS_HOME}/bin/startTopaz "${STONE_NAME}" -l -T ${GSCI_TOC:-100000} << EOF || status=$?
-    iferr 1 stk
-    iferr 2 stack
-    iferr 3 exit 1
-    login
-    run
-    (Smalltalk at: #SmalltalkCI) test: '${config_ston}' named: '${config_smalltalk} Server (${STONE_NAME})'.
-%
-    logout
-    exit 0
-EOF
-
+  fold_start run_tests "Running project tests..."
+ 	pushd $STONES_STONES_HOME/$STONE_NAME
+		export GEMSTONE="`pwd`/product"
+		export PATH=$GEMSTONE/bin:$PATH
+		export STONES_PROJECTS_HOME=$STONES_PROJECTS_HOME
+		testSmalltalkCIProject.ston --config_ston=${config_ston} --named='${config_smalltalk} Server (${STONE_NAME})'-D
+		status=$?
+	popd
+  fold_end run_tests 
   if is_nonzero "${status}"; then
     print_error_and_exit "Error while testing server project."
   fi
   check_and_consume_build_status_file
 
-  if is_not_empty  "${DEVKIT_CLIENT_NAMES:-}"; then
-    for client_name in "${DEVKIT_CLIENT_NAMES[@]}"
-    do
-      run_script ${GS_HOME}/bin/startClient ${client_name} -t "${client_name}" -s ${STONE_NAME} -z "${config_ston}" || status=$?
-
-      if is_nonzero "${status}"; then
-        print_error_and_exit "Error while testing client project ${client_name}."
-      fi
-      # Check and consume intermediate build status and keep going
-      if current_build_status_signals_error; then
-        failing_clients+=("${client_name}")
-      fi
-      consume_build_status_file
-    done
-  fi
-
-  # Create build status file for `finalize` step
-  if is_nonzero "${#failing_clients[@]}"; then
-    echo "Error in the following client(s): ${failing_clients[*]}." > "${build_status_file}"
-  else
-    echo "[success]" > "${BUILD_STATUS_FILE}"
-  fi
-
   fold_start stop_stone "Stopping stone..."
-    ${GS_HOME}/bin/stopStone -b "${STONE_NAME}"
+    stopstone "${STONE_NAME}" DataCurator swordfish 
   fold_end stop_stone
+
+	echo "[success]" > "${BUILD_STATUS_FILE}"
 }
 
 ################################################################################
 # Main entry point for GemStone builds.
 ################################################################################
 run_build() {
+  gemstone::parse_options "$@"
+
   case "$(uname -s)" in
     "Linux"|"Darwin")
       ;;
@@ -247,7 +214,42 @@ run_build() {
 	gemstone::prepare_superDoit
 	gemstone::prepare_gsdevkit_stones
   gemstone::prepare_stone "${config_smalltalk}"
-#  gemstone::load_project
-#  gemstone::test_project
+  gemstone::load_project
+  gemstone::test_project
 }
+################################################################################
+# Handle GemStone-specific options.
+################################################################################
+gemstone::parse_options() {
 
+  case "$(uname -s)" in
+    "Linux"|"Darwin")
+      ;;
+    *)
+      print_error_and_exit "GemStone is not supported on '$(uname -s)'"
+      ;;
+  esac
+
+	GS_ALTERNATE_PRODUCTS=""
+
+  while :
+  do
+    case "${1:-}" in
+      --gs-PRODUCTS=*)
+        GS_ALTERNATE_PRODUCTS="${1#*=}"
+				shift
+        ;;
+      --gs-*)
+        print_error_and_exit "Unknown GemStone-specific option: $1"
+        ;;
+      "")
+        break
+        ;;
+      *)
+        shift
+        ;;
+    esac
+  done
+
+	export GS_ALTERNATE_PRODUCTS
+}
