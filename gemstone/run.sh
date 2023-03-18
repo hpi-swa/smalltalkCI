@@ -3,7 +3,7 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-set -x
+# set -x
 
 local STONE_NAME="smalltalkci"
 local SUPERDOIT_BRANCH=v3.1
@@ -121,7 +121,7 @@ gemstone::prepare_stone() {
 			export GEMSTONE="`pwd`/product"
 			export PATH=$GEMSTONE/bin:$PATH
 			export STONES_PROJECTS_HOME=$STONES_PROJECTS_HOME
-			loadTode.stone -D
+			loadTode.stone
 		popd
   fold_end create_stone
 }
@@ -170,18 +170,19 @@ gemstone::test_project() {
 		export GEMSTONE="`pwd`/product"
 		export PATH=$GEMSTONE/bin:$PATH
 		export STONES_PROJECTS_HOME=$STONES_PROJECTS_HOME
-		testSmalltalkCIProject.ston --config_ston=${config_ston} --named='${config_smalltalk} Server (${STONE_NAME})'-D
+		testSmalltalkCIProject.ston --config_ston=${config_ston} --named='${config_smalltalk} Server (${STONE_NAME})'
 		status=$?
 	popd
-  fold_end run_tests 
-  if is_nonzero "${status}"; then
-    print_error_and_exit "Error while testing server project."
-  fi
-  check_and_consume_build_status_file
 
   fold_start stop_stone "Stopping stone..."
     stopstone "${STONE_NAME}" DataCurator swordfish 
   fold_end stop_stone
+
+	fold_end run_tests 
+  if is_nonzero "${status}"; then
+    print_error_and_exit "Error while testing server project."
+  fi
+  check_and_consume_build_status_file
 
 	echo "[success]" > "${BUILD_STATUS_FILE}"
 }
