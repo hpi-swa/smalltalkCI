@@ -17,6 +17,7 @@ local STONES_STONES_HOME=$SMALLTALK_CI_BUILD/stones
 local STONES_PROJECTS_HOME=$SMALLTALK_CI_BUILD/repos
 local STONES_PRODUCTS=$SMALLTALK_CI_BUILD/products
 local STONES_PROJECT_SET_NAME=devkit
+local GEMSTONE_DEBUG=""
 
 vers=`echo "${config_smalltalk}" | sed 's/GemStone64-//'`
 
@@ -44,18 +45,21 @@ echo "GEMSTONE_PRODUCT_NAME=$GEMSTONE_PRODUCT_NAME"
 ################################################################################
 gemstone::prepare_superDoit() {
 	pushd $STONES_PROJECTS_HOME
-		if [ ! -d "$STONES_PROJECTS_HOME/superDoit" ] ; then
+		if [ -d "$STONES_PROJECTS_HOME/superDoit" ] ; then
+			echo "Reusing existing superDoit project directory: $STONES_PROJECTS_HOME/superDoit"
+		else
 			fold_start clone_superDoit "Cloning superDoit..."
 				git clone -b "${SUPERDOIT_BRANCH}" --depth 1 "${SUPERDOIT_DOWNLOAD}"
  				export PATH="`pwd`/superDoit/bin:`pwd`/superDoit/examples/utility:$PATH"
 				fold_start install_superDoit_gemstone "Downloading GemStone for superDoit..."
 					install.sh $GS_ALTERNATE_PRODUCTS
-					versionReport.solo
 				fold_end install_superDoit_gemstone
 			fold_end clone_superDoit
-		else
-         export PATH="`pwd`/superDoit/bin:$PATH"
 		fi
+		export PATH="`pwd`/superDoit/bin:`pwd`/superDoit/examples/utility:$PATH"
+		fold_start versionreport_superDoit "superDoit versionReport.solo..."
+			versionReport.solo
+		fold_end versionreport_superDoit
 	popd
 }
 
@@ -87,12 +91,12 @@ gemstone::prepare_gsdevkit_stones() {
 		popd
 		export STONES_DATA_HOME="$SMALLTALK_CI_BUILD/.stones_data_home"
 		if [ ! -d "$STONES_DATA_HOME" ] ; then
-			createRegistry.solo $STONES_REGISTRY_NAME
+			createRegistry.solo $STONES_REGISTRY_NAME $GEMSTONE_DEBUG
 			createProjectSet.solo --registry=$STONES_REGISTRY_NAME --projectSet=$STONES_PROJECT_SET_NAME \
 				                 --from=$STONES_PROJECTS_HOME/GsDevKit_stones/bin/gsdevkitProjectSpecs.ston \
-												 --key=server --https
+												 --key=server --https $GEMSTONE_DEBUG
 			cloneProjectsFromProjectSet.solo  --registry=$STONES_REGISTRY_NAME --projectSet=$STONES_PROJECT_SET_NAME \
-				                 --projectsHome=$STONES_PROJECTS_HOME --debugGem
+				                 --projectsHome=$STONES_PROJECTS_HOME $GEMSTONE_DEBUG
 		fi
 		registryReport.solo
 	fold_end clone_gsdevkit_stones
@@ -107,21 +111,21 @@ gemstone::prepare_stone() {
   gemstone_version="$(echo $1 | cut -f2 -d-)"
 
   fold_start create_stone "Creating stone..."
-		registerProductDirectory.solo --registry=$STONES_REGISTRY_NAME --productDirectory=$STONES_PRODUCTS
+		registerProductDirectory.solo --registry=$STONES_REGISTRY_NAME --productDirectory=$STONES_PRODUCTS $GEMSTONE_DEBUG
 		if [ "$GS_ALTERNATE_PRODUCTS"x != "x" ] ; then
 			# matches superDoit gemstone version, so reuse the download
-			registerProduct.solo --registry=$STONES_REGISTRY_NAME --fromDirectory=$GS_ALTERNATE_PRODUCTS ${gemstone_version}
+			registerProduct.solo --registry=$STONES_REGISTRY_NAME --fromDirectory=$GS_ALTERNATE_PRODUCTS ${gemstone_version} $GEMSTONE_DEBUG
 		else
-			downloadGemStone.solo --directory=$STONES_PRODUCTS --registry=$STONES_REGISTRY_NAME ${gemstone_version}
+			downloadGemStone.solo --directory=$STONES_PRODUCTS --registry=$STONES_REGISTRY_NAME ${gemstone_version} $GEMSTONE_DEBUG
 		fi
 		createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
 				--projectsHome=$STONES_PROJECTS_HOME --start \
-				--root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}"
+				--root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}" $GEMSTONE_DEBUG
 		pushd $STONES_STONES_HOME/$STONE_NAME
 			export GEMSTONE="`pwd`/product"
 			export PATH=$GEMSTONE/bin:$PATH
 			export STONES_PROJECTS_HOME=$STONES_PROJECTS_HOME
-			loadTode.stone
+			loadTode.stone $GEMSTONE_DEBUG
 		popd
   fold_end create_stone
 }
@@ -170,7 +174,7 @@ gemstone::test_project() {
 		export GEMSTONE="`pwd`/product"
 		export PATH=$GEMSTONE/bin:$PATH
 		export STONES_PROJECTS_HOME=$STONES_PROJECTS_HOME
-		testSmalltalkCIProject.ston --config_ston=${config_ston} --named='${config_smalltalk} Server (${STONE_NAME})'
+		testSmalltalkCIProject.stone --config_ston=${config_ston} --named='${config_smalltalk} Server (${STONE_NAME})' $GEMSTONE_DEBUG
 		status=$?
 	popd
 
@@ -236,8 +240,16 @@ gemstone::parse_options() {
   while :
   do
     case "${1:-}" in
+      --gs-DEBUG)
+        GEMSTONE_DEBUG=" --debug"
+				shift
+        ;;
       --gs-PRODUCTS=*)
         GS_ALTERNATE_PRODUCTS="${1#*=}"
+				shift
+        ;;
+      --gs-REPOS=*)
+        STONES_PROJECTS_HOME="${1#*=}"
 				shift
         ;;
       --gs-*)
