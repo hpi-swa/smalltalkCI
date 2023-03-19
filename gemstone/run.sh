@@ -3,13 +3,42 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-# set -x
+ set -x
 
 echo "============"
-cat /etc/hosts
-hostname
-sudo sysctl -a | grep shm
-echo "============"
+
+  totalMem="`sudo sysctl hw.memsize | cut -f2 -d' '`"
+  totalMemMB=$(($totalMem / 1048576))
+  shmmax="`sudo sysctl kern.sysv.shmmax | cut -f2 -d' '`"
+  shmall=`sudo cat /proc/sys/kernel/shmall`
+	
+  shmmaxMB=$(($shmmax / 1048576))
+  shmallMB=$(($shmall / 256))
+
+  # Print current values
+  echo "  Total memory available is $totalMemMB MB"
+  echo "  Max shared memory segment size is $shmmaxMB MB"
+  echo "  Max shared memory allowed is $shmallMB MB"
+
+  # Figure out the max shared memory segment size (shmmax) we want
+  # Use 75% of available memory but not more than 2GB
+  shmmaxNew=$(($totalMem * 3/4))
+  [[ $shmmaxNew -gt 2147483648 ]] && shmmaxNew=2147483648
+  shmmaxNewMB=$(($shmmaxNew / 1048576))
+
+  # Figure out the max shared memory allowed (shmall) we want
+  # The MacOSX default is 4MB, way too small
+  # The Linux default is 2097152 or 8GB, so we should never need this
+  # but things will certainly break if it's been reset too small
+  # so ensure it's at least big enough to hold a fullsize shared memory segment
+  shmallNew=$(($shmmaxNew / 4096))
+  [[ $shmallNew -lt $shmall ]] && shmallNew=$shmall
+  shmallNewMB=$(($shmallNew / 256))
+	echo "shmmaxNew=$shmmaxNew"
+	echo "shmallNew=$shmallNew"
+	echo "============"
+set +x
+
 local STONE_NAME="smalltalkci"
 local SUPERDOIT_BRANCH=v3.1
 local SUPERDOIT_DOWNLOAD=git@github.com:dalehenrich/superDoit.git
