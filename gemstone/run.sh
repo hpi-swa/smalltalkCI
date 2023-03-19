@@ -3,14 +3,14 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
- set -x
+# set -x
 
 echo "============"
 
   totalMem="`sudo sysctl hw.memsize | cut -f2 -d' '`"
   totalMemMB=$(($totalMem / 1048576))
   shmmax="`sudo sysctl kern.sysv.shmmax | cut -f2 -d' '`"
-  shmall=`sudo cat /proc/sys/kernel/shmall`
+  shmall="`sysctl kern.sysv.shmall | cut -f2 -d' '`"
 	
   shmmaxMB=$(($shmmax / 1048576))
   shmallMB=$(($shmall / 256))
@@ -36,8 +36,7 @@ echo "============"
   shmallNewMB=$(($shmallNew / 256))
 	echo "shmmaxNew=$shmmaxNew"
 	echo "shmallNew=$shmallNew"
-	echo "============"
-set +x
+echo "============"
 
 local STONE_NAME="smalltalkci"
 local SUPERDOIT_BRANCH=v3.1
