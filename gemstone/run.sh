@@ -5,6 +5,11 @@
 
 # set -x
 
+echo "============"
+cat /etc/hosts
+hostname
+sudo sysctl -a | grep shm
+echo "============"
 local STONE_NAME="smalltalkci"
 local SUPERDOIT_BRANCH=v3.1
 local SUPERDOIT_DOWNLOAD=git@github.com:dalehenrich/superDoit.git
