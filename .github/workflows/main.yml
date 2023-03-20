@@ -95,7 +95,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup smalltalkCI
-        uses: hpi-swa/setup-smalltalkCI@v1
+        uses: dalehenrich/setup-smalltalkCI@solo
         with:
           smalltalk-image: ${{ matrix.smalltalk }}
       - name: Run smalltalkCI self test
