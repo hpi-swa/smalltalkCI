@@ -193,7 +193,7 @@ gemstone::test_project() {
 ################################################################################
 # Handle GemStone-specific shared memory needs for Darwin on GitHub.
 ################################################################################
-gemstone:darwin_shared_mem_setup() {
+gemstone::darwin_shared_mem_setup() {
 
 	if is_github_build && is_sudo_enabled; then
 		"Update shared memory, for github/Darwin builds, since default Darwin shared memory is too small t run GemStone"
