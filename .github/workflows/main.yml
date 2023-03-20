@@ -19,56 +19,55 @@ jobs:
   build:
     strategy:
       matrix:
-#        os: [ ubuntu-20.04, macos-latest, windows-2019 ]
-#        os: [ macos-12, macos-11, macos-10.15 ]
-        os: [ macos-12, macos-11 ]
+        os: [ ubuntu-20.04, macos-latest, windows-2019 ]
         smalltalk:
-#          - Squeak64-trunk
-#          - Squeak64-6.0
-#          - Squeak64-5.3
-#          - Squeak64-5.2
-#          - Squeak64-5.1
-#          - Squeak32-trunk
-#          - Squeak32-6.0
-#          - Squeak32-4.5
-#          - Pharo64-stable
-#          - Pharo64-alpha
-#          - Pharo64-11
-#          - Pharo64-10
-#          - Pharo64-9.0
-#          - Pharo64-8.0
-#          - Pharo64-7.0
-#          - Pharo64-6.1
-#          - Pharo64-6.0
-#          - Pharo32-stable
-#          - Pharo32-alpha
-#          - Pharo32-3.0
-#          - Moose64-10
-#          - Moose64-9.0
-#          - Moose64-8.0
+          - Squeak64-trunk
+          - Squeak64-6.0
+          - Squeak64-5.3
+          - Squeak64-5.2
+          - Squeak64-5.1
+          - Squeak32-trunk
+          - Squeak32-6.0
+          - Squeak32-4.5
+          - Pharo64-stable
+          - Pharo64-alpha
+          - Pharo64-11
+          - Pharo64-10
+          - Pharo64-9.0
+          - Pharo64-8.0
+          - Pharo64-7.0
+          - Pharo64-6.1
+          - Pharo64-6.0
+          - Pharo32-stable
+          - Pharo32-alpha
+          - Pharo32-3.0
+          - Moose64-10
+          - Moose64-9.0
+          - Moose64-8.0
+          - GemStone64-3.5.8
           - GemStone64-3.6.5
         timeout-minutes: [ 15 ]
-#        exclude: # exclude 32bit builds on macOS
-#          - os: macos-latest
-#            smalltalk: Squeak32-trunk
-#          - os: macos-latest
-#            smalltalk: Squeak32-6.0
-#          - os: macos-latest
-#            smalltalk: Squeak32-4.5
-#          - os: macos-latest
-#            smalltalk: Pharo32-stable
-#          - os: macos-latest
-#            smalltalk: Pharo32-alpha
-#          - os: macos-latest
-#            smalltalk: Pharo32-3.0
-#          - os: windows-2019
-#            smalltalk: Pharo64-10
-#          - os: windows-2019
-#            smalltalk: Pharo64-6.0
-#        include:
-#          - os: ubuntu-20.04
-#            smalltalk: GemStone64-3.6.5
-#            timeout-minutes: 30
+        exclude: # exclude 32bit builds on macOS and GemStone builds on windows
+          - os: macos-latest
+            smalltalk: Squeak32-trunk
+          - os: macos-latest
+            smalltalk: Squeak32-6.0
+          - os: macos-latest
+            smalltalk: Squeak32-4.5
+          - os: macos-latest
+            smalltalk: Pharo32-stable
+          - os: macos-latest
+            smalltalk: Pharo32-alpha
+          - os: macos-latest
+            smalltalk: Pharo32-3.0
+          - os: windows-2019
+            smalltalk: Pharo64-10
+          - os: windows-2019
+            smalltalk: Pharo64-6.0
+          - os: windows-2019
+            smalltalk: GemStone64-3.5.8
+          - os: windows-2019
+            smalltalk: GemStone64-3.6.5
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
     steps:
