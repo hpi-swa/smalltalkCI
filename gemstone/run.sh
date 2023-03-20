@@ -214,7 +214,7 @@ run_build() {
 		mkdir $STONES_STONES_HOME
 	fi
 
-	gemstone::darwin_shared_mem_setup()
+	gemstone::darwin_shared_mem_setup
 	gemstone::prepare_gemstone
 	gemstone::prepare_superDoit
 	gemstone::prepare_gsdevkit_stones
