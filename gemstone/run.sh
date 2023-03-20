@@ -223,51 +223,9 @@ run_build() {
   gemstone::test_project
 }
 ################################################################################
-# Handle GemStone-specific options.
+# Handle GemStone-specific shared memory needs for Darwin on GitHub.
 ################################################################################
-gemstone::parse_options() {
-
-  case "$(uname -s)" in
-    "Linux"|"Darwin")
-      ;;
-    *)
-      print_error_and_exit "GemStone is not supported on '$(uname -s)'"
-      ;;
-  esac
-
-	GS_ALTERNATE_PRODUCTS=""
-
-  while :
-  do
-    case "${1:-}" in
-      --gs-DEBUG)
-        GEMSTONE_DEBUG=" --debug"
-				shift
-        ;;
-      --gs-PRODUCTS=*)
-        GS_ALTERNATE_PRODUCTS="${1#*=}"
-				shift
-        ;;
-      --gs-REPOS=*)
-        STONES_PROJECTS_HOME="${1#*=}"
-				shift
-        ;;
-      --gs-*)
-        print_error_and_exit "Unknown GemStone-specific option: $1"
-        ;;
-      "")
-        break
-        ;;
-      *)
-        shift
-        ;;
-    esac
-  done
-
-	export GS_ALTERNATE_PRODUCTS
-}
-
-darwin_shared_mem_setup(){
+gemstone:darwin_shared_mem_setup(){
 
 	if is_github_build && is_sudo_enabled; then
 		"Update shared memory, for github/Darwin builds, since default Darwin shared memory is too small t run GemStone"
@@ -314,3 +272,48 @@ darwin_shared_mem_setup(){
 		esac
 	fi
 }
+################################################################################
+# Handle GemStone-specific options.
+################################################################################
+gemstone::parse_options() {
+
+  case "$(uname -s)" in
+    "Linux"|"Darwin")
+      ;;
+    *)
+      print_error_and_exit "GemStone is not supported on '$(uname -s)'"
+      ;;
+  esac
+
+	GS_ALTERNATE_PRODUCTS=""
+
+  while :
+  do
+    case "${1:-}" in
+      --gs-DEBUG)
+        GEMSTONE_DEBUG=" --debug"
+				shift
+        ;;
+      --gs-PRODUCTS=*)
+        GS_ALTERNATE_PRODUCTS="${1#*=}"
+				shift
+        ;;
+      --gs-REPOS=*)
+        STONES_PROJECTS_HOME="${1#*=}"
+				shift
+        ;;
+      --gs-*)
+        print_error_and_exit "Unknown GemStone-specific option: $1"
+        ;;
+      "")
+        break
+        ;;
+      *)
+        shift
+        ;;
+    esac
+  done
+
+	export GS_ALTERNATE_PRODUCTS
+}
+
