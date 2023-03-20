@@ -4,40 +4,6 @@
 ################################################################################
 
 # set -x
-
-echo "============"
-
-  totalMem="`sudo sysctl hw.memsize | cut -f2 -d' '`"
-  totalMemMB=$(($totalMem / 1048576))
-  shmmax="`sudo sysctl kern.sysv.shmmax | cut -f2 -d' '`"
-  shmall="`sysctl kern.sysv.shmall | cut -f2 -d' '`"
-	
-  shmmaxMB=$(($shmmax / 1048576))
-  shmallMB=$(($shmall / 256))
-
-  # Print current values
-  echo "  Total memory available is $totalMemMB MB"
-  echo "  Max shared memory segment size is $shmmaxMB MB"
-  echo "  Max shared memory allowed is $shmallMB MB"
-
-  # Figure out the max shared memory segment size (shmmax) we want
-  # Use 75% of available memory but not more than 2GB
-  shmmaxNew=$(($totalMem * 3/4))
-  [[ $shmmaxNew -gt 2147483648 ]] && shmmaxNew=2147483648
-  shmmaxNewMB=$(($shmmaxNew / 1048576))
-
-  # Figure out the max shared memory allowed (shmall) we want
-  # The MacOSX default is 4MB, way too small
-  # The Linux default is 2097152 or 8GB, so we should never need this
-  # but things will certainly break if it's been reset too small
-  # so ensure it's at least big enough to hold a fullsize shared memory segment
-  shmallNew=$(($shmmaxNew / 4096))
-  [[ $shmallNew -lt $shmall ]] && shmallNew=$shmall
-  shmallNewMB=$(($shmallNew / 256))
-	echo "shmmaxNew=$shmmaxNew"
-	echo "shmallNew=$shmallNew"
-echo "============"
-
 local STONE_NAME="smalltalkci"
 local SUPERDOIT_BRANCH=v3.1
 local SUPERDOIT_DOWNLOAD=git@github.com:dalehenrich/superDoit.git
@@ -54,7 +20,7 @@ local GEMSTONE_DEBUG=""
 
 vers=`echo "${config_smalltalk}" | sed 's/GemStone64-//'`
 
-PLATFORM="`uname -sm | tr ' ' '-'`"
+local PLATFORM="`uname -sm | tr ' ' '-'`"
 case "$PLATFORM" in
     Darwin-arm64)
 			local GEMSTONE_PRODUCT_NAME="GemStone64Bit${vers}-arm64.Darwin"
@@ -248,6 +214,7 @@ run_build() {
 		mkdir $STONES_STONES_HOME
 	fi
 
+	gemstone::darwin_shared_mem_setup()
 	gemstone::prepare_gemstone
 	gemstone::prepare_superDoit
 	gemstone::prepare_gsdevkit_stones
@@ -298,4 +265,53 @@ gemstone::parse_options() {
   done
 
 	export GS_ALTERNATE_PRODUCTS
+}
+
+darwin_shared_mem_setup(){
+
+	if is_github_build && is_sudo_enabled; then
+		"Update shared memory, for github/Darwin builds, since default Darwin shared memory is too small t run GemStone"
+		case "$PLATFORM" in
+	    Darwin-arm64)
+	    Darwin-x86_64)
+				echo "============"
+			  totalMem="`sudo sysctl hw.memsize | cut -f2 -d' '`"
+			  totalMemMB=$(($totalMem / 1048576))
+			  shmmax="`sudo sysctl kern.sysv.shmmax | cut -f2 -d' '`"
+			  shmall="`sysctl kern.sysv.shmall | cut -f2 -d' '`"
+				
+			  shmmaxMB=$(($shmmax / 1048576))
+			  shmallMB=$(($shmall / 256))
+			
+			  # Print current values
+			  echo "  Total memory available is $totalMemMB MB"
+			  echo "  Max shared memory segment size is $shmmaxMB MB"
+			  echo "  Max shared memory allowed is $shmallMB MB"
+			
+			  # Figure out the max shared memory segment size (shmmax) we want
+			  # Use 75% of available memory but not more than 2GB
+			  shmmaxNew=$(($totalMem * 3/4))
+			  [[ $shmmaxNew -gt 2147483648 ]] && shmmaxNew=2147483648
+			  shmmaxNewMB=$(($shmmaxNew / 1048576))
+			  # Figure out the max shared memory allowed (shmall) we want
+			  # The MacOSX default is 4MB, way too small
+			  shmallNew=$(($shmmaxNew / 4096))
+			  [[ $shmallNew -lt $shmall ]] && shmallNew=$shmall
+			  shmallNewMB=$(($shmallNew / 256))
+				echo "shmmaxNew=$shmmaxNew"
+				if [[ $shmmaxNew -gt $shmmax ]]; then
+					echo "[Info] Increasing max shared memory segment size to $shmmaxNewMB MB"
+   				sudo sysctl -w kern.sysv.shmmax=$shmmaxNew
+				fi
+				echo "shmallNew=$shmallNew"
+				if [ $shmallNew -gt $shmall ]; then
+					echo "[Info] Increasing max shared memory allowed to $shmallNewMB MB"
+					sudo sysctl -w kern.sysv.shmall=$shmallNew
+				fi
+				echo "============"
+				;;
+			*)
+	      ;;
+		esac
+	fi
 }
