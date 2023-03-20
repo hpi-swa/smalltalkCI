@@ -191,41 +191,9 @@ gemstone::test_project() {
 }
 
 ################################################################################
-# Main entry point for GemStone builds.
-################################################################################
-run_build() {
-  gemstone::parse_options "$@"
-
-  case "$(uname -s)" in
-    "Linux"|"Darwin")
-      ;;
-    *)
-      print_error_and_exit "GemStone is not supported on '$(uname -s)'"
-      ;;
-  esac
-
-	if [ ! -d "$STONES_PRODUCTS" ] ; then
-		mkdir $STONES_PRODUCTS
-	fi
-	if [ ! -d "$STONES_PROJECTS_HOME" ] ; then
-		mkdir $STONES_PROJECTS_HOME
-	fi
-	if [ ! -d "$STONES_STONES_HOME" ] ; then
-		mkdir $STONES_STONES_HOME
-	fi
-
-	gemstone::darwin_shared_mem_setup
-	gemstone::prepare_gemstone
-	gemstone::prepare_superDoit
-	gemstone::prepare_gsdevkit_stones
-  gemstone::prepare_stone "${config_smalltalk}"
-  gemstone::load_project
-  gemstone::test_project
-}
-################################################################################
 # Handle GemStone-specific shared memory needs for Darwin on GitHub.
 ################################################################################
-gemstone:darwin_shared_mem_setup(){
+gemstone:darwin_shared_mem_setup() {
 
 	if is_github_build && is_sudo_enabled; then
 		"Update shared memory, for github/Darwin builds, since default Darwin shared memory is too small t run GemStone"
@@ -271,6 +239,39 @@ gemstone:darwin_shared_mem_setup(){
 	      ;;
 		esac
 	fi
+}
+
+################################################################################
+# Main entry point for GemStone builds.
+################################################################################
+run_build() {
+  gemstone::parse_options "$@"
+
+  case "$(uname -s)" in
+    "Linux"|"Darwin")
+      ;;
+    *)
+      print_error_and_exit "GemStone is not supported on '$(uname -s)'"
+      ;;
+  esac
+
+	if [ ! -d "$STONES_PRODUCTS" ] ; then
+		mkdir $STONES_PRODUCTS
+	fi
+	if [ ! -d "$STONES_PROJECTS_HOME" ] ; then
+		mkdir $STONES_PROJECTS_HOME
+	fi
+	if [ ! -d "$STONES_STONES_HOME" ] ; then
+		mkdir $STONES_STONES_HOME
+	fi
+
+	gemstone::darwin_shared_mem_setup
+	gemstone::prepare_gemstone
+	gemstone::prepare_superDoit
+	gemstone::prepare_gsdevkit_stones
+  gemstone::prepare_stone "${config_smalltalk}"
+  gemstone::load_project
+  gemstone::test_project
 }
 ################################################################################
 # Handle GemStone-specific options.
