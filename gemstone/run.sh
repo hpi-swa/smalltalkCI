@@ -95,7 +95,7 @@ gemstone::prepare_gsdevkit_stones() {
 				                 --from=$STONES_PROJECTS_HOME/GsDevKit_stones/bin/gsdevkitProjectSpecs.ston \
 												 --key=server --https $GEMSTONE_DEBUG
 			cloneProjectsFromProjectSet.solo  --registry=$STONES_REGISTRY_NAME --projectSet=$STONES_PROJECT_SET_NAME \
-				                 --projectsHome=$STONES_PROJECTS_HOME $GEMSTONE_DEBUG
+				                 --projectDirectory=$STONES_PROJECTS_HOME $GEMSTONE_DEBUG
 		fi
 		registryReport.solo
 	fold_end clone_gsdevkit_stones
