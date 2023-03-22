@@ -118,13 +118,11 @@ gemstone::prepare_stone() {
 			downloadGemStone.solo --directory=$STONES_PRODUCTS --registry=$STONES_REGISTRY_NAME ${gemstone_version} $GEMSTONE_DEBUG
 		fi
 		createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
-				--projectsHome=$STONES_PROJECTS_HOME --start \
-				--root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}" $GEMSTONE_DEBUG
+				--start --root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}" $GEMSTONE_DEBUG
 		pushd $STONES_STONES_HOME/$STONE_NAME
 			export GEMSTONE="`pwd`/product"
 			export PATH=$GEMSTONE/bin:$PATH
-			export STONES_PROJECTS_HOME=$STONES_PROJECTS_HOME
-			loadTode.stone $GEMSTONE_DEBUG
+			loadTode.stone --projectDirectory=$STONES_PROJECTS_HOME $GEMSTONE_DEBUG
 		popd
   fold_end create_stone
 }
@@ -144,8 +142,7 @@ gemstone::load_project() {
  	pushd $STONES_STONES_HOME/$STONE_NAME
 		export GEMSTONE="`pwd`/product"
 		export PATH=$GEMSTONE/bin:$PATH
-		export STONES_PROJECTS_HOME=$STONES_PROJECTS_HOME
-		loadSmalltalkCIProject.ston --config_ston=${config_ston} -D
+		loadSmalltalkCIProject.stone --projectRoot=$SMALLTALK_CI_HOME --config_ston=${config_ston} $GEMSTONE_DEBUG
 		status=$?
 	popd
  fold_end load_server_project
@@ -172,8 +169,7 @@ gemstone::test_project() {
  	pushd $STONES_STONES_HOME/$STONE_NAME
 		export GEMSTONE="`pwd`/product"
 		export PATH=$GEMSTONE/bin:$PATH
-		export STONES_PROJECTS_HOME=$STONES_PROJECTS_HOME
-		testSmalltalkCIProject.stone --config_ston=${config_ston} --named='${config_smalltalk} Server (${STONE_NAME})' $GEMSTONE_DEBUG
+		testSmalltalkCIProject.stone  --buildDirectory=$SMALLTALK_CI_BUILD --config_ston=${config_ston} --named='${config_smalltalk} Server (${STONE_NAME})' $GEMSTONE_DEBUG
 		status=$?
 	popd
 
