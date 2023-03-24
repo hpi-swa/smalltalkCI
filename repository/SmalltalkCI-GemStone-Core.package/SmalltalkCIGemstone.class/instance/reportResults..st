@@ -5,6 +5,10 @@ reportResults: aTestRunner
     ifNotNil: [ :filePath | 
       | stream |
       stream := GsFile openWriteOnServer: filePath.
+      GsFile stdout nextPutAll: '===== opened file ' , filePath printString.
+      stream
+        nextPutAll: '--- opened file';
+        flush.
       SCIGemStoneTestReporterFile report: aTestRunner spec: self spec on: stream.
       stream
         flush;
@@ -14,13 +18,4 @@ reportResults: aTestRunner
       SCIGemStoneTestReporterXML
         report: aTestRunner
         spec: self spec
-        xmlLogDirPath: xmlLogDirPath ].
-  self reportFilePath
-    ifNotNil: [ :filePath | 
-      | stream |
-      GsFile gciLogServer: 'reporting results to ' , filePath printString.
-      stream := GsFile openWriteOnServer: filePath.
-      SCIGemStoneTestReporterFile report: aTestRunner spec: self spec on: stream.
-      stream
-        flush;
-        close ]
+        xmlLogDirPath: xmlLogDirPath ]
