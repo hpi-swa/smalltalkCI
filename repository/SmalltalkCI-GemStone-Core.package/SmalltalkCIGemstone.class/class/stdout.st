@@ -1,3 +1,3 @@
 compatibility
 stdout
-	^ (Smalltalk at: #GsFile) stdoutServer
+  ^ (Smalltalk at: #'GsFile') stdout
