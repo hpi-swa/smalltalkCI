@@ -1,5 +1,6 @@
 executing
 reportResults: aTestRunner
+  GsFile gciLogServer: 'Reporting Results...'.
   SCIGemStoneTestReporterStdout report: aTestRunner spec: self spec.
   produceXMLLog
     ifTrue: [ 
@@ -10,11 +11,10 @@ reportResults: aTestRunner
   self reportFilePath
     ifNotNil: [ :filePath | 
       | stream |
+      GsFile gciLogServer: 'reporting results to ' , filePath printString.
       stream := GsFile openWriteOnServer: filePath.
-      SCIGemStoneTestReporterStdout
-        report: aTestRunner
-        spec: self spec
-        on: stream.
+      SCIGemStoneTestReporterFile report: aTestRunner spec: self spec on: stream.
       stream
         flush;
-        close ]
+        close ].
+  GsFile gciLogServer: 'Reporting Results... DONE'
