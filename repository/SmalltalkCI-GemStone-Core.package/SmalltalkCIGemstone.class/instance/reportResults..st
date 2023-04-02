@@ -1,6 +1,5 @@
 executing
 reportResults: aTestRunner
-  System waitForDebug.
   self reportFilePath
     ifNil: [ SCIGemStoneTestReporterStdout report: aTestRunner spec: self spec ]
     ifNotNil: [ :filePath | 
