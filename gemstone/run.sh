@@ -131,8 +131,11 @@ gemstone::prepare_stone() {
 			fi
 		fi
 		pushd $STONE_DIRECTORY
-			if [ "$GEMSTONE"x = "x" ] ; then
+			if [ "${GEMSTONE+set}" ] ; then
+				echo "GEMSTONE = $GEMSTONE (PREDEFINED)"
+			else
 				export GEMSTONE="`pwd`/product"
+				echo "GEMSTONE = $GEMSTONE (DEFAULT VALUE)"
 			fi
 			export PATH=$GEMSTONE/bin:$PATH
 			loadTode.stone --projectDirectory=$STONES_PROJECTS_HOME $GEMSTONE_DEBUG
