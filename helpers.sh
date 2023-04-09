@@ -90,6 +90,13 @@ print_help() {
                         Specify directory containing existing server projects to be 
                         used instead of cloning projects from GitHub for each run.
 
+    --gs-STONE_DIR=<gemstone-stone-directory>
+                        Specify directory of an existing stone. A symbolic link named
+                        product is expected to exist in the <gemstone-stone-directory>
+                        and point to the GEMSTONE product tree for the stone. The name
+                        stone is expected to be managed independently of the run.sh
+                        script. 
+
   EXAMPLE:
     $(basename -- $0) -s "Squeak64-trunk" --headfull /path/to/project/.smalltalk.ston
 

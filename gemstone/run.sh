@@ -12,6 +12,7 @@ local GSDEVKIT_STONES_BRANCH=v1.1
 local GSDEVKIT_STONES_DOWNLOAD=git@github.com:GsDevKit/GsDevKit_stones.git
 local GSDEVKIT_STONES_DOWNLOAD=https://github.com/GsDevKit/GsDevKit_stones.git
 local STONES_REGISTRY_NAME=smalltalkCI_run
+local STONE_DIRECTORY=""
 local STONES_STONES_HOME=$SMALLTALK_CI_BUILD/stones
 local STONES_PROJECTS_HOME=$SMALLTALK_CI_BUILD/repos
 local STONES_PRODUCTS=$SMALLTALK_CI_BUILD/products
@@ -117,10 +118,19 @@ gemstone::prepare_stone() {
 		else
 			downloadGemStone.solo --directory=$STONES_PRODUCTS --registry=$STONES_REGISTRY_NAME ${gemstone_version} $GEMSTONE_DEBUG
 		fi
-		createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
+		if [ "$STONE_DIRECTORY"x = "x" ] ; then
+			createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
 				--start --root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}" $GEMSTONE_DEBUG
-		pushd $STONES_STONES_HOME/$STONE_NAME
-			export GEMSTONE="`pwd`/product"
+			STONE_DIRECTORY=$STONES_STONES_HOME/$STONE_NAME
+		else
+			if [ ! -d "$STONE_DIRECTORY" ] ; then
+				print_error_and_exit "The directory named by --gs-STONE_DIR option ($STONE_DIRECTORY) is expected to exist"
+			fi
+		fi
+		pushd $STONE_DIRECTORY
+			if [ "$GEMSTONE"x = "x" ] ; then
+				export GEMSTONE="`pwd`/product"
+			fi
 			export PATH=$GEMSTONE/bin:$PATH
 			loadTode.stone --projectDirectory=$STONES_PROJECTS_HOME $GEMSTONE_DEBUG
 		popd
@@ -139,8 +149,10 @@ gemstone::load_project() {
   local status=0
 
   fold_start load_server_project "Loading server project..."
- 	pushd $STONES_STONES_HOME/$STONE_NAME
-		export GEMSTONE="`pwd`/product"
+ 	pushd $STONE_DIRECTORY
+		if [ "$GEMSTONE"x = "x" ] ; then
+			export GEMSTONE="`pwd`/product"
+		fi
 		export PATH=$GEMSTONE/bin:$PATH
 		loadSmalltalkCIProject.stone --projectRoot=$SMALLTALK_CI_HOME --config_ston=${config_ston} $GEMSTONE_DEBUG
 		status=$?
@@ -166,8 +178,10 @@ gemstone::test_project() {
   local status=0
 
   fold_start run_tests "Running project tests..."
- 	pushd $STONES_STONES_HOME/$STONE_NAME
-		export GEMSTONE="`pwd`/product"
+ 	pushd $STONE_DIRECTORY
+		if [ "$GEMSTONE"x = "x" ] ; then
+			export GEMSTONE="`pwd`/product"
+		fi
 		export PATH=$GEMSTONE/bin:$PATH
 		testSmalltalkCIProject.stone  --buildDirectory=$SMALLTALK_CI_BUILD --config_ston=${config_ston} --named='${config_smalltalk} Server (${STONE_NAME})' $GEMSTONE_DEBUG
 		status=$?
@@ -257,8 +271,10 @@ run_build() {
 	if [ ! -d "$STONES_PROJECTS_HOME" ] ; then
 		mkdir $STONES_PROJECTS_HOME
 	fi
-	if [ ! -d "$STONES_STONES_HOME" ] ; then
-		mkdir $STONES_STONES_HOME
+	if [ "$STONE_DIRECTORY"x = "x" ] ; then
+		if [ ! -d "$STONES_STONES_HOME" ] ; then
+			mkdir $STONES_STONES_HOME
+		fi
 	fi
 
 	gemstone::darwin_shared_mem_setup
@@ -297,6 +313,10 @@ gemstone::parse_options() {
         ;;
       --gs-REPOS=*)
         STONES_PROJECTS_HOME="${1#*=}"
+				shift
+        ;;
+      --gs-STONE_DIR=*)
+        STONE_DIRECTORY="${1#*=}"
 				shift
         ;;
       --gs-*)
