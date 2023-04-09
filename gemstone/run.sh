@@ -12,6 +12,7 @@ local GSDEVKIT_STONES_BRANCH=v1.1
 local GSDEVKIT_STONES_DOWNLOAD=git@github.com:GsDevKit/GsDevKit_stones.git
 local GSDEVKIT_STONES_DOWNLOAD=https://github.com/GsDevKit/GsDevKit_stones.git
 local STONES_REGISTRY_NAME=smalltalkCI_run
+local STONE_STARTED=""
 local STONE_DIRECTORY=""
 local STONES_STONES_HOME=$SMALLTALK_CI_BUILD/stones
 local STONES_PROJECTS_HOME=$SMALLTALK_CI_BUILD/repos
@@ -122,7 +123,9 @@ gemstone::prepare_stone() {
 			createStone.solo --force --registry=$STONES_REGISTRY_NAME --template=minimal_seaside \
 				--start --root=$STONES_STONES_HOME/$STONE_NAME "${gemstone_version}" $GEMSTONE_DEBUG
 			STONE_DIRECTORY=$STONES_STONES_HOME/$STONE_NAME
+			STONE_STARTED="TRUE"
 		else
+			STONE_STARTED="FALSE"
 			if [ ! -d "$STONE_DIRECTORY" ] ; then
 				print_error_and_exit "The directory named by --gs-STONE_DIR option ($STONE_DIRECTORY) is expected to exist"
 			fi
@@ -187,9 +190,11 @@ gemstone::test_project() {
 		status=$?
 	popd
 
-  fold_start stop_stone "Stopping stone..."
-    stopstone "${STONE_NAME}" DataCurator swordfish 
-  fold_end stop_stone
+	if [ "$STONE_STARTED" = "TRUE" ] ; then
+    fold_start stop_stone "Stopping stone..."
+      stopstone "${STONE_NAME}" DataCurator swordfish 
+    fold_end stop_stone
+	fi
 
 	fold_end run_tests 
   if is_nonzero "${status}"; then
