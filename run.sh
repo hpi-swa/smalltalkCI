@@ -9,19 +9,22 @@ readonly BINTRAY_API="https://api.bintray.com/content"
 readonly DEFAULT_STON_CONFIG="smalltalk.ston"
 readonly GITHUB_REPO_URL="https://github.com/hpi-swa/smalltalkCI"
 
+# Indicates whether any secondary action was chosen that makes the execution
+# of the actual build process optional. See ensure_ston_config_exists.
+first_action=""
+
 ################################################################################
 # Locate $SMALLTALK_CI_HOME and load helpers.
 ################################################################################
 initialize() {
   local resolved_path
 
-  trap handle_exit EXIT
-  trap handle_error ERR
-  trap handle_interrupt INT
-
-  # Fail if OS is not supported
+  # Set up traps, otherwise fail if OS is not supported
   case "$(uname -s)" in
-    "Linux"|"Darwin"|"CYGWIN_NT-"*)
+    "Linux"|"Darwin"|"CYGWIN_NT-"*|"MINGW64_NT-"*|"MSYS_NT-"*)
+      trap handle_exit EXIT
+      trap handle_error ERR
+      trap handle_interrupt INT
       ;;
     *)
       echo "Unsupported platform '$(uname -s)'." 1>&2
@@ -38,7 +41,7 @@ initialize() {
 
   if [[ -z "${SMALLTALK_CI_HOME:-}" ]]; then
     # Try to determine absolute path to smalltalkCI
-    SMALLTALK_CI_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    export SMALLTALK_CI_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
     if [[ ! -f "${SMALLTALK_CI_HOME}/run.sh" ]]; then
       # Try to resolve symlink
@@ -86,7 +89,13 @@ handle_exit() {
 ################################################################################
 handle_error() {
   local error_code=$?
+  local num_crash_lines=250
   local i
+
+  if is_file "${SMALLTALK_CI_BUILD}/crash.dmp"; then
+    print_notice "Found a crash.dmp. Here are the first ${num_crash_lines} lines:"
+    head -n ${num_crash_lines} "${SMALLTALK_CI_BUILD}/crash.dmp"
+  fi
 
   printf "\n"
   print_notice "Error with status code ${error_code}:"
@@ -118,8 +127,11 @@ ensure_ston_config_exists() {
   local custom_ston=$1
 
   # STON provided as cmd line parameter can override $config_ston
-  if ! is_empty "${custom_ston}" && [[ ${custom_ston: -5} == ".ston" ]] && \
-      is_file "${custom_ston}"; then
+  if ! is_empty "${custom_ston}"; then
+    if [[ ${custom_ston: -5} != ".ston" ]] || ! is_file "${custom_ston}"; then
+      print_error_and_exit "User-provided configuration is not a STON-file or \
+could not be found at '${custom_ston}'."
+    fi
     config_ston="${custom_ston}"
     # Expand path if $config_ston does not start with / or ~
     if ! [[ "${config_ston:0:1}" =~ (\/|\~) ]]; then
@@ -130,7 +142,10 @@ ensure_ston_config_exists() {
 
   if is_travis_build; then
     if is_not_empty "${TRAVIS_SMALLTALK_CONFIG:-}"; then
-      config_ston="${TRAVIS_BUILD_DIR}/${TRAVIS_SMALLTALK_CONFIG}"
+      # If the variable is a list (ruby array like ["a", "b", "c"]) extract the first value
+      # This is a workaround for https://github.com/hpi-swa/smalltalkCI/issues/448
+      first_config="$(echo ${TRAVIS_SMALLTALK_CONFIG//[\[\]]} | awk -F',' '{print $1}')"
+      config_ston="${TRAVIS_BUILD_DIR}/${first_config}"
     else
       locate_ston_config
     fi
@@ -158,7 +173,13 @@ ensure_ston_config_exists() {
     esac
   fi
 
-  if ! is_file "${config_ston}"; then
+  if ! is_empty "${first_action}"; then
+    if ! is_file "${config_ston}"; then
+      exit
+    fi
+    read -p "Continue with build progress? (y/N): " user_input
+    [[ "${user_input}" != "y" ]] && exit 0
+  elif ! is_file "${config_ston}"; then
     print_error_and_exit "STON configuration could not be found at \
 '${config_ston}'."
   fi
@@ -185,6 +206,9 @@ locate_ston_config() {
   elif is_file "${project_home}/.${DEFAULT_STON_CONFIG}"; then
     config_ston="${project_home}/.${DEFAULT_STON_CONFIG}"
   else
+    if ! is_empty "${first_action}"; then
+      exit
+    fi
     print_error_and_exit "No STON file named '.${DEFAULT_STON_CONFIG}' found \
 in ${project_home}."
   fi
@@ -196,12 +220,17 @@ in ${project_home}."
 #   config_smalltalk
 ################################################################################
 select_smalltalk() {
-  local images="Squeak-trunk Squeak-5.1 Squeak-5.0 Squeak-4.6 Squeak-4.5
-                Pharo-stable Pharo-alpha Pharo-7.0 Pharo-6.0 Pharo-5.0 Pharo-4.0
-                Pharo-3.0
-                Pharo64-stable Pharo64-alpha Pharo64-7.0 Pharo64-6.1 Pharo64-6.0
-                GemStone-3.3.0 GemStone-3.2.12 GemStone-3.1.0.6
-                Moose-trunk Moose-6.1 Moose-6.0"
+  local images="Squeak64-trunk Squeak64-6.0 Squeak64-5.3 Squeak64-5.2 Squeak64-5.1
+                Squeak32-trunk Squeak32-6.0 Squeak32-5.3 Squeak32-5.2 Squeak32-5.1 Squeak32-5.0
+                Squeak32-4.6 Squeak32-4.5
+                Pharo64-stable Pharo64-alpha Pharo64-11 Pharo64-10 Pharo64-9.0 Pharo64-8.0 Pharo64-7.0 Pharo64-6.1 Pharo64-6.0
+                Pharo32-stable Pharo32-alpha Pharo32-9.0 Pharo32-8.0 Pharo32-7.0 Pharo32-6.0 Pharo32-5.0
+                Pharo32-4.0 Pharo32-3.0
+                GemStone64-3.5.0 GemStone64-3.4.3 GemStone64-3.3.9
+                GemStone64-3.3.2 GemStone64-3.3.0 GemStone64-3.2.12
+                GemStone64-3.1.0.6
+                Moose64-trunk Moose64-10 Moose64-9.0 Moose64-8.0 Moose64-7.0
+                Moose32-trunk Moose32-8.0 Moose32-7.0 Moose32-6.1 Moose32-6.0"
 
   if is_not_empty "${config_smalltalk}"; then
     return
@@ -215,6 +244,7 @@ select_smalltalk() {
   # Ask user to choose an image if one has not been selected yet
   if is_empty "${config_smalltalk}"; then
     PS3="Choose Smalltalk image: "
+    set -o posix  # fixes SIGINT during select
     select selection in $images; do
       case "${selection}" in
         Squeak*|Pharo*|GemStone*|Moose*)
@@ -226,6 +256,7 @@ select_smalltalk() {
           ;;
       esac
     done
+    set +o posix
   fi
 }
 
@@ -237,6 +268,11 @@ select_smalltalk() {
 validate_configuration() {
   if is_empty "${config_smalltalk}"; then
     print_error_and_exit "Smalltalk image is not defined."
+  fi
+  if [[ "${config_smalltalk}" != *"64-"* ]] && \
+     [[ "${config_smalltalk}" != *"32-"* ]]; then
+    print_notice 'Please consider explicitly specifying image architecture
+(Example: use `Squeak64-trunk` instead of `Squeak-trunk`).'
   fi
   if is_empty "${config_ston}"; then
     print_error_and_exit "No STON file found."
@@ -257,9 +293,11 @@ validate_configuration() {
 #   All positional parameters
 ################################################################################
 parse_options() {
-  while :
+  local positional=()
+
+  while [[ $# -gt 0 ]]
   do
-    case "${1:-}" in
+    case "$1" in
     --clean)
       config_clean="true"
       shift
@@ -287,12 +325,24 @@ parse_options() {
       fi
       shift 2
       ;;
+    --no-color)
+      config_colorful="false"
+      shift
+      ;;
     --no-tracking)
       config_tracking="false"
       shift
       ;;
+    --print-env)
+      print_env
+      exit 0
+      ;;
     -s | --smalltalk)
       config_smalltalk="${2:-}"
+      if is_empty "${config_smalltalk}"; then
+        print_error_and_exit "-s | --smalltalk option requires an argument \
+(e.g. 'smalltalkci -s Squeak64-trunk')."
+      fi
       shift 2
       ;;
     -v | --verbose)
@@ -308,16 +358,22 @@ parse_options() {
       ;;
     -- | --self-test)
       shift
-      break
       ;;
     -*)
       print_error_and_exit "Unknown option: $1"
       ;;
     *)
-      break
+      positional+=("$1")
+      shift
       ;;
     esac
   done
+
+  if [[ "${#positional[@]}" -gt 1 ]]; then
+    print_error_and_exit "Too many positional arguments: '${positional[*]:-}'"
+  else
+    config_first_arg_or_empty="${positional:-}"
+  fi
 }
 
 ################################################################################
@@ -358,6 +414,7 @@ prepare_environment() {
 add_env_vars() {
   export SCIII_SMALLTALK="${config_smalltalk}"
   export SCIII_BUILD="$(resolve_path "${SMALLTALK_CI_BUILD}")"
+  export SCIII_COLORFUL="${config_colorful}"
   export SCIII_DEBUG="${config_debug}"
 }
 
@@ -365,11 +422,16 @@ add_env_vars() {
 # Raise RTPRIO of current bash for OpenSmalltalk VMs with threaded heartbeat.
 ################################################################################
 raise_rtprio_limit() {
+  if ! program_exists "gcc"; then
+    print_info "Unable to raise real-time priority: gcc is not available."
+    return
+  fi
+
   fold_start set_rtprio_limit "Raising real-time priority for OpenSmalltalk VMs with threaded heartbeat..."
   pushd $(mktemp -d) > /dev/null
   gcc -o "set_rtprio_limit" "${SMALLTALK_CI_HOME}/utils/set_rtprio_limit.c"
   chmod +x "./set_rtprio_limit"
-  sudo "./set_rtprio_limit" $$
+  sudo "./set_rtprio_limit" $$ || true
   popd > /dev/null
   fold_end set_rtprio_limit
 }
@@ -381,27 +443,21 @@ raise_rtprio_limit() {
 ################################################################################
 check_clean_up() {
   local user_input
-  local question1="Are you sure you want to clear builds and cache? (y/N): "
-  local question2="Continue with build progress? (y/N): "
-  if [[ "${config_clean}" = "true" ]]; then
-    print_info "cache at '${SMALLTALK_CI_CACHE}'."
-    print_info "builds at '${SMALLTALK_CI_BUILD_BASE}'."
-    if is_dir "${SMALLTALK_CI_CACHE}" || \
-        is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
-      read -p "${question1}" user_input
-      if [[ "${user_input}" = "y" ]]; then
-        clean_up
-      fi
-    else
-      print_notice "Nothing to clean up."
-    fi
-    if is_empty "${config_smalltalk}" || is_empty "${config_ston}"; then
-      exit  # User did not supply enough arguments to continue
-    fi
-    read -p "${question2}" user_input
-    [[ "${user_input}" != "y" ]] && exit 0
+  if [[ "${config_clean}" != "true" ]]; then
+    return 0
   fi
-  return 0
+  print_info "cache at '${SMALLTALK_CI_CACHE}'."
+  print_info "builds at '${SMALLTALK_CI_BUILD_BASE}'."
+  if is_dir "${SMALLTALK_CI_CACHE}" || \
+      is_dir "${SMALLTALK_CI_BUILD_BASE}"; then
+    read -p "Are you sure you want to clear builds and cache? (y/N): " user_input
+    if [[ "${user_input}" = "y" ]]; then
+      clean_up
+    fi
+  else
+    print_notice "Nothing to clean up."
+  fi
+  first_action="check_cleanup"
 }
 
 ################################################################################
@@ -446,7 +502,7 @@ run() {
       source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
       ;;
     *)
-      print_error_and_exit "Unknown Smalltalk version '${config_smalltalk}'."
+      print_error_and_exit "Unknown Smalltalk image '${config_smalltalk}'."
       ;;
   esac
 
@@ -469,8 +525,10 @@ main() {
   local config_ston=""
   local config_clean="false"
   local config_debug="false"
+  local config_first_arg_or_empty=""
   local config_headless="true"
   local config_image=""
+  local config_colorful="true"
   local config_tracking="true"
   local config_verbose="false"
   local config_vm=""
@@ -479,8 +537,8 @@ main() {
   initialize "$@"
   parse_options "$@"
   [[ "${config_verbose}" = "true" ]] && set -o xtrace
-  ensure_ston_config_exists "${!#}"  # Use last argument for custom STON
   check_clean_up
+  ensure_ston_config_exists "${config_first_arg_or_empty}"
   select_smalltalk
   validate_configuration
   config_vm_dir="${SMALLTALK_CI_VMS}/${config_smalltalk}"

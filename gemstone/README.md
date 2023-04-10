@@ -91,14 +91,14 @@ language: smalltalk
 sudo: false
 os: linux
 smalltalk:
-  - GemStone-2.4.7
-  - GemStone-3.1.0.6
-  - GemStone-3.2.12
-  - GemStone-3.3.0
+  - GemStone64-2.4.7
+  - GemStone64-3.1.0.6
+  - GemStone64-3.2.12
+  - GemStone64-3.3.0
 # Do only one build on osx
 matrix:
   include:
-    - smalltalk: GemStone-3.3.0
+    - smalltalk: GemStone64-3.3.0
       os: osx
 cache:
   directories:
@@ -110,7 +110,7 @@ The things to note about the `.travis.yml` are:
 
 1. I'm only running one OSX build for GemStone 3.3.0. There are fewer OSX servers currently available on Travis, so you end up waiting longer for a server to become available - sometimes all of the linux builds finish before an osx server becomes available. A second reason is that dependency caching (see point 2 below) is not available on OSX and that can make a big difference in build times:
   - [a recent tODE build](https://travis-ci.org/dalehenrich/tode/builds/121809026) took as low as 13 minutes on linux is load dep (with dependency caching) and 27 minutes on OSX (with no dependency caching). 
-2. I'm taking advantage of [Travis Depdendency Caching](https://docs.travis-ci.com/user/caching/). Two things are cached for GemStone builds:
+2. I'm taking advantage of [Travis Dependency Caching](https://docs.travis-ci.com/user/caching/). Two things are cached for GemStone builds:
    - an extent0.tode.dbf file for each GemStone version.
    - the devKitCommandLine image
    The extent is the big winner, saving 2/3 of the time over non-cached build. The extent is cached immediately after the end of a `$GS_HOME/bin/createStone` ends. The devKitCommandLine image is cached to save on the download times for the Pharo image and vm.
@@ -131,12 +131,12 @@ The following steps assume that you are trying to debug Travis test failures in 
 ```shell
 cd $GS_HOME/shared/repos/smalltalkCI
 #
-# Run build using GemStone-3.3.0
+# Run build using GemStone64-3.3.0
 # A stone named travis is created in an existing GsDevKit_home checkout
 #  Note that you will want to delete the travis stone when you are done.
 # Run the build for the tODE using the .smalltalk.ston file for tODE
 #
-./run.sh -s GemStone-3.3.0 --gs-HOME=$GS_HOME $GS_HOME/shared/repos/tode/.smalltalk.ston
+./run.sh -s GemStone64-3.3.0 --gs-HOME=$GS_HOME $GS_HOME/shared/repos/tode/.smalltalk.ston
 ```
 
 At the end of the run, you get a summary of the test failures:
@@ -195,9 +195,9 @@ sudo: false
 os:
   - linux
 env:
-  - GSCI_CLIENTS=( "Pharo-3.0" "Pharo-4.0" "Pharo-5.0" )
+  - GSCI_CLIENTS=( "Pharo32-3.0" "Pharo32-4.0" "Pharo32-5.0" )
 smalltalk:
-  - GemStone-3.3.0
+  - GemStone64-3.3.0
 cache:
   directories:
     - $SMALLTALK_CI_CACHE
@@ -218,14 +218,14 @@ git clone https://github.com/GsDevKit/GemStone-GCI.git
 #
 cd smalltalkCI
 #
-# Run build using GemStone-3.3.0
+# Run build using GemStone64-3.3.0
 # A stone named travis is created in an existing GsDevKit_home checkout
 #  Note that you will want to delete the travis stone when you are done.
 # Run the build for the GemStone-GCI using the .smalltalk.ston file for GemStone-GCI
-# In addition to running the build and tests for GemStone-3.3.0, run client tests for
-#  Pharo-4.0 and Pharo-5.0 against the travis stone.
+# In addition to running the build and tests for GemStone64-3.3.0, run client tests for
+#  Pharo32-4.0 and Pharo32-5.0 against the travis stone.
 #
-./run.sh -s GemStone-3.3.0 --gs-CLIENTS="Pharo-4.0 Pharo-5." --gs-HOME=$GS_HOME $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
+./run.sh -s GemStone64-3.3.0 --gs-CLIENTS="Pharo32-4.0 Pharo32-5." --gs-HOME=$GS_HOME $GS_HOME/shared/repos/GemStone-GCI/.smalltalk.ston
 ```
 
 At the end of the build, the test results are summarized for the server and 2 clients:
@@ -398,13 +398,13 @@ or simply:
 startClient seaside_Pharo4.0
 ```
 
-[1]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/pngs/travisErrorStack.png
+[1]: https://user-images.githubusercontent.com/2368856/91981196-bdfa6580-ed28-11ea-9603-a02e0b28920c.png
 [2]: https://github.com/GsDevKit/GsDevKit_home
-[3]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/pngs/todeTestFailureMessage.png
-[4]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/pngs/travisOlView.png
+[3]: https://user-images.githubusercontent.com/2368856/91981194-bd61cf00-ed28-11ea-88db-b4501e61a7eb.png
+[4]: https://user-images.githubusercontent.com/2368856/91981202-bf2b9280-ed28-11ea-81aa-a7b84b5a355a.png
 [5]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/GS64-SysAdmin-3.2.htm?https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/1-Server.htm#pgfId-83703
 [6]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/2-Clients.htm#pgfId-82579
 [7]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/GS64-SysAdmin-3.2.htm?https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-437302
 [8]: https://downloads.gemtalksystems.com/docs/GemStone64/3.2.x/GS64-SysAdmin-3.2/A-ConfigOptions.htm#pgfId-439762
 [9]: https://github.com/hpi-swa/smalltalkCI
-[10]: https://raw.githubusercontent.com/hpi-swa/smalltalkCI/assets/gemstone/pngs/localClientServerTestResults.png
+[10]: https://user-images.githubusercontent.com/2368856/91981189-bc30a200-ed28-11ea-8c3a-5a738beb8373.png

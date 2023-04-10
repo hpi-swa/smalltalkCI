@@ -1,0 +1,1 @@
+I am a mock class for SmalltalkCI.

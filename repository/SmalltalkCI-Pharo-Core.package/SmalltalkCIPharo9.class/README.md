@@ -1,0 +1,1 @@
+This class is used to specify the Pharo SmalltalkCI when used in Pharo9

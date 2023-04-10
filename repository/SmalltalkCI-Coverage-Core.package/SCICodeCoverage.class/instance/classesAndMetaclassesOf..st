@@ -1,4 +1,4 @@
 helpers
 classesAndMetaclassesOf: classes
-	^ (classes collect: [ :cls | cls theNonMetaClass]),
-		(classes collect: [ :cls | cls theMetaClass ])
+	^ (classes collect: [ :cls | self theNonMetaClassOf: cls ])
+		, (classes collect: [ :cls | self theMetaClassOf: cls ])

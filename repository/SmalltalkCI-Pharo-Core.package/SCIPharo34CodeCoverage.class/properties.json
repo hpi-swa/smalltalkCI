@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Pharo-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"allClassesToCover" ],
+	"name" : "SCIPharo34CodeCoverage",
+	"pools" : [
+		 ],
+	"super" : "SCICodeCoverage",
+	"type" : "normal" }

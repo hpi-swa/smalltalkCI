@@ -1,0 +1,8 @@
+{
+	"instance" : {
+		"methodToIgnoreInCoverage" : "GOC 10/2/2019 13:46",
+		"testMethodReferenceForSelector" : "CyrilFerlicot 8/5/2019 11:15",
+		"testIsExcluded" : "GOC 10/2/2019 13:48"
+	},
+	"class" : { }
+}

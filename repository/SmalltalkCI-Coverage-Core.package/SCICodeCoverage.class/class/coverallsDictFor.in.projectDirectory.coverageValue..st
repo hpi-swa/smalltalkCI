@@ -3,6 +3,6 @@ coverallsDictFor: methodReference in: aDirectoryName projectDirectory: projectDi
 	| filePath |
 	filePath := (self filePathFor: methodReference in: aDirectoryName).
 	^ Dictionary newFrom: {
-			('name' -> (self relativePathOf: filePath to: projectDirectory)).
+			('name' -> (self relativeUnixPathOf: filePath to: projectDirectory)).
 			('source_digest' -> (self md5Of: filePath)).
 			('coverage' -> (Array new: (self linesOf: filePath) withAll: aValue))}

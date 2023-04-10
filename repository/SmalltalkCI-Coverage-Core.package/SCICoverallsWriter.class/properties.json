@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Coverage-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCICoverallsWriter",
+	"pools" : [
+		 ],
+	"super" : "SCICoverageWriter",
+	"type" : "normal" }

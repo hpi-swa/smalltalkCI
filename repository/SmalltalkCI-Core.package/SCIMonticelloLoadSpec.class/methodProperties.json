@@ -2,7 +2,7 @@
 	"class" : {
 		"isPlatformCompatible" : "fn 6/13/2016 09:20",
 		"new" : "fn 6/13/2016 09:30",
-		"platformClass" : "fn 6/13/2016 09:19" },
+		"platformClass" : "fn 10/2/2018 09:16" },
 	"instance" : {
 		"addLoadedClassesFrom:" : "fn 6/21/2016 23:42",
 		"basicLoadProjectOn:" : "fn 6/9/2016 11:51",
@@ -14,13 +14,11 @@
 		"loadedClasses:" : "fn 6/9/2016 09:39",
 		"packages" : "fn 6/9/2016 10:24",
 		"packages:" : "fn 6/9/2016 08:57",
-		"password" : "fn 6/9/2016 09:06",
-		"password:" : "fn 6/9/2016 09:06",
+		"password" : "ct 3/25/2021 14:31",
 		"repository" : "fn 6/9/2016 15:21",
 		"url" : "fn 6/9/2016 09:06",
 		"url:" : "fn 6/9/2016 09:06",
-		"user" : "fn 6/9/2016 10:07",
-		"user:" : "fn 6/9/2016 10:06",
+		"user" : "ct 3/25/2021 14:31",
 		"versionNumberOf:" : "fn 6/9/2016 12:52",
 		"versions" : "fn 6/9/2016 10:23",
 		"versions:" : "fn 6/9/2016 08:57" } }

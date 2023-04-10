@@ -1,0 +1,15 @@
+{
+	"class" : {
+		"coverageFormat" : "smalltalkCI 8/28/2020 14:14" },
+	"instance" : {
+		"export:in:" : "EstebanLorenzano 5/27/2021 21:43",
+		"exportCoverallsData:" : "EstebanLorenzano 5/27/2021 21:43",
+		"lcovResultFilename" : "smalltalkCI 8/31/2020 12:36",
+		"lineEnding" : "smalltalkCI 8/28/2020 17:15",
+		"projectDirectory" : "smalltalkCI 8/28/2020 16:50",
+		"projectDirectory:" : "smalltalkCI 8/28/2020 16:50",
+		"stream" : "smalltalkCI 8/28/2020 15:29",
+		"stream:" : "smalltalkCI 8/28/2020 15:30",
+		"writeLineDataByFiles:" : "smalltalkCI 8/28/2020 16:56",
+		"writeLineDataForFile:" : "smalltalkCI 8/28/2020 17:16",
+		"writeLines:" : "smalltalkCI 8/28/2020 17:17" } }

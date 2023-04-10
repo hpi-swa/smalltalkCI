@@ -1,4 +1,4 @@
 accessing
 user
 
-	^ user ifNil: [ ^ '' ]
+	^ super user ifNil: ['']

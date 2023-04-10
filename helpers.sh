@@ -6,6 +6,10 @@
 readonly BUILD_STATUS_FILE="${SMALLTALK_CI_BUILD}/build_status.txt"
 readonly GITHUB_API="https://api.github.com"
 readonly COVERALLS_API="https://coveralls.io/api/v1/jobs"
+readonly COVERALLS_OPTIONAL_KEYS="flag_name parallel repo_token service_job_id
+  service_job_number service_name service_number service_pull_request"
+readonly JQ_BASE_URL="https://github.com/stedolan/jq/releases/download/jq-1.6"
+jq_binary=""
 
 readonly ANSI_BOLD="\033[1m"
 readonly ANSI_RED="\033[31m"
@@ -16,19 +20,35 @@ readonly ANSI_RESET="\033[0m"
 readonly ANSI_CLEAR="\033[0K"
 
 print_info() {
-  printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
+  if is_colorful; then
+    printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\n" "$1"
+  else
+    echo "$1"
+  fi
 }
 
 print_notice() {
-  printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
+  if is_colorful; then
+   printf "${ANSI_BOLD}${ANSI_YELLOW}%s${ANSI_RESET}\n" "$1"
+  else
+    echo "$1"
+  fi
 }
 
 print_success() {
-  printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
+  if is_colorful; then
+   printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\n" "$1"
+  else
+    echo "$1"
+  fi
 }
 
 print_error() {
-  printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
+  if is_colorful; then
+   printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
+  else
+    echo "$1"
+  fi
 }
 
 print_error_and_exit() {
@@ -49,7 +69,9 @@ print_help() {
     --headful           Open vm in headful mode and do not close image.
     --image             Custom image for build (Squeak/Pharo).
     --install           Install symlink to this smalltalkCI instance.
-    --no-tracking       Disable collection of anonymous build metrics (TravisCI & AppVeyor only).
+    --print-env         Print all environment variables used by smalltalkCI
+    --no-color          Disable colored output
+    --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
     -s | --smalltalk    Overwrite Smalltalk image selection.
     --uninstall         Remove symlink to any smalltalkCI instance.
     -v | --verbose      Enable 'set -x'.
@@ -59,8 +81,8 @@ print_help() {
     --gs-BRANCH=<branch-SHA-tag>
                         Name of GsDevKit_home branch, SHA, or tag. Default is 'master'.
 
-                        Environment variable GSCI_DEVKIT_BRANCH may be used to 
-                        specify <branch-SHA-tag>. Command line option overrides 
+                        Environment variable GSCI_DEVKIT_BRANCH may be used to
+                        specify <branch-SHA-tag>. Command line option overrides
                         value of environment variable.
 
     --gs-HOME=<GS_HOME-path>
@@ -70,17 +92,17 @@ print_help() {
                         --gs-DEVKIT_BRANCH option is ignored.
 
     --gs-CLIENTS="<smalltalk-platform>..."
-                        List of Smalltalk client versions to use as a GemStone client. 
+                        List of Smalltalk client versions to use as a GemStone client.
 
-                        Environment variable GSCI_CLIENTS may also be used to 
-                        specify a list of <smalltalk-platform> client versions. 
+                        Environment variable GSCI_CLIENTS may also be used to
+                        specify a list of <smalltalk-platform> client versions.
                         Command line option overrides value of environment variable.
 
-                        If a client is specified, tests are run for both the client 
+                        If a client is specified, tests are run for both the client
                         and server based using the project .smalltalk.ston file.
 
   EXAMPLE:
-    $(basename -- $0) -s "Squeak-trunk" --headfull /path/to/project/.smalltalk.ston
+    $(basename -- $0) -s "Squeak64-trunk" --headfull /path/to/project/.smalltalk.ston
 
 EOF
 }
@@ -89,6 +111,14 @@ print_config() {
   for var in ${!config_@}; do
     echo "${var}=${!var}"
   done
+}
+
+print_env() {
+  env | grep "SMALLTALK_CI_"
+}
+
+is_colorful() {
+  [[ "${config_colorful:-true}" == "true" ]]
 }
 
 is_empty() {
@@ -128,9 +158,7 @@ is_int() {
 }
 
 program_exists() {
-  local program=$1
-
-  [[ $(which "${program}" 2> /dev/null) ]]
+  command -v "$1" &> /dev/null
 }
 
 is_travis_build() {
@@ -139,6 +167,10 @@ is_travis_build() {
 
 is_appveyor_build() {
   [[ "${APPVEYOR:-}" = "True" ]]
+}
+
+is_github_build() {
+  [[ "${GITHUB_ACTIONS:-}" = "true" ]]
 }
 
 is_gitlabci_build() {
@@ -151,6 +183,14 @@ is_linux_build() {
 
 is_cygwin_build() {
   [[ $(uname -s) = "CYGWIN_NT-"* ]]
+}
+
+is_mingw64_build() {
+  [[ $(uname -s) = "MINGW64_NT-"* ]]
+}
+
+is_msys2_build() {
+  [[ $(uname -s) = "MSYS_NT-"* ]]
 }
 
 is_sudo_enabled() {
@@ -174,6 +214,10 @@ vm_is_user_provided() {
   is_not_empty "${config_vm}"
 }
 
+is_64bit() {
+  [[ "${config_smalltalk}" == *"64-"* ]]
+}
+
 is_spur_image() {
   local image_path=$1
   local image_format_number
@@ -187,12 +231,23 @@ is_spur_image() {
     return 0
   fi
 
-  image_format_number="$(hexdump -n 4 -e '2/4 "%04d " "\n"' "${image_path}")"
+  if hash hexdump 2>/dev/null; then
+    image_format_number="$(hexdump -n 4 -e '2/4 "%04d " "\n"' "${image_path}")"
+  elif hash xxd 2>/dev/null; then
+    image_format_number="$((16#$(xxd -p -l 1 "${image_path}")))"
+  else
+    print_error_and_exit "Unable to detect image format (xxd or hexdump needed)"
+  fi
+
   [[ $((image_format_number>>(spur_bit-1) & 1)) -eq 1 ]]
 }
 
 is_headless() {
   [[ "${config_headless}" = "true" ]]
+}
+
+starts_with() {
+  [[ "$1" == "$2"* ]]
 }
 
 ston_includes_loading() {
@@ -238,8 +293,10 @@ check_and_consume_build_status_file() {
 finalize() {
   local build_status
 
-  if is_travis_build || is_appveyor_build; then
+  if is_travis_build || is_appveyor_build || is_github_build; then
     upload_coveralls_results
+  else
+    print_info "Skipping coveralls upload."
   fi
 
   if ! is_file "${BUILD_STATUS_FILE}"; then
@@ -274,11 +331,14 @@ download_file() {
   fi
 
   if program_exists "curl"; then
-    curl -f -s -L --retry 3 -o "${target}" "${url}" || print_error_and_exit \
-      "curl failed to download ${url} to '${target}'."
+    curl --fail --silent --show-error --location \
+      --retry 3 --retry-delay 5 --max-time 300 \
+      -o "${target}" "${url}" || print_error_and_exit \
+        "curl failed to download ${url} to '${target}'."
   elif program_exists "wget"; then
-    wget -q -O "${target}" "${url}" || print_error_and_exit \
-      "wget failed to download ${url} to '${target}'."
+    wget -t 3 --retry-connrefused --waitretry=5 --read-timeout=20 --timeout=300 \
+      --no-dns-cache -q -O "${target}" "${url}" || print_error_and_exit \
+        "wget failed to download ${url} to '${target}'."
   else
     print_error_and_exit "Please install curl or wget."
   fi
@@ -302,7 +362,7 @@ extract_file() {
 resolve_path() {
   local path=$1
 
-  if is_cygwin_build; then
+  if is_cygwin_build || is_mingw64_build || is_msys2_build; then
     echo $(cygpath -w "${path}")
   else
     echo "${path}"
@@ -324,48 +384,122 @@ to_lowercase() {
   echo $1 | tr "[:upper:]" "[:lower:]"
 }
 
+ensure_jq_binary() {
+  if ! is_empty "${jq_binary}"; then
+    return 0
+  elif program_exists "jq"; then
+    jq_binary="jq"
+    return 0
+  fi
+  jq_binary="${SMALLTALK_CI_HOME}/bin/jq"
+  if ! is_file "${jq_binary}"; then
+    case "$(uname -s)" in
+      "Linux")
+        download_file "${JQ_BASE_URL}/jq-linux64" "${jq_binary}"
+        chmod +x "${jq_binary}"
+        ;;
+      "Darwin")
+        download_file "${JQ_BASE_URL}/jq-osx-amd64" "${jq_binary}"
+        chmod +x "${jq_binary}"
+        ;;
+      "CYGWIN_NT-"*|"MINGW64_NT-"*|"MSYS_NT-"*)
+        download_file "${JQ_BASE_URL}/jq-win64.exe" "${jq_binary}"
+        chmod +x "${jq_binary}"
+        ;;
+      *)
+        print_error_and_exit "Unsupported platform '$(uname -s)'."
+        ;;
+    esac
+  fi
+}
+
 git_log() {
   local format_value=$1
   local output
-  output=$(git --no-pager log -1 --pretty=format:"${format_value}")
-  echo "${output//\"/\\\"}" # Escape double quotes
+  echo "$(git --no-pager log -1 --pretty=format:"${format_value}" | "${jq_binary}" -Rs .)"
 }
 
-
 export_coveralls_data() {
-  local service_name="unknown"
   local branch_name="unknown"
+  local flag_name="${COVERALLS_FLAG_NAME:-}"
+  local optional_values=""
+  local parallel="${COVERALLS_PARALLEL:-}"
+  local repo_token=""
+  local service_job_id=""
+  local service_job_number=""
+  local service_number=""
+  local service_name=""
+  local service_pull_request=""
   local url="unknown"
-  local job_id="unknown"
 
-  if is_travis_build; then
-    service_name="travis-ci"
-    branch_name="${TRAVIS_BRANCH}"
-    url="https://github.com/${TRAVIS_REPO_SLUG}.git"
-    job_id="${TRAVIS_JOB_ID}"
-  elif is_appveyor_build; then
-    service_name="appveyor"
-    branch_name="${APPVEYOR_REPO_BRANCH}"
-    url="https://github.com/${APPVEYOR_REPO_NAME}.git"
-    job_id="${APPVEYOR_BUILD_ID}"
-  elif is_gitlabci_build; then
-    service_name="gitlab-ci"
-    branch_name="${CI_COMMIT_REF_NAME}"
-    url="${CI_PROJECT_URL}"
-    job_id="${CI_PIPELINE_ID}.${CI_JOB_ID}"
+  if ! grep -q "#coverage" "${config_ston}"; then
+    return 0 # Coverage data not needed
   fi
+
+  # Handle info in same way as Coveralls' node module (see https://git.io/JJiOz)
+
+  if is_not_empty "${COVERALLS_REPO_TOKEN:-}"; then
+    print_info 'Using $COVERALLS_REPO_TOKEN instead of CI service info...'
+    branch_name="$(git rev-parse --abbrev-ref HEAD)"
+    repo_token="${COVERALLS_REPO_TOKEN:-}"
+  elif is_travis_build; then
+    branch_name="${TRAVIS_BRANCH}"
+    service_job_id="${TRAVIS_JOB_ID}"
+    service_name="travis-ci"
+    service_pull_request="${TRAVIS_PULL_REQUEST:-}"
+    url="https://github.com/${TRAVIS_REPO_SLUG}.git"
+  elif is_appveyor_build; then
+    branch_name="${APPVEYOR_REPO_BRANCH}"
+    service_job_id="${APPVEYOR_BUILD_ID}"
+    service_job_number="${APPVEYOR_BUILD_NUMBER}"
+    service_name="appveyor"
+    service_pull_request="${APPVEYOR_PULL_REQUEST_NUMBER:-}"
+    url="https://github.com/${APPVEYOR_REPO_NAME}.git"
+  elif is_gitlabci_build; then
+    branch_name="${CI_COMMIT_REF_NAME}"
+    service_job_id="${CI_BUILD_ID}"
+    service_job_number="${CI_BUILD_NAME}"
+    service_name="gitlab-ci"
+    service_pull_request="${CI_MERGE_REQUEST_IID:-}"
+    url="${CI_PROJECT_URL}"
+  elif is_github_build; then
+    if [[ "${GITHUB_REF}" == "refs/heads/"* ]]; then
+      branch_name="${GITHUB_REF##*/}" # e.g. in push events.
+    else
+      branch_name="${GITHUB_HEAD_REF}" # e.g. in pull_request events.
+    fi
+    if is_empty "${GITHUB_TOKEN:-}"; then
+      print_error_and_exit 'Running on GitHub Actions but $GITHUB_TOKEN is not set. Add `env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}` to your step config.'
+    fi
+    repo_token="${GITHUB_TOKEN}"
+    service_name="github"
+    service_number="${GITHUB_RUN_ID}"
+    if [[ "${GITHUB_REF}" == "refs/pull/"* ]]; then
+      service_pull_request="${GITHUB_REF#refs/pulls/}"
+    fi
+    url="https://github.com/${GITHUB_REPOSITORY}.git"
+  fi
+
+  for key in ${COVERALLS_OPTIONAL_KEYS}; do
+    if is_not_empty "${!key:-}"; then
+      optional_values="${optional_values}\"${key}\": \"${!key}\", "
+    fi
+  done
+
+  ensure_jq_binary # required for git_log
 
   cat >"${SMALLTALK_CI_BUILD}/coveralls_build_data.json" <<EOL
 {
+  ${optional_values}
   "git": {
     "branch": "${branch_name}",
     "head": {
-      "author_email": "$(git_log "%ae")",
-      "author_name": "$(git_log "%aN")",
-      "committer_email": "$(git_log "%ce")",
-      "committer_name": "$(git_log "%cN")",
-      "id": "$(git_log "%H")",
-      "message": "$(git_log "%s")"
+      "author_email": $(git_log "%ae"),
+      "author_name": $(git_log "%aN"),
+      "committer_email": $(git_log "%ce"),
+      "committer_name": $(git_log "%cN"),
+      "id": $(git_log "%H"),
+      "message": $(git_log "%s")
     },
     "remotes": [
       {
@@ -373,23 +507,23 @@ export_coveralls_data() {
         "name": "origin"
       }
     ]
-  },
-  "service_job_id": "${job_id}",
-  "service_name": "${service_name}"
+  }
 }
 EOL
 }
 
 upload_coveralls_results() {
-  local curl_status=0
+  local http_status=0
   local coverage_results="${SMALLTALK_CI_BUILD}/coveralls_results.json"
+  local coveralls_response="${SMALLTALK_CI_BUILD}/coveralls_response"
 
   if is_file "${coverage_results}"; then
     print_info "Uploading coverage results to Coveralls..."
-    curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" > /dev/null || curl_status=$?
-    if is_nonzero "${curl_status}"; then
-      print_error "Failed to upload coverage results (curl error code #${curl_status})"
+    http_status=$(curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" -o "${coveralls_response}" -w "%{http_code}")
+    if [[ "${http_status}" != "200" ]]; then
+      print_error "Failed to upload coverage results (HTTP status code #${http_status}):"
     fi
+    cat "${coveralls_response}"
   fi
 }
 
@@ -410,11 +544,13 @@ report_build_metrics() {
     env_name="TravisCI"
   elif is_appveyor_build; then
     env_name="AppVeyor"
+  elif is_github_build; then
+    env_name="GitHub"
   else
-    return 0 # Only report build metrics when running on TravisCI or AppVeyor
+    return 0 # Only report build metrics when running on known CI service
   fi
 
-  project_slug="${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-}}"
+  project_slug="${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-${GITHUB_REPOSITORY:-}}}"
   api_url="${GITHUB_API}/repos/${project_slug}"
   status_code=$(curl -w %{http_code} -s -o /dev/null "${api_url}")
   if [[ "${status_code}" != "200" ]]; then
@@ -509,23 +645,23 @@ timer_nanoseconds() {
     format="+%s000000000" # fallback to second precision on darwin (does not support %N)
   fi
 
-  $cmd -u $format
+  "$cmd" -u $format
 }
 
-travis_wait() {
+run_script() {
   local timeout="${SMALLTALK_CI_TIMEOUT:-}"
 
-  local cmd="$@"
+  local cmd=( "$@" )
 
   if ! is_int "${timeout}"; then
-    $cmd
-    return $?    
+    "${cmd[@]}"
+    return $?
   fi
 
-  $cmd &
+  "${cmd[@]}" &
   local cmd_pid=$!
 
-  travis_jigger $! $timeout $cmd &
+  run_jigger $! "$timeout" "${cmd[@]}" &
   local jigger_pid=$!
   local result
 
@@ -536,14 +672,14 @@ travis_wait() {
   }
 
   if [ $result -ne 0 ]; then
-    print_error_and_exit "The command $cmd exited with $result."
+    print_error_and_exit "The command ${cmd[*]} exited with $result."
   fi
 
   return $result
 }
 
-travis_jigger() {
-  # helper method for travis_wait()
+run_jigger() {
+  # helper method for run_script()
   local cmd_pid=$1
   shift
   local timeout=$1 # in minutes
@@ -556,35 +692,49 @@ travis_jigger() {
     sleep 60
   done
 
-  echo -e "\n${ANSI_BOLD}${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
+  if is_colorful; then
+    echo -e "\n${ANSI_BOLD}${ANSI_RED}Timeout (${timeout} minutes) reached. Terminating \"$@\"${ANSI_RESET}\n"
+  else
+    echo -e "\nTimeout (${timeout} minutes) reached. Terminating \"$@\"\n"
+  fi
   kill -9 $cmd_pid
 }
 
 fold_start() {
   local identifier=$1
   local title=$2
-  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
 
   timer_start_time=$(timer_nanoseconds)
-  travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
+
   if is_travis_build; then
+    local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
+    travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
     echo -en "travis_fold:start:${prefix}${identifier}\r${ANSI_CLEAR}"
     echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
   fi
-  echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
+  if is_colorful; then
+    echo -e "${ANSI_BOLD}${ANSI_BLUE}${title}${ANSI_RESET}"
+  else
+    echo -e "${title}"
+  fi
 }
 
 fold_end() {
   local identifier=$1
-  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
+
   local timer_end_time=$(timer_nanoseconds)
   local duration=$(($timer_end_time-$timer_start_time))
 
   if is_travis_build; then
+    local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
     echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
     echo -en "travis_fold:end:${prefix}${identifier}\r${ANSI_CLEAR}"
   else
     duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
-    printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss ${ANSI_RESET}\n" "${duration}"
+    if is_colorful; then
+      printf "${ANSI_RESET}${ANSI_BLUE} > Time to run: %ss${ANSI_RESET}\n" "${duration}"
+    else
+      printf " > Time to run: %ss\n" "${duration}"
+    fi
   fi
 }

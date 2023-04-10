@@ -5,20 +5,22 @@ environment:
   CYG_EXE: C:\cygwin\setup-x86.exe
   CYG_MIRROR: http://cygwin.mirror.constant.com
   matrix:
-    - SMALLTALK: Squeak-trunk
-    - SMALLTALK: Squeak-5.1
-    - SMALLTALK: Squeak-5.0
-    - SMALLTALK: Pharo-alpha
-    - SMALLTALK: Pharo-5.0
+    - SMALLTALK: Squeak64-trunk
+    - SMALLTALK: Squeak64-5.3
+    - SMALLTALK: Squeak64-5.2
+    - SMALLTALK: Squeak64-5.1
+    - SMALLTALK: Squeak32-5.0
+    - SMALLTALK: Pharo64-alpha
+    - SMALLTALK: Pharo32-5.0
 
 matrix:
   fast_finish: true
   allow_failures:
-    - SMALLTALK: Squeak-trunk
-    - SMALLTALK: Pharo-alpha
+    - SMALLTALK: Squeak64-trunk
+    - SMALLTALK: Pharo64-alpha
 
 platform:
-  - x86
+  - x64
 
 clone_depth: 5
 build: false
