@@ -21,29 +21,29 @@ jobs:
       matrix:
         os: [ ubuntu-20.04, macos-latest, windows-2019 ]
         smalltalk:
-#          - Squeak64-trunk
-#          - Squeak64-6.0
-#          - Squeak64-5.3
-#          - Squeak64-5.2
-#          - Squeak64-5.1
-#          - Squeak32-trunk
-#          - Squeak32-6.0
-#          - Squeak32-4.5
-#          - Pharo64-stable
-#          - Pharo64-alpha
-#          - Pharo64-11
-#          - Pharo64-10
-#          - Pharo64-9.0
-#          - Pharo64-8.0
-#          - Pharo64-7.0
-#          - Pharo64-6.1
-#          - Pharo64-6.0
-#          - Pharo32-stable
-#          - Pharo32-alpha
-#          - Pharo32-3.0
-#          - Moose64-10
-#          - Moose64-9.0
-#          - Moose64-8.0
+          - Squeak64-trunk
+          - Squeak64-6.0
+          - Squeak64-5.3
+          - Squeak64-5.2
+          - Squeak64-5.1
+          - Squeak32-trunk
+          - Squeak32-6.0
+          - Squeak32-4.5
+          - Pharo64-stable
+          - Pharo64-alpha
+          - Pharo64-11
+          - Pharo64-10
+          - Pharo64-9.0
+          - Pharo64-8.0
+          - Pharo64-7.0
+          - Pharo64-6.1
+          - Pharo64-6.0
+          - Pharo32-stable
+          - Pharo32-alpha
+          - Pharo32-3.0
+          - Moose64-10
+          - Moose64-9.0
+          - Moose64-8.0
           - GemStone64-3.5.3
           - GemStone64-3.5.8
           - GemStone64-3.6.0
@@ -79,7 +79,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup smalltalkCI
-        uses: dalehenrich/setup-smalltalkCI@solo
+        uses: hpi-swa/setup-smalltalkCI@v1
         with:
           smalltalk-image: ${{ matrix.smalltalk }}
       - name: Run smalltalkCI self test
