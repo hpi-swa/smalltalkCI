@@ -226,9 +226,7 @@ select_smalltalk() {
                 Pharo64-stable Pharo64-alpha Pharo64-11 Pharo64-10 Pharo64-9.0 Pharo64-8.0 Pharo64-7.0 Pharo64-6.1 Pharo64-6.0
                 Pharo32-stable Pharo32-alpha Pharo32-9.0 Pharo32-8.0 Pharo32-7.0 Pharo32-6.0 Pharo32-5.0
                 Pharo32-4.0 Pharo32-3.0
-                GemStone64-3.5.0 GemStone64-3.4.3 GemStone64-3.3.9
-                GemStone64-3.3.2 GemStone64-3.3.0 GemStone64-3.2.12
-                GemStone64-3.1.0.6
+                GemStone64-3.6.5 GemStone64-3.6.0 GemStone64-3.5.8 GemStone64-3.5.3
                 Moose64-trunk Moose64-10 Moose64-9.0 Moose64-8.0 Moose64-7.0
                 Moose32-trunk Moose32-8.0 Moose32-7.0 Moose32-6.1 Moose32-6.0"
 

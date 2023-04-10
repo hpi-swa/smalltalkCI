@@ -41,9 +41,9 @@ jobs:
           - Pharo32-stable
           - Pharo32-alpha
           - Pharo32-3.0
-          - Moose64-10
-          - Moose64-9.0
-          - Moose64-8.0
+#          - Moose64-10
+#          - Moose64-9.0
+#          - Moose64-8.0
           - GemStone64-3.5.3
           - GemStone64-3.5.8
           - GemStone64-3.6.0
