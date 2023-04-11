@@ -74,7 +74,7 @@ they can take up a lot of space on your drive.*
 
 | [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  | [GToolkit][gtoolkit] | 
 | ---------------- | ---------------- | -------------------- | --------------- | -------------------- |
-| `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.5.x`   | `Moose64-trunk` | `GToolkit-release`   |
+| `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.5.x`   | `Moose64-trunk` | `GToolkit64-release` |
 | `Squeak64-6.0`   | `Pharo64-stable` | `GemStone64-3.4.x`   | `Moose64-10`    |                      |
 | `Squeak64-5.3`   | `Pharo64-11`     | `GemStone64-3.3.x`   | `Moose64-9.0`   |                      |
 | `Squeak64-5.2`   | `Pharo64-10`     | `GemStone64-3.2.x`   | `Moose64-8.0`   |                      |

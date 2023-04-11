@@ -44,7 +44,7 @@ jobs:
           - Moose64-10
           - Moose64-9.0
           - Moose64-8.0
-          - GToolkit-release
+          - GToolkit64-release
         timeout-minutes: [ 15 ]
         exclude: # exclude 32bit builds on macOS
           - os: macos-latest
