@@ -72,30 +72,30 @@ they can take up a lot of space on your drive.*
 
 ## <a name="images"/>List of Supported Images
 
-| [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  |
-| ---------------- | ---------------- | -------------------- | --------------- |
-| `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.5.3`   | `Moose64-trunk` |
-| `Squeak64-6.0`   | `Pharo64-stable` | `GemStone64-3.5.4`   | `Moose64-10`    | 
-| `Squeak64-5.3`   | `Pharo64-11`     | `GemStone64-3.5.5`   | `Moose64-9.0`   |
-| `Squeak64-5.2`   | `Pharo64-10`     | `GemStone64-3.5.6`   | `Moose64-8.0`   |
-| `Squeak64-5.1`   | `Pharo64-9.0`    | `GemStone64-3.5.7`   | `Moose64-7.0`   |
-| `Squeak32-trunk` | `Pharo64-8.0`    | `GemStone64-3.5.8`   | `Moose32-trunk` |
-| `Squeak32-6.0`   | `Pharo64-7.0`    | `GemStone64-6.6.x    | `Moose32-6.1`   |
-| `Squeak32-5.3`   | `Pharo64-6.1`    |                      | `Moose32-6.0`   |
-| `Squeak32-5.2`   | `Pharo32-6.0`    |                      |                 |
-| `Squeak32-5.1`   | `Pharo32-alpha`  |                      |                 |
-| `Squeak32-5.0`   | `Pharo32-stable` |                      |                 |
-| `Squeak32-4.6`   | `Pharo32-11`     |                      |                 |
-| `Squeak32-4.5`   | `Pharo32-10`     |                      |                 |
-|                  | `Pharo32-9.0`    |                      |                 |
-|                  | `Pharo32-8.0`    |                      |                 |
-|                  | `Pharo32-7.0`    |                      |                 |
-|                  | `Pharo32-6.1`    |                      |                 |
-|                  | `Pharo32-6.0`    |                      |                 |
-|                  | `Pharo32-5.0`    |                      |                 |
-|                  | `Pharo32-4.0`    |                      |                 |
-|                  | `Pharo32-3.0`    |                      |                 |
-|                  |                  |                      |                 |
+| [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  | [GToolkit][gtoolkit] | 
+| ---------------- | ---------------- | -------------------- | --------------- | -------------------- |
+| `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.5.3`   | `Moose64-trunk` | `GToolkit64-release` |
+| `Squeak64-6.0`   | `Pharo64-stable` | `GemStone64-3.5.4`   | `Moose64-10`    |                      |
+| `Squeak64-5.3`   | `Pharo64-11`     | `GemStone64-3.5.5`   | `Moose64-9.0`   |                      |
+| `Squeak64-5.2`   | `Pharo64-10`     | `GemStone64-3.5.6`   | `Moose64-8.0`   |                      |
+| `Squeak64-5.1`   | `Pharo64-9.0`    | `GemStone64-3.5.7`   | `Moose64-7.0`   |                      |
+| `Squeak32-trunk` | `Pharo64-8.0`    | `Gemstone64-3.5.8`   | `Moose32-trunk` |                      |
+| `Squeak32-6.0`   | `Pharo64-7.0`    | `GemStone64-3.6.x`   | `Moose32-6.1`   |                      |
+| `Squeak32-5.3`   | `Pharo64-6.1`    |                      | `Moose32-6.0`   |                      |
+| `Squeak32-5.2`   | `Pharo32-6.0`    |                      |                 |                      |
+| `Squeak32-5.1`   | `Pharo32-alpha`  |                      |                 |                      |
+| `Squeak32-5.0`   | `Pharo32-stable` |                      |                 |                      |
+| `Squeak32-4.6`   | `Pharo32-11`     |                      |                 |                      |
+| `Squeak32-4.5`   | `Pharo32-10`     |                      |                 |                      |
+|                  | `Pharo32-9.0`    |                      |                 |                      |
+|                  | `Pharo32-8.0`    |                      |                 |                      |
+|                  | `Pharo32-7.0`    |                      |                 |                      |
+|                  | `Pharo32-6.1`    |                      |                 |                      |
+|                  | `Pharo32-6.0`    |                      |                 |                      |
+|                  | `Pharo32-5.0`    |                      |                 |                      |
+|                  | `Pharo32-4.0`    |                      |                 |                      |
+|                  | `Pharo32-3.0`    |                      |                 |                      |
+|                  |                  |                      |                 |                      |
 
 
 ## Templates
@@ -739,6 +739,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [gitlab_ci_cd]: https://about.gitlab.com/features/gitlab-ci-cd/
 [gofer]: http://www.lukas-renggli.ch/blog/gofer
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
+[gtoolkit]: https://gtoolkit.com
 [issues]: https://github.com/hpi-swa/smalltalkCI/issues
 [mc_baseline]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-baseline
 [mc_configuration]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-configuration

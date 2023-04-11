@@ -48,6 +48,7 @@ jobs:
           - GemStone64-3.5.8
           - GemStone64-3.6.0
           - GemStone64-3.6.5
+          - GToolkit64-release
         timeout-minutes: [ 15 ]
         exclude: # exclude 32bit builds on macOS and GemStone builds on windows
           - os: macos-latest
