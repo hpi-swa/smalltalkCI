@@ -5,6 +5,10 @@ testPromptToProceed
 	requests like confirm: . As promptToProceed only really makes sense in an interactive context,
 	always test with the MorphicUIManager"
 	|oldUIManager|
+
+	"Skip this test on GToolkit"
+	(Smalltalk hasClassNamed: 'GtImageSetup') ifTrue: [ ^ self ].
+
 	oldUIManager := UIManager default.
 	UIManager default: MorphicUIManager new.
 	
