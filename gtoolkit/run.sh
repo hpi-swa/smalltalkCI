@@ -3,20 +3,8 @@
 # of a smalltalkCI build and it is not meant to be executed by itself.
 ################################################################################
 
-gtoolkit::latest_release_version() {
-
-  # Get release JSON from GH API (via https://fabianlee.org/2021/02/16/bash-determining-latest-github-release-tag-and-version/)
-  local url=https://api.github.com/repos/feenkcom/gtoolkit/releases/latest
-  local json=$(curl -sL $url)
-
-  # Find the tag name line in the JSON
-  local versionLine=$(echo "$json" | grep tag_name)
-
-  # Scrape the value (adapted from https://stackoverflow.com/a/19394523)
-  local version=$(echo "$versionLine" | awk -F ': ' '/tag_name/ {gsub("\",?","");print $2}')
-
-  echo "$version"
-}
+readonly GTOOLKIT_API_LATEST="https://api.github.com/repos/feenkcom/gtoolkit/releases/latest"
+readonly GTOOLKIT_BASE_DL="https://github.com/feenkcom/gtoolkit/releases/download"
 
 gtoolkit::architecture() {
   local gt_architecture
@@ -33,15 +21,25 @@ gtoolkit::architecture() {
   echo "$gt_architecture"
 }
 
-gtoolkit::archive_basename() {
-  local gt_architecture=$(gtoolkit::architecture)
+gtoolkit::archive_url() {
+  local filename
+  local gt_architecture
   local gt_platform
-  local gt_release=$(gtoolkit::latest_release_version)
+  local gt_release
+  local response
+
+  gt_architecture=$(gtoolkit::architecture)
+
+  response=$(curl -sL "${GTOOLKIT_API_LATEST}" || echo "Error: $?")
+  gt_release=$(echo "${response}" | grep -o '"tag_name": "[^"]*' | grep -o '[^"]*$')
+  if is_empty "${gt_release}"; then
+    print_error_and_exit "Unable to determine latest version of GToolkit:\n${response}"
+  fi
 
   if is_linux_build; then
     gt_platform="Linux"
   elif is_windows_build; then
-    if [[ "$gt_architecture" == "aarch64" ]]; then
+    if [[ "${gt_architecture}" == "aarch64" ]]; then
       print_error_and_exit "unsupported build platform '$(uname -s)'."
     fi
     gt_platform="Windows"
@@ -51,14 +49,8 @@ gtoolkit::archive_basename() {
     print_error_and_exit "unsupported build platform '$(uname -s)'."
   fi
 
-  echo "GlamorousToolkit-${gt_platform}-${gt_architecture}-${gt_release}"
-}
-
-gtoolkit::archive_url() {
-  local gt_release=$(gtoolkit::latest_release_version)
-  local url_base="https://github.com/feenkcom/gtoolkit/releases/download"
-
-  echo "${url_base}/${gt_release}/$(gtoolkit::archive_basename).zip"
+  filename="GlamorousToolkit-${gt_platform}-${gt_architecture}-${gt_release}.zip"
+  echo "${GTOOLKIT_BASE_DL}/${gt_release}/${filename}"
 }
 
 gtoolkit::vm_path() {
@@ -84,7 +76,8 @@ gtoolkit::vm_path() {
 ################################################################################
 
 gtoolkit::prepare_vm() {
-  local vm_path="$(gtoolkit::vm_path)"
+  local vm_path
+  vm_path="$(gtoolkit::vm_path)"
 
   # Skip in case vm is already set up
   if is_file "${SMALLTALK_CI_VM}"; then
@@ -111,9 +104,12 @@ gtoolkit::prepare_vm() {
 
 gtoolkit::prepare_gt() {
   local smalltalk_name=$1 #Ignore currently because we are only supporting `release`
-  local gtoolkit_image_url="$(gtoolkit::archive_url)"
-  local download_name="$(gtoolkit::archive_basename)"
-  local target="${SMALLTALK_CI_CACHE}/${download_name}.zip"
+  local gtoolkit_image_url
+  local download_name
+  local target
+  gtoolkit_image_url="$(gtoolkit::archive_url)"
+  download_name="$(basename "${gtoolkit_image_url}")"
+  target="${SMALLTALK_CI_CACHE}/${download_name}"
 
   if ! is_file "${target}"; then
     fold_start download_image "Downloading ${smalltalk_name} image..."
@@ -149,7 +145,8 @@ gtoolkit::run_script() {
   local script=$1
   local vm_flags=""
   local resolved_vm="${config_vm:-${SMALLTALK_CI_VM}}"
-  local resolved_image="$(resolve_path "${config_image:-${SMALLTALK_CI_IMAGE}}")"
+  local resolved_image
+  resolved_image="$(resolve_path "${config_image:-${SMALLTALK_CI_IMAGE}}")"
 
   if ! is_travis_build && ! is_headless; then
     vm_flags="--no-quit"
