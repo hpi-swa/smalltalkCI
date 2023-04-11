@@ -531,6 +531,7 @@ upload_coveralls_results() {
 
   if is_file "${coverage_results}"; then
     print_info "Uploading coverage results to Coveralls..."
+    cat "${coverage_results}"
     http_status=$(curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" -o "${coveralls_response}" -w "%{http_code}" || echo $?)
     if [[ "${http_status}" != "200" ]]; then
       print_error "Failed to upload coverage results (HTTP status code #${http_status}):"
