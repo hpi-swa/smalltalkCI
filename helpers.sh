@@ -47,7 +47,7 @@ print_error() {
   if is_colorful; then
    printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
   else
-    echo "$1"
+    echo "$1" 1>&2
   fi
 }
 
