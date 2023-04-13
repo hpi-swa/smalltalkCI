@@ -546,10 +546,8 @@ report_build_metrics() {
   local duration=$(($(timer_nanoseconds)-$smalltalk_ci_start_time))
   duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
 
-  if [ "${config_tracking+set}" ]; then
-  	if [[ "${config_tracking}" != "true" ]]; then
-    	return 0
-		fi
+  if [[ "${config_tracking}" != "true" ]]; then
+    return 0
   fi
 
   if is_travis_build; then
