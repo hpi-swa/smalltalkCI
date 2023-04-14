@@ -78,28 +78,24 @@ print_help() {
     --vm                Custom VM for build (Squeak/Pharo).
 
   GEMSTONE OPTIONS:
-    --gs-BRANCH=<branch-SHA-tag>
-                        Name of GsDevKit_home branch, SHA, or tag. Default is 'master'.
+    --gs-DEBUG          Enable remote debugging of GsDevKit_stones .solo scripts
+                        via topaz DEBUGGEM command.
 
-                        Environment variable GSCI_DEVKIT_BRANCH may be used to
-                        specify <branch-SHA-tag>. Command line option overrides
-                        value of environment variable.
+    --gs-PRODUCTS=<gemstone-product-directory>
+                        Specify directory containing GemStone product downloads
+                        to be used instead of downloading products from 
+                        https://ftp.gemtalksystems.com for each run.
 
-    --gs-HOME=<GS_HOME-path>
-                        Path to an existing GsDevKit_home clone to be used
-                        instead of creating a fresh clone.
+    --gs-REPOS=<gemstone-server-git-projects>
+                        Specify directory containing existing server projects to be 
+                        used instead of cloning projects from GitHub for each run.
 
-                        --gs-DEVKIT_BRANCH option is ignored.
-
-    --gs-CLIENTS="<smalltalk-platform>..."
-                        List of Smalltalk client versions to use as a GemStone client.
-
-                        Environment variable GSCI_CLIENTS may also be used to
-                        specify a list of <smalltalk-platform> client versions.
-                        Command line option overrides value of environment variable.
-
-                        If a client is specified, tests are run for both the client
-                        and server based using the project .smalltalk.ston file.
+    --gs-STONE_DIR=<gemstone-stone-directory>
+                        Specify directory of an existing stone. A symbolic link named
+                        product is expected to exist in the <gemstone-stone-directory>
+                        and point to the GEMSTONE product tree for the stone. The name
+                        stone is expected to be managed independently of the run.sh
+                        script. 
 
   EXAMPLE:
     $(basename -- $0) -s "Squeak64-trunk" --headfull /path/to/project/.smalltalk.ston

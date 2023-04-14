@@ -6,11 +6,9 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"produceXMLLog",
-		"xmlLogDirPath",
-		"reportFilePath" ],
-	"name" : "SmalltalkCIGemstone",
+		"filePath" ],
+	"name" : "SCIGemStoneTestReporterFile",
 	"pools" : [
 		 ],
-	"super" : "SmalltalkCI",
+	"super" : "SCITestReporterStdout",
 	"type" : "normal" }
