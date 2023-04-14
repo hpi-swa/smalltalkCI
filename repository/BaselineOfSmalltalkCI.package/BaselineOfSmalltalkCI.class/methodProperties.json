@@ -1,0 +1,11 @@
+{
+	"instance" : {
+		"setUpSqueakPackages:" : "GOC 10/3/2019 09:36",
+		"setUpPharo3And4Packages:" : "GOC 10/3/2019 11:30",
+		"setUpGemStonePackages:" : "GOC 10/3/2019 09:36",
+		"setUpPharo5AndGreaterPackages:" : "GOC 10/3/2019 11:30",
+		"baseline:" : "CyrilFerlicot 14/04/2023 17:07",
+		"pharoVersionFrom:" : "CyrilFerlicot 14/04/2023 17:07"
+	},
+	"class" : { }
+}
