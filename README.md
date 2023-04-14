@@ -74,13 +74,13 @@ they can take up a lot of space on your drive.*
 
 | [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  | [GToolkit][gtoolkit] | 
 | ---------------- | ---------------- | -------------------- | --------------- | -------------------- |
-| `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.5.3`   | `Moose64-trunk` | `GToolkit64-release` |
-| `Squeak64-6.0`   | `Pharo64-stable` | `GemStone64-3.5.4`   | `Moose64-10`    |                      |
-| `Squeak64-5.3`   | `Pharo64-11`     | `GemStone64-3.5.5`   | `Moose64-9.0`   |                      |
+| `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.6.x`   | `Moose64-trunk` | `GToolkit64-release` |
+| `Squeak64-6.0`   | `Pharo64-stable` | `GemStone64-3.5.8`   | `Moose64-10`    |                      |
+| `Squeak64-5.3`   | `Pharo64-11`     | `GemStone64-3.5.7`   | `Moose64-9.0`   |                      |
 | `Squeak64-5.2`   | `Pharo64-10`     | `GemStone64-3.5.6`   | `Moose64-8.0`   |                      |
-| `Squeak64-5.1`   | `Pharo64-9.0`    | `GemStone64-3.5.7`   | `Moose64-7.0`   |                      |
-| `Squeak32-trunk` | `Pharo64-8.0`    | `Gemstone64-3.5.8`   | `Moose32-trunk` |                      |
-| `Squeak32-6.0`   | `Pharo64-7.0`    | `GemStone64-3.6.x`   | `Moose32-6.1`   |                      |
+| `Squeak64-5.1`   | `Pharo64-9.0`    | `GemStone64-3.5.5`   | `Moose64-7.0`   |                      |
+| `Squeak32-trunk` | `Pharo64-8.0`    | `Gemstone64-3.5.4`   | `Moose32-trunk` |                      |
+| `Squeak32-6.0`   | `Pharo64-7.0`    | `GemStone64-3.5.3`   | `Moose32-6.1`   |                      |
 | `Squeak32-5.3`   | `Pharo64-6.1`    |                      | `Moose32-6.0`   |                      |
 | `Squeak32-5.2`   | `Pharo32-6.0`    |                      |                 |                      |
 | `Squeak32-5.1`   | `Pharo32-alpha`  |                      |                 |                      |
@@ -95,7 +95,6 @@ they can take up a lot of space on your drive.*
 |                  | `Pharo32-5.0`    |                      |                 |                      |
 |                  | `Pharo32-4.0`    |                      |                 |                      |
 |                  | `Pharo32-3.0`    |                      |                 |                      |
-|                  |                  |                      |                 |                      |
 
 
 ## Templates
