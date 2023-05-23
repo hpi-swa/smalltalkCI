@@ -1,9 +1,13 @@
 {
+	"instance" : {
+		"selectorIn:" : "GOC 5/22/2023 17:51",
+		"basicRunCase:" : "7/17/2017 19:03:43",
+		"serializeError:of:" : "GOC 5/22/2023 17:51",
+		"runAll" : "MaxLeske 7/17/2017 19:05",
+		"stackTraceString:of:" : "GOC 5/22/2023 17:51"
+	},
 	"class" : {
 		"runClasses:spec:" : "maxmattone 4/14/2021 17:11",
-		"skipExceptions" : "EstebanLorenzano 5/27/2021 21:51" },
-	"instance" : {
-		"basicRunCase:" : "7/17/2017 19:03:43",
-		"runAll" : "MaxLeske 7/17/2017 19:05",
-		"serializeError:of:" : "MaxLeske 5/17/2021 14:06",
-		"stackTraceString:of:" : "smalltalkCI 7/4/2017 09:58" } }
+		"skipExceptions" : "EstebanLorenzano 5/27/2021 21:51"
+	}
+}
