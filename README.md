@@ -666,6 +666,11 @@ problem.
     [SpreadSheetTool](https://github.com/hpi-swa-teaching/SpreadSheetTool),
     [TelegramClient](https://github.com/hpi-swa-teaching/TelegramClient),
     [SwaLint](https://github.com/hpi-swa-teaching/SwaLint).
+- [@LinqLover](https://github.com/LinqLover):
+    [create-image](https://github.com/LinqLover/create-image),
+    [SimulationStudio](https://github.com/LinqLover/SimulationStudio),
+    [TelegramBot](https://github.com/LinqLover/TelegramBot),
+    [XmasDecorations](https://github.com/LinqLover/XmasDecorations).
 - [@marianopeck](https://github.com/marianopeck):
     [OSSubprocess](https://github.com/marianopeck/OSSubprocess),
     [FFICHeaderExtractor](https://github.com/marianopeck/FFICHeaderExtractor).
