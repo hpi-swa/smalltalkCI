@@ -649,12 +649,20 @@ problem.
     [animations](https://github.com/hpi-swa/animations),
     [Ohm-S](https://github.com/hpi-swa/Ohm-S),
     [signals](https://github.com/hpi-swa/signals),
+    [Sandblocks](https://github.com/hpi-swa/sandblocks),
     [Squot](https://github.com/hpi-swa/Squot),
     [vivide](https://github.com/hpi-swa/vivide),
     [widgets](https://github.com/hpi-swa/widgets).
+- [@hpi-swa-lab](https://github.com/hpi-swa-lab):
+    [Babylonian Programming/Smalltalk](https://github.com/hpi-swa-lab/babylonian-programming-smalltalk),
+    [Squeak by Example](https://github.com/hpi-swa-lab/SqueakByExample-english),
+    [Squeak Inbox Talk](https://github.com/hpi-swa-lab/squeak-inbox-talk).
 - [@HPI-SWA-Teaching](https://github.com/HPI-SWA-Teaching):
     [Algernon-Launcher](https://github.com/HPI-SWA-Teaching/Algernon-Launcher),
     [AutoTDD](https://github.com/hpi-swa-teaching/AutoTDD),
+    [Koans](https://github.com/hpi-swa-teaching/Koans),
+    [Morphic Testing Framework](https://github.com/hpi-swa-teaching/Morphic-Testing-Framework),
+    [Poppy Print](https://github.com/hpi-swa-teaching/poppy-print),
     [SpreadSheetTool](https://github.com/hpi-swa-teaching/SpreadSheetTool),
     [TelegramClient](https://github.com/hpi-swa-teaching/TelegramClient),
     [SwaLint](https://github.com/hpi-swa-teaching/SwaLint).
