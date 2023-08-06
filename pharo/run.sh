@@ -270,8 +270,8 @@ pharo::prepare_image() {
   local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}"
   local pharo_zeroconf="${target}/zeroconfig"
 
-  if ! is_file "${target}"; then
-    is_dir "${target}" || mkdir "${target}"
+  if ! is_dir "${target}"; then
+    mkdir "${target}"
     pushd "${target}" > /dev/null
     fold_start download_image "Downloading ${smalltalk_name} image..."
       download_file "${pharo_image_url}" "${pharo_zeroconf}"
