@@ -410,7 +410,7 @@ Otherwise, it will be loaded from the specified `#repository`.
 SCIMetacelloLoadSpec {
   #baseline : 'MyProject',                            // Define MC Baseline
   #configuration : 'MyProject',                       // Alternatively, define MC Configuration
-  #directory : 'packages',                            // Path to source-code directory were are packages (i.e. 'packages' or 'src'), in case of packages are not on root
+  #directory : 'src',                                 // Path to source-code directory were are packages (i.e. 'packages' or 'src'), in case of packages are not on root
   #failOn : [ #OCUndeclaredVariableWarning ],         // Fail build on provided list of Warnings
   #ignoreImage : true,                                // If true, Metacello will force a load of a package, overriding a previously existing one
   #load : [ 'default' ],                              // Define MC load attributes
