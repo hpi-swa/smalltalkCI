@@ -15,10 +15,10 @@ pharo::get_image_url() {
   local smalltalk_name=$1
 
   case "${smalltalk_name}" in
-    "Pharo64-alpha")
+    "Pharo64-alpha"|"Pharo-alpha")
       echo "get.pharo.org/64/alpha"
       ;;
-    "Pharo64-stable")
+    "Pharo64-stable"|"Pharo-stable")
       echo "get.pharo.org/64/stable"
       ;;
     "Pharo64-12")
@@ -45,12 +45,15 @@ pharo::get_image_url() {
     "Pharo64-6.0")
       echo "get.pharo.org/64/60"
       ;;
-    "Pharo32-alpha"|"Pharo-alpha")
+    "Pharo32-alpha")
       echo "get.pharo.org/alpha"
       ;;
-    "Pharo32-stable"|"Pharo-stable")
+    "Pharo32-stable")
       echo "get.pharo.org/stable"
       ;;
+    "Pharo32-12")
+        echo "get.pharo.org/32/120"
+        ;;
     "Pharo32-11")
         echo "get.pharo.org/32/110"
         ;;
@@ -142,14 +145,16 @@ moose::get_image_url() {
 ################################################################################
 pharo::get_vm_url() {
   local smalltalk_name=$1
+  local stable_version=11
+  local alpha_version=12
 
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
-    "Pharo64-alpha")
-      echo "get.pharo.org/64/vmLatest110"
+    "Pharo64-alpha"|"Pharo-alpha")
+      echo "get.pharo.org/64/vmLatest${alpha_version}0"
       ;;
-    "Pharo64-stable")
-      echo "get.pharo.org/64/vm100"
+    "Pharo64-stable"|"Pharo-stable")
+      echo "get.pharo.org/64/vm${stable_version}0"
       ;;
     "Pharo64-12")
       echo "get.pharo.org/64/vm120"
@@ -175,11 +180,14 @@ pharo::get_vm_url() {
     "Pharo64-6.0")
       echo "get.pharo.org/64/vm60"
       ;;
-    "Pharo32-alpha"|"Pharo-alpha")
-      echo "get.pharo.org/vmLatest110"
+    "Pharo32-alpha")
+      echo "get.pharo.org/vmLatest${alpha_version}0"
       ;;
-    "Pharo-stable"|"Pharo32-stable")
-      echo "get.pharo.org/vm100"
+    "Pharo32-stable")
+      echo "get.pharo.org/vm${stable_version}0"
+      ;;
+    "Pharo32-12")
+      echo "get.pharo.org/vm120"
       ;;
     "Pharo32-11")
       echo "get.pharo.org/vm110"
