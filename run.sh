@@ -223,12 +223,11 @@ select_smalltalk() {
   local images="Squeak64-trunk Squeak64-6.0 Squeak64-5.3 Squeak64-5.2 Squeak64-5.1
                 Squeak32-trunk Squeak32-6.0 Squeak32-5.3 Squeak32-5.2 Squeak32-5.1 Squeak32-5.0
                 Squeak32-4.6 Squeak32-4.5
-                Pharo64-stable Pharo64-alpha Pharo64-11 Pharo64-10 Pharo64-9.0 Pharo64-8.0 Pharo64-7.0 Pharo64-6.1 Pharo64-6.0
-                Pharo32-stable Pharo32-alpha Pharo32-9.0 Pharo32-8.0 Pharo32-7.0 Pharo32-6.0 Pharo32-5.0
+                Pharo64-stable Pharo64-alpha Pharo64-12 Pharo64-11 Pharo64-10 Pharo64-9.0 Pharo64-8.0 Pharo64-7.0 Pharo64-6.1 Pharo64-6.0
+                Pharo32-stable Pharo32-alpha Pharo32-12 Pharo32-9.0 Pharo32-8.0 Pharo32-7.0 Pharo32-6.0 Pharo32-5.0
                 Pharo32-4.0 Pharo32-3.0
-                GemStone64-3.5.0 GemStone64-3.4.3 GemStone64-3.3.9
-                GemStone64-3.3.2 GemStone64-3.3.0 GemStone64-3.2.12
-                GemStone64-3.1.0.6
+                GemStone64-3.6.5 GemStone64-3.6.0 GemStone64-3.5.8 GemStone64-3.5.3
+                GToolkit64-release
                 Moose64-trunk Moose64-10 Moose64-9.0 Moose64-8.0 Moose64-7.0
                 Moose32-trunk Moose32-8.0 Moose32-7.0 Moose32-6.1 Moose32-6.0"
 
@@ -247,7 +246,7 @@ select_smalltalk() {
     set -o posix  # fixes SIGINT during select
     select selection in $images; do
       case "${selection}" in
-        Squeak*|Pharo*|GemStone*|Moose*)
+        Squeak*|Pharo*|GemStone*|GToolkit*|Moose*)
           config_smalltalk="${selection}"
           break
           ;;
@@ -500,6 +499,10 @@ run() {
     GemStone*)
       print_info "Starting GemStone build..."
       source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
+      ;;
+    GToolkit*)
+      print_info "Starting GToolkit build..."
+      source "${SMALLTALK_CI_HOME}/gtoolkit/run.sh"
       ;;
     *)
       print_error_and_exit "Unknown Smalltalk image '${config_smalltalk}'."

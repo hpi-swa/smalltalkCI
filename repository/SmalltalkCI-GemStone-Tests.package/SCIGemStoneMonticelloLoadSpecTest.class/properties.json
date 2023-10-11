@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "SCIMonticelloLoadSpecTest",
+	"category" : "SmalltalkCI-GemStone-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SCIGemStoneMonticelloLoadSpecTest",
+	"type" : "normal"
+}

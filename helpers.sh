@@ -47,7 +47,7 @@ print_error() {
   if is_colorful; then
    printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
   else
-    echo "$1"
+    echo "$1" 1>&2
   fi
 }
 
@@ -78,28 +78,24 @@ print_help() {
     --vm                Custom VM for build (Squeak/Pharo).
 
   GEMSTONE OPTIONS:
-    --gs-BRANCH=<branch-SHA-tag>
-                        Name of GsDevKit_home branch, SHA, or tag. Default is 'master'.
+    --gs-DEBUG          Enable remote debugging of GsDevKit_stones .solo scripts
+                        via topaz DEBUGGEM command.
 
-                        Environment variable GSCI_DEVKIT_BRANCH may be used to
-                        specify <branch-SHA-tag>. Command line option overrides
-                        value of environment variable.
+    --gs-PRODUCTS=<gemstone-product-directory>
+                        Specify directory containing GemStone product downloads
+                        to be used instead of downloading products from 
+                        https://ftp.gemtalksystems.com for each run.
 
-    --gs-HOME=<GS_HOME-path>
-                        Path to an existing GsDevKit_home clone to be used
-                        instead of creating a fresh clone.
+    --gs-REPOS=<gemstone-server-git-projects>
+                        Specify directory containing existing server projects to be 
+                        used instead of cloning projects from GitHub for each run.
 
-                        --gs-DEVKIT_BRANCH option is ignored.
-
-    --gs-CLIENTS="<smalltalk-platform>..."
-                        List of Smalltalk client versions to use as a GemStone client.
-
-                        Environment variable GSCI_CLIENTS may also be used to
-                        specify a list of <smalltalk-platform> client versions.
-                        Command line option overrides value of environment variable.
-
-                        If a client is specified, tests are run for both the client
-                        and server based using the project .smalltalk.ston file.
+    --gs-STONE_DIR=<gemstone-stone-directory>
+                        Specify directory of an existing stone. A symbolic link named
+                        product is expected to exist in the <gemstone-stone-directory>
+                        and point to the GEMSTONE product tree for the stone. The name
+                        stone is expected to be managed independently of the run.sh
+                        script. 
 
   EXAMPLE:
     $(basename -- $0) -s "Squeak64-trunk" --headfull /path/to/project/.smalltalk.ston
@@ -191,6 +187,18 @@ is_mingw64_build() {
 
 is_msys2_build() {
   [[ $(uname -s) = "MSYS_NT-"* ]]
+}
+
+is_mac_build() {
+  [[ $(uname -s) = "Darwin" ]]
+}
+
+is_windows_build() {
+  is_cygwin_build ] || is_mingw64_build || is_msys2_build
+}
+
+hardware_platform() {
+  echo "$(uname -m)"
 }
 
 is_sudo_enabled() {
@@ -519,11 +527,13 @@ upload_coveralls_results() {
 
   if is_file "${coverage_results}"; then
     print_info "Uploading coverage results to Coveralls..."
-    http_status=$(curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" -o "${coveralls_response}" -w "%{http_code}")
+    http_status=$(curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" -o "${coveralls_response}" -w "%{http_code}" || echo $?)
     if [[ "${http_status}" != "200" ]]; then
       print_error "Failed to upload coverage results (HTTP status code #${http_status}):"
     fi
-    cat "${coveralls_response}"
+    if is_file "${coveralls_response}"; then
+      cat "${coveralls_response}"
+    fi
   fi
 }
 
@@ -552,7 +562,7 @@ report_build_metrics() {
 
   project_slug="${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-${GITHUB_REPOSITORY:-}}}"
   api_url="${GITHUB_API}/repos/${project_slug}"
-  status_code=$(curl -w %{http_code} -s -o /dev/null "${api_url}")
+  status_code=$(curl -w %{http_code} -s -o /dev/null "${api_url}" || echo $?)
   if [[ "${status_code}" != "200" ]]; then
     return 0 # Not a public repository
   fi

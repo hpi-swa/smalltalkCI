@@ -4,7 +4,7 @@ classesToTest
 	SmalltalkCI explicitTestKeys
 		do: [ :key | 
 			(self testing includesKey: key)
-				ifTrue: [ ^ SmalltalkCI classesFrom: self testing ] ].
+				ifTrue: [ ^ SmalltalkCI platformClass classesFrom: self testing ] ].
 	classes := OrderedCollection new.
 	(self testing at: #'allTestCases' ifAbsent: [ false ]) = true
 		ifTrue: [ classes addAll: TestCase allSubclasses ]

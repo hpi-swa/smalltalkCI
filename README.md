@@ -72,30 +72,31 @@ they can take up a lot of space on your drive.*
 
 ## <a name="images"/>List of Supported Images
 
-| [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  |
-| ---------------- | ---------------- | -------------------- | --------------- |
-| `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.5.x`   | `Moose64-trunk` |
-| `Squeak64-6.0`   | `Pharo64-stable` | `GemStone64-3.4.x`   | `Moose64-10`    | 
-| `Squeak64-5.3`   | `Pharo64-11`     | `GemStone64-3.3.x`   | `Moose64-9.0`   |
-| `Squeak64-5.2`   | `Pharo64-10`     | `GemStone64-3.2.x`   | `Moose64-8.0`   |
-| `Squeak64-5.1`   | `Pharo64-9.0`    | `GemStone64-3.1.0.x` | `Moose64-7.0`   |
-| `Squeak32-trunk` | `Pharo64-8.0`    | `Gemstone64-2.4.x`   | `Moose32-trunk` |
-| `Squeak32-6.0`   | `Pharo64-7.0`    |                      | `Moose32-6.1`   |
-| `Squeak32-5.3`   | `Pharo64-6.1`    |                      | `Moose32-6.0`   |
-| `Squeak32-5.2`   | `Pharo32-6.0`    |                      |                 |
-| `Squeak32-5.1`   | `Pharo32-alpha`  |                      |                 |
-| `Squeak32-5.0`   | `Pharo32-stable` |                      |                 |
-| `Squeak32-4.6`   | `Pharo32-11`     |                      |                 |
-| `Squeak32-4.5`   | `Pharo32-10`     |                      |                 |
-|                  | `Pharo32-9.0`    |                      |                 |
-|                  | `Pharo32-8.0`    |                      |                 |
-|                  | `Pharo32-7.0`    |                      |                 |
-|                  | `Pharo32-6.1`    |                      |                 |
-|                  | `Pharo32-6.0`    |                      |                 |
-|                  | `Pharo32-5.0`    |                      |                 |
-|                  | `Pharo32-4.0`    |                      |                 |
-|                  | `Pharo32-3.0`    |                      |                 |
-|                  |                  |                      |                 |
+| [Squeak][squeak] | [Pharo][pharo]   | [GemStone][gemstone] | [Moose][moose]  | [GToolkit][gtoolkit] | 
+| ---------------- | ---------------- | -------------------- | --------------- | -------------------- |
+| `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.6.x`   | `Moose64-trunk` | `GToolkit64-release` |
+| `Squeak64-6.0`   | `Pharo64-stable` | `GemStone64-3.5.8`   | `Moose64-11`    |                      |
+| `Squeak64-5.3`   | `Pharo64-12`     | `GemStone64-3.5.7`   | `Moose64-10`    |                      |
+| `Squeak64-5.2`   | `Pharo64-11`     | `GemStone64-3.5.6`   | `Moose64-9.0`   |                      |
+| `Squeak64-5.1`   | `Pharo64-10`     | `GemStone64-3.5.5`   | `Moose64-8.0`   |                      |
+| `Squeak32-trunk` | `Pharo64-9.0`    | `Gemstone64-3.5.4`   | `Moose64-7.0`   |                      |
+| `Squeak32-6.0`   | `Pharo64-8.0`    | `GemStone64-3.5.3`   | `Moose32-trunk` |                      |
+| `Squeak32-5.3`   | `Pharo64-7.0`    |                      | `Moose32-6.1`   |                      |
+| `Squeak32-5.2`   | `Pharo64-6.1`    |                      | `Moose32-6.0`   |                      |
+| `Squeak32-5.1`   | `Pharo64-6.0`    |                      |                 |                      |
+| `Squeak32-5.0`   | `Pharo32-alpha`  |                      |                 |                      |
+| `Squeak32-4.6`   | `Pharo32-stable` |                      |                 |                      |
+| `Squeak32-4.5`   | `Pharo32-12`     |                      |                 |                      |
+|                  | `Pharo32-11`     |                      |                 |                      |
+|                  | `Pharo32-10`     |                      |                 |                      |
+|                  | `Pharo32-9.0`    |                      |                 |                      |
+|                  | `Pharo32-8.0`    |                      |                 |                      |
+|                  | `Pharo32-7.0`    |                      |                 |                      |
+|                  | `Pharo32-6.1`    |                      |                 |                      |
+|                  | `Pharo32-6.0`    |                      |                 |                      |
+|                  | `Pharo32-5.0`    |                      |                 |                      |
+|                  | `Pharo32-4.0`    |                      |                 |                      |
+|                  | `Pharo32-3.0`    |                      |                 |                      |
 
 
 ## Templates
@@ -178,9 +179,9 @@ smalltalk:
   - Pharo32-stable
   - Pharo32-6.1
   # ...
-  - GemStone64-3.3.2
-  - GemStone64-3.2.12
-  - GemStone64-3.1.0.6
+  - GemStone64-3.5.3
+  - GemStone64-3.6.0
+  - GemStone64-3.6.5
   # ...
 
 # Override `script` to customize smalltalkCI invocation, e.g.:
@@ -409,7 +410,7 @@ Otherwise, it will be loaded from the specified `#repository`.
 SCIMetacelloLoadSpec {
   #baseline : 'MyProject',                            // Define MC Baseline
   #configuration : 'MyProject',                       // Alternatively, define MC Configuration
-  #directory : 'packages',                            // Path to packages if FileTree is used
+  #directory : 'src',                                 // Path to source-code directory were are packages (i.e. 'packages' or 'src'), in case of packages are not on root
   #failOn : [ #OCUndeclaredVariableWarning ],         // Fail build on provided list of Warnings
   #ignoreImage : true,                                // If true, Metacello will force a load of a package, overriding a previously existing one
   #load : [ 'default' ],                              // Define MC load attributes
@@ -648,15 +649,28 @@ problem.
     [animations](https://github.com/hpi-swa/animations),
     [Ohm-S](https://github.com/hpi-swa/Ohm-S),
     [signals](https://github.com/hpi-swa/signals),
+    [Sandblocks](https://github.com/hpi-swa/sandblocks),
     [Squot](https://github.com/hpi-swa/Squot),
     [vivide](https://github.com/hpi-swa/vivide),
     [widgets](https://github.com/hpi-swa/widgets).
+- [@hpi-swa-lab](https://github.com/hpi-swa-lab):
+    [Babylonian Programming/Smalltalk](https://github.com/hpi-swa-lab/babylonian-programming-smalltalk),
+    [Squeak by Example](https://github.com/hpi-swa-lab/SqueakByExample-english),
+    [Squeak Inbox Talk](https://github.com/hpi-swa-lab/squeak-inbox-talk).
 - [@HPI-SWA-Teaching](https://github.com/HPI-SWA-Teaching):
     [Algernon-Launcher](https://github.com/HPI-SWA-Teaching/Algernon-Launcher),
     [AutoTDD](https://github.com/hpi-swa-teaching/AutoTDD),
+    [Koans](https://github.com/hpi-swa-teaching/Koans),
+    [Morphic Testing Framework](https://github.com/hpi-swa-teaching/Morphic-Testing-Framework),
+    [Poppy Print](https://github.com/hpi-swa-teaching/poppy-print),
     [SpreadSheetTool](https://github.com/hpi-swa-teaching/SpreadSheetTool),
     [TelegramClient](https://github.com/hpi-swa-teaching/TelegramClient),
     [SwaLint](https://github.com/hpi-swa-teaching/SwaLint).
+- [@LinqLover](https://github.com/LinqLover):
+    [create-image](https://github.com/LinqLover/create-image),
+    [SimulationStudio](https://github.com/LinqLover/SimulationStudio),
+    [TelegramBot](https://github.com/LinqLover/TelegramBot),
+    [XmasDecorations](https://github.com/LinqLover/XmasDecorations).
 - [@marianopeck](https://github.com/marianopeck):
     [OSSubprocess](https://github.com/marianopeck/OSSubprocess),
     [FFICHeaderExtractor](https://github.com/marianopeck/FFICHeaderExtractor).
@@ -739,6 +753,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [gitlab_ci_cd]: https://about.gitlab.com/features/gitlab-ci-cd/
 [gofer]: http://www.lukas-renggli.ch/blog/gofer
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
+[gtoolkit]: https://gtoolkit.com
 [issues]: https://github.com/hpi-swa/smalltalkCI/issues
 [mc_baseline]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-baseline
 [mc_configuration]: https://github.com/dalehenrich/metacello-work/blob/master/docs/GettingStartedWithGitHub.md#create-configuration

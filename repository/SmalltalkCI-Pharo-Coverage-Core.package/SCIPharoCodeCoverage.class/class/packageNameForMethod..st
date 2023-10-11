@@ -1,3 +1,5 @@
 compatibility
 packageNameForMethod: aMethodReference
-	^ ((Smalltalk at: #RPackageOrganizer) default packageDefiningOrExtendingMethod: aMethodReference compiledMethod) packageName
+	| aClass |
+	aClass := aMethodReference compiledMethod methodClass.
+	^ (aClass packages detect: [:each | each includesSelector: aMethodReference compiledMethod selector ofClass: aClass ]) packageName
