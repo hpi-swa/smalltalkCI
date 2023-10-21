@@ -750,7 +750,7 @@ list. Please add [`[ci skip]`][ci_skip] to your commit message.*
 [github_action_b]: https://img.shields.io/github/actions/workflow/status/hpi-swa/smalltalkCI/main.yml?branch=master
 [github_action_url]: https://github.com/hpi-swa/smalltalkCI/actions
 [github_actions]: https://github.com/features/actions
-[gitlab_ci_cd]: https://about.gitlab.com/features/gitlab-ci-cd/
+[gitlab_ci_cd]: https://about.gitlab.com/topics/ci-cd
 [gofer]: http://www.lukas-renggli.ch/blog/gofer
 [gs]: https://github.com/hpi-swa/smalltalkCI/issues/28
 [gtoolkit]: https://gtoolkit.com
