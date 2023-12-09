@@ -546,7 +546,7 @@ report_build_metrics() {
   local duration=$(($(timer_nanoseconds)-$smalltalk_ci_start_time))
   duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
 
-  if [[ "${config_tracking}" != "true" ]]; then
+  if [[ "${config_tracking:-}" == "false" ]]; then
     return 0
   fi
 
@@ -569,7 +569,7 @@ report_build_metrics() {
 
   curl -s --header "X-BUILD-DURATION: ${duration}" \
           --header "X-BUILD-ENV: ${env_name}" \
-          --header "X-BUILD-SMALLTALK: ${config_smalltalk}" \
+          --header "X-BUILD-SMALLTALK: ${config_smalltalk:-unknown}" \
           --header "X-BUILD-STATUS: ${build_status}" \
             "https://smalltalkci.fniephaus.com/api/" > /dev/null || true
 }
