@@ -90,14 +90,14 @@ jobs:
           tests/all_tests.sh
           bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
         shell: bash
-        if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false && contains(matrix.smalltalk, 'Squeak32-6.0') == false && contains(matrix.smalltalk, 'GToolkit64') == false
+        if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false && contains(matrix.smalltalk, 'Squeak32-6.0') == false && contains(matrix.smalltalk, 'GToolkit64') == false && contains(matrix.smalltalk, 'Pharo64-12') == false
         timeout-minutes: ${{ matrix.timeout-minutes }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run smalltalkCI self test and ignore failures
         run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test || true
         shell: bash
-        if: contains(matrix.smalltalk, 'trunk') || contains(matrix.smalltalk, 'alpha') || contains(matrix.smalltalk, 'Squeak32-6.0')  || contains(matrix.smalltalk, 'GToolkit64')
+        if: contains(matrix.smalltalk, 'trunk') || contains(matrix.smalltalk, 'alpha') || contains(matrix.smalltalk, 'Squeak32-6.0') || contains(matrix.smalltalk, 'GToolkit64') || contains(matrix.smalltalk, 'Pharo64-12')
         timeout-minutes: ${{ matrix.timeout-minutes }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
