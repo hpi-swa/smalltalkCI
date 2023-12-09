@@ -524,7 +524,7 @@ run() {
 #   All positional parameters
 ################################################################################
 main() {
-  local config_smalltalk=""
+  export config_smalltalk=""
   local config_ston=""
   local config_clean="false"
   local config_debug="false"
@@ -532,7 +532,7 @@ main() {
   local config_headless="true"
   local config_image=""
   local config_colorful="true"
-  local config_tracking="true"
+  export config_tracking="true"
   local config_verbose="false"
   local config_vm=""
   local config_vm_dir
