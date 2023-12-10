@@ -639,6 +639,24 @@ deploy() {
   fold_end deploy
 }
 
+retry() {
+  local retries=$1
+  local command=$2
+  local status=0
+
+  $command || status=$?
+
+  if [[ $status -ne 0 ]]; then
+    if [[ $retries -gt 0 ]]; then
+      echo "Retrying in one second..."
+      sleep 1
+      retry $(($retries - 1)) "$command"
+    else
+      print_error_and_exit "The command '${command}' failed too often (last exit code: ${status})."
+    fi
+  fi
+}
+
 
 ################################################################################
 # Travis-related helper functions (based on https://git.io/vzcTj).

@@ -247,7 +247,7 @@ pharo::prepare_vm() {
     pushd "${config_vm_dir}" > /dev/null
     fold_start download_vm "Downloading ${smalltalk_name} vm..."
       download_file "${pharo_vm_url}" "${pharo_zeroconf}"
-      bash "${pharo_zeroconf}"
+      retry 3 "bash ${pharo_zeroconf}"
     fold_end download_vm
     popd > /dev/null
   fi
@@ -283,7 +283,7 @@ pharo::prepare_image() {
     pushd "${target}" > /dev/null
     fold_start download_image "Downloading ${smalltalk_name} image..."
       download_file "${pharo_image_url}" "${pharo_zeroconf}"
-      bash "${pharo_zeroconf}"
+      retry 3 "bash ${pharo_zeroconf}"
     fold_end download_image
     popd > /dev/null
   fi
