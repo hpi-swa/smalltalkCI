@@ -1,14 +1,11 @@
 {
-	"category" : "SmalltalkCI-Coverage-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "smalltalkCI 8/28/2020 15:03",
-	"instvars" : [
-		 ],
-	"name" : "SCICoverageWriter",
-	"pools" : [
-		 ],
 	"super" : "SCIObjectWithSpec",
-	"type" : "normal" }
+	"category" : "SmalltalkCI-Coverage-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SCICoverageWriter",
+	"type" : "normal"
+}

@@ -1,17 +1,16 @@
 {
-	"category" : "SmalltalkCI-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
+	"super" : "SCIAbstractLoadSpec",
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
 	"instvars" : [
 		"user",
 		"password",
 		"usernameEnvVar",
-		"passwordEnvVar" ],
+		"passwordEnvVar"
+	],
 	"name" : "SCIAbstractLoadSpecWithCredentials",
-	"pools" : [
-		 ],
-	"super" : "SCIAbstractLoadSpec",
-	"type" : "normal" }
+	"type" : "normal"
+}

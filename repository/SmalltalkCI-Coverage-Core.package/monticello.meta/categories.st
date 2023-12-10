@@ -1,1 +1,1 @@
-SystemOrganization addCategory: #'SmalltalkCI-Coverage-Core'!
+self packageOrganizer ensurePackage: #'SmalltalkCI-Coverage-Core' withTags: #()!

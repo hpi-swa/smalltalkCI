@@ -1,4 +1,4 @@
 helpers
 classesToCoverForPackages
 	^ self coverageAt: #packages
-		do: [ :packageNames | SmalltalkCI classesForPackages: packageNames ]
+		do: [ :packageNames | SmalltalkCI platformClass classesForPackages: packageNames ]

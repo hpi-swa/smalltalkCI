@@ -1,17 +1,18 @@
 {
-	"category" : "SmalltalkCI-Coverage-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		"Specials" ],
 	"commentStamp" : "",
+	"super" : "SCIObjectWithSpec",
+	"category" : "SmalltalkCI-Coverage-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [
+		"Specials"
+	],
 	"instvars" : [
 		"includedMethods",
 		"excludedMethods",
 		"coveredMethods",
-		"coverageWrappers" ],
+		"coverageWrappers"
+	],
 	"name" : "SCICodeCoverage",
-	"pools" : [
-		 ],
-	"super" : "SCIObjectWithSpec",
-	"type" : "normal" }
+	"type" : "normal"
+}
