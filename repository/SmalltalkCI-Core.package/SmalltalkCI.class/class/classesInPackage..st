@@ -1,3 +1,3 @@
 class organization
 classesInPackage: packageName
-	^ self platformClass classesInPackage: packageName
+	^ self classesInPackage: packageName
