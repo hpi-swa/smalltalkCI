@@ -281,12 +281,28 @@ validate_configuration() {
 }
 
 ################################################################################
+# Set options that depend on the contex, i.e., the input values and selections
+# performed so far.
+################################################################################
+set_context_options() {
+  case "${config_smalltalk}" in
+    *-alpha | *-trunk)
+      print_info "Forcing image update for in-development version"
+      config_update_image="true"
+      ;;
+    *)
+      ;;
+  esac
+}
+
+################################################################################
 # Handle user-defined options.
 # Locals:
 #   config_clean
 #   config_debug
 #   config_headless
 #   config_smalltalk
+#   config_update_image
 #   config_verbose
 # Arguments:
 #   All positional parameters
@@ -343,6 +359,10 @@ parse_options() {
 (e.g. 'smalltalkci -s Squeak64-trunk')."
       fi
       shift 2
+      ;;
+    -u | --update-image)
+      config_update_image="true"
+      shift
       ;;
     -v | --verbose)
       config_verbose="true"
@@ -529,10 +549,11 @@ main() {
   local config_clean="false"
   local config_debug="false"
   local config_first_arg_or_empty=""
-  local config_headless="true"
+  export config_headless="true"
   local config_image=""
   local config_colorful="true"
   export config_tracking="true"
+  export config_update_image="false"
   local config_verbose="false"
   local config_vm=""
   local config_vm_dir
@@ -544,6 +565,7 @@ main() {
   ensure_ston_config_exists "${config_first_arg_or_empty}"
   select_smalltalk
   validate_configuration
+  set_context_options
   config_vm_dir="${SMALLTALK_CI_VMS}/${config_smalltalk}"
   prepare_folders
   export_coveralls_data
