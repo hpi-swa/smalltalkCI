@@ -278,14 +278,20 @@ pharo::prepare_image() {
   local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}"
   local pharo_zeroconf="${target}/zeroconfig"
 
+  if "${config_update_image}" && is_dir "${target}"; then
+    print_info "Removing cached image resources for ${smalltalk_name} (update forced)"
+    rm -r "${target}"
+  fi
   if ! is_dir "${target}"; then
     mkdir "${target}"
-    pushd "${target}" > /dev/null
+  fi
+  if ! is_file "${target}"/*.image; then
+    pushd "${target}" >/dev/null
     fold_start download_image "Downloading ${smalltalk_name} image..."
       download_file "${pharo_image_url}" "${pharo_zeroconf}"
       retry 3 "bash ${pharo_zeroconf}"
     fold_end download_image
-    popd > /dev/null
+    popd >/dev/null
   fi
 
   print_info "Preparing Pharo image..."

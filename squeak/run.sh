@@ -74,6 +74,10 @@ squeak::download_prepared_image() {
   local git_tag=$2
   local target="${SMALLTALK_CI_CACHE}/${download_name}"
 
+  if "${config_update_image}" && is_file "${target}"; then
+    print_info "Removing cached image resources for ${smalltalk_name} (update forced)"
+    rm "${target}"
+  fi
   if ! is_file "${target}"; then
     fold_start download_image "Downloading '${download_name}' testing image..."
       download_file "${BASE_DOWNLOAD}/${git_tag}/${download_name}" "${target}"

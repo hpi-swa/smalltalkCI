@@ -111,7 +111,14 @@ gtoolkit::prepare_gt() {
   download_name="$(basename "${gtoolkit_image_url}")"
   target="${SMALLTALK_CI_CACHE}/${download_name}"
 
-  if ! is_file "${target}"; then
+  if "${config_update_image}" && is_dir "${target}"; then
+    print_info "Removing cached image resources for ${smalltalk_name} (update forced)"
+    rm -r "${target}"
+  fi
+  if ! is_dir "${target}"; then
+    mkdir "${target}"
+  fi
+  if ! is_file "${target}"/*.image; then
     fold_start download_image "Downloading ${smalltalk_name} image..."
       download_file "${gtoolkit_image_url}" "${target}"
     fold_end download_image
