@@ -278,7 +278,7 @@ pharo::prepare_image() {
   local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}"
   local pharo_zeroconf="${target}/zeroconfig"
 
-  if "${config_update_image}" && is_dir "${target}"; then
+  if "${config_overwrite_cache}" && is_dir "${target}"; then
     print_info "Removing cached image resources for ${smalltalk_name} (update forced)"
     rm -r "${target}"
   fi
