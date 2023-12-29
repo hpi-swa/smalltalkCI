@@ -63,39 +63,41 @@ print_help() {
   This program prepares Smalltalk images/vms, loads projects, and runs tests.
 
   OPTIONS:
-    --clean             Clear cache and delete builds.
-    -d | --debug        Enable debug mode.
-    -h | --help         Show this help text.
-    --headful           Open vm in headful mode and do not close image.
-    --image             Custom image for build (Squeak/Pharo).
-    --install           Install symlink to this smalltalkCI instance.
-    --print-env         Print all environment variables used by smalltalkCI
-    --no-color          Disable colored output
-    --no-tracking       Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
-    -s | --smalltalk    Overwrite Smalltalk image selection.
-    --uninstall         Remove symlink to any smalltalkCI instance.
-    -v | --verbose      Enable 'set -x'.
-    --vm                Custom VM for build (Squeak/Pharo).
+    --clean                 Clear cache and delete builds.
+    -d | --debug            Enable debug mode.
+    --force-cache           Force use of the cache for all images (overrides '--overrwrite-cache').
+    -h | --help             Show this help text.
+    --headful               Open vm in headful mode and do not close image.
+    --image                 Custom image for build (Squeak/Pharo).
+    --install               Install symlink to this smalltalkCI instance.
+    -o |--overwrite-cache   Download the newest image and cache it.
+    --print-env             Print all environment variables used by smalltalkCI
+    --no-color              Disable colored output
+    --no-tracking           Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
+    -s | --smalltalk        Overwrite Smalltalk image selection.
+    --uninstall             Remove symlink to any smalltalkCI instance.
+    -v | --verbose          Enable 'set -x'.
+    --vm                    Custom VM for build (Squeak/Pharo).
 
   GEMSTONE OPTIONS:
-    --gs-DEBUG          Enable remote debugging of GsDevKit_stones .solo scripts
-                        via topaz DEBUGGEM command.
+    --gs-DEBUG              Enable remote debugging of GsDevKit_stones .solo scripts
+                            via topaz DEBUGGEM command.
 
     --gs-PRODUCTS=<gemstone-product-directory>
-                        Specify directory containing GemStone product downloads
-                        to be used instead of downloading products from 
-                        https://ftp.gemtalksystems.com for each run.
+                            Specify directory containing GemStone product downloads
+                            to be used instead of downloading products from 
+                            https://ftp.gemtalksystems.com for each run.
 
     --gs-REPOS=<gemstone-server-git-projects>
-                        Specify directory containing existing server projects to be 
-                        used instead of cloning projects from GitHub for each run.
+                            Specify directory containing existing server projects to be 
+                            used instead of cloning projects from GitHub for each run.
 
     --gs-STONE_DIR=<gemstone-stone-directory>
-                        Specify directory of an existing stone. A symbolic link named
-                        product is expected to exist in the <gemstone-stone-directory>
-                        and point to the GEMSTONE product tree for the stone. The name
-                        stone is expected to be managed independently of the run.sh
-                        script. 
+                            Specify directory of an existing stone. A symbolic link named
+                            product is expected to exist in the <gemstone-stone-directory>
+                            and point to the GEMSTONE product tree for the stone. The name
+                            stone is expected to be managed independently of the run.sh
+                            script. 
 
   EXAMPLE:
     $(basename -- $0) -s "Squeak64-trunk" --headfull /path/to/project/.smalltalk.ston

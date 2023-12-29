@@ -285,10 +285,16 @@ validate_configuration() {
 # performed so far.
 ################################################################################
 set_context_options() {
+    if [ "${config_force_cache}" = "true" ]; then
+      print_info "Forcing cache use"
+      config_overwrite_cache="false"
+      return
+    fi
+
   case "${config_smalltalk}" in
     *-alpha | *-trunk)
       print_info "Forcing image update for in-development version"
-      config_update_image="true"
+      config_overwrite_cache="true"
       ;;
     *)
       ;;
@@ -301,8 +307,8 @@ set_context_options() {
 #   config_clean
 #   config_debug
 #   config_headless
+#   config_overwrite_cache
 #   config_smalltalk
-#   config_update_image
 #   config_verbose
 # Arguments:
 #   All positional parameters
@@ -340,12 +346,20 @@ parse_options() {
       fi
       shift 2
       ;;
+    --force-cache)
+      config_force_cache="true"
+      shift
+      ;;
     --no-color)
       config_colorful="false"
       shift
       ;;
     --no-tracking)
       config_tracking="false"
+      shift
+      ;;
+    -o | --overwrite-cache)
+      config_overwrite_cache="true"
       shift
       ;;
     --print-env)
@@ -359,10 +373,6 @@ parse_options() {
 (e.g. 'smalltalkci -s Squeak64-trunk')."
       fi
       shift 2
-      ;;
-    -u | --update-image)
-      config_update_image="true"
-      shift
       ;;
     -v | --verbose)
       config_verbose="true"
@@ -544,16 +554,17 @@ run() {
 #   All positional parameters
 ################################################################################
 main() {
-  export config_smalltalk=""
-  local config_ston=""
   local config_clean="false"
+  local config_colorful="true"
   local config_debug="false"
   local config_first_arg_or_empty=""
+  local config_force_cache="false"
   export config_headless="true"
   local config_image=""
-  local config_colorful="true"
+  export config_overwrite_cache="false"
+  export config_smalltalk=""
+  local config_ston=""
   export config_tracking="true"
-  export config_update_image="false"
   local config_verbose="false"
   local config_vm=""
   local config_vm_dir
