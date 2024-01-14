@@ -1,1 +1,1 @@
-SystemOrganization addCategory: #BaselineOfSmalltalkCI!
+self packageOrganizer ensurePackage: #BaselineOfSmalltalkCI withTags: #()!
