@@ -1,1 +1,1 @@
-SystemOrganization addCategory: #'SmalltalkCI-Pharo-Coverage-Core'!
+self packageOrganizer ensurePackage: #'SmalltalkCI-Pharo-Coverage-Core' withTags: #()!
