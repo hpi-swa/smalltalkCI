@@ -1,1 +1,1 @@
-SystemOrganization addCategory: #'SmalltalkCI-Core'!
+self packageOrganizer ensurePackage: #'SmalltalkCI-Core' withTags: #()!
