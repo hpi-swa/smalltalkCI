@@ -3,7 +3,7 @@ runCase: aTestCase
 	| result |
 	SmalltalkCI printDebug: aTestCase asString.
 	result := SCITestRunnerResult new testCase: aTestCase; yourself.
-	result time: (SmalltalkCI timeToRun: [
+	result time: (SmalltalkCI platformClass timeToRun: [
 		[ [ self basicRunCase: aTestCase ]
 			on: self class errorExceptions
 			do: [ :err |
