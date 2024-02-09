@@ -7,5 +7,5 @@ allCategoryNames
 		streamContents: [ :stream |
 			packages do: [ :package |
 				stream nextPut: package name asString.
-				package classTags do: [ :tag |
+				package tags do: [ :tag |
 					stream nextPut: tag categoryName asString ] ] ]) asSet asArray
