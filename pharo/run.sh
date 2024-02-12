@@ -286,12 +286,12 @@ pharo::prepare_image() {
     mkdir "${target}"
   fi
   if ! is_file "${target}"/*.image; then
-    pushd "${target}" >/dev/null
+    pushd "${target}" > /dev/null
     fold_start download_image "Downloading ${smalltalk_name} image..."
       download_file "${pharo_image_url}" "${pharo_zeroconf}"
       retry 3 "bash ${pharo_zeroconf}"
     fold_end download_image
-    popd >/dev/null
+    popd > /dev/null
   fi
 
   print_info "Preparing Pharo image..."
