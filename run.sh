@@ -281,24 +281,23 @@ validate_configuration() {
 }
 
 ################################################################################
-# Set options that depend on the contex, i.e., the input values and selections
+# Set options that depend on the context, i.e., the input values and selections
 # performed so far.
 ################################################################################
 set_context_options() {
-    if [ "${config_force_cache}" = "true" ]; then
-      print_info "Forcing cache use"
-      config_overwrite_cache="false"
-      return
-    fi
-
-  case "${config_smalltalk}" in
-    *-alpha | *-trunk)
-      print_info "Forcing image update for in-development version"
-      config_overwrite_cache="true"
-      ;;
-    *)
-      ;;
-  esac
+  if [[ "${config_force_cache}" = "true" ]]; then
+    print_info "Forcing cache use"
+    config_overwrite_cache="false"
+  else
+    case "${config_smalltalk}" in
+      *-alpha | *-trunk)
+        print_info "Forcing image update for in-development version"
+        config_overwrite_cache="true"
+        ;;
+      *)
+        ;;
+    esac
+  fi
 }
 
 ################################################################################
@@ -358,7 +357,7 @@ parse_options() {
       config_tracking="false"
       shift
       ;;
-    -o | --overwrite-cache)
+    --overwrite-cache)
       config_overwrite_cache="true"
       shift
       ;;

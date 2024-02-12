@@ -65,12 +65,12 @@ print_help() {
   OPTIONS:
     --clean                 Clear cache and delete builds.
     -d | --debug            Enable debug mode.
-    --force-cache           Force use of the cache for all images (overrides '--overrwrite-cache').
+    --force-cache           Force use of the cache for all images (overrides '--overwrite-cache').
     -h | --help             Show this help text.
     --headful               Open vm in headful mode and do not close image.
     --image                 Custom image for build (Squeak/Pharo).
     --install               Install symlink to this smalltalkCI instance.
-    -o |--overwrite-cache   Download the newest image and cache it.
+    --overwrite-cache   Download the newest image and cache it.
     --print-env             Print all environment variables used by smalltalkCI
     --no-color              Disable colored output
     --no-tracking           Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
