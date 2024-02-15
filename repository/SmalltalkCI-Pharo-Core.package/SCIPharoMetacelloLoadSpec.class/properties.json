@@ -1,15 +1,13 @@
 {
-	"category" : "SmalltalkCI-Pharo-Core",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
-        "instvars" : [
-	      "registerInIceberg"
-		 ],
-	"name" : "SCIPharoMetacelloLoadSpec",
-	"pools" : [
-		 ],
 	"super" : "SCIMetacelloLoadSpec",
-	"type" : "normal" }
+	"category" : "SmalltalkCI-Pharo-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"registerInIceberg"
+	],
+	"name" : "SCIPharoMetacelloLoadSpec",
+	"type" : "normal"
+}
