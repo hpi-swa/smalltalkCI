@@ -425,7 +425,6 @@ ensure_jq_binary() {
 
 git_log() {
   local format_value=$1
-  local output
   echo "$(git --no-pager log -1 --pretty=format:"${format_value}" | "${jq_binary}" -Rs .)"
 }
 
@@ -441,6 +440,14 @@ export_coveralls_data() {
   local service_name=""
   local service_pull_request=""
   local url="unknown"
+
+  # Change directory to the target project repository.
+  # If input was read from stdin, presume we're in the right location already 
+  if is_file "${config_ston}"; then
+    pushd "$(dirname ${config_ston})" > /dev/null
+  else
+    pushd "$(pwd)"
+  fi
 
   if ! grep -q "#coverage" "${config_ston}"; then
     return 0 # Coverage data not needed
@@ -498,18 +505,36 @@ export_coveralls_data() {
 
   ensure_jq_binary # required for git_log
 
+  local author_email=""
+  local author_name=""
+  local committer_email=""
+  local committer_name=""
+  local commit_id=""
+  local commit_message=""
+
+  author_email="$(git_log "%ae")"
+  if [[ $? -ne 0 ]]; then
+    print_error "Failed to parse Git log. Not a Git repository?"
+    popd > /dev/null
+    return 0
+  fi
+  author_name="$(git_log "%aN")"
+  committer_email="$(git_log "%ce")"
+  committer_name="$(git_log "%cN")"
+  commit_id="$(git_log "%H")"
+  commit_message="$(git_log "%s")"
   cat >"${SMALLTALK_CI_BUILD}/coveralls_build_data.json" <<EOL
 {
   ${optional_values}
   "git": {
     "branch": "${branch_name}",
     "head": {
-      "author_email": $(git_log "%ae"),
-      "author_name": $(git_log "%aN"),
-      "committer_email": $(git_log "%ce"),
-      "committer_name": $(git_log "%cN"),
-      "id": $(git_log "%H"),
-      "message": $(git_log "%s")
+      "author_email": "${author_email}",
+      "author_name": "${author_name},
+      "committer_email": "${committer_email}",
+      "committer_name": "${committer_name}",
+      "id": "${commit_id}",
+      "message": "${commit_message}" 
     },
     "remotes": [
       {
@@ -520,6 +545,8 @@ export_coveralls_data() {
   }
 }
 EOL
+
+popd > /dev/null
 }
 
 upload_coveralls_results() {
