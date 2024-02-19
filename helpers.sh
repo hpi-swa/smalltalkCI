@@ -442,8 +442,6 @@ export_coveralls_data() {
   local service_pull_request=""
   local url="unknown"
 
-  pushd "${SMALLTALK_CI_BUILD}" > /dev/null
-
   if ! grep -q "#coverage" "${config_ston}"; then
     return 0 # Coverage data not needed
   fi
@@ -522,9 +520,6 @@ export_coveralls_data() {
   }
 }
 EOL
-
-
-popd  > /dev/null
 }
 
 upload_coveralls_results() {
