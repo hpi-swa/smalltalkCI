@@ -442,10 +442,14 @@ export_coveralls_data() {
   local url="unknown"
 
   # Change directory to the target project repository.
-  # If input was read from stdin, presume we're in the right location already 
+  # The assumption here is that the STON file resides within the
+  # repository.
+  # Otherise, don't change directory and presume that we're where
+  # we need to be.
   if is_file "${config_ston}"; then
     pushd "$(dirname ${config_ston})" > /dev/null
   else
+    # pushd anyway so that popd doesn't change the directory later
     pushd "$(pwd)"
   fi
 
@@ -505,36 +509,31 @@ export_coveralls_data() {
 
   ensure_jq_binary # required for git_log
 
-  local author_email=""
-  local author_name=""
-  local committer_email=""
-  local committer_name=""
-  local commit_id=""
-  local commit_message=""
 
-  author_email="$(git_log "%ae")"
-  if [[ $? -ne 0 ]]; then
+  if ! git --no-pager log -1 > /dev/null 2>&1; then
     print_error "Failed to parse Git log. Not a Git repository?"
     popd > /dev/null
     return 0
   fi
-  author_name="$(git_log "%aN")"
-  committer_email="$(git_log "%ce")"
-  committer_name="$(git_log "%cN")"
-  commit_id="$(git_log "%H")"
-  commit_message="$(git_log "%s")"
+
+  local author_email="$(git_log "%ae")"
+  local author_name="$(git_log "%aN")"
+  local committer_email="$(git_log "%ce")"
+  local committer_name="$(git_log "%cN")"
+  local commit_id="$(git_log "%H")"
+  local commit_message="$(git_log "%s")"
   cat >"${SMALLTALK_CI_BUILD}/coveralls_build_data.json" <<EOL
 {
   ${optional_values}
   "git": {
     "branch": "${branch_name}",
     "head": {
-      "author_email": "${author_email}",
-      "author_name": "${author_name},
-      "committer_email": "${committer_email}",
-      "committer_name": "${committer_name}",
-      "id": "${commit_id}",
-      "message": "${commit_message}" 
+      "author_email": ${author_email},
+      "author_name": ${author_name},
+      "committer_email": ${committer_email},
+      "committer_name": ${committer_name},
+      "id": ${commit_id},
+      "message": ${commit_message} 
     },
     "remotes": [
       {
