@@ -256,6 +256,13 @@ is_headless() {
   [[ "${config_headless}" = "true" ]]
 }
 
+is_git_repo() {
+  if ! git --no-pager log -1 > /dev/null 2>&1; then
+    return 1
+  fi
+  return 0
+}
+
 starts_with() {
   [[ "$1" == "$2"* ]]
 }
@@ -441,16 +448,21 @@ export_coveralls_data() {
   local service_pull_request=""
   local url="unknown"
 
-  # Change directory to the target project repository.
-  # The assumption here is that the STON file resides within the
-  # repository.
-  # Otherise, don't change directory and presume that we're where
-  # we need to be.
-  if is_file "${config_ston}"; then
-    pushd "$(dirname ${config_ston})" > /dev/null
-  else
-    # pushd anyway so that popd doesn't change the directory later
+
+  if is_git_repo; then
+    # This is a Git repository. We assume that it's the correct one.
+    # pushd, so that popd doesn't change the directory later.
     pushd "$(pwd)"
+  else
+    # Change directory to the target project repository.
+    # The assumption here is that the STON file resides within the
+    # repository.
+    if is_file "${config_ston}"; then
+      pushd "$(dirname ${config_ston})" > /dev/null
+    else
+      print_error "Failed to find Git repository, can't determine commit information for the coverage report"
+      return 0 # Proceed without coverage data
+    fi
   fi
 
   if ! grep -q "#coverage" "${config_ston}"; then
@@ -509,31 +521,18 @@ export_coveralls_data() {
 
   ensure_jq_binary # required for git_log
 
-
-  if ! git --no-pager log -1 > /dev/null 2>&1; then
-    print_error "Failed to parse Git log. Not a Git repository?"
-    popd > /dev/null
-    return 0
-  fi
-
-  local author_email="$(git_log "%ae")"
-  local author_name="$(git_log "%aN")"
-  local committer_email="$(git_log "%ce")"
-  local committer_name="$(git_log "%cN")"
-  local commit_id="$(git_log "%H")"
-  local commit_message="$(git_log "%s")"
   cat >"${SMALLTALK_CI_BUILD}/coveralls_build_data.json" <<EOL
 {
   ${optional_values}
   "git": {
     "branch": "${branch_name}",
     "head": {
-      "author_email": ${author_email},
-      "author_name": ${author_name},
-      "committer_email": ${committer_email},
-      "committer_name": ${committer_name},
-      "id": ${commit_id},
-      "message": ${commit_message} 
+      "author_email": $(git_log "%ae"),
+      "author_name": $(git_log "%aN"),
+      "committer_email": $(git_log "%ce"),
+      "committer_name": $(git_log "%cN"),
+      "id": $(git_log "%H"),
+      "message": $(git_log "%s") 
     },
     "remotes": [
       {
