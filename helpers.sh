@@ -256,6 +256,13 @@ is_headless() {
   [[ "${config_headless}" = "true" ]]
 }
 
+is_git_repo() {
+  if ! git --no-pager log -1 > /dev/null 2>&1; then
+    return 1
+  fi
+  return 0
+}
+
 starts_with() {
   [[ "$1" == "$2"* ]]
 }
@@ -425,7 +432,6 @@ ensure_jq_binary() {
 
 git_log() {
   local format_value=$1
-  local output
   echo "$(git --no-pager log -1 --pretty=format:"${format_value}" | "${jq_binary}" -Rs .)"
 }
 
@@ -441,6 +447,23 @@ export_coveralls_data() {
   local service_name=""
   local service_pull_request=""
   local url="unknown"
+
+
+  if is_git_repo; then
+    # This is a Git repository. We assume that it's the correct one.
+    # pushd, so that popd doesn't change the directory later.
+    pushd "$(pwd)"
+  else
+    # Change directory to the target project repository.
+    # The assumption here is that the STON file resides within the
+    # repository.
+    if is_file "${config_ston}"; then
+      pushd "$(dirname ${config_ston})" > /dev/null
+    else
+      print_error "Failed to find Git repository, can't determine commit information for the coverage report"
+      return 0 # Proceed without coverage data
+    fi
+  fi
 
   if ! grep -q "#coverage" "${config_ston}"; then
     return 0 # Coverage data not needed
@@ -509,7 +532,7 @@ export_coveralls_data() {
       "committer_email": $(git_log "%ce"),
       "committer_name": $(git_log "%cN"),
       "id": $(git_log "%H"),
-      "message": $(git_log "%s")
+      "message": $(git_log "%s") 
     },
     "remotes": [
       {
@@ -520,6 +543,8 @@ export_coveralls_data() {
   }
 }
 EOL
+
+popd > /dev/null
 }
 
 upload_coveralls_results() {
