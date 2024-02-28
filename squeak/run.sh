@@ -168,11 +168,7 @@ squeak::get_vm_details() {
   if is_trunk_build; then
     git_tag="v2.9.9"
     osvm_version="202206021410"
-<<<<<<< HEAD
   else 
-=======
-  else
->>>>>>> ae550d6d0f85499c5d86330493867d920355dd5e
     case "${smalltalk_name}" in
       "Squeak32-6.0"|"Squeak64-6.0")
         git_tag="v2.9.9"
