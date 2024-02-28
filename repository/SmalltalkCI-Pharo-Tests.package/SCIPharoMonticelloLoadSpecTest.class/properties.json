@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "SCIMonticelloLoadSpecTest",
+	"category" : "SmalltalkCI-Pharo-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SCIPharoMonticelloLoadSpecTest",
+	"type" : "normal"
+}

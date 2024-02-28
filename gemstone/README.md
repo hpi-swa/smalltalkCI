@@ -110,7 +110,7 @@ The things to note about the `.travis.yml` are:
 
 1. I'm only running one OSX build for GemStone 3.3.0. There are fewer OSX servers currently available on Travis, so you end up waiting longer for a server to become available - sometimes all of the linux builds finish before an osx server becomes available. A second reason is that dependency caching (see point 2 below) is not available on OSX and that can make a big difference in build times:
   - [a recent tODE build](https://travis-ci.org/dalehenrich/tode/builds/121809026) took as low as 13 minutes on linux is load dep (with dependency caching) and 27 minutes on OSX (with no dependency caching). 
-2. I'm taking advantage of [Travis Depdendency Caching](https://docs.travis-ci.com/user/caching/). Two things are cached for GemStone builds:
+2. I'm taking advantage of [Travis Dependency Caching](https://docs.travis-ci.com/user/caching/). Two things are cached for GemStone builds:
    - an extent0.tode.dbf file for each GemStone version.
    - the devKitCommandLine image
    The extent is the big winner, saving 2/3 of the time over non-cached build. The extent is cached immediately after the end of a `$GS_HOME/bin/createStone` ends. The devKitCommandLine image is cached to save on the download times for the Pharo image and vm.

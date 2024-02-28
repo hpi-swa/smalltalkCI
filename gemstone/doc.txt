@@ -1,0 +1,16 @@
+cp $GEMSTONE/bin/extent0.seaside.dbf extent0.dbf; chmod +w extent0.dbf
+
+cp extent0_step_2.dbf extent0.dbf.
+cp extent0_step_3.dbf extent0.dbf.
+cp extent0_step_4.dbf extent0.dbf.
+
+cp extent0_step_1.dbf extent0.dbf.
+rm -rf tranlog*.*
+
+startstone -e system.conf -z system.conf -l logs/smalltalkci.log smalltalkci
+loadTode.stone -D
+
+startnetldi -g -a dhenrich smalltalkci_ldi -P 36083 -l logs/netldi.log
+
+stopstone smalltalkci DataCurator swordfish
+

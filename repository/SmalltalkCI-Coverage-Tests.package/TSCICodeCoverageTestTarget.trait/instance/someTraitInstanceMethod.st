@@ -1,0 +1,4 @@
+test-methods
+someTraitInstanceMethod
+
+	^ true

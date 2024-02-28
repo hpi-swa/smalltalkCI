@@ -1,4 +1,4 @@
-testing-writer
+tests-writer
 assertWriterUsesFormat: coverageFormat forSpec: aSpec
 
 	|writer|

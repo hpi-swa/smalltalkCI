@@ -74,6 +74,10 @@ squeak::download_prepared_image() {
   local git_tag=$2
   local target="${SMALLTALK_CI_CACHE}/${download_name}"
 
+  if "${config_overwrite_cache}" && is_file "${target}"; then
+    print_info "Removing cached image resources for ${smalltalk_name} (update forced)"
+    rm "${target}"
+  fi
   if ! is_file "${target}"; then
     fold_start download_image "Downloading '${download_name}' testing image..."
       download_file "${BASE_DOWNLOAD}/${git_tag}/${download_name}" "${target}"
@@ -83,7 +87,7 @@ squeak::download_prepared_image() {
   print_info "Extracting image..."
   extract_file "${target}" "${SMALLTALK_CI_BUILD}"
   # TODO: cleanup soon, some archives still include TravisCI.(image|changes)
-  if ! is_file "${SMALLTALK_CI_IMAGE}"; then 
+  if ! is_file "${SMALLTALK_CI_IMAGE}"; then
     mv "${SMALLTALK_CI_BUILD}"/*.image "${SMALLTALK_CI_IMAGE}"
     mv "${SMALLTALK_CI_BUILD}"/*.changes "${SMALLTALK_CI_CHANGES}"
   fi
@@ -99,8 +103,8 @@ squeak::download_prepared_image() {
 squeak::download_trunk_image() {
   local target
   local download_name
-  local git_tag="v2.9.8" # 32bit/64bit are kept in sync
-  local update_level="21469" # 32bit/64bit are kept in sync
+  local git_tag="v3.0.5" # 32bit/64bit are kept in sync
+  local update_level="22906" # 32bit/64bit are kept in sync
 
   if is_64bit; then
     download_name="Squeak64-trunk-${update_level}.tar.gz"
@@ -126,7 +130,7 @@ squeak::download_trunk_image() {
 ################################################################################
 squeak::prepare_image() {
   local status=0
-  
+
   fold_start prepare_image "Preparing ${config_smalltalk} image for CI..."
     cp "${SMALLTALK_CI_HOME}/squeak/prepare.st" \
        "${SMALLTALK_CI_BUILD}/prepare.st"
@@ -164,7 +168,11 @@ squeak::get_vm_details() {
   if is_trunk_build; then
     git_tag="v2.9.9"
     osvm_version="202206021410"
+<<<<<<< HEAD
   else 
+=======
+  else
+>>>>>>> ae550d6d0f85499c5d86330493867d920355dd5e
     case "${smalltalk_name}" in
       "Squeak32-6.0"|"Squeak64-6.0")
         git_tag="v2.9.9"
@@ -215,7 +223,7 @@ squeak::get_vm_details() {
       vm_file_ext="dmg"
       vm_path="${config_vm_dir}/Squeak.app/Contents/MacOS/Squeak"
       ;;
-    "CYGWIN_NT-"*|"MINGW64_NT-"*)
+    "CYGWIN_NT-"*|"MINGW64_NT-"*|"MSYS_NT-"*)
       if is_64bit; then
         vm_arch="win64x64"
       else
@@ -317,7 +325,7 @@ squeak::run_script() {
       ;;
   esac
 
-  travis_wait "${resolved_vm}" ${vm_flags} "${resolved_image}" "${script}"
+  run_script "${resolved_vm}" ${vm_flags} "${resolved_image}" "${script}"
 }
 
 ################################################################################

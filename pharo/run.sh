@@ -15,11 +15,14 @@ pharo::get_image_url() {
   local smalltalk_name=$1
 
   case "${smalltalk_name}" in
-    "Pharo64-alpha")
+    "Pharo64-alpha"|"Pharo-alpha")
       echo "get.pharo.org/64/alpha"
       ;;
-    "Pharo64-stable")
+    "Pharo64-stable"|"Pharo-stable")
       echo "get.pharo.org/64/stable"
+      ;;
+    "Pharo64-12")
+      echo "get.pharo.org/64/120"
       ;;
     "Pharo64-11")
       echo "get.pharo.org/64/110"
@@ -42,12 +45,15 @@ pharo::get_image_url() {
     "Pharo64-6.0")
       echo "get.pharo.org/64/60"
       ;;
-    "Pharo32-alpha"|"Pharo-alpha")
+    "Pharo32-alpha")
       echo "get.pharo.org/alpha"
       ;;
-    "Pharo32-stable"|"Pharo-stable")
+    "Pharo32-stable")
       echo "get.pharo.org/stable"
       ;;
+    "Pharo32-12")
+        echo "get.pharo.org/32/120"
+        ;;
     "Pharo32-11")
         echo "get.pharo.org/32/110"
         ;;
@@ -97,7 +103,7 @@ moose::get_image_url() {
 
   case "${smalltalk_name}" in
     "Moose64-trunk"|"Moose-trunk")
-      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose10-development-Pharo64-10.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose11-development-Pharo64-11.zip"
       ;;
     "Moose32-trunk")
       moose_name="moose-7.0"
@@ -118,7 +124,10 @@ moose::get_image_url() {
       echo "https://github.com/moosetechnology/Moose/releases/download/v9.x.x/Moose9-stable-Pharo64-9.0.zip"
       ;;
     "Moose64-10"*)
-      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose10-development-Pharo64-10.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/v10.x.x/Moose10-stable-Pharo64-10.zip"
+      ;;
+    "Moose64-11"*)
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose11-development-Pharo64-11.zip"
       ;;
     *)
       print_error_and_exit "Unsupported Moose version '${smalltalk_name}'."
@@ -136,19 +145,24 @@ moose::get_image_url() {
 ################################################################################
 pharo::get_vm_url() {
   local smalltalk_name=$1
+  local stable_version=11
+  local alpha_version=12
 
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
-    "Pharo64-alpha")
-      echo "get.pharo.org/64/vmLatest110"
+    "Pharo64-alpha"|"Pharo-alpha")
+      echo "get.pharo.org/64/vmLatest${alpha_version}0"
       ;;
-    "Pharo64-stable")
-      echo "get.pharo.org/64/vm100"
+    "Pharo64-stable"|"Pharo-stable")
+      echo "get.pharo.org/64/vm${stable_version}0"
       ;;
-    "Pharo64-11")
+    "Pharo64-12")
+      echo "get.pharo.org/64/vm120"
+      ;;
+    "Pharo64-11"|"Moose64-11"|"Moose64-trunk")
       echo "get.pharo.org/64/vm110"
       ;;
-    "Pharo64-10"|"Moose64-10"|"Moose64-trunk")
+    "Pharo64-10"|"Moose64-10")
       echo "get.pharo.org/64/vm100"
       ;;
     "Pharo64-9.0"|"Moose64-9.0")
@@ -166,11 +180,14 @@ pharo::get_vm_url() {
     "Pharo64-6.0")
       echo "get.pharo.org/64/vm60"
       ;;
-    "Pharo32-alpha"|"Pharo-alpha")
-      echo "get.pharo.org/vmLatest110"
+    "Pharo32-alpha")
+      echo "get.pharo.org/vmLatest${alpha_version}0"
       ;;
-    "Pharo-stable"|"Pharo32-stable")
-      echo "get.pharo.org/vm100"
+    "Pharo32-stable")
+      echo "get.pharo.org/vm${stable_version}0"
+      ;;
+    "Pharo32-12")
+      echo "get.pharo.org/vm120"
       ;;
     "Pharo32-11")
       echo "get.pharo.org/vm110"
@@ -230,7 +247,7 @@ pharo::prepare_vm() {
     pushd "${config_vm_dir}" > /dev/null
     fold_start download_vm "Downloading ${smalltalk_name} vm..."
       download_file "${pharo_vm_url}" "${pharo_zeroconf}"
-      bash "${pharo_zeroconf}"
+      retry 3 "bash ${pharo_zeroconf}"
     fold_end download_vm
     popd > /dev/null
   fi
@@ -261,12 +278,18 @@ pharo::prepare_image() {
   local target="${SMALLTALK_CI_CACHE}/${smalltalk_name}"
   local pharo_zeroconf="${target}/zeroconfig"
 
-  if ! is_file "${target}"; then
-    is_dir "${target}" || mkdir "${target}"
+  if "${config_overwrite_cache}" && is_dir "${target}"; then
+    print_info "Removing cached image resources for ${smalltalk_name} (update forced)"
+    rm -r "${target}"
+  fi
+  if ! is_dir "${target}"; then
+    mkdir "${target}"
+  fi
+  if ! is_file "${target}"/*.image; then
     pushd "${target}" > /dev/null
     fold_start download_image "Downloading ${smalltalk_name} image..."
       download_file "${pharo_image_url}" "${pharo_zeroconf}"
-      bash "${pharo_zeroconf}"
+      retry 3 "bash ${pharo_zeroconf}"
     fold_end download_image
     popd > /dev/null
   fi
@@ -327,7 +350,7 @@ pharo::run_script() {
     vm_flags="--no-quit"
   fi
 
-  travis_wait "${resolved_vm}" "${resolved_image}" --no-default-preferences eval ${vm_flags} "${script}"
+  run_script "${resolved_vm}" "${resolved_image}" --no-default-preferences eval ${vm_flags} "${script}"
 }
 
 ################################################################################

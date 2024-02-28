@@ -2,6 +2,7 @@
 	"category" : "SmalltalkCI-Coverage-Tests",
 	"classinstvars" : [
 		 ],
+	"classtraitcomposition" : "TSCICodeCoverageTestTarget classTrait",
 	"classvars" : [
 		 ],
 	"commentStamp" : "",
@@ -11,4 +12,5 @@
 	"pools" : [
 		 ],
 	"super" : "Object",
+	"traitcomposition" : "TSCICodeCoverageTestTarget",
 	"type" : "normal" }

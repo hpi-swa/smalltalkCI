@@ -1,11 +1,11 @@
 testing
 testAuthor
 	| currentAuthor |
-	currentAuthor := SmalltalkCI getAuthor.
+	currentAuthor := SmalltalkCI platformClass getAuthor.
 	
 	[
-	SmalltalkCI basicNew initialize.
-	self deny: SmalltalkCI defaultAuthor isNil.
+	SmalltalkCI platformClass: nil.
+	self deny: SmalltalkCI platformClass defaultAuthor isNil.
 	] ensure: [
-		SmalltalkCI setAuthor: currentAuthor.
-		self assert: SmalltalkCI getAuthor equals: currentAuthor ]
+		SmalltalkCI platformClass setAuthor: currentAuthor.
+		self assert: SmalltalkCI platformClass getAuthor equals: currentAuthor ]

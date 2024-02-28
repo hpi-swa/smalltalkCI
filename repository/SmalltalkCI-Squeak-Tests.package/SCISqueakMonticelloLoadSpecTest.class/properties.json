@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "SCIMonticelloLoadSpecTest",
+	"category" : "SmalltalkCI-Squeak-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SCISqueakMonticelloLoadSpecTest",
+	"type" : "normal"
+}

@@ -1,4 +1,4 @@
-testing
+tests
 testCoverageHelpers
 	self platformSupportsCoverageTesting ifFalse: [ ^ self ].
 	
