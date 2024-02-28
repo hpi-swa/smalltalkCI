@@ -1,6 +1,8 @@
 {
-	"class" : {
-		"skipExceptions:" : "BenoitVerhaeghe 12/15/2020 10:00" },
 	"instance" : {
-		"stackTraceString:of:" : "MaxLeske 5/17/2021 14:06"
-		 } }
+		"stackTraceString:of:" : "GOC 5/22/2023 17:51"
+	},
+	"class" : {
+		"skipExceptions" : "CompatibleUserName 5/12/2023 06:02:08"
+	}
+}

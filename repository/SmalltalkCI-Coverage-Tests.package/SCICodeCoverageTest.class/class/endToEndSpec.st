@@ -4,7 +4,9 @@ endToEndSpec
 SmalltalkCISpec {
 	#testing : {
 		#coverage : {
-			#classes : [ #SCICodeCoverageTestTarget ]
+			#classes : [ #SCICodeCoverageTestTarget ],
+			#packages : [ ''SmalltalkCI-Excluded-Tests'' ],
+			#packagesComment : ''see Object>>#sciTestSomeOtherExtensionMethod - not excluded here, but we need just another package for this purpose''
 		}
 	}
 }' readStream

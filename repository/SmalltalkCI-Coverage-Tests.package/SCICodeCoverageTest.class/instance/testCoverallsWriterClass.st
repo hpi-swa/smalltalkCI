@@ -1,4 +1,4 @@
-testing-writer
+tests-writer
 testCoverallsWriterClass
 
 	self platformSupportsCoverageTesting ifFalse: [^ self].

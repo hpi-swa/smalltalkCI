@@ -47,7 +47,7 @@ print_error() {
   if is_colorful; then
    printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\n" "$1" 1>&2
   else
-    echo "$1"
+    echo "$1" 1>&2
   fi
 }
 
@@ -63,43 +63,41 @@ print_help() {
   This program prepares Smalltalk images/vms, loads projects, and runs tests.
 
   OPTIONS:
-    --clean             Clear cache and delete builds.
-    -d | --debug        Enable debug mode.
-    -h | --help         Show this help text.
-    --headful           Open vm in headful mode and do not close image.
-    --image             Custom image for build (Squeak/Pharo).
-    --install           Install symlink to this smalltalkCI instance.
-    --print-env         Print all environment variables used by smalltalkCI
-    --no-color          Disable colored output
-    --no-tracking       Disable collection of anonymous build metrics (TravisCI & AppVeyor only).
-    -s | --smalltalk    Overwrite Smalltalk image selection.
-    --uninstall         Remove symlink to any smalltalkCI instance.
-    -v | --verbose      Enable 'set -x'.
-    --vm                Custom VM for build (Squeak/Pharo).
+    --clean                 Clear cache and delete builds.
+    -d | --debug            Enable debug mode.
+    --force-cache           Force use of the cache for all images (overrides '--overwrite-cache').
+    -h | --help             Show this help text.
+    --headful               Open vm in headful mode and do not close image.
+    --image                 Custom image for build (Squeak/Pharo).
+    --install               Install symlink to this smalltalkCI instance.
+    --overwrite-cache   Download the newest image and cache it.
+    --print-env             Print all environment variables used by smalltalkCI
+    --no-color              Disable colored output
+    --no-tracking           Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
+    -s | --smalltalk        Overwrite Smalltalk image selection.
+    --uninstall             Remove symlink to any smalltalkCI instance.
+    -v | --verbose          Enable 'set -x'.
+    --vm                    Custom VM for build (Squeak/Pharo).
 
   GEMSTONE OPTIONS:
-    --gs-BRANCH=<branch-SHA-tag>
-                        Name of GsDevKit_home branch, SHA, or tag. Default is 'master'.
+    --gs-DEBUG              Enable remote debugging of GsDevKit_stones .solo scripts
+                            via topaz DEBUGGEM command.
 
-                        Environment variable GSCI_DEVKIT_BRANCH may be used to
-                        specify <branch-SHA-tag>. Command line option overrides
-                        value of environment variable.
+    --gs-PRODUCTS=<gemstone-product-directory>
+                            Specify directory containing GemStone product downloads
+                            to be used instead of downloading products from 
+                            https://ftp.gemtalksystems.com for each run.
 
-    --gs-HOME=<GS_HOME-path>
-                        Path to an existing GsDevKit_home clone to be used
-                        instead of creating a fresh clone.
+    --gs-REPOS=<gemstone-server-git-projects>
+                            Specify directory containing existing server projects to be 
+                            used instead of cloning projects from GitHub for each run.
 
-                        --gs-DEVKIT_BRANCH option is ignored.
-
-    --gs-CLIENTS="<smalltalk-platform>..."
-                        List of Smalltalk client versions to use as a GemStone client.
-
-                        Environment variable GSCI_CLIENTS may also be used to
-                        specify a list of <smalltalk-platform> client versions.
-                        Command line option overrides value of environment variable.
-
-                        If a client is specified, tests are run for both the client
-                        and server based using the project .smalltalk.ston file.
+    --gs-STONE_DIR=<gemstone-stone-directory>
+                            Specify directory of an existing stone. A symbolic link named
+                            product is expected to exist in the <gemstone-stone-directory>
+                            and point to the GEMSTONE product tree for the stone. The name
+                            stone is expected to be managed independently of the run.sh
+                            script. 
 
   EXAMPLE:
     $(basename -- $0) -s "Squeak64-trunk" --headfull /path/to/project/.smalltalk.ston
@@ -189,6 +187,22 @@ is_mingw64_build() {
   [[ $(uname -s) = "MINGW64_NT-"* ]]
 }
 
+is_msys2_build() {
+  [[ $(uname -s) = "MSYS_NT-"* ]]
+}
+
+is_mac_build() {
+  [[ $(uname -s) = "Darwin" ]]
+}
+
+is_windows_build() {
+  is_cygwin_build ] || is_mingw64_build || is_msys2_build
+}
+
+hardware_platform() {
+  echo "$(uname -m)"
+}
+
 is_sudo_enabled() {
   $(sudo -n true > /dev/null 2>&1)
 }
@@ -240,6 +254,13 @@ is_spur_image() {
 
 is_headless() {
   [[ "${config_headless}" = "true" ]]
+}
+
+is_git_repo() {
+  if ! git --no-pager log -1 > /dev/null 2>&1; then
+    return 1
+  fi
+  return 0
 }
 
 starts_with() {
@@ -358,7 +379,7 @@ extract_file() {
 resolve_path() {
   local path=$1
 
-  if is_cygwin_build || is_mingw64_build; then
+  if is_cygwin_build || is_mingw64_build || is_msys2_build; then
     echo $(cygpath -w "${path}")
   else
     echo "${path}"
@@ -398,7 +419,7 @@ ensure_jq_binary() {
         download_file "${JQ_BASE_URL}/jq-osx-amd64" "${jq_binary}"
         chmod +x "${jq_binary}"
         ;;
-      "CYGWIN_NT-"*|"MINGW64_NT-"*)
+      "CYGWIN_NT-"*|"MINGW64_NT-"*|"MSYS_NT-"*)
         download_file "${JQ_BASE_URL}/jq-win64.exe" "${jq_binary}"
         chmod +x "${jq_binary}"
         ;;
@@ -411,7 +432,6 @@ ensure_jq_binary() {
 
 git_log() {
   local format_value=$1
-  local output
   echo "$(git --no-pager log -1 --pretty=format:"${format_value}" | "${jq_binary}" -Rs .)"
 }
 
@@ -427,6 +447,23 @@ export_coveralls_data() {
   local service_name=""
   local service_pull_request=""
   local url="unknown"
+
+
+  if is_git_repo; then
+    # This is a Git repository. We assume that it's the correct one.
+    # pushd, so that popd doesn't change the directory later.
+    pushd "$(pwd)"
+  else
+    # Change directory to the target project repository.
+    # The assumption here is that the STON file resides within the
+    # repository.
+    if is_file "${config_ston}"; then
+      pushd "$(dirname ${config_ston})" > /dev/null
+    else
+      print_error "Failed to find Git repository, can't determine commit information for the coverage report"
+      return 0 # Proceed without coverage data
+    fi
+  fi
 
   if ! grep -q "#coverage" "${config_ston}"; then
     return 0 # Coverage data not needed
@@ -495,7 +532,7 @@ export_coveralls_data() {
       "committer_email": $(git_log "%ce"),
       "committer_name": $(git_log "%cN"),
       "id": $(git_log "%H"),
-      "message": $(git_log "%s")
+      "message": $(git_log "%s") 
     },
     "remotes": [
       {
@@ -506,6 +543,8 @@ export_coveralls_data() {
   }
 }
 EOL
+
+popd > /dev/null
 }
 
 upload_coveralls_results() {
@@ -515,11 +554,13 @@ upload_coveralls_results() {
 
   if is_file "${coverage_results}"; then
     print_info "Uploading coverage results to Coveralls..."
-    http_status=$(curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" -o "${coveralls_response}" -w "%{http_code}")
+    http_status=$(curl -s -F json_file="@${coverage_results}" "${COVERALLS_API}" -o "${coveralls_response}" -w "%{http_code}" || echo $?)
     if [[ "${http_status}" != "200" ]]; then
       print_error "Failed to upload coverage results (HTTP status code #${http_status}):"
     fi
-    cat "${coveralls_response}"
+    if is_file "${coveralls_response}"; then
+      cat "${coveralls_response}"
+    fi
   fi
 }
 
@@ -532,7 +573,7 @@ report_build_metrics() {
   local duration=$(($(timer_nanoseconds)-$smalltalk_ci_start_time))
   duration=$(echo "${duration}" | awk '{printf "%.3f\n", $1/1000000000}')
 
-  if [[ "${config_tracking}" != "true" ]]; then
+  if [[ "${config_tracking:-}" == "false" ]]; then
     return 0
   fi
 
@@ -548,14 +589,14 @@ report_build_metrics() {
 
   project_slug="${TRAVIS_REPO_SLUG:-${APPVEYOR_REPO_NAME:-${GITHUB_REPOSITORY:-}}}"
   api_url="${GITHUB_API}/repos/${project_slug}"
-  status_code=$(curl -w %{http_code} -s -o /dev/null "${api_url}")
+  status_code=$(curl -w %{http_code} -s -o /dev/null "${api_url}" || echo $?)
   if [[ "${status_code}" != "200" ]]; then
     return 0 # Not a public repository
   fi
 
   curl -s --header "X-BUILD-DURATION: ${duration}" \
           --header "X-BUILD-ENV: ${env_name}" \
-          --header "X-BUILD-SMALLTALK: ${config_smalltalk}" \
+          --header "X-BUILD-SMALLTALK: ${config_smalltalk:-unknown}" \
           --header "X-BUILD-STATUS: ${build_status}" \
             "https://smalltalkci.fniephaus.com/api/" > /dev/null || true
 }
@@ -665,6 +706,24 @@ deploy_for_sorabito() {
   fold_end deploy
 }
 
+retry() {
+  local retries=$1
+  local command=$2
+  local status=0
+
+  $command || status=$?
+
+  if [[ $status -ne 0 ]]; then
+    if [[ $retries -gt 0 ]]; then
+      echo "Retrying in one second..."
+      sleep 1
+      retry $(($retries - 1)) "$command"
+    else
+      print_error_and_exit "The command '${command}' failed too often (last exit code: ${status})."
+    fi
+  fi
+}
+
 
 ################################################################################
 # Travis-related helper functions (based on https://git.io/vzcTj).
@@ -681,23 +740,23 @@ timer_nanoseconds() {
     format="+%s000000000" # fallback to second precision on darwin (does not support %N)
   fi
 
-  $cmd -u $format
+  "$cmd" -u $format
 }
 
-travis_wait() {
+run_script() {
   local timeout="${SMALLTALK_CI_TIMEOUT:-}"
 
-  local cmd="$@"
+  local cmd=( "$@" )
 
   if ! is_int "${timeout}"; then
-    $cmd
+    "${cmd[@]}"
     return $?
   fi
 
-  $cmd &
+  "${cmd[@]}" &
   local cmd_pid=$!
 
-  travis_jigger $! $timeout $cmd &
+  run_jigger $! "$timeout" "${cmd[@]}" &
   local jigger_pid=$!
   local result
 
@@ -708,14 +767,14 @@ travis_wait() {
   }
 
   if [ $result -ne 0 ]; then
-    print_error_and_exit "The command $cmd exited with $result."
+    print_error_and_exit "The command ${cmd[*]} exited with $result."
   fi
 
   return $result
 }
 
-travis_jigger() {
-  # helper method for travis_wait()
+run_jigger() {
+  # helper method for run_script()
   local cmd_pid=$1
   shift
   local timeout=$1 # in minutes
@@ -739,11 +798,12 @@ travis_jigger() {
 fold_start() {
   local identifier=$1
   local title=$2
-  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
 
   timer_start_time=$(timer_nanoseconds)
-  travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
+
   if is_travis_build; then
+    local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
+    travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
     echo -en "travis_fold:start:${prefix}${identifier}\r${ANSI_CLEAR}"
     echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
   fi
@@ -756,11 +816,12 @@ fold_start() {
 
 fold_end() {
   local identifier=$1
-  local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
+
   local timer_end_time=$(timer_nanoseconds)
   local duration=$(($timer_end_time-$timer_start_time))
 
   if is_travis_build; then
+    local prefix="${SMALLTALK_CI_TRAVIS_FOLD_PREFIX:-}"
     echo -en "travis_time:end:$travis_timer_id:start=$timer_start_time,finish=$timer_end_time,duration=$duration\r${ANSI_CLEAR}"
     echo -en "travis_fold:end:${prefix}${identifier}\r${ANSI_CLEAR}"
   else

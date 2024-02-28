@@ -8,7 +8,7 @@ allClassesToCover
 	
 	ignoredClasses := (self allClassesNotUnderTestOf: classes) asSet.
 	"Ignore system classes to avoid infinite recursions during coverage testing"
-	ignoredClasses addAll: (SmalltalkCI classesForPackages: self class ignoredPackages).
+	ignoredClasses addAll: (SmalltalkCI platformClass classesForPackages: self class ignoredPackages).
 
 	classes removeAllFoundIn: (self classesAndMetaclassesOf: ignoredClasses).
 

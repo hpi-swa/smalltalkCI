@@ -21,7 +21,7 @@ initialize() {
 
   # Set up traps, otherwise fail if OS is not supported
   case "$(uname -s)" in
-    "Linux"|"Darwin"|"CYGWIN_NT-"*|"MINGW64_NT-"*)
+    "Linux"|"Darwin"|"CYGWIN_NT-"*|"MINGW64_NT-"*|"MSYS_NT-"*)
       trap handle_exit EXIT
       trap handle_error ERR
       trap handle_interrupt INT
@@ -223,12 +223,11 @@ select_smalltalk() {
   local images="Squeak64-trunk Squeak64-6.0 Squeak64-5.3 Squeak64-5.2 Squeak64-5.1
                 Squeak32-trunk Squeak32-6.0 Squeak32-5.3 Squeak32-5.2 Squeak32-5.1 Squeak32-5.0
                 Squeak32-4.6 Squeak32-4.5
-                Pharo64-stable Pharo64-alpha Pharo64-11 Pharo64-10 Pharo64-9.0 Pharo64-8.0 Pharo64-7.0 Pharo64-6.1 Pharo64-6.0
-                Pharo32-stable Pharo32-alpha Pharo32-9.0 Pharo32-8.0 Pharo32-7.0 Pharo32-6.0 Pharo32-5.0
+                Pharo64-stable Pharo64-alpha Pharo64-12 Pharo64-11 Pharo64-10 Pharo64-9.0 Pharo64-8.0 Pharo64-7.0 Pharo64-6.1 Pharo64-6.0
+                Pharo32-stable Pharo32-alpha Pharo32-12 Pharo32-9.0 Pharo32-8.0 Pharo32-7.0 Pharo32-6.0 Pharo32-5.0
                 Pharo32-4.0 Pharo32-3.0
-                GemStone64-3.5.0 GemStone64-3.4.3 GemStone64-3.3.9
-                GemStone64-3.3.2 GemStone64-3.3.0 GemStone64-3.2.12
-                GemStone64-3.1.0.6
+                GemStone64-3.6.5 GemStone64-3.6.0 GemStone64-3.5.8 GemStone64-3.5.3
+                GToolkit64-release
                 Moose64-trunk Moose64-10 Moose64-9.0 Moose64-8.0 Moose64-7.0
                 Moose32-trunk Moose32-8.0 Moose32-7.0 Moose32-6.1 Moose32-6.0"
 
@@ -247,7 +246,7 @@ select_smalltalk() {
     set -o posix  # fixes SIGINT during select
     select selection in $images; do
       case "${selection}" in
-        Squeak*|Pharo*|GemStone*|Moose*)
+        Squeak*|Pharo*|GemStone*|GToolkit*|Moose*)
           config_smalltalk="${selection}"
           break
           ;;
@@ -282,11 +281,32 @@ validate_configuration() {
 }
 
 ################################################################################
+# Set options that depend on the context, i.e., the input values and selections
+# performed so far.
+################################################################################
+set_context_options() {
+  if [[ "${config_force_cache}" = "true" ]]; then
+    print_info "Forcing cache use"
+    config_overwrite_cache="false"
+  else
+    case "${config_smalltalk}" in
+      *-alpha | *-trunk)
+        print_info "Forcing image update for in-development version"
+        config_overwrite_cache="true"
+        ;;
+      *)
+        ;;
+    esac
+  fi
+}
+
+################################################################################
 # Handle user-defined options.
 # Locals:
 #   config_clean
 #   config_debug
 #   config_headless
+#   config_overwrite_cache
 #   config_smalltalk
 #   config_verbose
 # Arguments:
@@ -325,12 +345,20 @@ parse_options() {
       fi
       shift 2
       ;;
+    --force-cache)
+      config_force_cache="true"
+      shift
+      ;;
     --no-color)
       config_colorful="false"
       shift
       ;;
     --no-tracking)
       config_tracking="false"
+      shift
+      ;;
+    --overwrite-cache)
+      config_overwrite_cache="true"
       shift
       ;;
     --print-env)
@@ -358,7 +386,6 @@ parse_options() {
       ;;
     -- | --self-test)
       shift
-      break
       ;;
     -*)
       print_error_and_exit "Unknown option: $1"
@@ -502,6 +529,10 @@ run() {
       print_info "Starting GemStone build..."
       source "${SMALLTALK_CI_HOME}/gemstone/run.sh"
       ;;
+    GToolkit*)
+      print_info "Starting GToolkit build..."
+      source "${SMALLTALK_CI_HOME}/gtoolkit/run.sh"
+      ;;
     *)
       print_error_and_exit "Unknown Smalltalk image '${config_smalltalk}'."
       ;;
@@ -522,15 +553,17 @@ run() {
 #   All positional parameters
 ################################################################################
 main() {
-  local config_smalltalk=""
-  local config_ston=""
   local config_clean="false"
+  local config_colorful="true"
   local config_debug="false"
   local config_first_arg_or_empty=""
-  local config_headless="true"
+  local config_force_cache="false"
+  export config_headless="true"
   local config_image=""
-  local config_colorful="true"
-  local config_tracking="true"
+  export config_overwrite_cache="false"
+  export config_smalltalk=""
+  local config_ston=""
+  export config_tracking="true"
   local config_verbose="false"
   local config_vm=""
   local config_vm_dir
@@ -542,6 +575,7 @@ main() {
   ensure_ston_config_exists "${config_first_arg_or_empty}"
   select_smalltalk
   validate_configuration
+  set_context_options
   config_vm_dir="${SMALLTALK_CI_VMS}/${config_smalltalk}"
   prepare_folders
   export_coveralls_data
