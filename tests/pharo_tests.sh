@@ -34,6 +34,22 @@ test_get_image_url() {
   image_url="$(pharo::get_image_url "Pharo64-8.0")"
   assertEquals "get.pharo.org/64/80" "${image_url}"
 
+
+  image_url="$(pharo::get_image_url "Pharo32-12")"
+  assertEquals "get.pharo.org/32/120" "${image_url}"
+
+  image_url="$(pharo::get_image_url "Pharo32-11")"
+  assertEquals "get.pharo.org/32/110" "${image_url}"
+
+  image_url="$(pharo::get_image_url "Pharo32-10")"
+  assertEquals "get.pharo.org/32/100" "${image_url}"
+
+  image_url="$(pharo::get_image_url "Pharo32-9.0")"
+  assertEquals "get.pharo.org/32/90" "${image_url}"
+
+  image_url="$(pharo::get_image_url "Pharo32-8.0")"
+  assertEquals "get.pharo.org/80" "${image_url}"
+
   image_url="$(pharo::get_image_url "Pharo32-7.0")"
   assertEquals "get.pharo.org/70" "${image_url}"
 
@@ -63,16 +79,32 @@ test_get_vm_url() {
   local vm_url
 
   vm_url="$(pharo::get_vm_url "Pharo32-alpha")"
-  assertEquals "get.pharo.org/vmLatest120" "${vm_url}"
+  assertEquals "get.pharo.org/vmLatest130" "${vm_url}"
 
   vm_url="$(pharo::get_vm_url "Pharo64-alpha")"
-  assertEquals "get.pharo.org/64/vmLatest120" "${vm_url}"
+  assertEquals "get.pharo.org/64/vmLatest130" "${vm_url}"
 
   vm_url="$(pharo::get_vm_url "Pharo32-stable")"
-  assertEquals "get.pharo.org/vm110" "${vm_url}"
+  assertEquals "get.pharo.org/vm120" "${vm_url}"
 
   vm_url="$(pharo::get_vm_url "Pharo64-stable")"
+  assertEquals "get.pharo.org/64/vm120" "${vm_url}"
+
+  vm_url="$(pharo::get_vm_url "Pharo64-12")"
+  assertEquals "get.pharo.org/64/vm120" "${vm_url}"
+
+  vm_url="$(pharo::get_vm_url "Pharo64-11")"
   assertEquals "get.pharo.org/64/vm110" "${vm_url}"
+
+  vm_url="$(pharo::get_vm_url "Pharo64-10")"
+  assertEquals "get.pharo.org/64/vm100" "${vm_url}"
+
+  vm_url="$(pharo::get_vm_url "Pharo64-9.0")"
+  assertEquals "get.pharo.org/64/vm90" "${vm_url}"
+
+  vm_url="$(pharo::get_vm_url "Pharo64-8.0")"
+  assertEquals "get.pharo.org/64/vm80" "${vm_url}"
+
 
   vm_url="$(pharo::get_vm_url "Pharo32-12")"
   assertEquals "get.pharo.org/vm120" "${vm_url}"
