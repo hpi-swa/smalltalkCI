@@ -145,8 +145,8 @@ moose::get_image_url() {
 ################################################################################
 pharo::get_vm_url() {
   local smalltalk_name=$1
-  local stable_version=11
-  local alpha_version=12
+  local stable_version=12
+  local alpha_version=13
 
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
@@ -166,7 +166,7 @@ pharo::get_vm_url() {
       echo "get.pharo.org/64/vm100"
       ;;
     "Pharo64-9.0"|"Moose64-9.0")
-      echo "get.pharo.org/vm90"
+      echo "get.pharo.org/64/vm90"
       ;;
     "Pharo64-8.0"|"Moose64-8.0")
       echo "get.pharo.org/64/vm80"
