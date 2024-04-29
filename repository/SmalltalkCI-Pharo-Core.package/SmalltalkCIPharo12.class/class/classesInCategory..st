@@ -1,6 +1,5 @@
 class organization
 classesInCategory: aCategory
-	^ (Smalltalk organization tagForCategory: aCategory)
-		ifNotNil: [ :tag |
-			tag classNames collect: [ :className | Smalltalk at: className ] ]
+	^ (Smalltalk organization packageMatchingExtensionName: aCategory)
+		ifNotNil: [ :package | package definedClasses ]
 		ifNil: [ #() ]
