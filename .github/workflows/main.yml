@@ -46,10 +46,9 @@ jobs:
           - Moose64-10
           - Moose64-9.0
           - Moose64-8.0
-          - GemStone64-3.5.3
           - GemStone64-3.5.8
-          - GemStone64-3.6.0
-          - GemStone64-3.6.5
+          - GemStone64-3.6.8
+          - GemStone64-3.7.1
           - GToolkit64-release
         exclude: # exclude 32bit builds on macOS and GemStone builds on windows
           - os: macos-latest
@@ -64,18 +63,20 @@ jobs:
             smalltalk: Pharo32-alpha
           - os: macos-latest
             smalltalk: Pharo32-3.0
+          - os: macos-latest
+            smalltalk: GemStone64-3.5.8
+          - os: macos-latest
+            smalltalk: GemStone64-3.6.8
           - os: windows-2019
             smalltalk: Pharo64-10
           - os: windows-2019
             smalltalk: Pharo64-6.0
           - os: windows-2019
-            smalltalk: GemStone64-3.5.3
-          - os: windows-2019
             smalltalk: GemStone64-3.5.8
           - os: windows-2019
-            smalltalk: GemStone64-3.6.0
+            smalltalk: GemStone64-3.6.8
           - os: windows-2019
-            smalltalk: GemStone64-3.6.5
+            smalltalk: GemStone64-3.7.1
     continue-on-error: ${{ matrix.os == 'macos-latest' && startsWith(matrix.smalltalk, 'GemStone64') }}
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
