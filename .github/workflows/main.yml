@@ -77,7 +77,6 @@ jobs:
             smalltalk: GemStone64-3.6.8
           - os: windows-2019
             smalltalk: GemStone64-3.7.1
-    continue-on-error: ${{ matrix.os == 'macos-latest' && startsWith(matrix.smalltalk, 'GemStone64') }}
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
     steps:
