@@ -114,7 +114,7 @@ gtoolkit::prepare_gt() {
   target="${SMALLTALK_CI_CACHE}/${smalltalk_version}"
 
   if "${config_overwrite_cache}" && is_dir "${target}"; then
-    print_info "Removing cached image resources for ${smalltalk_version} (update forced)"
+    print_info "Removing cached image resources for ${smalltalk_name} (update forced)"
     rm -r "${target}"
   fi
   if ! is_dir "${target}"; then
