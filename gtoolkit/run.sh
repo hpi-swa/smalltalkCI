@@ -108,8 +108,9 @@ gtoolkit::prepare_gt() {
   local download_name
   local target
   gtoolkit_image_url="$(gtoolkit::archive_url)"
+  smalltalk_name="$(basename "${gtoolkit_image_url}" .zip)"
   download_name="$(basename "${gtoolkit_image_url}")"
-  target="${SMALLTALK_CI_CACHE}/${download_name}"
+  target="${SMALLTALK_CI_CACHE}/${smalltalk_name}"
 
   if "${config_overwrite_cache}" && is_dir "${target}"; then
     print_info "Removing cached image resources for ${smalltalk_name} (update forced)"
@@ -120,13 +121,13 @@ gtoolkit::prepare_gt() {
   fi
   if ! is_file "${target}"/*.image; then
     fold_start download_image "Downloading ${smalltalk_name} image..."
-      download_file "${gtoolkit_image_url}" "${target}"
+      download_file "${gtoolkit_image_url}" "${target}/${download_name}"
     fold_end download_image
   fi
 
   print_info "Extracting GT..."
-  extract_file "${target}" "${SMALLTALK_CI_BUILD}"
-  echo "${download_name}" > "${SMALLTALK_CI_BUILD}"/version
+  extract_file "${target}/${download_name}" "${SMALLTALK_CI_BUILD}"
+  echo "${smalltalk_name}" > "${SMALLTALK_CI_BUILD}"/version
 
   print_info "Preparing GToolkit image..."
   if ! is_file "${SMALLTALK_CI_IMAGE}"; then
