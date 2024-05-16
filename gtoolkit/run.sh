@@ -107,6 +107,7 @@ gtoolkit::prepare_gt() {
   local gtoolkit_image_url
   local download_name
   local target
+  local smalltalk_version
   gtoolkit_image_url="$(gtoolkit::archive_url)"
   smalltalk_version="$(basename "${gtoolkit_image_url}" .zip)"
   download_name="$(basename "${gtoolkit_image_url}")"
