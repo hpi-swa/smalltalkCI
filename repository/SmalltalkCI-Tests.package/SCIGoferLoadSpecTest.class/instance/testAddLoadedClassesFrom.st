@@ -1,9 +1,13 @@
 testing
 testAddLoadedClassesFrom
-	| gofer |
+	| goferClass gofer |
+	goferClass := Smalltalk
+		at: #Gofer
+		ifAbsent: [ ^ self ].
+	
 	self assert: true equals: (self spec loadedClasses isEmpty).
 	
-	gofer := Gofer new
+	gofer := goferClass new
 		package: 'SmalltalkCI-Core';
 		package: 'SmalltalkCI-Tests'.
 	self spec addLoadedClassesFrom: gofer references.
