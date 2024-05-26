@@ -21,6 +21,9 @@ pharo::get_image_url() {
     "Pharo64-stable"|"Pharo-stable")
       echo "get.pharo.org/64/stable"
       ;;
+    "Pharo64-13")
+      echo "get.pharo.org/64/130"
+      ;;
     "Pharo64-12")
       echo "get.pharo.org/64/120"
       ;;
@@ -51,6 +54,9 @@ pharo::get_image_url() {
     "Pharo32-stable")
       echo "get.pharo.org/stable"
       ;;
+    "Pharo32-13")
+        echo "get.pharo.org/32/130"
+        ;;
     "Pharo32-12")
         echo "get.pharo.org/32/120"
         ;;
@@ -156,6 +162,9 @@ pharo::get_vm_url() {
     "Pharo64-stable"|"Pharo-stable")
       echo "get.pharo.org/64/vm${stable_version}0"
       ;;
+    "Pharo64-13")
+      echo "get.pharo.org/64/vm130"
+      ;;
     "Pharo64-12")
       echo "get.pharo.org/64/vm120"
       ;;
@@ -185,6 +194,9 @@ pharo::get_vm_url() {
       ;;
     "Pharo32-stable")
       echo "get.pharo.org/vm${stable_version}0"
+      ;;
+    "Pharo32-13")
+      echo "get.pharo.org/vm130"
       ;;
     "Pharo32-12")
       echo "get.pharo.org/vm120"
