@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "SCIPharo12CodeCoverage",
+	"category" : "SmalltalkCI-Pharo-Coverage-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SCIPharo13CodeCoverage",
+	"type" : "normal"
+}
