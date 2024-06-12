@@ -1,0 +1,15 @@
+{
+	"class" : {
+		"isInTonelFormatCodeLocatedAt:" : "mt 6/12/2024 18:12",
+		"tonelFilePathFor:in:" : "mt 6/12/2024 17:34" },
+	"instance" : {
+		"allClassesToCover" : "mt 6/12/2024 17:38",
+		"coverallsSourceFilesIn:" : "mt 6/12/2024 17:37",
+		"finishUp" : "mt 6/12/2024 17:42",
+		"isInTonelFormat:" : "mt 6/12/2024 17:35",
+		"startUp" : "mt 6/12/2024 17:41",
+		"tonelCoverageFor:in:" : "mt 6/12/2024 18:19",
+		"tonelCoverallsSourceFileFor:in:" : "mt 6/12/2024 17:43",
+		"tonelCoverallsSourceFilesIn:" : "mt 6/12/2024 17:39",
+		"tonelMethodCoverageStatusFor:" : "mt 6/12/2024 18:17",
+		"tonelSourceDirectoryFor:" : "mt 6/12/2024 17:43" } }
