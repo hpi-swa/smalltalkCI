@@ -70,7 +70,7 @@ print_help() {
     --headful               Open vm in headful mode and do not close image.
     --image                 Custom image for build (Squeak/Pharo).
     --install               Install symlink to this smalltalkCI instance.
-    --overwrite-cache   Download the newest image and cache it.
+    --overwrite-cache       Download the newest image and cache it.
     --print-env             Print all environment variables used by smalltalkCI
     --no-color              Disable colored output
     --no-tracking           Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
