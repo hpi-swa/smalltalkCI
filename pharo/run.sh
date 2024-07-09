@@ -168,7 +168,7 @@ pharo::get_vm_url() {
     "Pharo64-13")
       echo "get.pharo.org/64/vm130"
       ;;
-    "Pharo64-12"|"Moose64-11"|"Moose64-trunk")
+    "Pharo64-12"|"Moose64-12"|"Moose64-trunk")
       echo "get.pharo.org/64/vm120"
       ;;
     "Pharo64-11"|"Moose64-11")
