@@ -1,3 +1,3 @@
 compatibility
 codeCoverageClass
-	^ SCISqueakCodeCoverage
+	^ SCISqueakTonelCodeCoverage
