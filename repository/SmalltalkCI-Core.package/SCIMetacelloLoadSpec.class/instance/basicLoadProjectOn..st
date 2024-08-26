@@ -28,5 +28,5 @@ basicLoadProjectOn: aSmalltalkCI
 	self withExceptionHandlerDo: [ 
 		aSmalltalkCI performMetacelloLoad: [ 
 			[ metacello load: self load ]
-			on: MetacelloIgnorePackageLoaded
+			on: self ignorePackageNotificationClass
 			do: [ :e | e resume: self ignoreImage ] ] ]
