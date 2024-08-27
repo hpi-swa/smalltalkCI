@@ -1,6 +1,6 @@
 executing
 ignorePackageNotificationClass
 
-	^ Smalltalk globals 
-		at: #MetacelloIgnorePackageLoaded
-		ifAbsent: [ Notification ]
+	^ (Smalltalk globals 
+		at: #MetacelloIgnorePackageLoaded)
+		ifNil: [ Notification ]
