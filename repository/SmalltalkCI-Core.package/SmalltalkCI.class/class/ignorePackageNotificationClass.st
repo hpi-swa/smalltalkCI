@@ -1,5 +1,6 @@
 helpers
 ignorePackageNotificationClass
-	
-    ^ (Smalltalk globals at: #MetacelloIgnorePackageLoaded)
-		ifNil: [ Notification ].
+
+	^ (Smalltalk globals includesKey: #MetacelloIgnorePackageLoaded)
+		  ifTrue: [ Smalltalk at: #MetacelloIgnorePackageLoaded ]
+		  ifFalse: [ Notification ]
