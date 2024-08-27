@@ -343,7 +343,7 @@ pharo::prepare_moose_image() {
   fi
 
   print_info "Extracting and preparing ${smalltalk_name} image..."
-  unzip -q "${target}" -d "${SMALLTALK_CI_BUILD}"
+  unzip -j -q "${target}" -d "${SMALLTALK_CI_BUILD}"
   mv "${SMALLTALK_CI_BUILD}/"*.image "${SMALLTALK_CI_IMAGE}"
   mv "${SMALLTALK_CI_BUILD}/"*.changes "${SMALLTALK_CI_CHANGES}"
 
