@@ -1,0 +1,14 @@
+{
+	"category" : "SmalltalkCI-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "SCIMetacelloIgnorePackageLoaded",
+	"pools" : [
+		 ],
+	"super" : "Notification",
+	"type" : "normal" }

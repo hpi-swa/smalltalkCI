@@ -1,4 +1,0 @@
-executing
-ignorePackageNotificationClass
-
-	^ SmalltalkCI platformClass ignorePackageNotificationClass
