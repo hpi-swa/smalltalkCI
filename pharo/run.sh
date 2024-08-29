@@ -207,7 +207,7 @@ pharo::get_vm_url() {
     "Pharo32-7.0"|"Pharo-7.0")
       echo "get.pharo.org/vm70"
       ;;
-    "Pharo32-6.1"||"Pharo-6.1")
+    "Pharo32-6.1"|"Pharo-6.1")
       echo "get.pharo.org/vm61"
       ;;
     "Pharo32-6.0"|"Pharo-6.0")
