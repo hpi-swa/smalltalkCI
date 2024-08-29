@@ -111,18 +111,6 @@ moose::get_image_url() {
     "Moose64-trunk"|"Moose-trunk")
       echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose12-development-Pharo64-12.zip"
       ;;
-    "Moose32-trunk")
-      moose_name="moose-7.0"
-      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
-      ;;
-    "Moose64-7"*)
-      moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)-64bit"
-      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
-      ;;
-    "Moose32-6"*|"Moose-6"*|"Moose32-7"*|"Moose-7"*)
-      moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)"
-      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
-      ;;
     "Moose64-8"*)
       echo "https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-old-stable-Pharo64-8.0.zip"
       ;;
@@ -183,7 +171,7 @@ pharo::get_vm_url() {
     "Pharo64-8.0"|"Moose64-8.0")
       echo "get.pharo.org/64/vm80"
       ;;
-    "Pharo64-7.0"|"Moose64-7.0")
+    "Pharo64-7.0")
       echo "get.pharo.org/64/vm70"
       ;;
     "Pharo64-6.1")
@@ -213,19 +201,19 @@ pharo::get_vm_url() {
     "Pharo32-9.0")
       echo "get.pharo.org/vm90"
       ;;
-    "Pharo32-8.0"|"Moose32-8.0"|"Moose32-trunk")
+    "Pharo32-8.0")
       echo "get.pharo.org/vm80"
       ;;
-    "Pharo32-7.0"|"Pharo-7.0"|"Moose32-7.0"|"Moose-7.0")
+    "Pharo32-7.0"|"Pharo-7.0")
       echo "get.pharo.org/vm70"
       ;;
-    "Pharo32-6.1"|"Moose32-6.1"|"Pharo-6.1"|"Moose-6.1")
+    "Pharo32-6.1"||"Pharo-6.1")
       echo "get.pharo.org/vm61"
       ;;
     "Pharo32-6.0"|"Pharo-6.0")
       echo "get.pharo.org/vm60"
       ;;
-    "Pharo32-5.0"|"Moose32-6.0"|"Pharo-5.0"|"Moose-6.0")
+    "Pharo32-5.0"|"Pharo-5.0")
       echo "get.pharo.org/vm50"
       ;;
     "Pharo32-4.0"|"Pharo-4.0")

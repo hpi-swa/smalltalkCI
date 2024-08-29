@@ -77,13 +77,13 @@ they can take up a lot of space on your drive.*
 | `Squeak64-trunk` | `Pharo64-alpha`  | `GemStone64-3.6.x`   | `Moose64-trunk` | `GToolkit64-release` |
 | `Squeak64-6.0`   | `Pharo64-stable` | `GemStone64-3.5.8`   | `Moose64-12`    |                      |
 | `Squeak64-5.3`   | `Pharo64-13`     | `GemStone64-3.5.7`   | `Moose64-11`    |                      |
-| `Squeak64-5.2`   | `Pharo64-12`     | `GemStone64-3.5.6`   | `Moose64-10`   |                      |
+| `Squeak64-5.2`   | `Pharo64-12`     | `GemStone64-3.5.6`   | `Moose64-10`    |                      |
 | `Squeak64-5.1`   | `Pharo64-11`     | `GemStone64-3.5.5`   | `Moose64-9.0`   |                      |
 | `Squeak32-trunk` | `Pharo64-10`     | `Gemstone64-3.5.4`   | `Moose64-8.0`   |                      |
-| `Squeak32-6.0`   | `Pharo64-9.0`    | `GemStone64-3.5.3`   | `Moose64-7.0`   |                      |
-| `Squeak32-5.3`   | `Pharo64-8.0`    |                      | `Moose32-trunk` |                      |
-| `Squeak32-5.2`   | `Pharo64-7.0`    |                      | `Moose32-6.1`   |                      |
-| `Squeak32-5.1`   | `Pharo64-6.1`    |                      | `Moose32-6.0`   |                      |                |                      |
+| `Squeak32-6.0`   | `Pharo64-9.0`    | `GemStone64-3.5.3`   |                 |                      |
+| `Squeak32-5.3`   | `Pharo64-8.0`    |                      |                 |                      |
+| `Squeak32-5.2`   | `Pharo64-7.0`    |                      |                 |                      |
+| `Squeak32-5.1`   | `Pharo64-6.1`    |                      |                 |                      |                |                      |
 | `Squeak32-5.0`   | `Pharo64-6.0`    |                      |                 |                      |
 | `Squeak32-4.6`   | `Pharo32-alpha`  |                      |                 |                      |
 | `Squeak32-4.5`   | `Pharo32-stable` |                      |                 |                      |
