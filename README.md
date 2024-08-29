@@ -83,7 +83,7 @@ they can take up a lot of space on your drive.*
 | `Squeak32-6.0`   | `Pharo64-9.0`    | `GemStone64-3.5.3`   |                 |                      |
 | `Squeak32-5.3`   | `Pharo64-8.0`    |                      |                 |                      |
 | `Squeak32-5.2`   | `Pharo64-7.0`    |                      |                 |                      |
-| `Squeak32-5.1`   | `Pharo64-6.1`    |                      |                 |                      |                |                      |
+| `Squeak32-5.1`   | `Pharo64-6.1`    |                      |                 |                      |
 | `Squeak32-5.0`   | `Pharo64-6.0`    |                      |                 |                      |
 | `Squeak32-4.6`   | `Pharo32-alpha`  |                      |                 |                      |
 | `Squeak32-4.5`   | `Pharo32-stable` |                      |                 |                      |
