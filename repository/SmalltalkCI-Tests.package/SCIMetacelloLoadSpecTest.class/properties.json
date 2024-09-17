@@ -1,14 +1,11 @@
 {
-	"category" : "SmalltalkCI-Tests",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
-	"instvars" : [
-		 ],
-	"name" : "SCIMetacelloLoadSpecTest",
-	"pools" : [
-		 ],
 	"super" : "SCIAbstractLoadSpecTest",
-	"type" : "normal" }
+	"category" : "SmalltalkCI-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "SCIMetacelloLoadSpecTest",
+	"type" : "normal"
+}

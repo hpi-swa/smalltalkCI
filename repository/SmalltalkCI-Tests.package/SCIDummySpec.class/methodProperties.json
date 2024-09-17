@@ -1,8 +1,0 @@
-{
-	"class" : {
-		"forClass:" : "fn 11/12/2017 23:36",
-		"named:forClass:" : "fn 11/12/2017 23:35" },
-	"instance" : {
-		"classesToTest" : "fn 11/11/2017 14:57",
-		"classesToTest:" : "fn 11/10/2017 13:59",
-		"failOnZeroTests" : "fn 11/21/2017 18:50" } }
