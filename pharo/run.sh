@@ -367,13 +367,19 @@ pharo::load_project() {
         metacello := Metacello new
             baseline: 'SmalltalkCI';
             repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-            onUpgrade: [ :ex | ex useIncoming ].
+            onUpgrade: [ :ex | ex useIncoming ];
+            ignoreImage.
         (Metacello canUnderstand: #onConflictUseIncoming)
             ifTrue: [ metacello onConflictUseIncoming ]
             ifFalse: [ metacello onConflict: [ :ex | ex useIncoming ] ].
-        metacello load ]
-            on: Warning
-            do: [ :w | w resume ].
+        ([ Smalltalk at: #MetacelloIgnorePackageLoaded ]
+          on: KeyNotFound
+          do: [ :keyEx | keyEx resumeUnchecked: nil ])
+            ifNil: [ metacello load ]
+            ifNotNil: [ :exceptionClass |
+              [ metacello load ] on: exceptionClass do: [ :ex | ex resume: true ] ] ]
+                on: Warning
+                do: [ :w | w resume ].
     smalltalkCI := Smalltalk at: #SmalltalkCI.
     smalltalkCI load: '$(resolve_path "${config_ston}")'.
     (smalltalkCI isHeadless or: [ smalltalkCI promptToProceed ])
@@ -395,13 +401,19 @@ pharo::test_project() {
                 metacello := Metacello new
                     baseline: 'SmalltalkCI';
                     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-                    onUpgrade: [ :ex | ex useIncoming ].
+                    onUpgrade: [ :ex | ex useIncoming ];
+                    ignoreImage.
                 (Metacello canUnderstand: #onConflictUseIncoming)
                     ifTrue: [ metacello onConflictUseIncoming ]
                     ifFalse: [ metacello onConflict: [ :ex | ex useIncoming ] ].
-                metacello load ]
-                    on: Warning
-                    do: [ :w | w resume ].
+                ([ Smalltalk at: #MetacelloIgnorePackageLoaded ]
+                  on: KeyNotFound
+                  do: [ :keyEx | keyEx resumeUnchecked: nil ])
+                    ifNil: [ metacello load ]
+                    ifNotNil: [ :exceptionClass |
+                      [ metacello load ] on: exceptionClass do: [ :ex | ex resume: true ] ] ]
+                        on: Warning
+                        do: [ :w | w resume ].
             Smalltalk at: #SmalltalkCI ].
     smalltalkCI test: '$(resolve_path "${config_ston}")'
   "
