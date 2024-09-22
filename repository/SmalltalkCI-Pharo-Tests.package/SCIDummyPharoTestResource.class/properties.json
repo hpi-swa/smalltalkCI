@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "2024-09-17 18:33",
+	"super" : "TestResource",
+	"category" : "SmalltalkCI-Pharo-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [
+		"SetUpCounter",
+		"TearDownCounter"
+	],
+	"instvars" : [ ],
+	"name" : "SCIDummyPharoTestResource",
+	"type" : "normal"
+}

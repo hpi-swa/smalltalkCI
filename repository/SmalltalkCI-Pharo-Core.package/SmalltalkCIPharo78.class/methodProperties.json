@@ -1,9 +1,0 @@
-{
-	"class" : {
-		"forceNewFileNamed:do:" : "maxmattone 4/14/2021 17:14:21",
-		"getEnv:" : "fn 12/22/2018 14:20",
-		"isPlatformCompatible" : "fn 4/24/2019 22:00",
-		"stdout" : "GuillermoPolito 10/4/2017 17:56",
-	    "preLoad" : "CyrilFerlicot 02/22/2023 11:23" },
-	"instance" : {
-		 } }

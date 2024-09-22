@@ -1,14 +1,13 @@
 {
-	"category" : "SmalltalkCI-Tests",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
-	"instvars" : [
-		"classesToTest" ],
-	"name" : "SCIDummySpec",
-	"pools" : [
-		 ],
 	"super" : "SmalltalkCISpec",
-	"type" : "normal" }
+	"category" : "SmalltalkCI-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"classesToTest"
+	],
+	"name" : "SCIDummySpec",
+	"type" : "normal"
+}
