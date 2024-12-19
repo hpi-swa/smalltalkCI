@@ -490,8 +490,8 @@ export_coveralls_data() {
     url="https://github.com/${APPVEYOR_REPO_NAME}.git"
   elif is_gitlabci_build; then
     branch_name="${CI_COMMIT_REF_NAME}"
-    service_job_id="${CI_BUILD_ID}"
-    service_job_number="${CI_BUILD_NAME}"
+    service_job_id="${CI_JOB_ID:-CI_BUILD_ID}"
+    service_job_number="${CI_JOB_NAME:-CI_BUILD_NAME}"
     service_name="gitlab-ci"
     service_pull_request="${CI_MERGE_REQUEST_IID:-}"
     url="${CI_PROJECT_URL}"
