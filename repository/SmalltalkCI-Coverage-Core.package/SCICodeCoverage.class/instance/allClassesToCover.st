@@ -1,15 +1,8 @@
 helpers
 allClassesToCover
-	| classes ignoredClasses |
+	| classes |
 	classes := self allClassesFromSpec.
 	classes addAll: (self allPackagesUnderTestOf: classes).
+	classes removeAllFoundIn: (self allClassesNotUnderTestOf: classes) asSet.
 	"Expand set so that it includes classes and their metaclasses"
-	classes := self classesAndMetaclassesOf: classes.
-	
-	ignoredClasses := (self allClassesNotUnderTestOf: classes) asSet.
-	"Ignore system classes to avoid infinite recursions during coverage testing"
-	ignoredClasses addAll: (SmalltalkCI platformClass classesForPackages: self class ignoredPackages).
-
-	classes removeAllFoundIn: (self classesAndMetaclassesOf: ignoredClasses).
-
-	^ classes
+	^ self classesAndMetaclassesOf: classes

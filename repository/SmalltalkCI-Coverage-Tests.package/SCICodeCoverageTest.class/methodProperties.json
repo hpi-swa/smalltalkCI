@@ -16,6 +16,7 @@
 		"testDefaultWriterClass" : "smalltalkCI 8/28/2020 14:17",
 		"testEndToEnd" : "ct 10/14/2022 17:19",
 		"testFilePath" : "ct 9/10/2022 02:24",
+		"testFilterLegalNames" : "gd 2/27/2025 21:31",
 		"testLcovEndToEnd" : "ct 9/9/2022 19:04",
 		"testLcovWriterClass" : "smalltalkCI 8/28/2020 14:16",
 		"testMethodReferences" : "ct 9/10/2022 02:03",
