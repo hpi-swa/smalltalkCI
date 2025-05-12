@@ -31,6 +31,7 @@ jobs:
           - Squeak32-4.5
           - Pharo64-stable
           - Pharo64-alpha
+          - Pharo64-13
           - Pharo64-12
           - Pharo64-11
           - Pharo64-10
@@ -42,15 +43,17 @@ jobs:
           - Pharo32-stable
           - Pharo32-alpha
           - Pharo32-3.0
+          - Moose64-12
           - Moose64-11
           - Moose64-10
           - Moose64-9.0
           - Moose64-8.0
           - GemStone64-3.5.3
           - GemStone64-3.5.8
-          - GemStone64-3.6.0
-          - GemStone64-3.6.5
+          - GemStone64-3.6.8
+          - GemStone64-3.7.1
           - GToolkit64-release
+        timeout-minutes: [ 15 ]
         exclude: # exclude 32bit builds on macOS and GemStone builds on windows
           - os: macos-latest
             smalltalk: Squeak32-trunk
@@ -64,6 +67,10 @@ jobs:
             smalltalk: Pharo32-alpha
           - os: macos-latest
             smalltalk: Pharo32-3.0
+          - os: macos-latest
+            smalltalk: GemStone64-3.5.8
+          - os: macos-latest
+            smalltalk: GemStone64-3.6.8
           - os: windows-2019
             smalltalk: Pharo64-10
           - os: windows-2019
@@ -73,10 +80,9 @@ jobs:
           - os: windows-2019
             smalltalk: GemStone64-3.5.8
           - os: windows-2019
-            smalltalk: GemStone64-3.6.0
+            smalltalk: GemStone64-3.6.8
           - os: windows-2019
-            smalltalk: GemStone64-3.6.5
-    continue-on-error: ${{ matrix.os == 'macos-latest' && startsWith(matrix.smalltalk, 'GemStone64') }}
+            smalltalk: GemStone64-3.7.1
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
     steps:

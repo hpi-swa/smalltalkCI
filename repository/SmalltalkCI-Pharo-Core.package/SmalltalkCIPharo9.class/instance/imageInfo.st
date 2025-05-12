@@ -1,3 +1,3 @@
 reporting
 imageInfo
-	^ String streamContents: [ :stream | StSystemReporter new reportImage: stream ]
+	^ String streamContents: [ :stream | (Smalltalk at: #StSystemReporter) new reportImage: stream ]

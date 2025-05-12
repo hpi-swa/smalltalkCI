@@ -70,7 +70,7 @@ print_help() {
     --headful               Open vm in headful mode and do not close image.
     --image                 Custom image for build (Squeak/Pharo).
     --install               Install symlink to this smalltalkCI instance.
-    --overwrite-cache   Download the newest image and cache it.
+    --overwrite-cache       Download the newest image and cache it.
     --print-env             Print all environment variables used by smalltalkCI
     --no-color              Disable colored output
     --no-tracking           Disable collection of anonymous build metrics (Travis CI & AppVeyor only).
@@ -490,8 +490,8 @@ export_coveralls_data() {
     url="https://github.com/${APPVEYOR_REPO_NAME}.git"
   elif is_gitlabci_build; then
     branch_name="${CI_COMMIT_REF_NAME}"
-    service_job_id="${CI_BUILD_ID}"
-    service_job_number="${CI_BUILD_NAME}"
+    service_job_id="${CI_JOB_ID:-CI_BUILD_ID}"
+    service_job_number="${CI_JOB_NAME:-CI_BUILD_NAME}"
     service_name="gitlab-ci"
     service_pull_request="${CI_MERGE_REQUEST_IID:-}"
     url="${CI_PROJECT_URL}"

@@ -1,9 +1,0 @@
-{
-	"class" : {
-		"testFileContents" : "fn 11/20/2017 13:54",
-		"testFileName" : "fn 11/20/2017 14:06" },
-	"instance" : {
-		"createTestFile" : "fn 11/22/2017 14:19",
-		"deleteTestFile" : "fn 11/22/2017 14:20",
-		"fullTestFilePath" : "fn 11/20/2017 14:13",
-		"withTestFileDo:" : "fn 11/20/2017 14:14" } }

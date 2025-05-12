@@ -13,7 +13,10 @@ classesFrom: aDictionary
 				commandLineHandler addPackagesMatching: each to: packages ].
 			packages do: [ :each |
 				| package |
-				package := (Smalltalk at: #RPackageOrganizer) default packageNamed: each.
-				classes addAll: package definedClasses ] ].
+				package := self
+					packageNamed: each
+					ifAbsent: [ nil ].
+				package ifNotNil: [
+					classes addAll: package definedClasses ] ] ].
 
 	^ classes	

@@ -21,6 +21,9 @@ pharo::get_image_url() {
     "Pharo64-stable"|"Pharo-stable")
       echo "get.pharo.org/64/stable"
       ;;
+    "Pharo64-13")
+      echo "get.pharo.org/64/130"
+      ;;
     "Pharo64-12")
       echo "get.pharo.org/64/120"
       ;;
@@ -51,6 +54,9 @@ pharo::get_image_url() {
     "Pharo32-stable")
       echo "get.pharo.org/stable"
       ;;
+    "Pharo32-13")
+        echo "get.pharo.org/32/130"
+        ;;
     "Pharo32-12")
         echo "get.pharo.org/32/120"
         ;;
@@ -103,19 +109,7 @@ moose::get_image_url() {
 
   case "${smalltalk_name}" in
     "Moose64-trunk"|"Moose-trunk")
-      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose11-development-Pharo64-11.zip"
-      ;;
-    "Moose32-trunk")
-      moose_name="moose-7.0"
-      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
-      ;;
-    "Moose64-7"*)
-      moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)-64bit"
-      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
-      ;;
-    "Moose32-6"*|"Moose-6"*|"Moose32-7"*|"Moose-7"*)
-      moose_name="moose-$(echo "${smalltalk_name}" | cut -f2 -d-)"
-      echo "https://ci.inria.fr/moose/job/${moose_name}/lastSuccessfulBuild/artifact/${moose_name}.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose12-development-Pharo64-12.zip"
       ;;
     "Moose64-8"*)
       echo "https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-old-stable-Pharo64-8.0.zip"
@@ -127,7 +121,10 @@ moose::get_image_url() {
       echo "https://github.com/moosetechnology/Moose/releases/download/v10.x.x/Moose10-stable-Pharo64-10.zip"
       ;;
     "Moose64-11"*)
-      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose11-development-Pharo64-11.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/v11.x.x/Moose11-stable-Pharo64-11.zip"
+      ;;
+    "Moose64-12"*)
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose12-development-Pharo64-12.zip"
       ;;
     *)
       print_error_and_exit "Unsupported Moose version '${smalltalk_name}'."
@@ -156,10 +153,13 @@ pharo::get_vm_url() {
     "Pharo64-stable"|"Pharo-stable")
       echo "get.pharo.org/64/vm${stable_version}0"
       ;;
-    "Pharo64-12")
+    "Pharo64-13")
+      echo "get.pharo.org/64/vm130"
+      ;;
+    "Pharo64-12"|"Moose64-12"|"Moose64-trunk")
       echo "get.pharo.org/64/vm120"
       ;;
-    "Pharo64-11"|"Moose64-11"|"Moose64-trunk")
+    "Pharo64-11"|"Moose64-11")
       echo "get.pharo.org/64/vm110"
       ;;
     "Pharo64-10"|"Moose64-10")
@@ -171,7 +171,7 @@ pharo::get_vm_url() {
     "Pharo64-8.0"|"Moose64-8.0")
       echo "get.pharo.org/64/vm80"
       ;;
-    "Pharo64-7.0"|"Moose64-7.0")
+    "Pharo64-7.0")
       echo "get.pharo.org/64/vm70"
       ;;
     "Pharo64-6.1")
@@ -186,6 +186,9 @@ pharo::get_vm_url() {
     "Pharo32-stable")
       echo "get.pharo.org/vm${stable_version}0"
       ;;
+    "Pharo32-13")
+      echo "get.pharo.org/vm130"
+      ;;
     "Pharo32-12")
       echo "get.pharo.org/vm120"
       ;;
@@ -198,19 +201,19 @@ pharo::get_vm_url() {
     "Pharo32-9.0")
       echo "get.pharo.org/vm90"
       ;;
-    "Pharo32-8.0"|"Moose32-8.0"|"Moose32-trunk")
+    "Pharo32-8.0")
       echo "get.pharo.org/vm80"
       ;;
-    "Pharo32-7.0"|"Pharo-7.0"|"Moose32-7.0"|"Moose-7.0")
+    "Pharo32-7.0"|"Pharo-7.0")
       echo "get.pharo.org/vm70"
       ;;
-    "Pharo32-6.1"|"Moose32-6.1"|"Pharo-6.1"|"Moose-6.1")
+    "Pharo32-6.1"|"Pharo-6.1")
       echo "get.pharo.org/vm61"
       ;;
     "Pharo32-6.0"|"Pharo-6.0")
       echo "get.pharo.org/vm60"
       ;;
-    "Pharo32-5.0"|"Moose32-6.0"|"Pharo-5.0"|"Moose-6.0")
+    "Pharo32-5.0"|"Pharo-5.0")
       echo "get.pharo.org/vm50"
       ;;
     "Pharo32-4.0"|"Pharo-4.0")
@@ -328,7 +331,7 @@ pharo::prepare_moose_image() {
   fi
 
   print_info "Extracting and preparing ${smalltalk_name} image..."
-  unzip -q "${target}" -d "${SMALLTALK_CI_BUILD}"
+  unzip -j -q "${target}" -d "${SMALLTALK_CI_BUILD}"
   mv "${SMALLTALK_CI_BUILD}/"*.image "${SMALLTALK_CI_IMAGE}"
   mv "${SMALLTALK_CI_BUILD}/"*.changes "${SMALLTALK_CI_CHANGES}"
 
@@ -364,13 +367,19 @@ pharo::load_project() {
         metacello := Metacello new
             baseline: 'SmalltalkCI';
             repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-            onUpgrade: [ :ex | ex useIncoming ].
+            onUpgrade: [ :ex | ex useIncoming ];
+            ignoreImage.
         (Metacello canUnderstand: #onConflictUseIncoming)
             ifTrue: [ metacello onConflictUseIncoming ]
             ifFalse: [ metacello onConflict: [ :ex | ex useIncoming ] ].
-        metacello load ]
-            on: Warning
-            do: [ :w | w resume ].
+        ([ Smalltalk at: #MetacelloIgnorePackageLoaded ]
+          on: KeyNotFound
+          do: [ :keyEx | keyEx resumeUnchecked: nil ])
+            ifNil: [ metacello load ]
+            ifNotNil: [ :exceptionClass |
+              [ metacello load ] on: exceptionClass do: [ :ex | ex resume: true ] ] ]
+                on: Warning
+                do: [ :w | w resume ].
     smalltalkCI := Smalltalk at: #SmalltalkCI.
     smalltalkCI load: '$(resolve_path "${config_ston}")'.
     (smalltalkCI isHeadless or: [ smalltalkCI promptToProceed ])
@@ -392,13 +401,19 @@ pharo::test_project() {
                 metacello := Metacello new
                     baseline: 'SmalltalkCI';
                     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-                    onUpgrade: [ :ex | ex useIncoming ].
+                    onUpgrade: [ :ex | ex useIncoming ];
+                    ignoreImage.
                 (Metacello canUnderstand: #onConflictUseIncoming)
                     ifTrue: [ metacello onConflictUseIncoming ]
                     ifFalse: [ metacello onConflict: [ :ex | ex useIncoming ] ].
-                metacello load ]
-                    on: Warning
-                    do: [ :w | w resume ].
+                ([ Smalltalk at: #MetacelloIgnorePackageLoaded ]
+                  on: KeyNotFound
+                  do: [ :keyEx | keyEx resumeUnchecked: nil ])
+                    ifNil: [ metacello load ]
+                    ifNotNil: [ :exceptionClass |
+                      [ metacello load ] on: exceptionClass do: [ :ex | ex resume: true ] ] ]
+                        on: Warning
+                        do: [ :w | w resume ].
             Smalltalk at: #SmalltalkCI ].
     smalltalkCI test: '$(resolve_path "${config_ston}")'
   "

@@ -107,9 +107,11 @@ gtoolkit::prepare_gt() {
   local gtoolkit_image_url
   local download_name
   local target
+  local smalltalk_version
   gtoolkit_image_url="$(gtoolkit::archive_url)"
+  smalltalk_version="$(basename "${gtoolkit_image_url}" .zip)"
   download_name="$(basename "${gtoolkit_image_url}")"
-  target="${SMALLTALK_CI_CACHE}/${download_name}"
+  target="${SMALLTALK_CI_CACHE}/${smalltalk_version}"
 
   if "${config_overwrite_cache}" && is_dir "${target}"; then
     print_info "Removing cached image resources for ${smalltalk_name} (update forced)"
@@ -118,15 +120,15 @@ gtoolkit::prepare_gt() {
   if ! is_dir "${target}"; then
     mkdir "${target}"
   fi
-  if ! is_file "${target}"/*.image; then
-    fold_start download_image "Downloading ${smalltalk_name} image..."
-      download_file "${gtoolkit_image_url}" "${target}"
+  if ! is_file "${target}/${download_name}"; then
+    fold_start download_image "Downloading ${smalltalk_version}..."
+      download_file "${gtoolkit_image_url}" "${target}/${download_name}"
     fold_end download_image
   fi
 
   print_info "Extracting GT..."
-  extract_file "${target}" "${SMALLTALK_CI_BUILD}"
-  echo "${download_name}" > "${SMALLTALK_CI_BUILD}"/version
+  extract_file "${target}/${download_name}" "${SMALLTALK_CI_BUILD}" > /dev/null
+  echo "${smalltalk_version}" > "${SMALLTALK_CI_BUILD}"/version
 
   print_info "Preparing GToolkit image..."
   if ! is_file "${SMALLTALK_CI_IMAGE}"; then
@@ -174,13 +176,19 @@ gtoolkit::load_project() {
         metacello := Metacello new
             baseline: 'SmalltalkCI';
             repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-            onUpgrade: [ :ex | ex useIncoming ].
+            onUpgrade: [ :ex | ex useIncoming ];
+            ignoreImage.
         (Metacello canUnderstand: #onConflictUseIncoming)
             ifTrue: [ metacello onConflictUseIncoming ]
             ifFalse: [ metacello onConflict: [ :ex | ex useIncoming ] ].
-        metacello load ]
-            on: Warning
-            do: [ :w | w resume ].
+                ([ Smalltalk at: #MetacelloIgnorePackageLoaded ]
+                  on: KeyNotFound
+                  do: [ :keyEx | keyEx resumeUnchecked: nil ])
+                    ifNil: [ metacello load ]
+                    ifNotNil: [ :exceptionClass |
+                      [ metacello load ] on: exceptionClass do: [ :ex | ex resume: true ] ] ]
+                        on: Warning
+                        do: [ :w | w resume ].
     smalltalkCI := Smalltalk at: #SmalltalkCI.
     smalltalkCI load: '$(resolve_path "${config_ston}")'.
     (smalltalkCI isHeadless or: [ smalltalkCI promptToProceed ])
@@ -203,13 +211,19 @@ gtoolkit::test_project() {
                 metacello := Metacello new
                     baseline: 'SmalltalkCI';
                     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
-                    onUpgrade: [ :ex | ex useIncoming ].
+                    onUpgrade: [ :ex | ex useIncoming ];
+                    ignoreImage.
                 (Metacello canUnderstand: #onConflictUseIncoming)
                     ifTrue: [ metacello onConflictUseIncoming ]
                     ifFalse: [ metacello onConflict: [ :ex | ex useIncoming ] ].
-                metacello load ]
-                    on: Warning
-                    do: [ :w | w resume ].
+                ([ Smalltalk at: #MetacelloIgnorePackageLoaded ]
+                  on: KeyNotFound
+                  do: [ :keyEx | keyEx resumeUnchecked: nil ])
+                    ifNil: [ metacello load ]
+                    ifNotNil: [ :exceptionClass |
+                      [ metacello load ] on: exceptionClass do: [ :ex | ex resume: true ] ] ]
+                        on: Warning
+                        do: [ :w | w resume ].
             Smalltalk at: #SmalltalkCI ].
     smalltalkCI test: '$(resolve_path "${config_ston}")'
   "
