@@ -109,7 +109,7 @@ moose::get_image_url() {
 
   case "${smalltalk_name}" in
     "Moose64-trunk"|"Moose-trunk")
-      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose12-development-Pharo64-12.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose13-development-Pharo64-13.zip"
       ;;
     "Moose64-8"*)
       echo "https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-old-stable-Pharo64-8.0.zip"
@@ -124,7 +124,10 @@ moose::get_image_url() {
       echo "https://github.com/moosetechnology/Moose/releases/download/v11.x.x/Moose11-stable-Pharo64-11.zip"
       ;;
     "Moose64-12"*)
-      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose12-development-Pharo64-12.zip"
+      echo "https://github.com/moosetechnology/Moose/releases/download/v12.0.0/Moose12-stable-Pharo64-12.zip"
+      ;;
+    "Moose64-13"*)
+      echo "https://github.com/moosetechnology/Moose/releases/download/continuous/Moose13-development-Pharo64-13.zip"
       ;;
     *)
       print_error_and_exit "Unsupported Moose version '${smalltalk_name}'."
@@ -153,10 +156,10 @@ pharo::get_vm_url() {
     "Pharo64-stable"|"Pharo-stable")
       echo "get.pharo.org/64/vm${stable_version}0"
       ;;
-    "Pharo64-13")
+    "Pharo64-13"|"Moose64-13"|"Moose64-trunk")
       echo "get.pharo.org/64/vm130"
       ;;
-    "Pharo64-12"|"Moose64-12"|"Moose64-trunk")
+    "Pharo64-12"|"Moose64-12")
       echo "get.pharo.org/64/vm120"
       ;;
     "Pharo64-11"|"Moose64-11")
