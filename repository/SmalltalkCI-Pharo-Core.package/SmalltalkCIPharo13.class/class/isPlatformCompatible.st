@@ -1,4 +1,4 @@
 compatibility
 isPlatformCompatible
 
-	^ self platformNameBeginsWith: 'Pharo13'
+	^ self platformNameBeginsWith: 'Pharo14'
