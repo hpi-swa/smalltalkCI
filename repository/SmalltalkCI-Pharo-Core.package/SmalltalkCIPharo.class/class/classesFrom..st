@@ -8,7 +8,7 @@ classesFrom: aDictionary
 		at: #packages 
 		ifPresent: [ :packagesList | | packages commandLineHandler |
 			packages := Set new.
-			commandLineHandler := (Smalltalk at: #TestCommandLineHandler) new.
+			commandLineHandler := self testCliCommand.
 			packagesList do: [ :each | 
 				commandLineHandler addPackagesMatching: each to: packages ].
 			packages do: [ :each |
