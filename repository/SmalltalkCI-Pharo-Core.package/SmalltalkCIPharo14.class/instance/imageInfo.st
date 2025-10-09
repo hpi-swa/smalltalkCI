@@ -1,5 +1,5 @@
 reporting
-imageInfo	
+imageInfo
 
 	^ String new: 210 streamContents: [ :stream |
 		stream nextPutAll: Smalltalk image imagePath; cr;
