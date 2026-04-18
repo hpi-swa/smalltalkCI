@@ -165,18 +165,14 @@ squeak::get_vm_details() {
   local vm_path_linux_name=""
   local vm_path_linux_suffix="ht"
 
+  git_tag="v3.0.8"
+  osvm_version="202312181441"
   if is_trunk_build; then
-    git_tag="v2.9.9"
-    osvm_version="202206021410"
+    : # use defaults above
   else
     case "${smalltalk_name}" in
-      "Squeak32-6.0"|"Squeak64-6.0")
-        git_tag="v2.9.9"
-        osvm_version="202206021410"
-        ;;
-      "Squeak64-5.3")
-        git_tag="v2.9.1"
-        osvm_version="202003021730"
+      "Squeak32-6.1"|"Squeak64-6.1"|"Squeak32-6.0"|"Squeak64-6.0"|"Squeak32-5.3"|"Squeak64-5.3")
+        # use defaults above
         ;;
       *)
         git_tag="v2.8.4"
