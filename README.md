@@ -80,17 +80,13 @@ they can take up a lot of space on your drive.*
 | `Squeak64-5.2`   | `Pharo64-13`     | `GemStone64-3.5.7`   | `Moose64-11`    |                      |
 | `Squeak64-5.1`   | `Pharo64-12`     | `GemStone64-3.5.6`   | `Moose64-10`    |                      |
 | `Squeak32-trunk` | `Pharo64-11`     | `GemStone64-3.5.5`   | `Moose64-9.0`   |                      |
-| `Squeak32-6.0`   | `Pharo64-10`     | `Gemstone64-3.5.4`   | `Moose64-8.0`   |                      |
+| `Squeak32-6.0`   | `Pharo64-10`     | `Gemstone64-3.5.4`   |                 |                      |
 | `Squeak32-5.3`   | `Pharo64-9.0`    | `GemStone64-3.5.3`   |                 |                      |
-| `Squeak32-5.2`   | `Pharo64-8.0`    |                      |                 |                      |
-| `Squeak32-5.1`   | `Pharo64-7.0`    |                      |                 |                      |
-| `Squeak32-5.0`   | `Pharo64-6.1`    |                      |                 |                      |
-| `Squeak32-4.6`   | `Pharo64-6.0`    |                      |                 |                      |
-| `Squeak32-4.5`   | `Pharo32-alpha`  |                      |                 |                      |
-|                  | `Pharo32-stable` |                      |                 |                      |
-|                  | `Pharo32-14`     |                      |                 |                      |
-|                  | `Pharo32-13`     |                      |                 |                      |
-|                  | `Pharo32-12`     |                      |                 |                      |
+| `Squeak32-5.2`   | `Pharo32-alpha`  |                      |                 |                      |
+| `Squeak32-5.1`   | `Pharo32-stable` |                      |                 |                      |
+| `Squeak32-5.0`   | `Pharo32-14`     |                      |                 |                      |
+| `Squeak32-4.6`   | `Pharo32-13`     |                      |                 |                      |
+| `Squeak32-4.5`   | `Pharo32-12`     |                      |                 |                      |
 |                  | `Pharo32-11`     |                      |                 |                      |
 |                  | `Pharo32-10`     |                      |                 |                      |
 |                  | `Pharo32-9.0`    |                      |                 |                      |
@@ -101,6 +97,10 @@ they can take up a lot of space on your drive.*
 |                  | `Pharo32-5.0`    |                      |                 |                      |
 |                  | `Pharo32-4.0`    |                      |                 |                      |
 |                  | `Pharo32-3.0`    |                      |                 |                      |
+|                  |                  |                      |                 |                      |
+|                  |                  |                      |                 |                      |
+|                  |                  |                      |                 |                      |
+|                  |                  |                      |                 |                      |
 
 ## Templates
 
@@ -175,8 +175,8 @@ smalltalk:
   # ...
   - Pharo64-alpha
   - Pharo64-stable
-  - Pharo64-7.0
-  - Pharo64-6.1
+  - Pharo64-13
+  - Pharo64-12
   # ...
   - Pharo32-alpha
   - Pharo32-stable

@@ -42,18 +42,7 @@ pharo::get_image_url() {
     "Pharo64-9.0")
       echo "get.pharo.org/64/90"
       ;;
-    "Pharo64-8.0")
-      echo "get.pharo.org/64/80"
-      ;;
-    "Pharo64-7.0")
-      echo "get.pharo.org/64/70"
-      ;;
-    "Pharo64-6.1")
-      echo "get.pharo.org/64/61"
-      ;;
-    "Pharo64-6.0")
-      echo "get.pharo.org/64/60"
-      ;;
+
     "Pharo32-alpha")
       echo "get.pharo.org/alpha"
       ;;
@@ -117,7 +106,6 @@ pharo::get_image_url() {
 ################################################################################
 moose::get_image_url() {
   local smalltalk_name=$1
-  local moose_name
 
   case "${smalltalk_name}" in
     "Moose64-trunk"|"Moose-trunk")
@@ -189,18 +177,7 @@ pharo::get_vm_url() {
     "Pharo64-9.0"|"Moose64-9.0")
       echo "get.pharo.org/64/vm90"
       ;;
-    "Pharo64-8.0"|"Moose64-8.0")
-      echo "get.pharo.org/64/vm80"
-      ;;
-    "Pharo64-7.0")
-      echo "get.pharo.org/64/vm70"
-      ;;
-    "Pharo64-6.1")
-      echo "get.pharo.org/64/vm61"
-      ;;
-    "Pharo64-6.0")
-      echo "get.pharo.org/64/vm60"
-      ;;
+
     "Pharo32-alpha")
       echo "get.pharo.org/vmLatest${alpha_version}0"
       ;;
