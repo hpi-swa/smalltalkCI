@@ -21,6 +21,9 @@ pharo::get_image_url() {
     "Pharo64-stable"|"Pharo-stable")
       echo "get.pharo.org/64/stable"
       ;;
+    "Pharo64-15")
+      echo "get.pharo.org/64/150"
+      ;;
     "Pharo64-14")
       echo "get.pharo.org/64/140"
       ;;
@@ -39,24 +42,16 @@ pharo::get_image_url() {
     "Pharo64-9.0")
       echo "get.pharo.org/64/90"
       ;;
-    "Pharo64-8.0")
-      echo "get.pharo.org/64/80"
-      ;;
-    "Pharo64-7.0")
-      echo "get.pharo.org/64/70"
-      ;;
-    "Pharo64-6.1")
-      echo "get.pharo.org/64/61"
-      ;;
-    "Pharo64-6.0")
-      echo "get.pharo.org/64/60"
-      ;;
+
     "Pharo32-alpha")
       echo "get.pharo.org/alpha"
       ;;
     "Pharo32-stable")
       echo "get.pharo.org/stable"
       ;;
+    "Pharo32-15")
+        echo "get.pharo.org/32/150"
+        ;;
     "Pharo32-14")
         echo "get.pharo.org/32/140"
         ;;
@@ -111,7 +106,6 @@ pharo::get_image_url() {
 ################################################################################
 moose::get_image_url() {
   local smalltalk_name=$1
-  local moose_name
 
   case "${smalltalk_name}" in
     "Moose64-trunk"|"Moose-trunk")
@@ -151,8 +145,8 @@ moose::get_image_url() {
 ################################################################################
 pharo::get_vm_url() {
   local smalltalk_name=$1
-  local stable_version=12
-  local alpha_version=13
+  local stable_version=13
+  local alpha_version=14
 
   case "${smalltalk_name}" in
     # NOTE: vmLatestXX should be updated every time new Pharo is released
@@ -161,6 +155,9 @@ pharo::get_vm_url() {
       ;;
     "Pharo64-stable"|"Pharo-stable")
       echo "get.pharo.org/64/vm${stable_version}0"
+      ;;
+    "Pharo64-15")
+      echo "get.pharo.org/64/vm150"
       ;;
     "Pharo64-14")
       echo "get.pharo.org/64/vm140"
@@ -180,23 +177,15 @@ pharo::get_vm_url() {
     "Pharo64-9.0"|"Moose64-9.0")
       echo "get.pharo.org/64/vm90"
       ;;
-    "Pharo64-8.0"|"Moose64-8.0")
-      echo "get.pharo.org/64/vm80"
-      ;;
-    "Pharo64-7.0")
-      echo "get.pharo.org/64/vm70"
-      ;;
-    "Pharo64-6.1")
-      echo "get.pharo.org/64/vm61"
-      ;;
-    "Pharo64-6.0")
-      echo "get.pharo.org/64/vm60"
-      ;;
+
     "Pharo32-alpha")
       echo "get.pharo.org/vmLatest${alpha_version}0"
       ;;
     "Pharo32-stable")
       echo "get.pharo.org/vm${stable_version}0"
+      ;;
+    "Pharo32-15")
+      echo "get.pharo.org/vm150"
       ;;
     "Pharo32-14")
       echo "get.pharo.org/vm140"

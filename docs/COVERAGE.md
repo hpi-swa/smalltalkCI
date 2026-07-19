@@ -218,7 +218,7 @@ stages:
 
 run tests:
   stage: test
-  script: smalltalkci -s "Pharo64-8.0"
+  script: smalltalkci -s "Pharo64-9.0"
   artifacts:
     paths:
       - $COVERAGE_DIR
