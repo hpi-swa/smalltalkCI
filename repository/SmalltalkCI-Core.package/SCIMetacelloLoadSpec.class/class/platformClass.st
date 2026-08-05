@@ -1,4 +1,4 @@
 accessing
 platformClass
-	"There will be just one subclass installed (for each platform)"
-	^ self allSubclasses detect: [ :cl | cl isPlatformCompatible ]
+	"Find the most specific subclass"
+	^ self allSubclasses reverse detect: [ :cl | cl isPlatformCompatible ]
