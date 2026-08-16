@@ -21,6 +21,7 @@ test_get_vm_details() {
   local vm_path
 
   config_smalltalk="Squeak64-trunk"
+  echo "Testing ${config_smalltalk} (Linux)"
   vm_details="$(squeak::get_vm_details "${config_smalltalk}" "Linux" 1)"
   set_vars vm_filename vm_path git_tag "${vm_details}"
   assert_vm_filename "${vm_filename}" "squeak.cog.spur_linux64x64_"
@@ -28,6 +29,7 @@ test_get_vm_details() {
   starts_with "${git_tag}" "v3" || fail "Unexpected git_tag: '${git_tag}'"
 
   config_smalltalk="Squeak64-6.0"
+  echo "Testing ${config_smalltalk} (Linux)"
   vm_details="$(squeak::get_vm_details "${config_smalltalk}" "Linux" 1)"
   set_vars vm_filename vm_path git_tag "${vm_details}"
   assert_vm_filename "${vm_filename}" "squeak.cog.spur_linux64x64_"
@@ -35,6 +37,7 @@ test_get_vm_details() {
   starts_with "${git_tag}" "v3" || fail "Unexpected git_tag: '${git_tag}'"
 
   config_smalltalk="Squeak32-6.0"
+  echo "Testing ${config_smalltalk} (Linux)"
   vm_details="$(squeak::get_vm_details "${config_smalltalk}" "Linux" 1)"
   set_vars vm_filename vm_path git_tag "${vm_details}"
   assert_vm_filename "${vm_filename}" "squeak.cog.spur_linux32x86_"
@@ -42,6 +45,7 @@ test_get_vm_details() {
   starts_with "${git_tag}" "v3" || fail "Unexpected git_tag: '${git_tag}'"
 
   config_smalltalk="Squeak64-5.3"
+  echo "Testing ${config_smalltalk} (Linux)"
   vm_details="$(squeak::get_vm_details "${config_smalltalk}" "Linux" 1)"
   set_vars vm_filename vm_path git_tag "${vm_details}"
   assert_vm_filename "${vm_filename}" "squeak.cog.spur_linux64x64_"
@@ -49,13 +53,23 @@ test_get_vm_details() {
   starts_with "${git_tag}" "v3" || fail "Unexpected git_tag: '${git_tag}'"
 
   config_smalltalk="Squeak32-5.2"
+  echo "Testing ${config_smalltalk} (Linux)"
   vm_details="$(squeak::get_vm_details "${config_smalltalk}" "Linux" 0)"
   set_vars vm_filename vm_path git_tag "${vm_details}"
-  assert_vm_filename "${vm_filename}" "squeak.cog.v3_linux32x86_itimer_"
+  assert_vm_filename "${vm_filename}" "squeak.cog.v3_linux32x86_"
+  assertEquals "${config_vm_dir}/sqcoglinuxht/squeak" "${vm_path}"
+  starts_with "${git_tag}" "v3" || fail "Unexpected git_tag: '${git_tag}'"
+
+  config_smalltalk="Squeak32-4.5"
+  echo "Testing ${config_smalltalk} (Linux)"
+  vm_details="$(squeak::get_vm_details "${config_smalltalk}" "Linux" 0)"
+  set_vars vm_filename vm_path git_tag "${vm_details}"
+  assert_vm_filename "${vm_filename}" "squeak.cog.v3_linux32x86_"
   assertEquals "${config_vm_dir}/sqcoglinux/squeak" "${vm_path}"
   starts_with "${git_tag}" "v2" || fail "Unexpected git_tag: '${git_tag}'"
 
   config_smalltalk="Squeak64-5.3"
+  echo "Testing ${config_smalltalk} (Darwin)"
   vm_details="$(squeak::get_vm_details "${config_smalltalk}" "Darwin" 1)"
   set_vars vm_filename vm_path git_tag "${vm_details}"
   assert_vm_filename "${vm_filename}" "squeak.cog.spur_macos64x64_"
@@ -63,26 +77,30 @@ test_get_vm_details() {
   starts_with "${git_tag}" "v3" || fail "Unexpected git_tag: '${git_tag}'"
 
   config_smalltalk="Squeak64-5.2"
+  echo "Testing ${config_smalltalk} (Darwin)"
   vm_details="$(squeak::get_vm_details "${config_smalltalk}" "Darwin" 1)"
   set_vars vm_filename vm_path git_tag "${vm_details}"
   assert_vm_filename "${vm_filename}" "squeak.cog.spur_macos64x64_"
   assertEquals "${config_vm_dir}/Squeak.app/Contents/MacOS/Squeak" "${vm_path}"
-  starts_with "${git_tag}" "v2" || fail "Unexpected git_tag: '${git_tag}'"
+  starts_with "${git_tag}" "v3" || fail "Unexpected git_tag: '${git_tag}'"
+
 
   config_smalltalk="Squeak64-trunk"
-
+  echo "Testing ${config_smalltalk} (Darwin)"
   vm_details="$(squeak::get_vm_details "${config_smalltalk}" "Darwin" 0)"
   set_vars vm_filename vm_path git_tag "${vm_details}"
   assert_vm_filename "${vm_filename}" "squeak.cog.v3_macos64x64_"
   assertEquals "${config_vm_dir}/Squeak.app/Contents/MacOS/Squeak" "${vm_path}"
   starts_with "${git_tag}" "v3" || fail "Unexpected git_tag: '${git_tag}'"
 
+  echo "Testing ${config_smalltalk} (CYGWIN_NT-6.1)"
   vm_details="$(squeak::get_vm_details "${config_smalltalk}" "CYGWIN_NT-6.1" 1)"
   set_vars vm_filename vm_path git_tag "${vm_details}"
   assert_vm_filename "${vm_filename}" "squeak.cog.spur_win64x64_"
   assertEquals "${config_vm_dir}/SqueakConsole.exe" "${vm_path}"
   starts_with "${git_tag}" "v3" || fail "Unexpected git_tag: '${git_tag}'"
 
+  echo "Testing ${config_smalltalk} (CYGWIN_NT-6.1)"
   vm_details="$(squeak::get_vm_details "${config_smalltalk}" "CYGWIN_NT-6.1" 0)"
   set_vars vm_filename vm_path git_tag "${vm_details}"
   assert_vm_filename "${vm_filename}" "squeak.cog.v3_win64x64_"
