@@ -324,9 +324,12 @@ squeak::run_script() {
 # Load smalltalkCI and the project and save image.
 ################################################################################
 squeak::load_project() {
+  local smalltalk_name=$1
+
   cat >"${SMALLTALK_CI_BUILD}/load.st" <<EOL
   | smalltalkCI |
   $(conditional_debug_halt)
+  $(squeak::patch_image "${smalltalk_name}")
   [ Metacello new
     baseline: 'SmalltalkCI';
     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
@@ -339,6 +342,20 @@ squeak::load_project() {
 EOL
 
   squeak::run_script "load.st"
+}
+
+################################################################################
+# Backport image patches.
+################################################################################
+squeak::patch_image() {
+  local smalltalk_name=$1
+
+  case "${smalltalk_name}" in
+    "Squeak32-5.1"|"Squeak32-5.2"|"Squeak32-5.3"|"Squeak64-5.1"|"Squeak64-5.2"|"Squeak64-5.3")
+      cp "${SMALLTALK_CI_HOME}/squeak/patches/01-squeak5.x-vm-support.st" "${SMALLTALK_CI_BUILD}/patch.st"
+      printf "FileStream fileIn: 'patch.st'.\n"
+      ;;
+  esac
 }
 
 ################################################################################
@@ -382,7 +399,7 @@ run_build() {
     squeak::prepare_image
   fi
   if ston_includes_loading; then
-    squeak::load_project
+    squeak::load_project "${config_smalltalk}"
     check_and_consume_build_status_file
   fi
   squeak::test_project
