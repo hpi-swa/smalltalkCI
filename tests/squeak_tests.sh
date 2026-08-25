@@ -6,7 +6,7 @@ source "${BASE}/squeak/run.sh"
 
 assert_vm_filename() {
     if ! starts_with "$1" "$2"; then
-        fail "Unexpected vm_filename: '$1'"
+        fail "Unexpected vm_filename: '$1' (expected: '$2')"
     fi
 }
 
@@ -51,7 +51,14 @@ test_get_vm_details() {
   config_smalltalk="Squeak32-5.2"
   vm_details="$(squeak::get_vm_details "${config_smalltalk}" "Linux" 0)"
   set_vars vm_filename vm_path git_tag "${vm_details}"
-  assert_vm_filename "${vm_filename}" "squeak.cog.v3_linux32x86_itimer_"
+  assert_vm_filename "${vm_filename}" "squeak.cog.v3_linux32x86_"
+  assertEquals "${config_vm_dir}/sqcoglinuxht/squeak" "${vm_path}"
+  starts_with "${git_tag}" "v3" || fail "Unexpected git_tag: '${git_tag}'"
+
+  config_smalltalk="Squeak32-4.5"
+  vm_details="$(squeak::get_vm_details "${config_smalltalk}" "Linux" 0)"
+  set_vars vm_filename vm_path git_tag "${vm_details}"
+  assert_vm_filename "${vm_filename}" "squeak.cog.v3_linux32x86_"
   assertEquals "${config_vm_dir}/sqcoglinux/squeak" "${vm_path}"
   starts_with "${git_tag}" "v2" || fail "Unexpected git_tag: '${git_tag}'"
 
@@ -67,7 +74,7 @@ test_get_vm_details() {
   set_vars vm_filename vm_path git_tag "${vm_details}"
   assert_vm_filename "${vm_filename}" "squeak.cog.spur_macos64x64_"
   assertEquals "${config_vm_dir}/Squeak.app/Contents/MacOS/Squeak" "${vm_path}"
-  starts_with "${git_tag}" "v2" || fail "Unexpected git_tag: '${git_tag}'"
+  starts_with "${git_tag}" "v3" || fail "Unexpected git_tag: '${git_tag}'"
 
   config_smalltalk="Squeak64-trunk"
 
