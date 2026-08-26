@@ -19,7 +19,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-2019 ]
+        os: [ ubuntu-latest, macos-latest, windows-2022 ]
         smalltalk:
           - Squeak64-trunk
           - Squeak64-6.0
@@ -68,13 +68,13 @@ jobs:
             smalltalk: GemStone64-3.5.8
           - os: macos-latest
             smalltalk: GemStone64-3.6.8
-          - os: windows-2019
+          - os: windows-2022
             smalltalk: Pharo64-10
-          - os: windows-2019
+          - os: windows-2022
             smalltalk: GemStone64-3.5.8
-          - os: windows-2019
+          - os: windows-2022
             smalltalk: GemStone64-3.6.8
-          - os: windows-2019
+          - os: windows-2022
             smalltalk: GemStone64-3.7.1
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
