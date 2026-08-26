@@ -56,6 +56,8 @@ jobs:
             smalltalk: Squeak32-6.0
           - os: macos-latest
             smalltalk: Squeak32-4.5
+          - os: ubuntu-latest
+            smalltalk: Squeak32-6.0 # hangs for some reason
           - os: macos-latest
             smalltalk: Pharo32-stable
           - os: macos-latest
