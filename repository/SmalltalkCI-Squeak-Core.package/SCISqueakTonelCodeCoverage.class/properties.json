@@ -1,0 +1,16 @@
+{
+	"category" : "SmalltalkCI-Squeak-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"allClassesToCover",
+		"includedMethodsByClassName",
+		"coveredMethodsByClassName" ],
+	"name" : "SCISqueakTonelCodeCoverage",
+	"pools" : [
+		 ],
+	"super" : "SCISqueakCodeCoverage",
+	"type" : "normal" }
