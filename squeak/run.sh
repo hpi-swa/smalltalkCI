@@ -171,14 +171,14 @@ squeak::get_vm_details() {
     : # use defaults above
   else
     case "${smalltalk_name}" in
-      "Squeak32-6.1"|"Squeak64-6.1"|"Squeak32-6.0"|"Squeak64-6.0"|"Squeak32-5.3"|"Squeak64-5.3")
-        # use defaults above
+      "Squeak32-4.5")
+        git_tag="v2.9.6"
+        osvm_version="202101260417"
+        vm_arch_linux_prefix=""
+        vm_path_linux_suffix=""
         ;;
       *)
-        git_tag="v2.8.4"
-        osvm_version="201810190412"
-        vm_arch_linux_prefix="_itimer"
-        vm_path_linux_suffix=""
+        # use defaults above
         ;;
     esac
   fi
