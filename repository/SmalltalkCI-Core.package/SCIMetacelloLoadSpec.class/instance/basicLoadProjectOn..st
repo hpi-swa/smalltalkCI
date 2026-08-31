@@ -7,6 +7,7 @@ basicLoadProjectOn: aSmalltalkCI
 	
 	metacello := (Smalltalk at: #Metacello) new.
 	metacello
+		silently;
 		repository: (self repository ifNil: [ 
 			self repositoryUrlIn: aSmalltalkCI projectDirectory ]);
 		baseline: self baseline;
