@@ -103,8 +103,8 @@ squeak::download_prepared_image() {
 squeak::download_trunk_image() {
   local target
   local download_name
-  local git_tag="v3.0.5" # 32bit/64bit are kept in sync
-  local update_level="22906" # 32bit/64bit are kept in sync
+  local git_tag="v3.0.8" # 32bit/64bit are kept in sync
+  local update_level="23984" # 32bit/64bit are kept in sync
 
   if is_64bit; then
     download_name="Squeak64-trunk-${update_level}.tar.gz"
@@ -168,17 +168,20 @@ squeak::get_vm_details() {
   git_tag="v3.0.8"
   osvm_version="202312181441"
   if is_trunk_build; then
-    : # use defaults above
+    git_tag="v3.0.8"
+    osvm_version="202606270913"
+    vm_arch_linux_prefix=""
+    vm_path_linux_suffix="ht"
   else
     case "${smalltalk_name}" in
-      "Squeak32-6.1"|"Squeak64-6.1"|"Squeak32-6.0"|"Squeak64-6.0"|"Squeak32-5.3"|"Squeak64-5.3")
-        # use defaults above
-        ;;
-      *)
+      "Squeak32-4.5"|"Squeak32-4.6")
         git_tag="v2.8.4"
         osvm_version="201810190412"
         vm_arch_linux_prefix="_itimer"
         vm_path_linux_suffix=""
+        ;;
+      *)
+        # use defaults above
         ;;
     esac
   fi
@@ -324,9 +327,12 @@ squeak::run_script() {
 # Load smalltalkCI and the project and save image.
 ################################################################################
 squeak::load_project() {
+  local smalltalk_name=$1
+
   cat >"${SMALLTALK_CI_BUILD}/load.st" <<EOL
   | smalltalkCI |
   $(conditional_debug_halt)
+  $(squeak::patch_image "${smalltalk_name}")
   [ Metacello new
     baseline: 'SmalltalkCI';
     repository: 'filetree://$(resolve_path "${SMALLTALK_CI_HOME}/repository")';
@@ -339,6 +345,20 @@ squeak::load_project() {
 EOL
 
   squeak::run_script "load.st"
+}
+
+################################################################################
+# Backport image patches.
+################################################################################
+squeak::patch_image() {
+  local smalltalk_name=$1
+
+  case "${smalltalk_name}" in
+    "Squeak32-5.1"|"Squeak32-5.2"|"Squeak32-5.3"|"Squeak64-5.1"|"Squeak64-5.2"|"Squeak64-5.3")
+      cp "${SMALLTALK_CI_HOME}/squeak/patches/01-squeak5.x-vm-support.st" "${SMALLTALK_CI_BUILD}/patch.st"
+      printf "FileStream fileIn: 'patch.st'.\n"
+      ;;
+  esac
 }
 
 ################################################################################
@@ -382,7 +402,7 @@ run_build() {
     squeak::prepare_image
   fi
   if ston_includes_loading; then
-    squeak::load_project
+    squeak::load_project "${config_smalltalk}"
     check_and_consume_build_status_file
   fi
   squeak::test_project

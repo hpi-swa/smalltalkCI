@@ -18,8 +18,9 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-2019 ]
+        os: [ ubuntu-latest, macos-latest, windows-2022 ]
         smalltalk:
           - Squeak64-trunk
           - Squeak64-6.0
@@ -56,6 +57,12 @@ jobs:
             smalltalk: Squeak32-6.0
           - os: macos-latest
             smalltalk: Squeak32-4.5
+          - os: ubuntu-latest
+            smalltalk: Squeak32-6.0 # hangs for some reason
+          - os: windows-2022
+            smalltalk: Pharo64-9.0 # crashes due to sqMakeMemoryNotExecutableFromTo error
+          - os: windows-2022
+            smalltalk: Moose64-9.0 # crashes due to sqMakeMemoryNotExecutableFromTo error
           - os: macos-latest
             smalltalk: Pharo32-stable
           - os: macos-latest
@@ -66,35 +73,36 @@ jobs:
             smalltalk: GemStone64-3.5.8
           - os: macos-latest
             smalltalk: GemStone64-3.6.8
-          - os: windows-2019
+          - os: windows-2022
             smalltalk: Pharo64-10
-          - os: windows-2019
+          - os: windows-2022
             smalltalk: GemStone64-3.5.8
-          - os: windows-2019
+          - os: windows-2022
             smalltalk: GemStone64-3.6.8
-          - os: windows-2019
+          - os: windows-2022
             smalltalk: GemStone64-3.7.1
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
       - name: Setup smalltalkCI
         uses: hpi-swa/setup-smalltalkCI@v1
         with:
           smalltalk-image: ${{ matrix.smalltalk }}
-      - name: Run smalltalkCI self test
-        run: |
-          tests/all_tests.sh
-          bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
+      - name: Run bash tests
+        run: tests/all_tests.sh
         shell: bash
-        if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false && contains(matrix.smalltalk, 'Squeak32-6.0') == false && contains(matrix.smalltalk, 'GToolkit64') == false && contains(matrix.smalltalk, 'Pharo64-12') == false
+      - name: Run smalltalkCI self test
+        run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test
+        shell: bash
+        if: contains(matrix.smalltalk, 'trunk') == false && contains(matrix.smalltalk, 'alpha') == false && contains(matrix.smalltalk, 'GToolkit64') == false
         timeout-minutes: 15
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run smalltalkCI self test and ignore failures
         run: bin/smalltalkci -s ${{ matrix.smalltalk }} --self-test || true
         shell: bash
-        if: contains(matrix.smalltalk, 'trunk') || contains(matrix.smalltalk, 'alpha') || contains(matrix.smalltalk, 'Squeak32-6.0') || contains(matrix.smalltalk, 'GToolkit64') || contains(matrix.smalltalk, 'Pharo64-12')
+        if: contains(matrix.smalltalk, 'trunk') || contains(matrix.smalltalk, 'alpha') || contains(matrix.smalltalk, 'GToolkit64')
         # Builds on macOS are extremely slow for some reason, and the Squeak trunk
         # image hits the 15 minute timeout because it needs to update from the repository
         # each time, which takes forever.

@@ -5,10 +5,12 @@
 ```smalltalk
 "Close wizard."
 PreferenceWizardMorph allInstancesDo: [:ea | ea abandon].
+ShadowedVariableNotification enableInteractiveWarning: false.
 "Ensure Metacello is loaded."
 Metacello new.
 "Ensure Tonel is loaded."
 [ (Smalltalk classNamed: #MCTonelMissing) signal ] valueSupplyingAnswer: true.
+ShadowedVariableNotification enableInteractiveWarning: true.
 "Clean up and save the image."
 ReleaseBuilder deleteAllWindows.
 Smalltalk garbageCollect.
